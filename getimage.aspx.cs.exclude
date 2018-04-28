@@ -1,0 +1,70 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Drawing;
+using System.IO;
+using System.Drawing.Imaging;
+
+public partial class getimage : System.Web.UI.Page
+{
+	protected void Page_Load(object sender, EventArgs e)
+	{
+		Response.Clear();
+		string strType = Request.QueryString["type"];
+		if (string.IsNullOrEmpty(strType))
+			Response.End();
+
+		if (strType.Equals("pie"))
+		{
+			DrawPie();
+			return;
+		}
+		Response.ContentType = "text/HTML";
+		Response.Write("Invalid Request.");
+		Response.End();
+	}
+	protected void DrawPie()
+	{
+		Response.ContentType = "image/png";
+		string strPercent = Request.QueryString["hours"];
+		double dFullDayHours = 8;
+		double dVal = string.IsNullOrEmpty(strPercent) ? 0.0 : Convert.ToDouble(strPercent) / dFullDayHours;
+		double dValOrg = dVal;
+		if (dVal < 0)
+			dVal = 0;
+		Int32 iVal = Convert.ToInt32(360.0 * dVal);
+
+		Bitmap objBitmap = new Bitmap(100, 100);
+
+		Graphics g = Graphics.FromImage(objBitmap);
+		if (g == null)
+			return;
+
+		Pen pb = new Pen(Color.Black);
+		Pen py = new Pen(Color.Yellow);
+		Rectangle rc = new Rectangle(0, 0, 99, 99);
+
+		g.FillPie(new SolidBrush(Color.Red), rc, 0, 360);
+
+		g.FillPie(new SolidBrush(Color.Blue), rc, -90, iVal);
+
+		g.DrawArc(pb, rc, 0, 360);
+
+		Int32 iHr = Convert.ToInt32(Math.Truncate(dFullDayHours * dVal));
+		Int32 iMi = Convert.ToInt32(60.0 * (dFullDayHours * dVal - iHr));
+		DateTime dt = new DateTime(1, 1, 1, (iHr > 0 ? iHr : 0), (iMi > 0 ? iMi : 0), 0);
+		g.DrawString(dt.Hour.ToString() + ":" + dt.Minute.ToString(), new Font("Arial", 10), new SolidBrush(Color.Yellow), 10, 40);
+
+		g.DrawString((100 * dValOrg).ToString("0") + "%", new Font("Arial", 10), new SolidBrush(Color.Yellow), 60, 40);
+
+		MemoryStream ms = new MemoryStream();
+
+		objBitmap.Save(ms, ImageFormat.Png);
+		Response.BinaryWrite(ms.ToArray());
+		Response.Flush();
+		Response.SuppressContent = true;
+		HttpContext.Current.ApplicationInstance.CompleteRequest();
+	}
+}

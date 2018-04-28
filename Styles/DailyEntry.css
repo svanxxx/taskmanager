@@ -1,0 +1,86 @@
+#TomorrowPlan {
+	height: 200px;
+	width: 100%;
+	overflow: scroll;
+}
+
+.dropdowncontainer {
+	cursor: pointer;
+}
+
+body {
+	font-family: Arial;
+	font-size: 10pt;
+}
+
+.currenttask {
+	background-color: LightGreen;
+}
+
+.layout-container {
+	padding: 3px;
+	marging: 0px;
+	overflow: hidden;
+	border: 0px;
+}
+
+.navbar-nav > li > a, .navbar-brand, .container-fluid > a {
+	padding-top: 4px !important;
+	padding-bottom: 0 !important;
+	height: 28px;
+}
+
+a.btn.btn-default.navbar-btn.pull-right {
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+.navbar {
+	min-height: 28px !important;
+	margin-bottom: 5px;
+}
+
+.ui-datepicker-calendar tr, .ui-datepicker-calendar td, .ui-datepicker-calendar td a, .ui-datepicker-calendar th {
+	font-size: inherit;
+}
+
+div.ui-datepicker {
+	font-size: 10px;
+	width: inherit;
+	height: inherit;
+}
+
+.ui-datepicker-title span {
+	font-size: 10px;
+}
+
+#mainactions > button {
+	width: 24%;
+}
+
+#actioncontainer {
+	margin: 0;
+	padding: 0;
+}
+
+#mTimeIN, #mTimeOut, #mBreakTime {
+	margin: 0;
+	padding: 0;
+}
+
+#actioncontainer2 > .row > .col-sm-2 {
+	text-align: center;
+}
+
+#actioncontainer1 {
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+.container {
+  margin-left: 0px;
+}
+
+.ui-datepicker-week-end {
+	background-color: #ffb8b8;
+}

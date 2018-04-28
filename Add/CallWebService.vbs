@@ -1,0 +1,6 @@
+'Set oXMLHTTP = CreateObject("MSXML2.XMLHTTP.4.0")
+Set oXMLHTTP = CreateObject("MSXML2.XMLHTTP")
+Set oXMLDoc = CreateObject("MSXML2.DOMDocument")
+call oXMLHTTP.open("POST", WScript.Arguments(0), false)
+call oXMLHTTP.setRequestHeader("Content-Type","application/x-www-form-urlencoded")
+call oXMLHTTP.send()

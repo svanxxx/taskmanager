@@ -1,0 +1,36 @@
+table td, table th, table tr {
+	padding: 0px;
+}
+
+.table-condensed > tbody > tr > td {
+	padding: 0px;
+}
+
+td {
+	white-space: nowrap;
+	height: 20px;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+#TTTable {
+	border-color: Black;
+	border-width: 1px;
+	border-style: solid;
+	width: 100%;
+}
+
+#statusbarspacer {
+	padding-bottom: 20px;
+}
+
+#statusbar {
+	position: fixed;
+	height: 20px;
+	left: 0px;
+	bottom: 0px;
+	width: 100%;
+	background-color: lightgray;
+}

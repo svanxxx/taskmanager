@@ -1,0 +1,16 @@
+.ui-datepicker-calendar {
+	display: none;
+}
+
+.ui-datepicker-header {
+	background-color: white;
+}
+
+.ui-datepicker-next {
+	float: right;
+	cursor: pointer;
+}
+
+.ui-datepicker-prev {
+	cursor: pointer;
+}
