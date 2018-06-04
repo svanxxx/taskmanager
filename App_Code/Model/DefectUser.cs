@@ -3,15 +3,24 @@ using System.Collections.Generic;
 
 public class DefectUser : IdBasedObject
 {
-	private const string _ID = "idRecord";
-	private const string _Firn = "FirstName";
-	private const string _Lasn = "LastName";
-	private const string _Emai = "EMailAddr";
-	private const string _Tabl = "[TT_RES].[DBO].[USERS]";
+	static string _ID = "idRecord";
+	static string _Firn = "FirstName";
+	static string _Lasn = "LastName";
+	static string _Emai = "EMailAddr";
+	static string _Atci = "Active";
+
+	static string[] _Allcols = new string[] { _ID, _Firn, _Lasn, _Emai, _Atci };
+	static string _Tabl = "[TT_RES].[DBO].[USERS]";
+
 	public string ID
 	{
 		get { return this[_ID].ToString(); }
 		set { this[_ID] = value; }
+	}
+	public bool ACTIVE
+	{
+		get { return Convert.ToBoolean(this[_Atci]); }
+		set { this[_Atci] = value; }
 	}
 	public string EMAIL
 	{
@@ -29,11 +38,11 @@ public class DefectUser : IdBasedObject
 		set { this[_Lasn] = value; }
 	}
 	public DefectUser()
-		: base(_Tabl, new string[] { _ID }, 1.ToString(), _ID, false)
+		: base(_Tabl, _Allcols, 0.ToString(), _ID, false)
 	{
 	}
 	public DefectUser(int id)
-		: base(	_Tabl, new string[] {_ID, _Firn, _Lasn, _Emai }, id.ToString(), _ID)
+		: base(	_Tabl, _Allcols, id.ToString(), _ID)
 	{
 	}
 	public static List<DefectUser> Enum()
