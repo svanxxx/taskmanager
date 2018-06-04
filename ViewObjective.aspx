@@ -7,8 +7,9 @@
 	<title>View Objective</title>
 	<script type="text/javascript" src="scripts/jquery/jquery-1.11.2.js"></script>
 	<script type="text/javascript" src="scripts/jquery/jquery-ui.min.js"></script>
-	<script type="text/javascript" src="scripts/jquery/jquery.cookie.js"></script>
+	<script src="http://mps.resnet.com/cdn/jquery/jquery.cookie.js"></script>
 	<script type="text/javascript" src="scripts/Common.js"></script>
+	<script src="http://mps.resnet.com/cdn/mpshelper.js"></script>
 	<link rel="stylesheet" type="text/css" href="scripts/jquery/jquery-ui.min.css" />
 	<link rel="stylesheet" type="text/css" href="Styles/Common.css" />
 

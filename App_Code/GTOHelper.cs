@@ -19,7 +19,7 @@ namespace GTOHELPER
 {
 	public class GTOHelper : System.Web.UI.Page
 	{
-		protected string LoginPageName
+		protected static string LoginPageName
 		{
 			get
 			{
@@ -56,6 +56,7 @@ namespace GTOHELPER
 				if (Request.Params["susername"] != null && Request.Params["suserpass"] != null)
 				{
 					m_ISERID = FindUser(Request.Params["susername"].ToString(), Request.Params["suserpass"].ToString());
+					Session["userid"] = m_ISERID;
 					if (m_ISERID == -1)
 					{
 						Response.Redirect(LoginPageName + "?ReturnUrl=" + CurrentPageName);
@@ -72,6 +73,7 @@ namespace GTOHELPER
 				}
 
 				m_ISERID = Convert.ToInt32(cookie.Value);
+				Session["userid"] = m_ISERID;
 				return m_ISERID;
 			}
 		}
@@ -256,11 +258,11 @@ namespace GTOHELPER
 			return strRes;
 		}
 
-		public string CurrentPageName
+		public static string CurrentPageName
 		{
 			get
 			{
-				System.IO.FileInfo oInfo = new System.IO.FileInfo(Request.Url.AbsolutePath);
+				System.IO.FileInfo oInfo = new System.IO.FileInfo(HttpContext.Current.Request.Url.AbsolutePath);
 				return oInfo.Name;
 			}
 		}
@@ -284,11 +286,11 @@ namespace GTOHELPER
 		protected void MPage_Load(object sender, EventArgs e)
 		{
 			int lUserID  = UserID; // initializes security
-			var link = new HtmlLink();
+/*			var link = new HtmlLink();
 			link.Attributes.Add("type", "text/css");
 			link.Attributes.Add("rel", "stylesheet");
 			link.Href = ResolveClientUrl("TR.css");
-			Header.Controls.Add(link);
+			Header.Controls.Add(link);*/
 			UpdateControls(Page.Controls);
 		}
 

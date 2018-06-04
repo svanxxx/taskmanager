@@ -1,55 +1,36 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="ttrep.aspx.cs" Inherits="ttrep" %>
+﻿<%@ Page Title="Task" Language="C#" MasterPageFile="~/Master.Master" AutoEventWireup="true" CodeFile="ttrep.aspx.cs" Inherits="TTRep" %>
 
-<!DOCTYPE html>
+<asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
+	<script src="scripts/ttrep.js"></script>
+	<script src="http://mps.resnet.com/cdn/angular/angular.min.js"></script>
+	<link href="css/ttrep.css" rel="stylesheet" />
+</asp:Content>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-	<title>Severity Report</title>
-	<script type="text/javascript" src="Scripts/jquery/jquery-1.11.2.js"></script>
-	<script type="text/javascript" src="Scripts/jquery/jquery-ui.min.js"></script>
-	<script type="text/javascript" src="Scripts/jquery/jquery.cookie.js"></script>
-	<script type="text/javascript" src="Scripts/Common.js"></script>
-	<link rel="stylesheet" type="text/css" href="Scripts/jquery/jquery-ui.min.css" />
-	<link rel="stylesheet" type="text/css" href="Styles/Common.css" />
-	<link rel="stylesheet" type="text/css" href="Styles/MonthSelector.css" />
-
-	<script type="text/javascript" src="Scripts/ttrep.js"></script>
-	<link rel="stylesheet" type="text/css" href="Styles/ttrep.css" />
-</head>
-<body>
-	<form id="form1" runat="server">
-		<div>
-			<asp:DropDownList ID="TTSeverity" runat="server" Height="20px" Width="235px">
-			</asp:DropDownList>
-			<label>Date:</label>
-			<input id="startdate" aria-haspopup="False" height="20px" /><asp:CheckBox ID="startdatecheck" ToolTip="Use Date Filter" runat="server" />
-			<asp:DropDownList ID="TTDisposition" runat="server" Height="20px" Width="235px">
-			</asp:DropDownList>
-			<asp:DropDownList ID="TTUser" runat="server" Height="20px" Width="235px">
-			</asp:DropDownList>
-			<input id="stext"/>
-			<br />
-			<button id="more" type="button">more...</button>
-			<table id="bstlegend" style="float: right">
+<asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
+	<div ng-app="mpsapplication" ng-controller="mpscontroller">
+		<table class="table table-bordered">
+			<thead>
 				<tr>
-					<td class="reject">Reject</td>
-					<td class="process">Process</td>
-					<td class="onbst">On BST</td>
-					<td class="requested">Requested</td>
-					<td class="finished">Finished</td>
-					<td class="tested">Tested</td>
-					<td class="scheduled">Scheduled</td>
-					<td><a id="export" title="Export visible rows to csv format file" href="#"><img src="IMAGES/excel_icon.gif""/></a></td>
+					<th nowrap>TT ID</th>
+					<th nowrap>Time</th>
+					<th nowrap>User</th>
+					<th nowrap>Reference</th>
+					<th nowrap>Summary</th>
+					<th nowrap>Disposition</th>
+					<th nowrap>Created</th>
 				</tr>
-			</table>
-			<div id="summary">
-				<div id="totalhours"></div>
-			</div>
-			<asp:Table class ="table table-hover table-bordered table-condensed" ID="TTTable" runat="server" GridLines="Both" ViewStateMode="Disabled">
-			</asp:Table>
-			<div id="statusbarspacer"></div>
-			<div id="statusbar"></div>
-		</div>
-	</form>
-</body>
-</html>
+			</thead>
+			<tbody>
+				<tr ng-repeat="d in defects" ng-style="{{d.DISPO | getDispoColorById:this}}">
+					<td><a href="showtask.aspx?ttid={{d.ID}}">{{d.ID}}</a></td>
+					<td>{{d.ESTIM}}</td>
+					<td nowrap>{{d.AUSER | getUserById:this}}</td>
+					<td nowrap>{{d.REFERENCE}}</td>
+					<td nowrap>{{d.SUMMARY}}</td>
+					<td nowrap>{{d.DISPO | getDispoById:this}}</td>
+					<td nowrap>{{d.CREATEDBY | getUserById:this}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</asp:Content>

@@ -14,9 +14,10 @@
 	<script type="text/javascript" src="Scripts/Jquery/jquery-1.11.2.js"></script>
 	<script type="text/javascript" src="Scripts/Jquery/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="Scripts/Jquery/jquery.ui-contextmenu.js"></script>
-	<script type="text/javascript" src="Scripts/jquery/jquery.cookie.js"></script>
+	<script src="http://mps.resnet.com/cdn/jquery/jquery.cookie.js"></script>
 	<script type="text/javascript" src="Scripts/jquery/jquery.layout-latest.js"></script>
 	<script type="text/javascript" src="Scripts/Common.js"></script>
+	<script src="http://mps.resnet.com/cdn/mpshelper.js"></script>
 	<script type="text/javascript" src="Scripts/TotalPlan.js"></script>
 </head>
 <body>

@@ -1,0 +1,9 @@
+﻿.container {
+	margin: 0;
+}
+
+
+.table-bordered > tbody > tr > td, .table > tbody > tr > td {
+	padding: 0px;
+	margin: 0px;
+}

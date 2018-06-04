@@ -1,0 +1,16 @@
+﻿#summary {
+	width: 100%;
+	margin-bottom: 5px;
+}
+
+.toolbar {
+	margin-left: 0;
+	margin-right: 0;
+	background-color: #d9edf7;
+}
+
+.savebutton {
+	position: absolute;
+	top: 10%;
+	left: 0;
+}

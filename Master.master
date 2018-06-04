@@ -1,0 +1,65 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Master.master.cs" Inherits="Master" %>
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head runat="server">
+	<title>MPS tasks system</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+	<link href="http://mps.resnet.com/cdn/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="http://mps.resnet.com/cdn/mpshelper.css" rel="stylesheet" />
+	<script src="http://mps.resnet.com/cdn/jquery/jquery-3.2.1.min.js"></script>
+	<script src="http://mps.resnet.com/cdn/jquery/jquery.cookie.js"></script>
+	<script src="http://mps.resnet.com/cdn/bootstrap/js/bootstrap.min.js"></script>
+	<script src="http://mps.resnet.com/cdn/mpshelper.js"></script>
+	<asp:ContentPlaceHolder ID="HeaddContent" runat="server">
+	</asp:ContentPlaceHolder>
+	<script>
+		$(function () {
+			$('#footerp').html("&copy; " + (new Date().getFullYear()) + " MPS tasks control system");
+			$('a').each(function () {
+				if (window.location.href.toUpperCase().indexOf($(this).prop('href').toUpperCase()) != -1) {
+					$(this).addClass('active'); $(this).parents('li').addClass('active');
+				}
+			});
+		});
+	</script>
+</head>
+<body>
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#fullNavbar">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="http://mps.resnet.com">MPS</a>
+			</div>
+			<div class="collapse navbar-collapse" id="fullNavbar">
+				<ul class="nav navbar-nav">
+					<li><a href="mytr.aspx">My TR</a></li>
+					<li><a href="ttrep.aspx">Tasks</a></li>
+					<li><a href="showtask.aspx">Show Task</a></li>
+					<li><a href="dispositions.aspx">Dispos</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a class="bstusername" id="logina" runat="server" href="login.aspx"><span style="padding-right: 5px" class="glyphicon glyphicon-log-in"></span>-Login-</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<form id="form1" runat="server">
+		<div class="container body-content">
+			<asp:ContentPlaceHolder ID="MainContent" runat="server">
+			</asp:ContentPlaceHolder>
+			<hr />
+			<footer>
+				<p id="footerp"></p>
+			</footer>
+		</div>
+	</form>
+</body>
+</html>

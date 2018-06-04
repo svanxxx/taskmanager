@@ -1,0 +1,69 @@
+﻿.vertical-align {
+	display: flex;
+	align-items: center;
+}
+
+.col-centered {
+	text-align: center;
+}
+
+.person-img {
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+}
+
+.person-lab {
+	padding-top: 5px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+}
+
+.person-box {
+	margin-bottom: 0px;
+}
+
+.time-box {
+	padding: 1%;
+}
+
+.row-timeline {
+	margin-bottom: 3px;
+}
+
+.row-timeline {
+	margin-bottom: 3px;
+	display: flex;
+	align-items: center;
+}
+
+.date-input {
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
+
+.center {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.datelabel {
+	text-align: center;
+}
+
+.task {
+	margin-bottom: 0px;
+	padding: 2px;
+}
+
+.dailyreport {
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+}
+
+.btn-workme {
+	float: right;
+}

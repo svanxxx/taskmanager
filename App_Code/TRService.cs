@@ -795,4 +795,189 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 			ls.Add(new DailyRecord(dr));
 		return ls;
 	}
+
+	//================================================================================================
+	//================================================================================================
+	//================================================================================================
+	[WebMethod(EnableSession = true)]
+	public List<DefectBase> getplanned()
+	{
+		DefectBase d = new DefectBase();
+		return d.EnumPlan(CurrentContext.User.TTUSERID);
+	}
+	[WebMethod(EnableSession = true)]
+	public List<DefectBase> getunplanned()
+	{
+		DefectBase d = new DefectBase();
+		return d.EnumUnPlan(CurrentContext.User.TTUSERID);
+	}
+	[WebMethod(EnableSession = true)]
+	public Defect gettask(string ttid)
+	{
+		if (string.IsNullOrEmpty(ttid))
+			return null;
+		Defect d = new Defect(Convert.ToInt32(ttid));
+		if (!d.IsLoaded())
+			return null;
+		return d;
+	}
+	[WebMethod(EnableSession = true)]
+	public string settask(Defect d)
+	{
+		Defect dstore = new Defect(d.ID);
+		dstore.FromAnotherObject(d);
+		if (dstore.IsModified())
+		{
+			dstore.Store();
+		}
+		return "OK";
+	}
+	[WebMethod(EnableSession = true)]
+	public string setdispos(List<DefectDispo> dispos)
+	{
+		foreach (DefectDispo d in dispos)
+		{
+			DefectDispo dstore = new DefectDispo(d.ID);
+			dstore.FromAnotherObject(d);
+			if (dstore.IsModified())
+			{
+				dstore.Store();
+			}
+		}
+		return "OK";
+	}
+	[WebMethod(EnableSession = true)]
+	public List<DefectHistory> gettaskhistory(string ttid)
+	{
+		if (string.IsNullOrEmpty(ttid))
+			return null;
+		return DefectHistory.GetHisotoryByTask(Convert.ToInt32(ttid));
+	}
+	[WebMethod(EnableSession = true)]
+	public List<DefectAttach> getattachsbytask(string ttid)
+	{
+		if (string.IsNullOrEmpty(ttid))
+			return null;
+		return DefectAttach.GetAttachsByTask(Convert.ToInt32(ttid));
+	}
+	[WebMethod(EnableSession = true)]
+	public List<DefectEvent> gettaskevents(string ttid)
+	{
+		if (string.IsNullOrEmpty(ttid))
+			return null;
+		return DefectEvent.GetEventsByTask(Convert.ToInt32(ttid));
+	}
+	[WebMethod(EnableSession = true)]
+	public List<DefectType> gettasktypes()
+	{
+		return DefectType.Enum();
+	}
+	[WebMethod(EnableSession = true)]
+	public List<DefectProduct> gettaskproducts()
+	{
+		return DefectProduct.Enum();
+	}
+	[WebMethod(EnableSession = true)]
+	public List<DefectDispo> gettaskdispos()
+	{
+		return DefectDispo.Enum();
+	}
+	[WebMethod(EnableSession = true)]
+	public List<DefectPriority> gettaskpriorities()
+	{
+		return DefectPriority.Enum();
+	}
+	[WebMethod(EnableSession = true)]
+	public List<DefectComp> gettaskcomps()
+	{
+		return DefectComp.Enum();
+	}
+	[WebMethod(EnableSession = true)]
+	public List<DefectSeverity> gettasksevers()
+	{
+		return DefectSeverity.Enum();
+	}
+	[WebMethod(EnableSession = true)]
+	public List<DefectUser> gettaskusers()
+	{
+		return DefectUser.Enum();
+	}
+	[WebMethod(EnableSession = true)]
+	public void newfileupload(string ttid, string filename, string data)
+	{
+		DefectAttach.AddAttachByTask(Convert.ToInt32(ttid), filename, data.Remove(0, data.IndexOf("base64,") + 7));
+	}
+	[WebMethod(EnableSession = true)]
+	public LockInfo locktask(string ttid, string lockid)
+	{
+		return Defect.Locktask(ttid, lockid);
+	}
+	[WebMethod(EnableSession = true)]
+	public void unlocktask(string ttid, string lockid)
+	{
+		Defect.UnLocktask(ttid, lockid);
+	}
+	[WebMethod(EnableSession = true)]
+	public List<Defect> gettasks()
+	{
+		//Defect filter
+		return Defect.Enum();
+	}
+	[WebMethod(EnableSession = true)]
+	public TRRec gettrrec(string date)
+	{
+		DateTime d = DateTime.ParseExact(date, defDateFormat, CultureInfo.InvariantCulture);
+		TRRec r = TRRec.GetRec(d, CurrentContext.User.ID);
+		return r;
+	}
+	[WebMethod(EnableSession = true)]
+	public void settrrec(TRRec rec)
+	{
+		TRRec store = new TRRec(rec.ID);
+		store.FromAnotherObject(rec);
+		if (store.IsModified())
+		{
+			store.Store();
+		}
+	}
+	[WebMethod(EnableSession = true)]
+	public void deltrrec(int id)
+	{
+		TRRec.DelRec(id);
+	}
+	[WebMethod(EnableSession = true)]
+	public void todayrrec(string lastday)
+	{
+		DateTime d = DateTime.Today;
+		TRRec r = TRRec.GetRec(d, CurrentContext.User.ID);
+		if (r == null)
+		{
+			TRRec.NewRec(d, CurrentContext.User.ID, lastday == "True");
+		}
+	}
+	[WebMethod(EnableSession = true)]
+	public void addrec(string date, string lastday)
+	{
+		DateTime d = DateTime.ParseExact(date, defDateFormat, CultureInfo.InvariantCulture);
+		TRRec r = TRRec.GetRec(d, CurrentContext.User.ID);
+		if (r == null)
+		{
+			TRRec.NewRec(d, CurrentContext.User.ID, lastday == "True");
+		}
+	}
+	[WebMethod(EnableSession = true)]
+	public MPSUser getcurrentuser()
+	{
+		return CurrentContext.User;
+	}
+	[WebMethod(EnableSession = true)]
+	public DefectBase settaskdispo(string ttid, string disp)
+	{
+		if (Defect.Locked(ttid))
+			return null;
+		Defect d = new Defect(Convert.ToInt32(ttid));
+		d.DISPO = disp;
+		d.Store();
+		return new DefectBase(Convert.ToInt32(ttid));
+	}
 }

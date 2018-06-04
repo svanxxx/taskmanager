@@ -3,15 +3,6 @@ var dispositions;
 var priorities;
 var ispagevisible = true;
 
-function guid() {
-	function s4() {
-		return Math.floor((1 + Math.random()) * 0x10000)
-		  .toString(16)
-		  .substring(1);
-	}
-	return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-	  s4() + '-' + s4() + s4() + s4();
-}
 function ShowWaitDlg(bShow) {
 	if (bShow !== void 0 && !bShow) {
 		$("#waitDlg").empty();
@@ -27,51 +18,6 @@ function ShowWaitDlg(bShow) {
 			modal: true
 		}).siblings('.ui-dialog-titlebar').hide();
 	}
-}
-function pad(num, size) {
-	var s = num + "";
-	while (s.length < size) s = "0" + s;
-	return s;
-}
-function DateToString(dt) {
-	return pad((dt.getMonth() + 1), 2) + "-" + pad(dt.getDate(), 2) + "-" + dt.getFullYear();
-}
-function StringToDate(st) {
-	var vals = st.split('-');
-	if (vals.length != 3)
-		return new Date();
-	return new Date(vals[2], parseInt(vals[0]) - 1, vals[1]);
-}
-function StartProgress(txt) {
-	//doing some cleanup of old progress - some functions may fail leaving progress messages
-	var now = new Date();
-	$(".loadingprogress").each(function () {
-		var createddt = new Date($(this).attr("timestart"));
-		if ((now - createddt) > 60000)
-			$(this).remove();
-	})
-	var uuid = guid();
-	var messagetext = txt == undefined ? "Loading..." : txt;
-	$(document.body).append("<div id='" + uuid + "' class='loadingprogress' timestart='" + now + "'>" + messagetext + "</div>");
-	return uuid;
-}
-function EndProgress(id) {
-	$("#" + id).remove();
-}
-function getParameterByName(name) {
-	name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-	var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-		 results = regex.exec(location.search);
-	return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-}
-function GetSitePath() {
-	return window.location.href.substring(0, location.href.lastIndexOf("/") + 1);
-}
-function GetPage() {
-	return window.location.href.substring(0, location.href.lastIndexOf(".aspx") + 5);
-}
-function GetPageName() {
-	return window.location.href.substring(location.href.lastIndexOf("/") + 1, location.href.lastIndexOf(".aspx") + 5);
 }
 function senddata(func, params) {
 	var webMethod = GetSitePath() + "TRService.asmx/" + func;
@@ -314,7 +260,7 @@ function ShowEnterTTDialog() {
 			}
 		},
 		open: function () {
-			if ($("#ttidnum").size() < 1) {
+			if ($("#ttidnum").length < 1) {
 				$(this).html("<input id='ttidnum' type='text'>");
 			}
 			$("#ttidnum").val($.cookie("lastenteredttid"));
