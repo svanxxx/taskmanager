@@ -43,7 +43,11 @@
 					<li><a href="mytr.aspx">My TR</a></li>
 					<li><a href="ttrep.aspx">Tasks</a></li>
 					<li><a href="showtask.aspx">Show Task</a></li>
-					<li><a href="dispositions.aspx">Dispos</a></li>
+					<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">References<span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="dispositions.aspx">Dispos</a></li>
+						</ul>
+					</li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a class="bstusername" id="logina" runat="server" href="login.aspx"><span style="padding-right: 5px" class="glyphicon glyphicon-log-in"></span>-Login-</a></li>
