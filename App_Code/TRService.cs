@@ -980,4 +980,23 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 		d.Store();
 		return new DefectBase(Convert.ToInt32(ttid));
 	}
+	[WebMethod(EnableSession = true)]
+	public List<MPSUser> getMPSusers()
+	{
+		return MPSUser.EnumAllUsers();
+	}
+	[WebMethod(EnableSession = true)]
+	public string setusers(List<MPSUser> users)
+	{
+		foreach (MPSUser u in users)
+		{
+			MPSUser ustore = new MPSUser(u.ID);
+			ustore.FromAnotherObject(u);
+			if (ustore.IsModified())
+			{
+				ustore.Store();
+			}
+		}
+		return "OK";
+	}
 }

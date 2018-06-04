@@ -1,0 +1,55 @@
+﻿$(function () {
+	var app = angular.module('mpsapplication', []);
+	app.filter('passwordFilter', function () {
+		return function (input) {
+			var split = input.split('');
+			var result = "";
+			for (var i = 0; i < split.length; i++) {
+				result += "*";
+			}
+			return result;
+		};
+	});
+	app.controller('mpscontroller', function ($scope, $http) {
+		$scope.discard = function () {
+			window.location.reload();
+		}
+		$scope.save = function () {
+			var prg = StartProgress("Saving data...");
+			var users = [];
+			for (var i = 0; i < $scope.users.length; i++) {
+				var ch = $scope.users[i].changed;
+				if (ch) {
+					delete $scope.users[i].changed;
+					users.push($scope.users[i])
+				}
+			}
+			$http.post("trservice.asmx/setusers", angular.toJson({ "users": users }), )
+				.then(function (response) {
+					EndProgress(prg);
+					$scope.changed = false;
+				});
+		}
+
+		var taskprg = StartProgress("Loading data...");
+		$scope.users = [];
+		$http.post("trservice.asmx/getMPSusers", JSON.stringify({}))
+			.then(function (result) {
+				$scope.users = result.data.d;
+			});
+		$scope.changed = false;
+		$scope.enterdata = function (object, prop) {
+			var oldval = object[prop];
+			var newvalue = window.prompt("Please enter the value", oldval);
+			if (newvalue == null || newvalue == "") {
+				return;
+			}
+			if (newvalue != oldval) {
+				object[prop] = newvalue;
+				object.changed = true;
+				$scope.changed = true;
+			}
+		}
+		EndProgress(taskprg);
+	});
+})
