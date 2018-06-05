@@ -5,6 +5,13 @@ using System.Web;
 
 public static class CurrentContext
 {
+	public static bool Valid
+	{
+		get
+		{
+			return User != null;
+		}
+	}
 	public static MPSUser User
 	{
 		get

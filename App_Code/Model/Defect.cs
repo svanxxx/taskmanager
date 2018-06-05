@@ -46,7 +46,9 @@ public class DefectBase : IdBasedObject
 	protected static string _Est = "Estim";
 	protected static string _Order = "iOrder";
 	protected static string _AsUser = "idUsr";
-	static protected string _Seve = "idSeverity";
+	protected static string _Seve = "idSeverity";
+	protected static string _sMod = "sModifier";
+
 	protected static string _Tabl = "[TT_RES].[DBO].[DEFECTS]";
 
 	public int ID
@@ -89,6 +91,10 @@ public class DefectBase : IdBasedObject
 		get { return this[_Order] == DBNull.Value ? -1 : Convert.ToInt32(this[_Order]); }
 		set
 		{
+			if (ORDER != value)
+			{
+				this[_sMod] = CurrentContext.User.EMAIL;
+			}
 			if (value == -1)
 			{
 				this[_Order] = DBNull.Value;
@@ -105,8 +111,58 @@ public class DefectBase : IdBasedObject
 		set { this[_AsUser] = Convert.ToInt32(value); }
 	}
 
-	static string[] _allcols = new string[] { _ID, _Summ, _idRec, _Disp, _Est, _Order, _AsUser, _Seve };
-	static string[] _allcolsNames = new string[] { _ID, "Summary", _idRec, "Disposition", "Estimation", "Schedule Order", "Assigned User", "Severity" };
+	static string[] _allcols = new string[] { _ID, _Summ, _idRec, _Disp, _Est, _Order, _AsUser, _Seve, _sMod };
+	static string[] _allcolsNames = new string[] { _ID, "Summary", _idRec, "Disposition", "Estimation", "Schedule Order", "Assigned User", "Severity", _sMod };
+
+	protected override void OnProcessComplexColumn(string col, string val)
+	{
+		if (col == _Order)
+		{
+			List<int> wl = DefectDispo.EnumWorkable();
+			string ids = string.Join(",", wl);
+
+			string sql = string.Format(@"
+				SELECT MIN({0}) FROM
+				(
+				SELECT TOP {5} * FROM 
+				(SELECT {0} FROM {1} WHERE {2} = {6} AND {0} IS NOT NULL AND {3} IN ({4}) GROUP BY {0}) T
+				ORDER BY 1 DESC
+				) A
+			", _Order, _Tabl, _AsUser, _Disp, ids, Convert.ToInt32(val), AUSER);
+
+			object o = GetValue(sql);
+			if (o != DBNull.Value)
+			{
+				string sqlupdate = string.Format("UPDATE {0} SET {1} = {1} + 1 WHERE {1} > {2} AND {3} = {4} AND {5} IN ({6})", _Tabl, _Order, Convert.ToInt32(o), _AsUser, AUSER, _Disp, ids);
+				SQLExecute(sql);
+				sqlupdate = string.Format("UPDATE {0} SET {1} = {2} WHERE {3} = {4}", _Tabl, _Order, Convert.ToInt32(o) + 1, _idRec, IDREC);
+				SQLExecute(sqlupdate);
+			}
+			else
+			{
+				string sqlupdate = string.Format("UPDATE {0} SET {1} = {2} WHERE {3} = {4}", _Tabl, _Order, val, _idRec, IDREC);
+				SQLExecute(sql);
+			}
+			return;
+		}
+		base.OnProcessComplexColumn(col, val);
+	}
+	protected override string OnTransformCol(string col)
+	{
+		if (col == _Order)
+		{
+			List<int> wl = DefectDispo.EnumWorkable();
+			return string.Format("(CASE WHEN {1}.{0} IS NULL THEN NULL ELSE (SELECT COUNT(*) + 1 FROM {1} D2 WHERE D2.IDUSR = {1}.IDUSR AND D2.{0} > {1}.{0} AND {3} in ({4}))END) {2}", _Order, _Tabl, _Order, _Disp, string.Join(",", wl));
+		}
+		return base.OnTransformCol(col);
+	}
+	protected override bool IsColumnComplex(string col)
+	{
+		if (col == _Order)
+			return true;
+
+		return base.IsColumnComplex(col);
+	}
 
 	public DefectBase()
 		: base(_Tabl, _allcols, "0", _ID, false)
@@ -133,7 +189,7 @@ public class DefectBase : IdBasedObject
 		}
 
 		List<DefectBase> ls = new List<DefectBase>();
-		string where = string.Format(" WHERE (({0} = {1}) AND ({2} is not null) {3}) ORDER BY {2} DESC", _AsUser, userid, _Order, w_where);
+		string where = string.Format(" WHERE (({0} = {1}) AND ({2} is not null) {3}) ORDER BY {4}.{2} DESC", _AsUser, userid, _Order, w_where, _Tabl);
 		foreach (DataRow r in GetRecords(where))
 		{
 			DefectBase d = new DefectBase();
@@ -181,11 +237,10 @@ public class Defect : DefectBase
 	static protected string _Ref = "Reference";
 	static protected string _Prio = "idPriority";
 	static protected string _Comp = "idCompon";
-	static protected string _Seve = "idSeverity";
 	static protected string _Date = "dateEnter";
 	static protected string _Crea = "idCreateBy";
-	static string[] _allcols = new string[] { _ID, _Specs, _Summ, _Desc, _idRec, _Type, _Prod, _Ref, _Disp, _Prio, _Comp, _Seve, _Date, _Crea, _Est, _Order, _AsUser };
-	static string[] _allcolsNames = new string[] { _ID, "Specification", "Summary", "Description", _idRec, "Type", "Product", "Reference", "Disposition", "Priority", "Component", "Severity", "Date", "Created By", "Estimation", "Schedule Order", "Assigned User" };
+	static string[] _allcols = new string[] { _ID, _Specs, _Summ, _Desc, _idRec, _Type, _Prod, _Ref, _Disp, _Prio, _Comp, _Seve, _Date, _Crea, _Est, _Order, _AsUser, _sMod };
+	static string[] _allcolsNames = new string[] { _ID, "Specification", "Summary", "Description", _idRec, "Type", "Product", "Reference", "Disposition", "Priority", "Component", "Severity", "Date", "Created By", "Estimation", "Schedule Order", "Assigned User", _sMod };
 	public static string _RepTable = "[TT_RES].[DBO].[REPORTBY]";
 
 	public static void UnLocktask(string ttid, string lockid)
@@ -281,7 +336,10 @@ public class Defect : DefectBase
 			DefectEvent.AddEventByTask(IDREC, DefectEvent.Eventtype.assigned, "", -1, Convert.ToInt32(AUSER));
 			return;
 		}
-		throw new Exception("Unsupported column!");
+		else
+		{
+			base.OnProcessComplexColumn(col, val);
+		}
 	}
 	protected override string OnTransformCol(string col)
 	{

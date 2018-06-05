@@ -800,16 +800,22 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 	//================================================================================================
 	//================================================================================================
 	[WebMethod(EnableSession = true)]
-	public List<DefectBase> getplanned()
+	public List<DefectBase> getplanned(string userid)
 	{
+		if (!CurrentContext.Valid && string.IsNullOrEmpty(userid))
+			return null;
+
 		DefectBase d = new DefectBase();
-		return d.EnumPlan(CurrentContext.User.TTUSERID);
+		return d.EnumPlan(string.IsNullOrEmpty(userid) ? CurrentContext.User.TTUSERID : Convert.ToInt32(userid));
 	}
 	[WebMethod(EnableSession = true)]
-	public List<DefectBase> getunplanned()
+	public List<DefectBase> getunplanned(string userid)
 	{
+		if (!CurrentContext.Valid && string.IsNullOrEmpty(userid))
+			return null;
+
 		DefectBase d = new DefectBase();
-		return d.EnumUnPlan(CurrentContext.User.TTUSERID);
+		return d.EnumUnPlan(string.IsNullOrEmpty(userid) ? CurrentContext.User.TTUSERID : Convert.ToInt32(userid));
 	}
 	[WebMethod(EnableSession = true)]
 	public Defect gettask(string ttid)
@@ -910,6 +916,10 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 	[WebMethod(EnableSession = true)]
 	public LockInfo locktask(string ttid, string lockid)
 	{
+		if (!CurrentContext.Valid)
+		{
+			return null;
+		}
 		return Defect.Locktask(ttid, lockid);
 	}
 	[WebMethod(EnableSession = true)]

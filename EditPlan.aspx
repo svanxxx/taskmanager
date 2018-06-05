@@ -1,95 +1,37 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="EditPlan.aspx.cs" Inherits="EditPlan" %>
+﻿<%@ Page Title="Edit Plan" Language="C#" MasterPageFile="~/Master.Master" AutoEventWireup="true" CodeFile="editplan.aspx.cs" Inherits="PlanEditor" %>
 
-<!DOCTYPE html>
+<asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
+	<link href="css/editplan.css" rel="stylesheet" />
+	<script src="scripts/editplan.js"></script>
+	<script src="http://mps.resnet.com/cdn/angular/angular.min.js"></script>
+</asp:Content>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-	<title>Edit Plan</title>
-	<script type="text/javascript" src="Scripts/jquery/jquery-1.11.2.js"></script>
-	<script type="text/javascript" src="Scripts/jquery/jquery-ui.min.js"></script>
-	<script src="http://mps.resnet.com/cdn/jquery/jquery.cookie.js"></script>
-	<script type="text/javascript" src="Scripts/Common.js"></script>
-	<script src="http://mps.resnet.com/cdn/mpshelper.js"></script>
-	<link rel="stylesheet" type="text/css" href="Scripts/jquery/jquery-ui.min.css" />
-	<link rel="stylesheet" type="text/css" href="Styles/Common.css" />
-	<link rel="stylesheet" type="text/css" href="Styles/MonthSelector.css" />
-
-	<script type="text/javascript" src="Scripts/EditPlan.js"></script>
-	<link rel="stylesheet" type="text/css" href="Styles/EditPLan.css" />
-</head>
-<body>
-	<form id="form1" runat="server">
+<asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
+	<div ng-app="mpsapplication" ng-controller="mpscontroller">
+		<ul class="nav nav-pills">
+			<li class="{{currentuser===u.TTUSERID?'active':''}}" ng-click="changeuser(u)" ng-repeat="u in filtered = (users | filter:{ INWORK: true })">
+				<a class="person" data-toggle="pill" href="#">
+					<img ng-src="{{u.ID | getUserImgById:this}}" alt="Smile" height="20" width="20">{{u.LOGIN}}
+				</a>
+			</li>
+		</ul>
 		<div>
-			<table id="toolsbar" style="width: 100%;display:none">
-				<tr>
-					<td id="droptdbin" style="width: 50%">
-						<asp:Image ID="ImageBin" runat="server" Width="60px" Height="60px" ImageUrl="~/IMAGES/bin.png" Style="display: block; margin-left: auto; margin-right: auto;" />
-					</td>
-					<td id="droptdtt" style="width: 50%">
-						<asp:Image ID="ImageTT" runat="server" Width="60px" Height="60px" ImageUrl="~/IMAGES/TT.png" Style="display: block; margin-left: auto; margin-right: auto;" />
-					</td>
-				</tr>
-			</table>
-			<asp:Table ID="UsersTbl" runat="server" Width="100%" EnableViewState="False">
-			</asp:Table>
-			<div style="width: 33%; float: left">
-				<asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/dailyentry.aspx">Daily Entry</asp:HyperLink>
+			<ul class="nav nav-pills">
+				<li class="small active"><a data-toggle="pill" href="#plan">Plan<span class="badge">{{defects.length}}</span></a></li>
+				<li class="small"><a data-toggle="pill" href="#unscheduled">Unscheduled<span class="badge">{{unscheduled.length}}</span></a></li>
+			</ul>
+			<div class="tab-content panel panel-default">
+				<div id="plan" class="tab-pane fade in active">
+					<div ng-repeat="d in defects" ng-style="{{d.DISPO | getDispoColorById:this}}" class="task alert">
+						<a href="showtask.aspx?ttid={{d.ID}}" target="_blank"><span class="badge">{{d.ID}}</span></a>{{d.SUMMARY}}
+					</div>
+				</div>
+				<div id="unscheduled" class="tab-pane fade">
+					<div ng-repeat="d in unscheduled" ng-style="{{d.DISPO | getDispoColorById:this}}" class="task alert">
+						<a href="showtask.aspx?ttid={{d.ID}}" target="_blank"><span class="badge">{{d.ID}}</span></a>{{d.SUMMARY}}
+					</div>
+				</div>
 			</div>
-			<div style="width: 33%; float: right">
-				<asp:HyperLink ID="UserHL" runat="server" NavigateUrl="~/dailyentry.aspx">Activity</asp:HyperLink>
-			</div>
-			<div style="width: 33%; float: right">
-				<asp:HyperLink ID="HyperLink3" runat="server" NavigateUrl="~/ttrep.aspx">Report</asp:HyperLink>
-			</div>
-			<br />
-			<table style="width: 100%">
-				<tr>
-					<td style="width: 20%">
-						<asp:DropDownList ID="UsersList" runat="server" Width="265px" AutoPostBack="True" OnSelectedIndexChanged="UsersList_SelectedIndexChanged" Font-Names="Arial" Font-Size="10pt">
-						</asp:DropDownList>
-					</td>
-					<td style="width: 20%">
-						<span>filter:</span>
-						<input id="filter" type="text" />
-						<span id="filtersum"></span>
-					</td>
-					<td style="width: 20%">
-						<span>time limit:</span>
-						<input id="timelimit" type="text" />
-					</td>
-					<td style="width: 20%; text-align: right">
-						<span>selector:</span>
-						<input id="selector" type="text" />
-						<span id="selectorsum" style="text-align: right"></span>
-					</td>
-					<td style="width: 20%" align="right">
-						<span>Show by</span>
-						<select id="showbyCombo">
-							<option value="150">150</option>
-							<option value="200">200</option>
-							<option value="250">250</option>
-							<option value="300">300</option>
-						</select>					
-					</td>
-				</tr>
-			</table>
-			<table style="float: right">
-				<tr>
-					<td class="reject">Reject</td>
-					<td class="process">Process</td>
-					<td class="onbst">On BST</td>
-					<td><a id="export" title="Export visible rows to csv format file" href="#"><img src="IMAGES/excel_icon.gif""/></a></td>
-					<td><img id="tools" title="Turn on/off tools panel" src="IMAGES/tools.png"/></td>
-				</tr>
-			</table>
-			<input type="button" id="pagelink" class="btn-primary btn-xs" value="Get Link" style="float: right" />
-			<input type="button" id="removeplan" class="btn-primary btn-xs" value="Remove from plan!" style="float: right" />
-			<input type="button" id="updateplan" class="btn-primary btn-xs" value="Update Plan!" />
-			<asp:Table ID="TTasks" runat="server" Font-Names="Arial" Font-Size="10pt" Width="100%" EnableViewState="False">
-			</asp:Table>
-			<span id="systemmessages">messages:</span>
-			<div id="statusbar"></div>
 		</div>
-	</form>
-</body>
-</html>
+	</div>
+</asp:Content>

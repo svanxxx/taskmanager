@@ -109,6 +109,10 @@ public class IdBasedObject
 		}
 		return res;
 	}
+	protected static object GetValue(string sql)
+	{
+		return DBHelper.GetValue(sql);
+	}
 	protected static void SQLExecute(string sql, object[] vals = null)
 	{
 		List<OleDbParameter> pars = new List<OleDbParameter>();

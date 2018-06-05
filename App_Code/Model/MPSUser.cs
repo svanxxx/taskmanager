@@ -7,6 +7,7 @@ public class MPSUser : IdBasedObject
 	const string _pid = "PERSON_ID";
 	const string _pname = "PERSON_NAME";
 	const string _email = "WORK_EMAIL";
+	const string _work = "IN_WORK";
 	const string _ttuser = "ttuserid";
 	const string _addr = "ADDRESS";
 	const string _login = "PERSON_LOGIN";
@@ -14,7 +15,7 @@ public class MPSUser : IdBasedObject
 	const string _isAdm = "IS_ADMIN";
 	const string _phone = "PERSON_PHONE";
 
-	static string[] _allcols = new string[] { _pid, _pname, _email, _ttuser, _addr, _login, _pass, _isAdm, _phone };
+	static string[] _allcols = new string[] { _pid, _pname, _email, _ttuser, _addr, _login, _pass, _isAdm, _phone, _work };
 	static string _Tabl = "[PERSONS]";
 
 	public string PHONE
@@ -41,6 +42,17 @@ public class MPSUser : IdBasedObject
 	{
 		get { return this[_addr].ToString(); }
 		set { this[_addr] = value; }
+	}
+	public bool INWORK
+	{
+		get
+		{
+			if (this[_work] == DBNull.Value)
+				return false;
+
+			return Convert.ToBoolean(this[_work]);
+		}
+		set { this[_work] = value; }
 	}
 	public int ID
 	{

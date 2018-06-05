@@ -20,6 +20,7 @@
 					<th>Login</th>
 					<th>Password</th>
 					<th>Phone</th>
+					<th>WORK</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -29,6 +30,7 @@
 					<td ng-click="enterdata(u, 'LOGIN')">{{u.LOGIN}}</td>
 					<td ng-click="enterdata(u, 'PASSWORD')">{{u.PASSWORD | passwordFilter}}</td>
 					<td ng-click="enterdata(u, 'PHONE')">{{u.PHONE}}</td>
+					<td ng-click="enterdata(u, 'INWORK')">{{u.INWORK}}</td>
 				</tr>
 			</tbody>
 		</table>

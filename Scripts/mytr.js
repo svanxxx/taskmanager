@@ -105,21 +105,21 @@ $(function () {
 		}
 
 		$scope.defects = [];
-		$http.post("trservice.asmx/getplanned", JSON.stringify({}))
+		$http.post("trservice.asmx/getplanned", JSON.stringify({ "userid": "" }))
 			.then(function (response) {
 				$scope.defects = response.data.d;
 				$('[data-toggle="tooltip"]').tooltip();
 			});
 
 		$scope.unscheduled = [];
-		$http.post("trservice.asmx/getunplanned", JSON.stringify({}))
+		$http.post("trservice.asmx/getunplanned", JSON.stringify({ "userid": "" }))
 			.then(function (response) {
 				$scope.unscheduled = response.data.d;
 			});
 
 		$scope.changeDispo = function (d, disp) {
 			if ($scope.loaded()) {
-				$http.post("trservice.asmx/settaskdispo", JSON.stringify({ "ttid": d.ID, "disp" : disp.ID })).then(function (response) {
+				$http.post("trservice.asmx/settaskdispo", JSON.stringify({ "ttid": d.ID, "disp": disp.ID })).then(function (response) {
 					if (response.data.d) {
 						for (var i = 0; i < $scope.defects.length; i++) {
 							if ($scope.defects[i].ID == response.data.d.ID) {
