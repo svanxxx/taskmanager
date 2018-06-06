@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="Tasks Report" Language="C#" MasterPageFile="~/Master.Master" AutoEventWireup="true" CodeFile="mytr.aspx.cs" Inherits="MyTR" %>
 
 <asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
+	<script src="scripts/references.js"></script>
 	<script src="scripts/mytr.js"></script>
 	<script src="http://mps.resnet.com/cdn/angular/angular.min.js"></script>
 	<link href="css/mytr.css" rel="stylesheet" />

@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="Task" Language="C#" MasterPageFile="~/Master.Master" AutoEventWireup="true" CodeFile="showtask.aspx.cs" Inherits="Showtask" %>
 
 <asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
+	<script src="scripts/references.js"></script>
 	<link href="css/showtask.css" rel="stylesheet" />
 	<script src="scripts/showtask.js"></script>
 	<script src="http://mps.resnet.com/cdn/angular/angular.min.js"></script>

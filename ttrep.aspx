@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="Task" Language="C#" MasterPageFile="~/Master.Master" AutoEventWireup="true" CodeFile="ttrep.aspx.cs" Inherits="TTRep" %>
 
 <asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
+	<script src="scripts/references.js"></script>
 	<script src="scripts/ttrep.js"></script>
 	<script src="http://mps.resnet.com/cdn/angular/angular.min.js"></script>
 	<link href="css/ttrep.css" rel="stylesheet" />

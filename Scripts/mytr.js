@@ -22,6 +22,18 @@ $(function () {
 	});
 
 	app.controller('mpscontroller', function ($scope, $http, $interval) {
+		$scope.dispos = getDispos();
+		if (!$scope.dispos) {
+			var prgdispos = StartProgress("Loading dispositions..."); $scope.loaders++;
+			$scope.dispos = [];
+			$http.post("trservice.asmx/gettaskdispos", JSON.stringify({}))
+				.then(function (result) {
+					$scope.dispos = result.data.d;
+					setDispos($scope.dispos);
+					EndProgress(prgdispos); $scope.loaders--;
+				});
+		}
+
 		var d = new Date();
 		d.setHours(0, 0, 0, 0);
 		$scope.date = d;
@@ -206,18 +218,5 @@ $(function () {
 				$scope.user = response.data.d;
 				$scope.userimg = "images/personal/" + $scope.user.EMAIL + ".jpg";
 			});
-
-		if (sessionStorage.dispos) {
-			$scope.dispos = JSON.parse(sessionStorage.dispos);
-		} else {
-			var prgdispos = StartProgress("Loading dispositions..."); $scope.loaders++;
-			$scope.dispos = [];
-			$http.post("trservice.asmx/gettaskdispos", JSON.stringify({}))
-				.then(function (result) {
-					$scope.dispos = result.data.d;
-					sessionStorage.dispos = JSON.stringify(result.data.d);
-					EndProgress(prgdispos); $scope.loaders--;
-				});
-		}
 	});
 })

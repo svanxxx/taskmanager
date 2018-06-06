@@ -44,15 +44,14 @@
 				});
 		}
 
-		if (sessionStorage.dispos) {
-			$scope.dispos = JSON.parse(sessionStorage.dispos);
-		} else {
+		$scope.dispos = getDispos();
+		if (!$scope.dispos) {
 			var prgdispos = StartProgress("Loading dispositions...");
 			$scope.dispos = [];
 			$http.post("trservice.asmx/gettaskdispos", JSON.stringify({}))
 				.then(function (result) {
 					$scope.dispos = result.data.d;
-					sessionStorage.dispos = JSON.stringify(result.data.d);
+					setDispos($scope.dispos);
 					EndProgress(prgdispos);
 				});
 		}
