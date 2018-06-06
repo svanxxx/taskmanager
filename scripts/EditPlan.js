@@ -18,13 +18,38 @@
 		};
 	});
 
-	app.controller('mpscontroller', function ($scope, $http) {
+	app.controller('mpscontroller', function ($scope, $http, $timeout) {
 		$scope.Math = window.Math;
 		$scope.getPersonImg = function (email) {
 			if ($scope.users) {
 				return "images/personal/" + email + ".jpg";
 			}
 			return "";
+		}
+
+		$scope.taskMove = function (d, $event) {
+			if (($event.keyCode == 38 || $event.keyCode == 40) && $event.ctrlKey == true) {
+				$event.preventDefault();
+				for (var i = 0; i < $scope.defects.length; i++) {
+					if (d.ID == $scope.defects[i].ID) {
+						var index = i + 1;
+						if ($event.keyCode == 38) {
+							index = i - 1;
+						}
+						if (index == -1 || index == $scope.defects.length) {
+							break;
+						}
+						var tempo = $scope.defects[index];
+						$scope.defects[index] = $scope.defects[i];
+						$scope.defects[i] = tempo;
+						$scope.defects[index].orderchanged = true;
+						break;
+					}
+				}
+				$timeout(function () {
+					$("input.taskselector:checked").focus();
+				}, 10);
+			}
 		}
 
 		$scope.changeuser = function (u) {
