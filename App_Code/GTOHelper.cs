@@ -584,7 +584,7 @@ namespace GTOHELPER
 				[tt_res].[dbo].[DEFECTS] d
 				where
 				RTRIM(D.USR) = '{0}'
-				and (d.idDisposit <> 3 and d.idDisposit <> 5 and d.idDisposit <> 12)
+				and (d.idDisposit <> 3 and d.idDisposit <> 17 and d.idDisposit <> 12)
 				order by 
 				d.iOrder desc,
 				case when d.idSeverity = 0 then 0 else 1 end DESC,
