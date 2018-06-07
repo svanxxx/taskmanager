@@ -21,10 +21,28 @@
 	app.controller('mpscontroller', function ($scope, $http, $timeout) {
 		$scope.Math = window.Math;
 		$scope.getPersonImg = function (email) {
-			if ($scope.users) {
+			if ($scope.users && email != "") {
 				return "images/personal/" + email + ".jpg";
 			}
 			return "";
+		}
+
+		$scope.discardDefects = function () {
+			$scope.changeuser($scope.currentuser);
+		}
+
+		$scope.saveDefects = function () {
+			var recs = [];
+			for (var i = $scope.defects.length - 1; i >= 0; i--) {
+				var rec = {};
+				rec.ttid = $scope.defects[i].ID;
+				rec.backorder = $scope.defects.length - i;
+				rec.moved = ("orderchanged" in $scope.defects[i])
+				recs.push(rec);
+			}
+			$http.post("trservice.asmx/setschedule", JSON.stringify({ "ttids": recs })).then(function (result) {
+				$scope.changeuser($scope.currentuser);
+			});
 		}
 
 		$scope.taskMove = function (d, $event) {
@@ -43,6 +61,7 @@
 						$scope.defects[index] = $scope.defects[i];
 						$scope.defects[i] = tempo;
 						$scope.defects[index].orderchanged = true;
+						$scope.changed = true;
 						break;
 					}
 				}
@@ -54,16 +73,18 @@
 
 		$scope.changeuser = function (u) {
 			$scope.defects = [];
-			$scope.currentuser = u.TTUSERID;
+			$scope.currentuserid = u.TTUSERID;
+			$scope.currentuser = u;
 			var prgtasks = StartProgress("Loading tasks...");
-			$http.post("trservice.asmx/getplanned", JSON.stringify({ "userid": $scope.currentuser}))
+			$http.post("trservice.asmx/getplanned", JSON.stringify({ "userid": $scope.currentuserid}))
 				.then(function (result) {
 					$scope.defects = result.data.d;
 					EndProgress(prgtasks);
+					$scope.changed = false;
 				});
 
 			$scope.unscheduled = [];
-			$http.post("trservice.asmx/getunplanned", JSON.stringify({ "userid": $scope.currentuser }))
+			$http.post("trservice.asmx/getunplanned", JSON.stringify({ "userid": $scope.currentuserid }))
 				.then(function (response) {
 					$scope.unscheduled = response.data.d;
 				});
@@ -86,7 +107,7 @@
 		$http.post("trservice.asmx/getMPSusers", JSON.stringify({}))
 			.then(function (result) {
 				$scope.users = result.data.d;
-				$scope.currentuser = $scope.users[0].TTUSERID;
+				$scope.currentuserid = $scope.users[0].TTUSERID;
 				$scope.changeuser($scope.users[0]);
 				EndProgress(userskprg);
 			});

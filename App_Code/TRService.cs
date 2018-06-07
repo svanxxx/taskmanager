@@ -1009,4 +1009,28 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 		}
 		return "OK";
 	}
+	public class TTBackOrder
+	{
+		public int ttid { get; set; }
+		public int backorder { get; set; }
+		public bool moved { get; set; }
+	}
+	[WebMethod(EnableSession = true)]
+	public void setschedule(List<TTBackOrder> ttids)
+	{
+		foreach(var ttid in ttids)
+		{
+			DefectBase d;
+			if (ttid.moved)
+			{
+				d = new Defect(ttid.ttid); //will add history record about moving
+			}
+			else
+			{
+				d = new DefectBase(ttid.ttid);
+			}
+			d.BACKORDER = Convert.ToInt32(ttid.backorder);
+			d.Store();
+		}
+	}
 }

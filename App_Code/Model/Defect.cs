@@ -45,11 +45,17 @@ public class DefectBase : IdBasedObject
 	protected static string _Disp = "idDisposit";
 	protected static string _Est = "Estim";
 	protected static string _Order = "iOrder";
+	protected static string _BackOrder = "BackOrder";
 	protected static string _AsUser = "idUsr";
 	protected static string _Seve = "idSeverity";
 	protected static string _sMod = "sModifier";
 
+	protected static string _BackOr = "_BackOr";
+
 	protected static string _Tabl = "[TT_RES].[DBO].[DEFECTS]";
+
+	static string[] _allcols = new string[] { _ID, _Summ, _idRec, _Disp, _Est, _Order, _AsUser, _Seve, _sMod, _BackOrder };
+	static string[] _allcolsNames = new string[] { _ID, "Summary", _idRec, "Disposition", "Estimation", "Schedule Order", "Assigned User", "Severity", _sMod, "Schedule Order" };
 
 	public int ID
 	{
@@ -63,8 +69,13 @@ public class DefectBase : IdBasedObject
 	}
 	public string SUMMARY
 	{
-		get { return this[_Summ].ToString(); }
+		get { return this[_Summ].ToString().Replace("\n", String.Empty).Replace("\r", String.Empty); }
 		set { this[_Summ] = value; }
+	}
+	public string SMODIFIER
+	{
+		get { return this[_sMod].ToString().Trim(); }
+		set { this[_sMod] = value; }
 	}
 	public string DISPO
 	{
@@ -83,6 +94,25 @@ public class DefectBase : IdBasedObject
 			else
 			{
 				this[_Est] = value;
+			}
+		}
+	}
+	public int BACKORDER
+	{
+		get { return this[_BackOrder] == DBNull.Value ? -1 : Convert.ToInt32(this[_BackOrder]); }
+		set
+		{
+			if (BACKORDER != value)
+			{
+				this[_sMod] = CurrentContext.User.EMAIL;
+			}
+			if (value == -1)
+			{
+				this[_BackOrder] = DBNull.Value;
+			}
+			else
+			{
+				this[_BackOrder] = value;
 			}
 		}
 	}
@@ -111,11 +141,14 @@ public class DefectBase : IdBasedObject
 		set { this[_AsUser] = Convert.ToInt32(value); }
 	}
 
-	static string[] _allcols = new string[] { _ID, _Summ, _idRec, _Disp, _Est, _Order, _AsUser, _Seve, _sMod };
-	static string[] _allcolsNames = new string[] { _ID, "Summary", _idRec, "Disposition", "Estimation", "Schedule Order", "Assigned User", "Severity", _sMod };
-
 	protected override void OnProcessComplexColumn(string col, string val)
 	{
+		if (col == _BackOrder)
+		{
+			string sqlupdate = string.Format("UPDATE {0} SET {1} = {2} WHERE {3} = {4}", _Tabl, _Order, BACKORDER, _idRec, IDREC);
+			SQLExecute(sqlupdate);
+			return;
+		}
 		if (col == _Order)
 		{
 			List<int> wl = DefectDispo.EnumWorkable();
@@ -154,11 +187,15 @@ public class DefectBase : IdBasedObject
 			List<int> wl = DefectDispo.EnumWorkable();
 			return string.Format("(CASE WHEN {1}.{0} IS NULL THEN NULL ELSE (SELECT COUNT(*) + 1 FROM {1} D2 WHERE D2.IDUSR = {1}.IDUSR AND D2.{0} > {1}.{0} AND {3} in ({4}))END) {2}", _Order, _Tabl, _Order, _Disp, string.Join(",", wl));
 		}
+		else if (col == _BackOrder)
+		{
+			return string.Format("({0}) {1}", _Order, _BackOrder);
+		}
 		return base.OnTransformCol(col);
 	}
 	protected override bool IsColumnComplex(string col)
 	{
-		if (col == _Order)
+		if (col == _Order || col == _BackOrder)
 			return true;
 
 		return base.IsColumnComplex(col);
@@ -239,8 +276,8 @@ public class Defect : DefectBase
 	static protected string _Comp = "idCompon";
 	static protected string _Date = "dateEnter";
 	static protected string _Crea = "idCreateBy";
-	static string[] _allcols = new string[] { _ID, _Specs, _Summ, _Desc, _idRec, _Type, _Prod, _Ref, _Disp, _Prio, _Comp, _Seve, _Date, _Crea, _Est, _Order, _AsUser, _sMod };
-	static string[] _allcolsNames = new string[] { _ID, "Specification", "Summary", "Description", _idRec, "Type", "Product", "Reference", "Disposition", "Priority", "Component", "Severity", "Date", "Created By", "Estimation", "Schedule Order", "Assigned User", _sMod };
+	static string[] _allcols = new string[] { _ID, _Specs, _Summ, _Desc, _idRec, _Type, _Prod, _Ref, _Disp, _Prio, _Comp, _Seve, _Date, _Crea, _Est, _Order, _AsUser, _sMod, _BackOrder };
+	static string[] _allcolsNames = new string[] { _ID, "Specification", "Summary", "Description", _idRec, "Type", "Product", "Reference", "Disposition", "Priority", "Component", "Severity", "Date", "Created By", "Estimation", "Schedule Order", "Assigned User", _sMod, "Schedule Order" };
 	public static string _RepTable = "[TT_RES].[DBO].[REPORTBY]";
 
 	public static void UnLocktask(string ttid, string lockid)

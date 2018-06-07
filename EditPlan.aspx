@@ -9,8 +9,12 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
 	<div ng-app="mpsapplication" ng-controller="mpscontroller">
+		<div class="alert alert-danger savebutton btn-group-vertical" ng-cloak ng-show="changed">
+			<button type="button" class="btn btn-lg btn-info" ng-click="saveDefects()">Save</button>
+			<button type="button" class="btn btn-lg btn-danger" ng-click="discardDefects()">Discard</button>
+		</div>
 		<ul class="nav nav-pills">
-			<li class="{{currentuser===u.TTUSERID?'active':''}}" ng-click="changeuser(u)" ng-repeat="u in filtered = (users | filter:{ INWORK: true })">
+			<li class="{{currentuserid===u.TTUSERID?'active':''}}" ng-click="changeuser(u)" ng-repeat="u in filtered = (users | filter:{ INWORK: true })">
 				<a class="person" data-toggle="pill" href="#">
 					<img ng-src="{{u.ID | getUserImgById:this}}" alt="Smile" height="20" width="20">{{u.LOGIN}}
 				</a>
@@ -24,12 +28,22 @@
 			<div class="tab-content panel panel-default">
 				<div id="plan" class="tab-pane fade in active">
 					<div ng-repeat="d in defects" ng-style="{{d.DISPO | getDispoColorById:this}}" class="task alert">
-						<a href="showtask.aspx?ttid={{d.ID}}" target="_blank"><span class="badge">{{d.ID}}</span></a>{{d.SUMMARY}}<input class="taskselector" type="radio" name="optradio" ng-keydown="taskMove(d, $event)">
+						<a href="showtask.aspx?ttid={{d.ID}}" target="_blank">
+							<span class="badge">{{d.ID}}</span>
+						</a>
+						<span class="label label-danger">{{d.ESTIM}}</span>
+						<span>{{d.SUMMARY| limitTo:140}}</span>
+						<img height="20" width="20" class="taskselector" ng-src="{{getPersonImg(d.SMODIFIER)}}" title="{{d.SMODIFIER}}" />
+						<input class="taskselector" type="radio" name="optradio" ng-keydown="taskMove(d, $event)">
 					</div>
 				</div>
 				<div id="unscheduled" class="tab-pane fade">
 					<div ng-repeat="d in unscheduled" ng-style="{{d.DISPO | getDispoColorById:this}}" class="task alert">
-						<a href="showtask.aspx?ttid={{d.ID}}" target="_blank"><span class="badge">{{d.ID}}</span></a>{{d.SUMMARY}}
+						<a href="showtask.aspx?ttid={{d.ID}}" target="_blank">
+							<span class="badge">{{d.ID}}</span>
+						</a>
+						<span class="label label-danger">{{d.ESTIM}}</span>
+						<span>{{d.SUMMARY}}</span>
 					</div>
 				</div>
 			</div>

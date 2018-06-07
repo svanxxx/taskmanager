@@ -297,6 +297,19 @@ public class IdBasedObject
 			return false;
 		}
 	}
+	bool IsModifiedCol(string col)
+	{
+		{
+			for (int i = 0; i < _modified.Length; i++)
+			{
+				if (_columns[i] == col)
+				{
+					return _modified[i];
+				}
+			}
+			return false;
+		}
+	}
 	virtual protected bool IsColumnComplex(string col)
 	{
 		return string.Format("[{0}]", col) != OnTransformCol(col);
