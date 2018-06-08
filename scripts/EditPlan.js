@@ -34,10 +34,16 @@
 		$scope.saveDefects = function () {
 			var recs = [];
 			for (var i = $scope.defects.length - 1; i >= 0; i--) {
+				var d = $scope.defects[i];
+				var ord = $scope.defects.length - i;
+
+				if (d.BACKORDER == ord) {
+					continue;
+				}
 				var rec = {};
-				rec.ttid = $scope.defects[i].ID;
-				rec.backorder = $scope.defects.length - i;
-				rec.moved = ("orderchanged" in $scope.defects[i])
+				rec.ttid = d.ID;
+				rec.backorder = ord;
+				rec.moved = ("orderchanged" in d);
 				recs.push(rec);
 			}
 			$http.post("trservice.asmx/setschedule", JSON.stringify({ "ttids": recs })).then(function (result) {

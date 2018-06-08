@@ -1018,6 +1018,11 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 	[WebMethod(EnableSession = true)]
 	public void setschedule(List<TTBackOrder> ttids)
 	{
+		if (!CurrentContext.Valid)
+		{
+			return;
+		}
+
 		foreach(var ttid in ttids)
 		{
 			DefectBase d;

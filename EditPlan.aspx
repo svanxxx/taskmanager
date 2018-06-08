@@ -27,7 +27,7 @@
 			</ul>
 			<div class="tab-content panel panel-default">
 				<div id="plan" class="tab-pane fade in active">
-					<div ng-repeat="d in defects" ng-style="{{d.DISPO | getDispoColorById:this}}" class="task alert">
+					<div ng-repeat="d in defects" ng-style="{{d.DISPO | getDispoColorById:this}}" class="task alert {{d.orderchanged?'task-moved':''}}">
 						<a href="showtask.aspx?ttid={{d.ID}}" target="_blank">
 							<span class="badge">{{d.ID}}</span>
 						</a>

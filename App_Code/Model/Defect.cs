@@ -55,7 +55,7 @@ public class DefectBase : IdBasedObject
 	protected static string _Tabl = "[TT_RES].[DBO].[DEFECTS]";
 
 	static string[] _allcols = new string[] { _ID, _Summ, _idRec, _Disp, _Est, _Order, _AsUser, _Seve, _sMod, _BackOrder };
-	static string[] _allcolsNames = new string[] { _ID, "Summary", _idRec, "Disposition", "Estimation", "Schedule Order", "Assigned User", "Severity", _sMod, "Schedule Order" };
+	static string[] _allcolsNames = new string[] { _ID, "Summary", _idRec, "Disposition", "Estimation", "Schedule Order", "Assigned User", "Severity", "", "Schedule Order" };
 
 	public int ID
 	{
@@ -277,7 +277,7 @@ public class Defect : DefectBase
 	static protected string _Date = "dateEnter";
 	static protected string _Crea = "idCreateBy";
 	static string[] _allcols = new string[] { _ID, _Specs, _Summ, _Desc, _idRec, _Type, _Prod, _Ref, _Disp, _Prio, _Comp, _Seve, _Date, _Crea, _Est, _Order, _AsUser, _sMod, _BackOrder };
-	static string[] _allcolsNames = new string[] { _ID, "Specification", "Summary", "Description", _idRec, "Type", "Product", "Reference", "Disposition", "Priority", "Component", "Severity", "Date", "Created By", "Estimation", "Schedule Order", "Assigned User", _sMod, "Schedule Order" };
+	static string[] _allcolsNames = new string[] { _ID, "Specification", "Summary", "Description", _idRec, "Type", "Product", "Reference", "Disposition", "Priority", "Component", "Severity", "Date", "Created By", "Estimation", "Schedule Order", "Assigned User", "", "Schedule Order" };
 	public static string _RepTable = "[TT_RES].[DBO].[REPORTBY]";
 
 	public static void UnLocktask(string ttid, string lockid)
@@ -341,7 +341,7 @@ public class Defect : DefectBase
 	{
 		for (int i = 0; i < _allcols.Length; i++)
 		{
-			if (_allcols[i] == col)
+			if (_allcols[i] == col && !string.IsNullOrEmpty(_allcolsNames[i]))
 			{
 				DefectHistory.AddHisotoryByTask(IDREC, _allcolsNames[i] + " changed.");
 				return;
