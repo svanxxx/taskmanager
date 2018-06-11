@@ -31,6 +31,30 @@
 			$scope.changeuser($scope.currentuser);
 		}
 
+		$scope.scheduletask = function (d) {
+			for (var i = $scope.unscheduled.length - 1; i >= 0; i--) {
+				if ($scope.unscheduled[i].ID == d.ID) {
+					$scope.unscheduled.splice(i, 1);
+					d.orderchanged = true;
+					$scope.defects.splice(0, 0, d);
+					$scope.changed = true;
+					return;
+				}
+			}
+		}
+
+		$scope.unscheduletask = function (d) {
+			for (var i = $scope.defects.length - 1; i >= 0; i--) {
+				if ($scope.defects[i].ID == d.ID) {
+					$scope.defects.splice(i, 1);
+					d.orderchanged = true;
+					$scope.unscheduled.splice(0, 0, d);
+					$scope.changed = true;
+					return;
+				}
+			}
+		}
+
 		$scope.saveDefects = function () {
 			var recs = [];
 			for (var i = $scope.defects.length - 1; i >= 0; i--) {
@@ -46,7 +70,16 @@
 				rec.moved = ("orderchanged" in d);
 				recs.push(rec);
 			}
-			$http.post("trservice.asmx/setschedule", JSON.stringify({ "ttids": recs })).then(function (result) {
+
+			var unsched = [];
+			for (var i = $scope.unscheduled.length - 1; i >= 0; i--) {
+				var d = $scope.unscheduled[i];
+				if ("orderchanged" in d) {
+					unsched.push(d.ID);
+				}
+			}
+
+			$http.post("trservice.asmx/setschedule", JSON.stringify({ "ttids": recs, "unschedule": unsched })).then(function (result) {
 				$scope.changeuser($scope.currentuser);
 			});
 		}

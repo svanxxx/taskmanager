@@ -1016,14 +1016,21 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 		public bool moved { get; set; }
 	}
 	[WebMethod(EnableSession = true)]
-	public void setschedule(List<TTBackOrder> ttids)
+	public void setschedule(List<TTBackOrder> ttids, List<string> unschedule)
 	{
 		if (!CurrentContext.Valid)
 		{
 			return;
 		}
 
-		foreach(var ttid in ttids)
+		foreach (var ttid in unschedule)
+		{
+			Defect d = new Defect(Convert.ToInt32(ttid));
+			d.ORDER = -1;
+			d.Store();
+		}
+
+		foreach (var ttid in ttids)
 		{
 			DefectBase d;
 			if (ttid.moved)

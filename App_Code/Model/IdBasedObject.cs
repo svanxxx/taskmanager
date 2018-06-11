@@ -264,7 +264,7 @@ public class IdBasedObject
 			if (IsColumnComplex(col))
 			{
 				OnChangeColumn(col, val);
-				OnProcessComplexColumn(col, val);
+				OnProcessComplexColumn(col, o);
 				continue;
 			}
 			OnChangeColumn(col, val);
@@ -314,7 +314,7 @@ public class IdBasedObject
 	{
 		return string.Format("[{0}]", col) != OnTransformCol(col);
 	}
-	virtual protected void OnProcessComplexColumn(string col, string val)
+	virtual protected void OnProcessComplexColumn(string col, object val)
 	{
 		throw new Exception("OnProcessComplexColumn should be implemented!");
 	}

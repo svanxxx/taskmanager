@@ -141,7 +141,7 @@ public class DefectBase : IdBasedObject
 		set { this[_AsUser] = Convert.ToInt32(value); }
 	}
 
-	protected override void OnProcessComplexColumn(string col, string val)
+	protected override void OnProcessComplexColumn(string col, object val)
 	{
 		if (col == _BackOrder)
 		{
@@ -151,30 +151,39 @@ public class DefectBase : IdBasedObject
 		}
 		if (col == _Order)
 		{
-			List<int> wl = DefectDispo.EnumWorkable();
-			string ids = string.Join(",", wl);
+			if (val == DBNull.Value)
+			{
+				string sqlupdate = string.Format("UPDATE {0} SET {1} = NULL WHERE {3} = {4}", _Tabl, _Order, val, _idRec, IDREC);
+				SQLExecute(sqlupdate);
+			}
+			else
+			{
+				int ord = Convert.ToInt32(val);
+				List<int> wl = DefectDispo.EnumWorkable();
+				string ids = string.Join(",", wl);
 
-			string sql = string.Format(@"
+				string sql = string.Format(@"
 				SELECT MIN({0}) FROM
 				(
 				SELECT TOP {5} * FROM 
 				(SELECT {0} FROM {1} WHERE {2} = {6} AND {0} IS NOT NULL AND {3} IN ({4}) GROUP BY {0}) T
 				ORDER BY 1 DESC
 				) A
-			", _Order, _Tabl, _AsUser, _Disp, ids, Convert.ToInt32(val), AUSER);
+			", _Order, _Tabl, _AsUser, _Disp, ids, ord, AUSER);
 
-			object o = GetValue(sql);
-			if (o != DBNull.Value)
-			{
-				string sqlupdate = string.Format("UPDATE {0} SET {1} = {1} + 1 WHERE {1} > {2} AND {3} = {4} AND {5} IN ({6})", _Tabl, _Order, Convert.ToInt32(o), _AsUser, AUSER, _Disp, ids);
-				SQLExecute(sql);
-				sqlupdate = string.Format("UPDATE {0} SET {1} = {2} WHERE {3} = {4}", _Tabl, _Order, Convert.ToInt32(o) + 1, _idRec, IDREC);
-				SQLExecute(sqlupdate);
-			}
-			else
-			{
-				string sqlupdate = string.Format("UPDATE {0} SET {1} = {2} WHERE {3} = {4}", _Tabl, _Order, val, _idRec, IDREC);
-				SQLExecute(sql);
+				object o = GetValue(sql);
+				if (o != DBNull.Value)
+				{
+					string sqlupdate = string.Format("UPDATE {0} SET {1} = {1} + 1 WHERE {1} > {2} AND {3} = {4} AND {5} IN ({6})", _Tabl, _Order, Convert.ToInt32(o), _AsUser, AUSER, _Disp, ids);
+					SQLExecute(sql);
+					sqlupdate = string.Format("UPDATE {0} SET {1} = {2} WHERE {3} = {4}", _Tabl, _Order, Convert.ToInt32(o) + 1, _idRec, IDREC);
+					SQLExecute(sqlupdate);
+				}
+				else
+				{
+					string sqlupdate = string.Format("UPDATE {0} SET {1} = {2} WHERE {3} = {4}", _Tabl, _Order, ord, _idRec, IDREC);
+					SQLExecute(sql);
+				}
 			}
 			return;
 		}
@@ -349,7 +358,7 @@ public class Defect : DefectBase
 		}
 		base.OnChangeColumn(col, val);
 	}
-	protected override void OnProcessComplexColumn(string col, string val)
+	protected override void OnProcessComplexColumn(string col, object val)
 	{
 		if (col == _Desc)
 		{
