@@ -362,13 +362,13 @@ public class Defect : DefectBase
 	{
 		if (col == _Desc)
 		{
-			string sql = string.Format("UPDATE {2} SET DESCRPTN = {0} WHERE IDDEFREC = (SELECT IDRECORD FROM {3} D WHERE D.DEFECTNUM = {1})", val, _id, _RepTable, _Tabl);
+			string sql = string.Format("UPDATE {2} SET DESCRPTN = '{0}' WHERE IDDEFREC = (SELECT IDRECORD FROM {3} D WHERE D.DEFECTNUM = {1})", val.ToString().Replace("'", "\""), _id, _RepTable, _Tabl);
 			SQLExecute(sql);
 			return;
 		}
 		if (col == _Specs)
 		{
-			string sql = string.Format("UPDATE {2} SET REPROSTEPS = {0} WHERE IDDEFREC = (SELECT IDRECORD FROM {3} D WHERE D.DEFECTNUM = {1})", val, _id, _RepTable, _Tabl);
+			string sql = string.Format("UPDATE {2} SET REPROSTEPS = '{0}' WHERE IDDEFREC = (SELECT IDRECORD FROM {3} D WHERE D.DEFECTNUM = {1})", val.ToString().Replace("'", "\""), _id, _RepTable, _Tabl);
 			SQLExecute(sql);
 			return;
 		}
