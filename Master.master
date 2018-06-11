@@ -40,14 +40,15 @@
 			</div>
 			<div class="collapse navbar-collapse" id="fullNavbar">
 				<ul class="nav navbar-nav">
-					<li><a href="mytr.aspx">My TR</a></li>
-					<li><a href="ttrep.aspx">Tasks</a></li>
-					<li><a href="showtask.aspx">Show Task</a></li>
-					<li><a href="editplan.aspx">Edit Plan</a></li>
+					<li><a href="mytr.aspx"><span class="glyphicon glyphicon-list-alt"></span>My TR</a></li>
+					<li><a href="ttrep.aspx"><span class="glyphicon glyphicon-tasks"></span>Tasks</a></li>
+					<li><a href="showtask.aspx"><span class="glyphicon glyphicon-flash"></span>Show Task</a></li>
+					<li><a href="editplan.aspx"><span class="glyphicon glyphicon-calendar"></span>Edit Plan</a></li>
 					<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">References<span class="caret"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="dispositions.aspx">Dispos</a></li>
-							<li><a href="users.aspx">Users</a></li>
+							<li><a href="dispositions.aspx"><span class="glyphicon glyphicon-bookmark"></span>Dispos</a></li>
+							<li><a href="severities.aspx"><span class="glyphicon glyphicon-bookmark"></span>Severities</a></li>
+							<li><a href="users.aspx"><span class="glyphicon glyphicon-user"></span>Users</a></li>
 						</ul>
 					</li>
 				</ul>

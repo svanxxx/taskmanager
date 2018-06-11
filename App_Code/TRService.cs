@@ -839,6 +839,11 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 		return "OK";
 	}
 	[WebMethod(EnableSession = true)]
+	public List<DefectDispo> gettaskdispos()
+	{
+		return DefectDispo.Enum();
+	}
+	[WebMethod(EnableSession = true)]
 	public string setdispos(List<DefectDispo> dispos)
 	{
 		foreach (DefectDispo d in dispos)
@@ -884,11 +889,6 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 		return DefectProduct.Enum();
 	}
 	[WebMethod(EnableSession = true)]
-	public List<DefectDispo> gettaskdispos()
-	{
-		return DefectDispo.Enum();
-	}
-	[WebMethod(EnableSession = true)]
 	public List<DefectPriority> gettaskpriorities()
 	{
 		return DefectPriority.Enum();
@@ -902,6 +902,19 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 	public List<DefectSeverity> gettasksevers()
 	{
 		return DefectSeverity.Enum();
+	}
+	[WebMethod(EnableSession = true)]
+	public void setsevers(List<DefectSeverity> severs)
+	{
+		foreach (var s in severs)
+		{
+			DefectSeverity dstore = new DefectSeverity(s.ID);
+			dstore.FromAnotherObject(s);
+			if (dstore.IsModified())
+			{
+				dstore.Store();
+			}
+		}
 	}
 	[WebMethod(EnableSession = true)]
 	public List<DefectUser> gettaskusers()

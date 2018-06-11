@@ -6,12 +6,20 @@ public class DefectSeverity : IdBasedObject
 	private const string _ID = "idRecord";
 	private const string _Desc = "Descriptor";
 	private const string _idOrd = "FieldOrder";
+	private const string _plan = "Planable";
+
 	private const string _Tabl = "[TT_RES].[DBO].[FLDSEVER]";
-	private static string[] _allCols = new string[] { _ID, _Desc, _idOrd };
+
+	private static string[] _allCols = new string[] { _ID, _Desc, _idOrd, _plan };
 	public string ID
 	{
 		get { return this[_ID].ToString(); }
 		set { this[_ID] = value; }
+	}
+	public bool PLAN
+	{
+		get { return Convert.ToBoolean(this[_plan]); }
+		set { this[_plan] = value; }
 	}
 	public string DESCR
 	{
@@ -27,7 +35,7 @@ public class DefectSeverity : IdBasedObject
 		: base(_Tabl, _allCols, 0.ToString(), _ID, false)
 	{
 	}
-	public DefectSeverity(int id)
+	public DefectSeverity(object id)
 		: base(_Tabl, _allCols, id.ToString(), _ID)
 	{
 	}

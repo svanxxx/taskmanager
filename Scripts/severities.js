@@ -6,25 +6,25 @@
 		}
 		$scope.save = function () {
 			var prg = StartProgress("Saving data...");
-			var dispos = [];
-			for (var i = 0; i < $scope.dispos.length; i++) {
-				var ch = $scope.dispos[i].changed;
+			var severs = [];
+			for (var i = 0; i < $scope.severs.length; i++) {
+				var ch = $scope.severs[i].changed;
 				if (ch) {
-					delete $scope.dispos[i].changed;
-					dispos.push($scope.dispos[i])
+					delete $scope.severs[i].changed;
+					severs.push($scope.severs[i])
 				}
 			}
-			$http.post("trservice.asmx/setdispos", angular.toJson({ "dispos": dispos }), )
+			$http.post("trservice.asmx/setsevers", angular.toJson({ "severs": severs }), )
 				.then(function (response) {
 					EndProgress(prg);
 					$scope.changed = false;
 				});
 		}
 		var taskprg = StartProgress("Loading data...");
-		$scope.dispos = [];
-		$http.post("trservice.asmx/gettaskdispos", JSON.stringify({}))
+		$scope.severs = [];
+		$http.post("trservice.asmx/gettasksevers", JSON.stringify({}))
 			.then(function (result) {
-				$scope.dispos = result.data.d;
+				$scope.severs = result.data.d;
 			});
 		$scope.changed = false;
 		$scope.enterdata = function (object, prop) {

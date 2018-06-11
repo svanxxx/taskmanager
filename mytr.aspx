@@ -80,7 +80,9 @@
 		<div class="tab-content panel panel-default">
 			<div id="plan" class="tab-pane fade in active">
 				<div ng-repeat="d in defects" ng-style="{{d.DISPO | getDispoColorById:this}}" class="task alert">
-					<a href="showtask.aspx?ttid={{d.ID}}" target="_blank"><span class="badge">{{d.ID}}</span></a>{{d.SUMMARY}}
+					<a href="showtask.aspx?ttid={{d.ID}}" target="_blank"><span class="badge">{{d.ID}}</span></a>
+					<span class="label label-danger">{{d.ESTIM}}</span>
+					<span>{{d.SUMMARY}}</span>
 					<button ng-click="workTask(d)" data-toggle="tooltip" title="Start work on this task now!" type="button" class="btn btn-default btn-xs btn-workme"><span class="glyphicon glyphicon-circle-arrow-up"></span></button>
 					<div class="dropdown btn-workme">
 						<button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown">
@@ -94,7 +96,9 @@
 			</div>
 			<div id="unscheduled" class="tab-pane fade">
 				<div ng-repeat="d in unscheduled" ng-style="{{d.DISPO | getDispoColorById:this}}" class="task alert">
-					<a href="showtask.aspx?ttid={{d.ID}}" target="_blank"><span class="badge">{{d.ID}}</span></a>{{d.SUMMARY}}
+					<a href="showtask.aspx?ttid={{d.ID}}" target="_blank"><span class="badge">{{d.ID}}</span></a>
+					<span class="label label-danger">{{d.ESTIM}}</span>
+					<span>{{d.SUMMARY}}</span>
 				</div>
 			</div>
 		</div>
