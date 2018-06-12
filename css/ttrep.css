@@ -7,3 +7,12 @@
 	padding: 0px;
 	margin: 0px;
 }
+
+.middlecol {
+	text-align: center;
+}
+
+.usersshortlist {
+	height: 500px;
+	overflow: scroll;
+}
