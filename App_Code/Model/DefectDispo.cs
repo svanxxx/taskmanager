@@ -69,10 +69,22 @@ public class DefectDispo : IdBasedObject
 		}
 		return res;
 	}
+	static int _WorkingRec = -1;
+	override public void Store()
+	{
+		_WorkingRec = -1;
+		base.Store();
+	}
 	public static int GetWorkingRec()
 	{
+		if (_WorkingRec != -1)
+		{
+			return _WorkingRec;
+		}
+
 		foreach (int i in EnumRecords(_Tabl, _ID, new string[] { _Working }, new object[] { 1 }))
 		{
+			_WorkingRec = i;
 			return i;
 		}
 		return 1;

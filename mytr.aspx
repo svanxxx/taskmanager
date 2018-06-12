@@ -99,6 +99,7 @@
 					<a href="showtask.aspx?ttid={{d.ID}}" target="_blank"><span class="badge">{{d.ID}}</span></a>
 					<span class="label label-danger">{{d.ESTIM}}</span>
 					<span>{{d.SUMMARY}}</span>
+					<button ng-click="workTaskUns(d)" data-toggle="tooltip" title="Start work on this task now!" type="button" class="btn btn-default btn-xs btn-workme"><span class="glyphicon glyphicon-circle-arrow-up"></span></button>
 				</div>
 			</div>
 		</div>

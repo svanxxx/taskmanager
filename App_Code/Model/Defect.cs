@@ -57,6 +57,11 @@ public class DefectBase : IdBasedObject
 	static string[] _allcols = new string[] { _ID, _Summ, _idRec, _Disp, _Est, _Order, _AsUser, _Seve, _sMod, _BackOrder };
 	static string[] _allcolsNames = new string[] { _ID, "Summary", _idRec, "Disposition", "Estimation", "Schedule Order", "Assigned User", "Severity", "", "Schedule Order" };
 
+	public string SEVE
+	{
+		get { return this[_Seve].ToString(); }
+		set { this[_Seve] = Convert.ToInt32(value); }
+	}
 	public int ID
 	{
 		get { return this[_ID] == DBNull.Value ? -1 : Convert.ToInt32(this[_ID]); }
@@ -425,11 +430,6 @@ public class Defect : DefectBase
 	{
 		get { return this[_Crea].ToString(); }
 		set { this[_Crea] = Convert.ToUInt32(value); }
-	}
-	public string SEVE
-	{
-		get { return this[_Seve].ToString(); }
-		set { this[_Seve] = Convert.ToInt32(value); }
 	}
 	public string COMP
 	{

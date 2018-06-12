@@ -1000,6 +1000,13 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 			return null;
 		Defect d = new Defect(Convert.ToInt32(ttid));
 		d.DISPO = disp;
+		if (Convert.ToInt32(d.DISPO) == DefectDispo.GetWorkingRec())
+		{
+			if (d.ORDER < 1)
+			{
+				d.ORDER = 1;
+			}
+		}
 		d.Store();
 		return new DefectBase(Convert.ToInt32(ttid));
 	}

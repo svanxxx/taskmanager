@@ -146,6 +146,21 @@ $(function () {
 			}
 		}
 
+		$scope.workTaskUns = function (d) {
+			if ($scope.loaded()) {
+				var index = $scope.dispos.findIndex(x => x.WORKING == 1);
+				if (index > -1) {
+					d.ORDER = 1;
+					d.DISPO = $scope.dispos[index].ID;
+					var di = $scope.unscheduled.findIndex(x => x == d);
+					$scope.unscheduled.splice(di, 1);
+					$scope.defects.unshift(d);
+					$scope.trrec.DONE = "TT" + d.ID + "(" + d.ESTIM + ") " + d.SUMMARY + "\n" + $scope.trrec.DONE;
+					$scope.changeDispo(d, $scope.dispos[index]);
+				}
+			}
+		}
+
 		$scope.workTask = function (d) {
 			if ($scope.loaded()) {
 				for (var i = 0; i < $scope.dispos.length; i++) {

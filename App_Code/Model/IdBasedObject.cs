@@ -228,7 +228,7 @@ public class IdBasedObject
 			_id = _values[_fldid].ToString();
 		}
 	}
-	public void Store()
+	virtual public void Store()
 	{
 		int columnsInQuery = 0;
 		string sql = string.Format("UPDATE {0} SET ", _table);
