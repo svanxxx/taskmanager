@@ -233,10 +233,10 @@ public class DefectBase : IdBasedObject
 	public List<DefectBase> EnumPlan(int userid)
 	{
 		List<int> wl = DefectDispo.EnumWorkable();
-		string w_where = string.Format(" AND  ({0} in ({1}))", _Disp, string.Join(",", wl));
-		if (wl.Count < 1)
+		string w_where = "";
+		if (wl.Count > 0)
 		{
-			w_where = "";
+			w_where = string.Format(" AND  ({0} in ({1}))", _Disp, string.Join(",", wl));
 		}
 
 		List<DefectBase> ls = new List<DefectBase>();
@@ -252,17 +252,17 @@ public class DefectBase : IdBasedObject
 	public List<DefectBase> EnumUnPlan(int userid)
 	{
 		List<int> wl = DefectDispo.EnumWorkable();
-		string w_where1 = string.Format(" AND  ({0} in ({1}))", _Disp, string.Join(",", wl));
-		if (wl.Count < 1)
+		string w_where1 = "";
+		if (wl.Count > 0)
 		{
-			w_where1 = "";
+			w_where1 = string.Format(" AND  ({0} in ({1}))", _Disp, string.Join(",", wl));
 		}
 
 		List<int> pl = DefectSeverity.EnumPlanable();
-		string w_where2 = string.Format(" AND  ({0} in ({1}))", _Seve, string.Join(",", pl));
-		if (pl.Count < 1)
+		string w_where2 = "";
+		if (pl.Count > 0)
 		{
-			w_where2 = "";
+			w_where2 = string.Format(" AND  ({0} in ({1}))", _Seve, string.Join(",", pl));
 		}
 
 		List<DefectBase> ls = new List<DefectBase>();
@@ -275,6 +275,35 @@ public class DefectBase : IdBasedObject
 		}
 		return ls;
 	}
+	public List<DefectBase> Enum(DefectsFilter f)
+	{
+		string w_where1 = "";
+		if (f.dispositions.Count > 0)
+		{
+			w_where1 = string.Format(" AND  ({0} in ({1}))", _Disp, string.Join(",", f.dispositions));
+		}
+		string w_where2 = "";
+		if (f.users.Count > 0)
+		{
+			w_where2 = string.Format(" AND  ({0} in ({1}))", _AsUser, string.Join(",", f.users));
+		}
+
+		List<DefectBase> ls = new List<DefectBase>();
+		string where = string.Format(" WHERE ({0} > 0 {1} {2}) ORDER BY {0} DESC", _ID, w_where1, w_where2);
+		foreach (DataRow r in GetRecords(where, 200))
+		{
+			DefectBase d = new DefectBase();
+			d.Load(r);
+			ls.Add(d);
+		}
+		return ls;
+	}
+}
+public class DefectsFilter
+{
+	public DefectsFilter() { }
+	public List<int> dispositions;
+	public List<int> users;
 }
 public class Defect : DefectBase
 {
@@ -470,15 +499,5 @@ public class Defect : DefectBase
 	public static int GetIDbyTT(int tt)
 	{
 		return Convert.ToInt32(GetRecdata(_Tabl, _idRec, _ID, tt));
-	}
-	public static List<Defect> Enum()
-	{
-		List<Defect> ls = new List<Defect>();
-		foreach (int ttid in EnumRecords(_Tabl, _ID, new string[] { _ID }, new object[] { 55555 }))
-		{
-			Defect d = new Defect(ttid);
-			ls.Add(d);
-		}
-		return ls;
 	}
 }

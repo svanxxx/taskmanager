@@ -20,12 +20,9 @@
 					$scope.changed = false;
 				});
 		}
-		var taskprg = StartProgress("Loading data...");
-		$scope.severs = [];
-		$http.post("trservice.asmx/gettasksevers", JSON.stringify({}))
-			.then(function (result) {
-				$scope.severs = result.data.d;
-			});
+
+		getSevers($scope, "severs", $http);
+
 		$scope.changed = false;
 		$scope.enterdata = function (object, prop) {
 			var oldval = object[prop];
@@ -39,6 +36,5 @@
 				$scope.changed = true;
 			}
 		}
-		EndProgress(taskprg);
 	});
 })

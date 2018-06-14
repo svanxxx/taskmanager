@@ -2,6 +2,7 @@
 
 <asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
 	<link href="css/severities.css" rel="stylesheet" />
+	<script src="scripts/references.js"></script>
 	<script src="scripts/severities.js"></script>
 	<script src="http://mps.resnet.com/cdn/angular/angular.min.js"></script>
 </asp:Content>

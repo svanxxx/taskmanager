@@ -22,17 +22,8 @@ $(function () {
 	});
 
 	app.controller('mpscontroller', function ($scope, $http, $interval) {
-		$scope.dispos = getDispos();
-		if (!$scope.dispos) {
-			var prgdispos = StartProgress("Loading dispositions..."); $scope.loaders++;
-			$scope.dispos = [];
-			$http.post("trservice.asmx/gettaskdispos", JSON.stringify({}))
-				.then(function (result) {
-					$scope.dispos = result.data.d;
-					setDispos($scope.dispos);
-					EndProgress(prgdispos); $scope.loaders--;
-				});
-		}
+
+		getDispos($scope, "dispos", $http);
 
 		var d = new Date();
 		d.setHours(0, 0, 0, 0);

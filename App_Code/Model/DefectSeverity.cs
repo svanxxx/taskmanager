@@ -18,7 +18,14 @@ public class DefectSeverity : IdBasedObject
 	}
 	public bool PLAN
 	{
-		get { return Convert.ToBoolean(this[_plan]); }
+		get
+		{
+			if (this[_plan] == DBNull.Value)
+			{
+				return false;
+			}
+			return Convert.ToBoolean(this[_plan]);
+		}
 		set { this[_plan] = value; }
 	}
 	public string DESCR

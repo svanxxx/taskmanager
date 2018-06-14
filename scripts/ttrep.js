@@ -7,10 +7,12 @@
 	return false;
 }
 $(function () {
-
 	var app = angular.module('mpsapplication', []);
 	app.filter('getUserById', function () {
 		return function (id, $scope) {
+			if (!$scope.users) {
+				return "";
+			}
 			for (i = 0; i < $scope.users.length; i++) {
 				if ($scope.users[i].ID == id) {
 					return $scope.users[i].FIRSTNAME + " " + $scope.users[i].LASTNAME;
@@ -21,6 +23,9 @@ $(function () {
 	});
 	app.filter('getDispoById', function () {
 		return function (id, $scope) {
+			if (!$scope.dispos) {
+				return "";
+			}
 			return $scope.dispos.filter(x => x.ID == id)[0].DESCR;
 		};
 	});
@@ -31,104 +36,54 @@ $(function () {
 		};
 	});
 
-	app.controller('mpscontroller', function ($scope, $http, $interval) {
+	app.controller('mpscontroller', function ($scope, $http) {
 
-		var taskprg = StartProgress("Loading tasks...");
-		$scope.defects = [];
-		$http.post("trservice.asmx/gettasks", JSON.stringify({}))
-			.then(function (response) {
-				$scope.defects = response.data.d;
-				EndProgress(taskprg);;
-			});
+		//references section
+		getDispos($scope, "dispos", $http);
+		getUsers($scope, "users", $http);
+		getTypes($scope, "types", $http);
+		getPriorities($scope, "priorities", $http);
+		getSevers($scope, "severs", $http);
+		getProducts($scope, "products", $http);
+		getComps($scope, "comps", $http);
 
-		if (sessionStorage.types) {
-			$scope.types = JSON.parse(sessionStorage.types);
-		} else {
-			var prgtypes = StartProgress("Loading types..."); $scope.loaders++;
-			$scope.types = [];
-			$http.post("trservice.asmx/gettasktypes", JSON.stringify({}))
-				.then(function (result) {
-					$scope.types = result.data.d;
-					sessionStorage.types = JSON.stringify(result.data.d);
-					EndProgress(prgtypes); $scope.loaders--;
+		$scope.loadData = function () {
+			var taskprg = StartProgress("Loading tasks...");
+			$scope.changed = false;
+			$scope.DefectsFilter = {};
+			if (localStorage.DefectsFilter) {
+				$scope.DefectsFilter = JSON.parse(localStorage.DefectsFilter);
+			}
+			if (!("dispositions" in $scope.DefectsFilter)) {
+				$scope.DefectsFilter.dispositions = [];
+			}
+			if (!("users" in $scope.DefectsFilter)) {
+				$scope.DefectsFilter.users = [];
+			}
+			$http.post("trservice.asmx/gettasks", JSON.stringify({ "f": $scope.DefectsFilter }))
+				.then(function (response) {
+					$scope.defects = response.data.d;
+					EndProgress(taskprg);;
 				});
 		}
 
-		if (sessionStorage.products) {
-			$scope.products = JSON.parse(sessionStorage.products);
-		} else {
-			var prgproducts = StartProgress("Loading products..."); $scope.loaders++;
-			$scope.products = [];
-			$http.post("trservice.asmx/gettaskproducts", JSON.stringify({}))
-				.then(function (result) {
-					$scope.products = result.data.d;
-					sessionStorage.products = JSON.stringify(result.data.d);
-					EndProgress(prgproducts); $scope.loaders--;
-				});
-		}
+		$scope.loadData();
 
-		$scope.dispos = getDispos();
-		if (!$scope.dispos) {
-			var prgdispos = StartProgress("Loading dispositions..."); $scope.loaders++;
-			$scope.dispos = [];
-			$http.post("trservice.asmx/gettaskdispos", JSON.stringify({}))
-				.then(function (result) {
-					$scope.dispos = result.data.d;
-					setDispos($scope.dispos);
-					EndProgress(prgdispos); $scope.loaders--;
-				});
+		$scope.applyfilter = function () {
+			localStorage.DefectsFilter = JSON.stringify($scope.DefectsFilter);
+			$scope.loadData();
 		}
-
-		if (sessionStorage.priorities) {
-			$scope.priorities = JSON.parse(sessionStorage.priorities);
-		} else {
-			var prgprio = StartProgress("Loading priorities..."); $scope.loaders++;
-			$scope.priorities = [];
-			$http.post("trservice.asmx/gettaskpriorities", JSON.stringify({}))
-				.then(function (result) {
-					$scope.priorities = result.data.d;
-					sessionStorage.priorities = JSON.stringify(result.data.d);
-					EndProgress(prgprio); $scope.loaders--;
-				});
+		$scope.referenceFiltered = function (id, refname) {
+			return $scope.DefectsFilter[refname].findIndex(x => x == id) > -1;
 		}
-
-		if (sessionStorage.comps) {
-			$scope.comps = JSON.parse(sessionStorage.comps);
-		} else {
-			var prgcompo = StartProgress("Loading components..."); $scope.loaders++;
-			$scope.comps = [];
-			$http.post("trservice.asmx/gettaskcomps", JSON.stringify({}))
-				.then(function (result) {
-					$scope.comps = result.data.d;
-					sessionStorage.comps = JSON.stringify(result.data.d);
-					EndProgress(prgcompo); $scope.loaders--;
-				});
-		}
-
-		if (sessionStorage.severs) {
-			$scope.severs = JSON.parse(sessionStorage.severs);
-		} else {
-			var prgseve = StartProgress("Loading severities..."); $scope.loaders++;
-			$scope.severs = [];
-			$http.post("trservice.asmx/gettasksevers", JSON.stringify({}))
-				.then(function (result) {
-					$scope.severs = result.data.d;
-					sessionStorage.severs = JSON.stringify(result.data.d);
-					EndProgress(prgseve); $scope.loaders--;
-				});
-		}
-
-		if (sessionStorage.users) {
-			$scope.users = JSON.parse(sessionStorage.users);
-		} else {
-			var prgusers = StartProgress("Loading users..."); $scope.loaders++;
-			$scope.users = [];
-			$http.post("trservice.asmx/gettaskusers", JSON.stringify({}))
-				.then(function (result) {
-					$scope.users = result.data.d;
-					sessionStorage.users = JSON.stringify(result.data.d);
-					EndProgress(prgusers); $scope.loaders--;
-				});
+		$scope.changeReferenceFilter = function (id, refname) {
+			$scope.changed = true;
+			var index = $scope.DefectsFilter[refname].findIndex(x => x == id);
+			if (index > -1) {
+				$scope.DefectsFilter[refname].splice(index, 1);
+			} else {
+				$scope.DefectsFilter[refname].push(id);
+			}
 		}
 	});
 })

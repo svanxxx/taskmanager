@@ -129,17 +129,7 @@
 				});
 		}
 
-		$scope.dispos = getDispos();
-		if (!$scope.dispos) {
-			var prgdispos = StartProgress("Loading dispositions...");
-			$scope.dispos = [];
-			$http.post("trservice.asmx/gettaskdispos", JSON.stringify({}))
-				.then(function (result) {
-					$scope.dispos = result.data.d;
-					setDispos($scope.dispos);
-					EndProgress(prgdispos);
-				});
-		}
+		getDispos($scope, "dispos", $http);
 
 		var userskprg = StartProgress("Loading users...");
 		$scope.users = [];

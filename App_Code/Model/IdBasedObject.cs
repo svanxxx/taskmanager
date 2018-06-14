@@ -43,7 +43,6 @@ static class OleDbTypeMap
 		return TypeMap[type];
 	}
 }
-
 public class IdBasedObject
 {
 	public static string defDateFormat = "MM-dd-yyyy";
@@ -73,9 +72,9 @@ public class IdBasedObject
 		}
 		return null;
 	}
-	protected DataRowCollection GetRecords(string where)
+	protected DataRowCollection GetRecords(string where, int limit = 0)
 	{
-		string sql = GetBaseSQLQuery() + where;
+		string sql = GetBaseSQLQuery(limit) + where;
 		return DBHelper.GetDataSet(sql).Tables[0].Rows;
 	}
 	protected static List<int> EnumRecords(string table, string returnfield, string[] filterfields = null, object[] values = null)
@@ -205,9 +204,10 @@ public class IdBasedObject
 	{
 		return string.Format("[{0}]", col);
 	}
-	string GetBaseSQLQuery()
+	string GetBaseSQLQuery(int limit = 0)
 	{
-		string sql = "SELECT ";
+		string slimit = limit > 0 ? string.Format(" TOP {0}", limit) : "";
+		string sql = string.Format("SELECT {0} ", slimit);
 		foreach (string col in _columns)
 		{
 			sql += string.Format("{0}, ", OnTransformCol(col));

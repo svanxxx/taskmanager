@@ -1,63 +1,44 @@
-﻿function getDispos() {
-	if (localStorage.dispos) {
-		return JSON.parse(localStorage.dispos);
+﻿var storageversion = "0";
+function loadReference($scope, member, $http, localmember, functionname) {
+	var m = localmember + "_storageversion";
+	if (localStorage[m] != storageversion) {
+		localStorage.removeItem(localmember);
+		localStorage[m] = storageversion;
 	}
-	return null;
-}
-function setDispos(d) {
-	localStorage.dispos = JSON.stringify(d);
-}
-function getUsers() {
-	if (localStorage.users) {
-		return JSON.parse(localStorage.users);
+
+	if (localStorage[localmember]) {
+		$scope[member] = JSON.parse(localStorage[localmember]);
+	} else {
+		if (!("loaders" in $scope)) {
+			$scope["loaders"] = 0;
+		}
+		var prgtypes = StartProgress("Loading " + localmember + "..."); $scope["loaders"]++;
+		$http.post("trservice.asmx/" + functionname, JSON.stringify({}))
+			.then(function (result) {
+				$scope[member] = result.data.d;
+				localStorage[localmember] = JSON.stringify($scope[member]);
+				EndProgress(prgtypes); $scope["loaders"]--;
+			});
 	}
-	return null;
 }
-function setUsers(u) {
-	localStorage.users = JSON.stringify(u);
+function getTypes($scope, member, $http) {
+	loadReference($scope, member, $http, "types", "gettasktypes");
 }
-function getTypes() {
-	if (localStorage.types) {
-		return JSON.parse(localStorage.types);
-	}
-	return null;
+function getDispos($scope, member, $http) {
+	loadReference($scope, member, $http, "dispos", "gettaskdispos");
 }
-function setTypes(u) {
-	localStorage.types = JSON.stringify(u);
+function getUsers($scope, member, $http) {
+	loadReference($scope, member, $http, "users", "gettaskusers");
 }
-function getSevers() {
-	if (localStorage.severs) {
-		return JSON.parse(localStorage.severs);
-	}
-	return null;
+function getPriorities($scope, member, $http) {
+	loadReference($scope, member, $http, "priorities", "gettaskpriorities");
 }
-function setSevers(u) {
-	localStorage.severs = JSON.stringify(u);
+function getSevers($scope, member, $http) {
+	loadReference($scope, member, $http, "severs", "gettasksevers");
 }
-function getProducts() {
-	if (localStorage.products) {
-		return JSON.parse(localStorage.products);
-	}
-	return null;
+function getProducts($scope, member, $http) {
+	loadReference($scope, member, $http, "products", "gettaskproducts");
 }
-function setProducts(u) {
-	localStorage.products = JSON.stringify(u);
-}
-function getPriorities() {
-	if (localStorage.priorities) {
-		return JSON.parse(localStorage.priorities);
-	}
-	return null;
-}
-function setPriorities(u) {
-	localStorage.priorities = JSON.stringify(u);
-}
-function getComps() {
-	if (localStorage.comps) {
-		return JSON.parse(localStorage.comps);
-	}
-	return null;
-}
-function setComps(u) {
-	localStorage.comps = JSON.stringify(u);
+function getComps($scope, member, $http) {
+	loadReference($scope, member, $http, "comps", "gettaskcomps");
 }

@@ -9,6 +9,10 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
 	<div ng-app="mpsapplication" ng-controller="mpscontroller">
+		<div class="alert alert-danger savebutton btn-group-vertical" ng-cloak ng-show="changed">
+			<button type="button" class="btn btn-lg btn-info" ng-click="applyfilter()">Apply Filter</button>
+			<button type="button" class="btn btn-lg btn-danger">Discard</button>
+		</div>
 		<table class="table table-bordered">
 			<thead>
 				<tr>
@@ -21,7 +25,7 @@
 								<li class="usersshortlist">
 									<div ng-repeat="u in users" class="checkbox">
 										<label>
-											<input type="checkbox">{{u.FIRSTNAME + ' ' + u.LASTNAME}}
+											<input ng-click="changeReferenceFilter(u.ID, 'users')" type="checkbox" ng-checked="{{referenceFiltered(u.ID, 'users')}}">{{u.FIRSTNAME + ' ' + u.LASTNAME}}
 										</label>
 									</div>
 								</li>
@@ -37,7 +41,7 @@
 								<li>
 									<div ng-repeat="d in dispos" class="checkbox">
 										<label>
-											<input type="checkbox">{{d.DESCR}}
+											<input ng-click="changeReferenceFilter(d.ID, 'dispositions')" type="checkbox" ng-checked="{{referenceFiltered(d.ID, 'dispositions')}}">{{d.DESCR}}
 										</label>
 									</div>
 								</li>

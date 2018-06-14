@@ -941,10 +941,10 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 		Defect.UnLocktask(ttid, lockid);
 	}
 	[WebMethod(EnableSession = true)]
-	public List<Defect> gettasks()
+	public List<DefectBase> gettasks(DefectsFilter f)
 	{
-		//Defect filter
-		return Defect.Enum();
+		DefectBase enm = new DefectBase();
+		return enm.Enum(f);
 	}
 	[WebMethod(EnableSession = true)]
 	public TRRec gettrrec(string date)

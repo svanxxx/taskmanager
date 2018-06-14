@@ -136,89 +136,13 @@ $(function () {
 		}
 
 		//references secion:
-		$scope.users = getUsers();
-		if (!$scope.users) {
-			var prgusers = StartProgress("Loading users..."); $scope.loaders++;
-			$scope.users = [];
-			$http.post("trservice.asmx/gettaskusers", JSON.stringify({}))
-				.then(function (result) {
-					$scope.users = result.data.d;
-					setUsers($scope.users);
-					EndProgress(prgusers); $scope.loaders--;
-				});
-		}
-
-		$scope.dispos = getDispos();
-		if (!$scope.dispos) {
-			var prgdispos = StartProgress("Loading dispositions..."); $scope.loaders++;
-			$scope.dispos = [];
-			$http.post("trservice.asmx/gettaskdispos", JSON.stringify({}))
-				.then(function (result) {
-					$scope.dispos = result.data.d;
-					setDispos($scope.dispos);
-					EndProgress(prgdispos); $scope.loaders--;
-				});
-		}
-
-		$scope.types = getTypes();
-		if (!$scope.types) {
-			var prgtypes = StartProgress("Loading types..."); $scope.loaders++;
-			$scope.types = [];
-			$http.post("trservice.asmx/gettasktypes", JSON.stringify({}))
-				.then(function (result) {
-					$scope.types = result.data.d;
-					setTypes($scope.types);
-					EndProgress(prgtypes); $scope.loaders--;
-				});
-		}
-
-		$scope.severs = getSevers();
-		if (!$scope.severs) {
-			var prgseve = StartProgress("Loading severities..."); $scope.loaders++;
-			$scope.severs = [];
-			$http.post("trservice.asmx/gettasksevers", JSON.stringify({}))
-				.then(function (result) {
-					$scope.severs = result.data.d;
-					setSevers($scope.severs);
-					EndProgress(prgseve); $scope.loaders--;
-				});
-		}
-
-		$scope.products = getProducts();
-		if (!$scope.products) {
-			var prgproducts = StartProgress("Loading products..."); $scope.loaders++;
-			$scope.products = [];
-			$http.post("trservice.asmx/gettaskproducts", JSON.stringify({}))
-				.then(function (result) {
-					$scope.products = result.data.d;
-					setProducts($scope.products);
-					EndProgress(prgproducts); $scope.loaders--;
-				});
-		}
-
-		$scope.priorities = getPriorities();
-		if (!$scope.priorities) {
-			var prgprio = StartProgress("Loading priorities..."); $scope.loaders++;
-			$scope.priorities = [];
-			$http.post("trservice.asmx/gettaskpriorities", JSON.stringify({}))
-				.then(function (result) {
-					$scope.priorities = result.data.d;
-					setPriorities($scope.priorities);
-					EndProgress(prgprio); $scope.loaders--;
-				});
-		}
-
-		$scope.comps = getComps();
-		if (!$scope.comps) {
-			var prgcompo = StartProgress("Loading components..."); $scope.loaders++;
-			$scope.comps = [];
-			$http.post("trservice.asmx/gettaskcomps", JSON.stringify({}))
-				.then(function (result) {
-					$scope.comps = result.data.d;
-					setComps($scope.comps);
-					EndProgress(prgcompo); $scope.loaders--;
-				});
-		}
+		getUsers($scope, "users", $http);
+		getDispos($scope, "dispos", $http);
+		getTypes($scope, "types", $http);
+		getPriorities($scope, "priorities", $http);
+		getSevers($scope, "severs", $http);
+		getProducts($scope, "products", $http);
+		getComps($scope, "comps", $http);
 
 		//data section
 		var taskprg = StartProgress("Loading task..."); $scope.loaders++;
