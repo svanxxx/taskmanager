@@ -1,10 +1,9 @@
 ﻿<%@ Page Title="Tasks Report" Language="C#" MasterPageFile="~/Master.Master" AutoEventWireup="true" CodeFile="mytr.aspx.cs" Inherits="MyTR" %>
 
 <asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
-	<script src="scripts/references.js"></script>
-	<script src="scripts/mytr.js"></script>
+	<%=System.Web.Optimization.Styles.Render("~/bundles/mytr_css")%>
+	<%=System.Web.Optimization.Scripts.Render("~/bundles/mytr_js")%>
 	<script src="http://mps.resnet.com/cdn/angular/angular.min.js"></script>
-	<link href="css/mytr.css" rel="stylesheet" />
 </asp:Content>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
