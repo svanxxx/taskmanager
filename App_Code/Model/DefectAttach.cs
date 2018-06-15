@@ -109,6 +109,14 @@ public class DefectAttach : IdBasedObject
 												},
 												"IDRECORD"
 												);
+		DefectHistory.AddHisotoryByTask(taksid, string.Format("Added attachment: {0}", filename));
+	}
+	public static void DeleteAttach(string ttid, int id)
+	{
+		DefectAttach a = new DefectAttach(id);
+		int taksid = Defect.GetIDbyTT(Convert.ToInt32(ttid));
+		DefectHistory.AddHisotoryByTask(taksid, string.Format("Deleted attachment: {0}", a.FILENAME));
+		DeleteObject(_Tabl, id.ToString(), _ID);
 	}
 	public byte[] FileBinary()
 	{

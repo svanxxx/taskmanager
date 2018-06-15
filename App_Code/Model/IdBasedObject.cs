@@ -228,8 +228,11 @@ public class IdBasedObject
 			_id = _values[_fldid].ToString();
 		}
 	}
+	protected virtual void PreStore() { }
+	protected virtual void PostStore() { }
 	virtual public void Store()
 	{
+		PreStore();
 		int columnsInQuery = 0;
 		string sql = string.Format("UPDATE {0} SET ", _table);
 		for (int i = 0; i < _columns.Count; i++)
@@ -277,6 +280,7 @@ public class IdBasedObject
 			sql += string.Format(" WHERE [{0}]={1}", _fldid, _id);
 			DBHelper.SQLExecute(sql);
 		}
+		PostStore();
 	}
 	public bool IsLoaded()
 	{

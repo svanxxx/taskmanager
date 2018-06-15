@@ -53,7 +53,14 @@ public class DefectEvent : IdBasedObject
 	}
 	public int ORDER
 	{
-		get { return Convert.ToInt32(this[_Order]); }
+		get
+		{
+			if (this[_Order] == DBNull.Value)
+			{
+				return 0;
+			}
+			return Convert.ToInt32(this[_Order]);
+		}
 		set { this[_Order] = value; }
 	}
 	public enum Eventtype

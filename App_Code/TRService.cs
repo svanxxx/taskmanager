@@ -927,6 +927,16 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 		DefectAttach.AddAttachByTask(Convert.ToInt32(ttid), filename, data.Remove(0, data.IndexOf("base64,") + 7));
 	}
 	[WebMethod(EnableSession = true)]
+	public void delfileupload(string ttid, string id)
+	{
+		int iid = Convert.ToInt32(id);
+		if (iid < 1)
+		{
+			return;
+		}
+		DefectAttach.DeleteAttach(ttid, iid);
+	}
+	[WebMethod(EnableSession = true)]
 	public LockInfo locktask(string ttid, string lockid)
 	{
 		if (!CurrentContext.Valid)

@@ -143,7 +143,15 @@ public class DefectBase : IdBasedObject
 	public string AUSER
 	{
 		get { return this[_AsUser] == DBNull.Value ? "" : this[_AsUser].ToString(); }
-		set { this[_AsUser] = Convert.ToInt32(value); }
+		set
+		{
+			if (string.IsNullOrEmpty(value))
+			{
+				this[_AsUser] = DBNull.Value;
+				return;
+			}
+			this[_AsUser] = Convert.ToInt32(value);
+		}
 	}
 
 	protected override void OnProcessComplexColumn(string col, object val)
@@ -320,7 +328,7 @@ public class Defect : DefectBase
 	static protected string _Date = "dateEnter";
 	static protected string _Crea = "idCreateBy";
 	static string[] _allcols = new string[] { _ID, _Specs, _Summ, _Desc, _idRec, _Type, _Prod, _Ref, _Disp, _Prio, _Comp, _Seve, _Date, _Crea, _Est, _Order, _AsUser, _sMod, _BackOrder };
-	static string[] _allcolsNames = new string[] { _ID, "Specification", "Summary", "Description", _idRec, "Type", "Product", "Reference", "Disposition", "Priority", "Component", "Severity", "Date", "Created By", "Estimation", "Schedule Order", "Assigned User", "", "Schedule Order" };
+	static string[] _allcolsNames = new string[] { _ID, "Specification", "Summary", "Details", _idRec, "Type", "Product", "Reference", "Disposition", "Priority", "Component", "Severity", "Date", "Created By", "Estimation", "Schedule Order", "Assigned User", "", "Schedule Order" };
 	public static string _RepTable = "[TT_RES].[DBO].[REPORTBY]";
 
 	public static void UnLocktask(string ttid, string lockid)
@@ -380,13 +388,33 @@ public class Defect : DefectBase
 	{
 		return Convert.ToInt32(GetRecdata(_RepTable, _idRec, "IDDEFREC", id));
 	}
+	string _HistoryChanges = "";
+	protected override void PreStore()
+	{
+		_HistoryChanges = "";
+	}
+	protected override void PostStore()
+	{
+		if (!string.IsNullOrEmpty(_HistoryChanges))
+		{
+			DefectHistory.AddHisotoryByTask(IDREC, _HistoryChanges);
+			_HistoryChanges = "";
+		}
+	}
 	protected override void OnChangeColumn(string col, string val)
 	{
 		for (int i = 0; i < _allcols.Length; i++)
 		{
 			if (_allcols[i] == col && !string.IsNullOrEmpty(_allcolsNames[i]))
 			{
-				DefectHistory.AddHisotoryByTask(IDREC, _allcolsNames[i] + " changed.");
+				if (string.IsNullOrEmpty(_HistoryChanges))
+				{
+					_HistoryChanges = "Fields changed: " + _allcolsNames[i];
+				}
+				else
+				{
+					_HistoryChanges += ", " + _allcolsNames[i];
+				}
 				return;
 			}
 		}

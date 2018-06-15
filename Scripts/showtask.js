@@ -46,6 +46,15 @@ $(function () {
 		$window.onbeforeunload = function () {
 			$http.post("trservice.asmx/unlocktask", angular.toJson({ "ttid": ttid, "lockid": $scope.currentlock }));
 		};
+		$scope.loadAttachments = function () {
+			var prgattach = StartProgress("Loading attachments..."); $scope.loaders++;
+			$scope.attachs = [];
+			$http.post("trservice.asmx/getattachsbytask", JSON.stringify({ "ttid": ttid }))
+				.then(function (result) {
+					$scope.attachs = result.data.d;
+					EndProgress(prgattach); $scope.loaders--;
+				});
+		};
 
 		$scope.currentlock = guid();
 		$scope.globallock = "";
@@ -55,7 +64,7 @@ $(function () {
 					$scope.globallock = response.data.d.globallock;
 					$scope.lockedby = response.data.d.lockedby;
 				});
-		}
+		};
 
 		$scope.getDispoColor = function () {
 			if ($scope.defect && $scope.dispos) {
@@ -63,7 +72,7 @@ $(function () {
 				return "background-color: " + col;
 			}
 			return "";
-		}
+		};
 
 		$scope.locktask();
 		$interval(function () {
@@ -75,6 +84,14 @@ $(function () {
 				return "images/personal/" + email + ".jpg";
 			}
 			return "";
+		};
+
+		$scope.deleteAttach = function (id) {
+			var index = $scope.attachs.findIndex(x => x.ID == id);
+			if (index > -1) {
+				$scope.attachs[index].deleted = true;
+				$scope.changed = true;
+			}
 		}
 
 		$scope.addFile = function () {
@@ -104,19 +121,38 @@ $(function () {
 
 			var prgsaving = StartProgress("Saving task..."); $scope.loaders++;
 
+			$scope.attachsinprogress = 0;
 			for (var a = 0; a < $scope.attachs.length; a++) {
-				if ($scope.attachs[a].newfile) {
-					var filename = $scope.attachs[a].newfile.name;
+				if ($scope.attachs[a].deleted) {
+					$http.post("trservice.asmx/delfileupload", angular.toJson({ "ttid": $scope.defect.ID, "id": $scope.attachs[a].ID })).then(function () {
+						$scope.attachsinprogress--;
+						if ($scope.attachsinprogress == 0) {
+							$scope.loadAttachments();
+						}
+					});
+					$scope.attachsinprogress++;
+					$scope.attachs.splice(a, 1);
+					a--;
+					reloadattachments = true;
+				}
+				else if ($scope.attachs[a].newfile) {
 					var r = new FileReader();
+					r.attfilename = $scope.attachs[a].newfile.name; 
 					r.onloadend = function (e) {
 						var data = e.target.result;
-						var fileupload = StartProgress("Uploading file " + filename + "..."); $scope.loaders++;
-						$http.post("trservice.asmx/newfileupload", angular.toJson({ "ttid": ttid, "filename": filename, "data": data }))
+						var fileupload = StartProgress("Uploading file " + this.attfilename + "..."); $scope.loaders++;
+						$http.post("trservice.asmx/newfileupload", angular.toJson({ "ttid": ttid, "filename": this.attfilename, "data": data }))
 							.then(function (response) {
 								EndProgress(fileupload); $scope.loaders--;
+								$scope.attachsinprogress--;
+								if ($scope.attachsinprogress == 0) {
+									$scope.loadAttachments();
+								}
 							});
+						$scope.attachsinprogress++;
 					}
 					r.readAsDataURL($scope.attachs[a].newfile);
+					reloadattachments = true;
 				}
 			}
 
@@ -175,13 +211,7 @@ $(function () {
 				EndProgress(prgevents); $scope.loaders--;
 			});
 
-		var prgattach = StartProgress("Loading attachments..."); $scope.loaders++;
-		$scope.attachs = [];
-		$http.post("trservice.asmx/getattachsbytask", JSON.stringify({ "ttid": ttid }))
-			.then(function (result) {
-				$scope.attachs = result.data.d;
-				EndProgress(prgattach); $scope.loaders--;
-			});
+		$scope.loadAttachments();
 
 		$scope.changed = false;
 		$scope.$watchCollection('defect', function (newval, oldval) {

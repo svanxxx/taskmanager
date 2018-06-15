@@ -139,7 +139,7 @@
 		</div>
 		<ul class="nav nav-pills">
 			<li class="small active"><a data-toggle="pill" href="#specification">Specification</a></li>
-			<li><a class="small" data-toggle="pill" href="#detail">Detail</a></li>
+			<li><a class="small" data-toggle="pill" href="#detail">Details</a></li>
 			<li><a class="small" data-toggle="pill" href="#workflow">Workflow</a></li>
 			<li><a class="small" data-toggle="pill" href="#history">History</a></li>
 			<li><a class="small" data-toggle="pill" href="#attachments">Attachments</a></li>
@@ -192,7 +192,7 @@
 			<div id="attachments" class="tab-pane fade">
 				<button type="button" ng-disabled="!canChangeDefect()" ng-click="addFile()" id="button" class="btn btn-primary btn-xs">Add File...</button>
 				<ul>
-					<li ng-repeat="a in attachs"><a target="_blank" href="getattach.aspx?idrecord={{a.ID}}">{{a.FILENAME}}</a></li>
+					<li ng-style="a.deleted ? {'text-decoration':'line-through'} : ''" ng-repeat="a in attachs"><a target="_blank" href="getattach.aspx?idrecord={{a.ID}}">{{a.FILENAME}}</a>&nbsp<button ng-click="deleteAttach(a.ID)" type="button" class="btn btn-danger btn-xs">Delete</button></li>
 				</ul>
 			</div>
 			<div id="lockinfo" class="tab-pane fade">
