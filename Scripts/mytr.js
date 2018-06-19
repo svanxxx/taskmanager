@@ -9,19 +9,11 @@ function TimeToString(dt) {
 }
 $(function () {
 	var app = angular.module('mpsapplication', []);
-	app.filter('getDispoById', function () {
-		return function (id, $scope) {
-			return $scope.dispos.filter(x => x.ID == id)[0].DESCR;
-		};
-	});
-	app.filter('getDispoColorById', function () {
-		return function (id, $scope) {
-			var col = ($scope.dispos && $scope.dispos.length > 0) ? $scope.dispos.filter(x => x.ID == id)[0].COLOR : "white";
-			return { "background-color": col };
-		};
-	});
 
-	app.controller('mpscontroller', function ($scope, $http, $interval) {
+	app.filter('getDispoById', getDispoById);
+	app.filter('getDispoColorById', getDispoColorById);
+
+	app.controller('mpscontroller', ["$scope", "$http", "$interval", function ($scope, $http, $interval) {
 
 		getDispos($scope, "dispos", $http);
 
@@ -139,11 +131,11 @@ $(function () {
 
 		$scope.workTaskUns = function (d) {
 			if ($scope.loaded()) {
-				var index = $scope.dispos.findIndex(x => x.WORKING == 1);
+				var index = $scope.dispos.findIndex(function (x) { return x.WORKING == 1; });
 				if (index > -1) {
 					d.ORDER = 1;
 					d.DISPO = $scope.dispos[index].ID;
-					var di = $scope.unscheduled.findIndex(x => x == d);
+					var di = $scope.unscheduled.findIndex(function (x) { return x == d; });
 					$scope.unscheduled.splice(di, 1);
 					$scope.defects.unshift(d);
 					$scope.trrec.DONE = "TT" + d.ID + "(" + d.ESTIM + ") " + d.SUMMARY + "\n" + $scope.trrec.DONE;
@@ -224,5 +216,5 @@ $(function () {
 				$scope.user = response.data.d;
 				$scope.userimg = "images/personal/" + $scope.user.EMAIL + ".jpg";
 			});
-	});
+	}]);
 })

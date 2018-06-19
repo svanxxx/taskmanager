@@ -27,6 +27,17 @@ function getTypes($scope, member, $http) {
 function getDispos($scope, member, $http) {
 	loadReference($scope, member, $http, "dispos", "gettaskdispos");
 }
+function getDispoColorById() {
+	return function (id, $scope) {
+		var col = ($scope.dispos && $scope.dispos.length > 0) ? $scope.dispos.filter(function (x) { return x.ID == id; })[0].COLOR : "white";
+		return { "background-color": col };
+	};
+}
+function getDispoById() {
+	return function (id, $scope) {
+		return $scope.dispos.filter(function (x) { return x.ID == id; })[0].DESCR;
+	};
+}
 function getUsers($scope, member, $http) {
 	loadReference($scope, member, $http, "users", "gettaskusers");
 }

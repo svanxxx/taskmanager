@@ -21,22 +21,11 @@ $(function () {
 			return "";
 		};
 	});
-	app.filter('getDispoById', function () {
-		return function (id, $scope) {
-			if (!$scope.dispos) {
-				return "";
-			}
-			return $scope.dispos.filter(x => x.ID == id)[0].DESCR;
-		};
-	});
-	app.filter('getDispoColorById', function () {
-		return function (id, $scope) {
-			var col = $scope.dispos.filter(x => x.ID == id)[0].COLOR;
-			return { "background-color": col };
-		};
-	});
 
-	app.controller('mpscontroller', function ($scope, $http) {
+	app.filter('getDispoById', getDispoById);
+	app.filter('getDispoColorById', getDispoColorById);
+
+	app.controller('mpscontroller', ["$scope", "$http", function ($scope, $http) {
 
 		//references section
 		getDispos($scope, "dispos", $http);
@@ -74,16 +63,16 @@ $(function () {
 			$scope.loadData();
 		}
 		$scope.referenceFiltered = function (id, refname) {
-			return $scope.DefectsFilter[refname].findIndex(x => x == id) > -1;
+			return $scope.DefectsFilter[refname].findIndex(function (x) { return x == id; }) > -1;
 		}
 		$scope.changeReferenceFilter = function (id, refname) {
 			$scope.changed = true;
-			var index = $scope.DefectsFilter[refname].findIndex(x => x == id);
+			var index = $scope.DefectsFilter[refname].findIndex(function (x) { return x == id; });
 			if (index > -1) {
 				$scope.DefectsFilter[refname].splice(index, 1);
 			} else {
 				$scope.DefectsFilter[refname].push(id);
 			}
 		}
-	});
+	}]);
 })

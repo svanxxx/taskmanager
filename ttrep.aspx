@@ -1,10 +1,9 @@
 ﻿<%@ Page Title="Task" Language="C#" MasterPageFile="~/Master.Master" AutoEventWireup="true" CodeFile="ttrep.aspx.cs" Inherits="TTRep" %>
 
 <asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
-	<script src="scripts/references.js"></script>
-	<script src="scripts/ttrep.js"></script>
+	<%=System.Web.Optimization.Styles.Render("~/bundles/ttrep_css")%>
+	<%=System.Web.Optimization.Scripts.Render("~/bundles/ttrep_js")%>
 	<script src="http://mps.resnet.com/cdn/angular/angular.min.js"></script>
-	<link href="css/ttrep.css" rel="stylesheet" />
 </asp:Content>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">

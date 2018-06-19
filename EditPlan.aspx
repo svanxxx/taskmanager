@@ -1,9 +1,8 @@
 ﻿<%@ Page Title="Edit Plan" Language="C#" MasterPageFile="~/Master.Master" AutoEventWireup="true" CodeFile="editplan.aspx.cs" Inherits="PlanEditor" %>
 
 <asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
-	<script src="scripts/references.js"></script>
-	<link href="css/editplan.css" rel="stylesheet" />
-	<script src="scripts/editplan.js"></script>
+	<%=System.Web.Optimization.Styles.Render("~/bundles/editplan_css")%>
+	<%=System.Web.Optimization.Scripts.Render("~/bundles/editplan_js")%>
 	<script src="http://mps.resnet.com/cdn/angular/angular.min.js"></script>
 </asp:Content>
 

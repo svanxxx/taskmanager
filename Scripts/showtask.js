@@ -41,7 +41,7 @@ $(function () {
 		};
 	});
 
-	app.controller('mpscontroller', function ($scope, $http, $interval, $window) {
+	app.controller('mpscontroller', ["$scope", "$http", "$interval", "$window", function ($scope, $http, $interval, $window) {
 
 		$window.onbeforeunload = function () {
 			$http.post("trservice.asmx/unlocktask", angular.toJson({ "ttid": ttid, "lockid": $scope.currentlock }));
@@ -68,7 +68,7 @@ $(function () {
 
 		$scope.getDispoColor = function () {
 			if ($scope.defect && $scope.dispos) {
-				var col = $scope.dispos.filter(x => x.ID == $scope.defect.DISPO)[0].COLOR;
+				var col = $scope.dispos.filter(function (x) { return x.ID == $scope.defect.DISPO; })[0].COLOR;
 				return "background-color: " + col;
 			}
 			return "";
@@ -87,7 +87,7 @@ $(function () {
 		};
 
 		$scope.deleteAttach = function (id) {
-			var index = $scope.attachs.findIndex(x => x.ID == id);
+			var index = $scope.attachs.findIndex(function (x) { return x.ID == id; });
 			if (index > -1) {
 				$scope.attachs[index].deleted = true;
 				$scope.changed = true;
@@ -137,7 +137,7 @@ $(function () {
 				}
 				else if ($scope.attachs[a].newfile) {
 					var r = new FileReader();
-					r.attfilename = $scope.attachs[a].newfile.name; 
+					r.attfilename = $scope.attachs[a].newfile.name;
 					r.onloadend = function (e) {
 						var data = e.target.result;
 						var fileupload = StartProgress("Uploading file " + this.attfilename + "..."); $scope.loaders++;
@@ -219,5 +219,5 @@ $(function () {
 				$scope.changed = true;
 			}
 		});
-	});
+	}]);
 })

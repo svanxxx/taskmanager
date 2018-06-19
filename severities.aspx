@@ -1,9 +1,8 @@
 ﻿<%@ Page Title="Severities" Language="C#" MasterPageFile="~/Master.Master" AutoEventWireup="true" CodeFile="severities.aspx.cs" Inherits="Severities" %>
 
 <asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
-	<link href="css/severities.css" rel="stylesheet" />
-	<script src="scripts/references.js"></script>
-	<script src="scripts/severities.js"></script>
+	<%=System.Web.Optimization.Styles.Render("~/bundles/severities_css")%>
+	<%=System.Web.Optimization.Scripts.Render("~/bundles/severities_js")%>
 	<script src="http://mps.resnet.com/cdn/angular/angular.min.js"></script>
 </asp:Content>
 

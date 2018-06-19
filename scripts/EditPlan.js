@@ -1,6 +1,5 @@
 ﻿$(function () {
 	var app = angular.module('mpsapplication', []);
-
 	app.filter('getUserImgById', function () {
 		return function (id, $scope) {
 			for (i = 0; i < $scope.users.length; i++) {
@@ -11,14 +10,10 @@
 			return "";
 		};
 	});
-	app.filter('getDispoColorById', function () {
-		return function (id, $scope) {
-			var col = ($scope.dispos && $scope.dispos.length > 0) ? $scope.dispos.filter(x => x.ID == id)[0].COLOR : "white";
-			return { "background-color": col };
-		};
-	});
 
-	app.controller('mpscontroller', function ($scope, $http, $timeout) {
+	app.filter('getDispoColorById', getDispoColorById);
+
+	app.controller('mpscontroller', ["$scope", "$http", "$timeout", function ($scope, $http, $timeout) {
 		$scope.Math = window.Math;
 		$scope.getPersonImg = function (email) {
 			if ($scope.users && email != "") {
@@ -115,7 +110,7 @@
 			$scope.currentuserid = u.TTUSERID;
 			$scope.currentuser = u;
 			var prgtasks = StartProgress("Loading tasks...");
-			$http.post("trservice.asmx/getplanned", JSON.stringify({ "userid": $scope.currentuserid}))
+			$http.post("trservice.asmx/getplanned", JSON.stringify({ "userid": $scope.currentuserid }))
 				.then(function (result) {
 					$scope.defects = result.data.d;
 					EndProgress(prgtasks);
@@ -141,5 +136,5 @@
 				EndProgress(userskprg);
 			});
 		$scope.changed = false;
-	})
+	}])
 })

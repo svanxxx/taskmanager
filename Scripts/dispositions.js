@@ -1,6 +1,6 @@
 ﻿$(function () {
 	var app = angular.module('mpsapplication', []);
-	app.controller('mpscontroller', function ($scope, $http) {
+	app.controller('mpscontroller', ["$scope", "$http", function ($scope, $http) {
 		$scope.discard = function () {
 			window.location.reload();
 		}
@@ -40,5 +40,5 @@
 			}
 		}
 		EndProgress(taskprg);
-	});
+	}]);
 })
