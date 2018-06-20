@@ -97,10 +97,17 @@ public class MPSUser : IdBasedObject
 	  : base(_Tabl, _allcols, 0.ToString(), _pid, false)
 	{
 	}
-	public static List<MPSUser> EnumAllUsers()
+	public static List<MPSUser> EnumAllUsers(bool active)
 	{
 		List<MPSUser> ls = new List<MPSUser>();
-		foreach (int i in EnumRecords(_Tabl, _pid))
+		List<string> fields = new List<string>();
+		List<object> values = new List<object>();
+		if (active)
+		{
+			fields.Add(_work);
+			values.Add(true);
+		}
+		foreach (int i in EnumRecords(_Tabl, _pid, fields.ToArray(), values.ToArray()))
 		{
 			ls.Add(new MPSUser(i));
 		}

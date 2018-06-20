@@ -1,41 +1,55 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="DailyReport.aspx.cs" Inherits="DailyReport" %>
+﻿<%@ Page Title="Daily Report" Language="C#" MasterPageFile="~/Master.Master" AutoEventWireup="true" CodeFile="dailyreport.aspx.cs" Inherits="DailyReport" %>
 
-<!DOCTYPE html>
+<asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
+	<%=System.Web.Optimization.Styles.Render("~/bundles/dailyreport_css")%>
+	<%=System.Web.Optimization.Scripts.Render("~/bundles/dailyreport_js")%>
+	<script src="http://mps.resnet.com/cdn/angular/angular.min.js"></script>
+</asp:Content>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-	<title>Daily Report</title>
-	<link rel="stylesheet" type="text/css" href="Scripts/Jquery/jquery-ui.css" />
-	<link rel="stylesheet" type="text/css" href="Scripts/jquery/layout-default-latest.css" />
-	<link rel="stylesheet" type="text/css" href="Styles/jquery.ui.themes/redmond/jquery-ui.css" />
-	<link rel="stylesheet" type="text/css" href="Styles/Common.css" />
-	<link rel="Stylesheet" type="text/css" href="Styles/DailyReport.css" />
-
-	<script type="text/javascript" src="Scripts/Jquery/jquery-1.11.2.js"></script>
-	<script type="text/javascript" src="Scripts/Jquery/jquery-ui.min.js"></script>
-	<script type="text/javascript" src="Scripts/Jquery/jquery.ui-contextmenu.js"></script>
-	<script src="http://mps.resnet.com/cdn/jquery/jquery.cookie.js"></script>
-	<script type="text/javascript" src="Scripts/jquery/jquery.layout-latest.js"></script>
-	<script type="text/javascript" src="Scripts/Common.js"></script>
-	<script src="http://mps.resnet.com/cdn/mpshelper.js"></script>
-	<script type="text/javascript" src="Scripts/DailyReport.js"></script>
-</head>
-<body>
-	<form id="form1" runat="server">
-		<div>
-			<input id="date" type="date" class=".input-sm" name="repdate" />
-			<table id="maintbl">
-				<thead>
-					<tr>
-						<td>Name</td>
-						<td>Yesterday</td>
-						<td>Today</td>
-						<td>Plan</td>
-					</tr>
-				</thead>
-				<tbody></tbody>
-			</table>
+<asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
+	<div ng-app="mpsapplication" ng-controller="mpscontroller">
+		<div class="row">
+			<div class="col-sm-2">
+				<h4>Daily Report for date: </h4>
+			</div>
+			<div class="col-sm-2">
+				<input type="date" id="date" class="form-control input-sm" ng-model="today" ng-change="changeDate()" ng-disabled="!loaded()">
+			</div>
 		</div>
-	</form>
-</body>
-</html>
+		<table class="table table-hover table-bordered">
+			<thead>
+				<tr class="info">
+					<th>Person</th>
+					<th>Yesterday</th>
+					<th>Today</th>
+					<th>Plan</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="u in users | filter:{ INWORK: true } | orderBy : 'PERSON_NAME'">
+					<td>{{u.PERSON_NAME}}</td>
+					<td>
+						<div ng-repeat="l in u.YESTERDAY track by $index">
+							<span>{{l}}</span><br>
+						</div>
+					</td>
+					<td>
+						<div ng-repeat="l in u.TODAY track by $index">
+							<span>{{l}}</span><br>
+						</div>
+					</td>
+					<td>
+						<img src="IMAGES/process.gif" ng-hide="planLoaded(u.ID)"/>
+						<div class="task" ng-repeat="d in u.PLAN track by $index">
+							<a href="showtask.aspx?ttid={{d.ID}}" target="_blank">
+								<span class="badge">{{d.ID}}</span>
+							</a>
+							<span class="label label-danger">{{d.ESTIM}}</span>
+							<span data-toggle="tooltip" title="{{d.SUMMARY}}">{{d.SUMMARY | limitTo:80}}</span>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</asp:Content>

@@ -128,7 +128,7 @@
 
 		var userskprg = StartProgress("Loading users...");
 		$scope.users = [];
-		$http.post("trservice.asmx/getMPSusers", JSON.stringify({}))
+		$http.post("trservice.asmx/getMPSusers", JSON.stringify({ "active": true }))
 			.then(function (result) {
 				$scope.users = result.data.d;
 				$scope.currentuserid = $scope.users[0].TTUSERID;

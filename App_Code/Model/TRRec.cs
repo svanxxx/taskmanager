@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
 using System.Web;
 
@@ -116,5 +118,35 @@ public class TRRec : IdBasedObject
 			", _Tabl, _done, _dat, _perid);
 			SQLExecute(update, new object[] { d, personid, d, personid });
 		}
+	}
+	public List<TRRec> Enum(DateTime[] d)
+	{
+		List<TRRec> ls = new List<TRRec>();
+		if (d.Length < 1)
+		{
+			return ls;
+		}
+
+		string where = "";
+		foreach(var date in d)
+		{
+			if (!string.IsNullOrEmpty(where))
+			{
+				where += " OR ";
+			}
+			else
+			{
+				where = " WHERE ";
+			}
+			where += string.Format(" [{0}] = '{1}' ", _dat, date.ToString(DBHelper.SQLDateFormat));
+		}
+
+		foreach (DataRow r in GetRecords(where))
+		{
+			TRRec rec = new TRRec();
+			rec.Load(r);
+			ls.Add(rec);
+		}
+		return ls;
 	}
 }

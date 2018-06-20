@@ -81,7 +81,7 @@ public class IdBasedObject
 	{
 		List<OleDbParameter> pars = new List<OleDbParameter>();
 		string where = "";
-		if (filterfields != null)
+		if (filterfields != null && filterfields.Length > 0)
 		{
 			where = " WHERE ";
 			for (int i = 0; i < filterfields.Length; i++)

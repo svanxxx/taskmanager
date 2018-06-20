@@ -14,12 +14,11 @@ using System.Globalization;
 public class TRService : System.Web.Services.WebService
 {
 	static public string defDateFormat = "MM-dd-yyyy";
-	static public string SQLDateFormat = "yyyy-MM-dd HH:mm:ss";
 	public struct DoStruct
 	{
 		public string name;
 		public string count;
-		public DoStruct(DataRow dr) 
+		public DoStruct(DataRow dr)
 		{
 			name = dr["NAM"].ToString();
 			count = dr["NUM"].ToString();
@@ -618,7 +617,7 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 				REPORTS R 
 				WHERE
 				CAST(R.REPORT_DATE as date) >= '{0}' and CAST(R.REPORT_DATE as date) <= '{1}' 
-				ORDER BY EMAIL, DATE", dt1.ToString(SQLDateFormat), dt2.ToString(SQLDateFormat)));
+				ORDER BY EMAIL, DATE", dt1.ToString(DBHelper.SQLDateFormat), dt2.ToString(DBHelper.SQLDateFormat)));
 		foreach (DataRow dr in ds.Tables[0].Rows)
 			ls.Add(new TWorkDay(dr));
 		return ls;
@@ -693,7 +692,7 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 	public void NewRec(string userid, bool copy, string date)
 	{
 		var dateTime = DateTime.ParseExact(date, defDateFormat, CultureInfo.InvariantCulture);
-		string sqlFormattedDate = dateTime.ToString(SQLDateFormat);
+		string sqlFormattedDate = dateTime.ToString(DBHelper.SQLDateFormat);
 
 		string sql = string.Format("SELECT count(*) FROM REPORTS where person_id = {0} and CAST(REPORT_DATE as DATE) = CAST('{1}' AS DATE)", userid, sqlFormattedDate);
 		int inum = Convert.ToInt32(GTOHelper.GetDataSet(sql).Tables[0].Rows[0][0]);
@@ -714,7 +713,7 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 	public void DelRec(string userid, string date)
 	{
 		var dateTime = DateTime.ParseExact(date, defDateFormat, CultureInfo.InvariantCulture);
-		string sqlFormattedDate = dateTime.ToString(SQLDateFormat);
+		string sqlFormattedDate = dateTime.ToString(DBHelper.SQLDateFormat);
 		string sql = string.Format("DELETE FROM REPORTS where person_id = {0} and CAST(REPORT_DATE as DATE) = CAST('{1}' AS DATE)", userid, sqlFormattedDate);
 		GTOHelper.SQLExecute(sql);
 	}
@@ -771,7 +770,7 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 	public List<DailyRecord> GetDailyReport(string date)
 	{
 		var dateTime = DateTime.ParseExact(date, defDateFormat, CultureInfo.InvariantCulture);
-		string sqlFormattedDate = dateTime.ToString(SQLDateFormat);
+		string sqlFormattedDate = dateTime.ToString(DBHelper.SQLDateFormat);
 
 		List<DailyRecord> ls = new List<DailyRecord>();
 		DataSet ds = GTOHelper.GetDataSet(string.Format(@"
@@ -807,6 +806,15 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 
 		DefectBase d = new DefectBase();
 		return d.EnumPlan(string.IsNullOrEmpty(userid) ? CurrentContext.User.TTUSERID : Convert.ToInt32(userid));
+	}
+	[WebMethod(EnableSession = true)]
+	public List<DefectBase> getplannedShort(string userid)
+	{
+		if (!CurrentContext.Valid && string.IsNullOrEmpty(userid))
+			return null;
+
+		DefectBase d = new DefectBase();
+		return d.EnumPlanShort(string.IsNullOrEmpty(userid) ? CurrentContext.User.TTUSERID : Convert.ToInt32(userid));
 	}
 	[WebMethod(EnableSession = true)]
 	public List<DefectBase> getunplanned(string userid)
@@ -1021,9 +1029,9 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 		return new DefectBase(Convert.ToInt32(ttid));
 	}
 	[WebMethod(EnableSession = true)]
-	public List<MPSUser> getMPSusers()
+	public List<MPSUser> getMPSusers(bool active)
 	{
-		return MPSUser.EnumAllUsers();
+		return MPSUser.EnumAllUsers(active);
 	}
 	[WebMethod(EnableSession = true)]
 	public string setusers(List<MPSUser> users)
@@ -1074,5 +1082,20 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 			d.BACKORDER = Convert.ToInt32(ttid.backorder);
 			d.Store();
 		}
+	}
+	[WebMethod(EnableSession = true)]
+	public List<TRRec> getreports(List<string> dates)
+	{
+		if (!CurrentContext.Valid || dates.Count < 1)
+		{
+			return new List<TRRec>();
+		}
+		List<DateTime> datetimes = new List<DateTime>();
+		foreach (var d in dates)
+		{
+			datetimes.Add(DateTime.ParseExact(d, defDateFormat, CultureInfo.InvariantCulture));
+		}
+		TRRec r = new TRRec();
+		return r.Enum(datetimes.ToArray());
 	}
 }

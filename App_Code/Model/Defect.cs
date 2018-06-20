@@ -238,7 +238,15 @@ public class DefectBase : IdBasedObject
 		: base(table, columns, id, pcname, doload)
 	{
 	}
+	public List<DefectBase> EnumPlanShort(int userid)
+	{
+		return EnumPlanLim(userid, 10);
+	}
 	public List<DefectBase> EnumPlan(int userid)
+	{
+		return EnumPlanLim(userid, 0);
+	}
+	public List<DefectBase> EnumPlanLim(int userid, int max) //zero for unlimited number
 	{
 		List<int> wl = DefectDispo.EnumWorkable();
 		string w_where = "";
@@ -251,6 +259,10 @@ public class DefectBase : IdBasedObject
 		string where = string.Format(" WHERE (({0} = {1}) AND ({2} is not null) {3}) ORDER BY {4}.{2} DESC", _AsUser, userid, _Order, w_where, _Tabl);
 		foreach (DataRow r in GetRecords(where))
 		{
+			if (max > 0 && ls.Count > max)
+			{
+				break;
+			}
 			DefectBase d = new DefectBase();
 			d.Load(r);
 			ls.Add(d);
