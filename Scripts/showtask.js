@@ -7,6 +7,14 @@
 	return false;
 }
 $(function () {
+
+	$('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
+		localStorage.taskactivetab = $(e.target).attr("href")
+	});
+	if (localStorage.taskactivetab) {
+		$('[href="' + localStorage.taskactivetab + '"]').tab('show');
+	}
+
 	var ttid = getParameterByName("ttid");
 	if (ttid == "") {
 		while (enterTT() == false) {
