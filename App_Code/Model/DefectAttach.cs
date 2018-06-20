@@ -17,7 +17,6 @@ public class DefectAttach : IdBasedObject
 	private static string _File = "ArchvFile";
 	private static string _Compr = "Compressed";
 	private static string _InDB = "AttachInDB";
-	private static string _BinaryTransfer = "BINDATA";
 
 	private static string[] _allCols = new string[] { _ID, _Proj, _Entit, _AttType, _Rid, _Name, _Mac, _MacCr, _DateC, _DateM, _Size, _File, _Compr, _InDB };
 	private static string _Tabl = "[tt_res].[dbo].[ATTACHMT]";
@@ -47,11 +46,6 @@ public class DefectAttach : IdBasedObject
 	{
 		get { return Convert.ToInt32(this[_Size]); }
 		set { this[_Size] = value; }
-	}
-	public string BINARYTRANSFER
-	{
-		get;
-		set;
 	}
 
 	public DefectAttach()
