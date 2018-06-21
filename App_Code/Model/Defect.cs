@@ -257,12 +257,8 @@ public class DefectBase : IdBasedObject
 
 		List<DefectBase> ls = new List<DefectBase>();
 		string where = string.Format(" WHERE (({0} = {1}) AND ({2} is not null) {3}) ORDER BY {4}.{2} DESC", _AsUser, userid, _Order, w_where, _Tabl);
-		foreach (DataRow r in GetRecords(where))
+		foreach (DataRow r in GetRecords(where, max))
 		{
-			if (max > 0 && ls.Count > max)
-			{
-				break;
-			}
 			DefectBase d = new DefectBase();
 			d.Load(r);
 			ls.Add(d);
