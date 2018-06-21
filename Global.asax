@@ -4,7 +4,7 @@
 	void Application_Start(object sender, EventArgs e)
 	{
 		System.Web.Optimization.BundleTable.EnableOptimizations = true;
-		string[] files = new string[] { "showtask", "mytr", "ttrep", "editplan", "users", "dispositions", "severities", "dailyreport" };
+		string[] files = new string[] { "showtask", "mytr", "ttrep", "editplan", "users", "dispositions", "severities", "dailyreport", "machines" };
 		foreach (string file in files)
 		{
 			System.Web.Optimization.BundleTable.Bundles.Add(new System.Web.Optimization.ScriptBundle(string.Format("~/bundles/{0}_js", file)).Include(

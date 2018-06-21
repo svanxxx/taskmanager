@@ -1,31 +1,24 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Machines.aspx.cs" Inherits="Machines" %>
+﻿<%@ Page Title="Machines" Language="C#" MasterPageFile="~/Master.Master" AutoEventWireup="true" CodeFile="machines.aspx.cs" Inherits="Machines" %>
 
-<!DOCTYPE html>
+<asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
+	<%=System.Web.Optimization.Styles.Render("~/bundles/machines_css")%>
+	<%=System.Web.Optimization.Scripts.Render("~/bundles/machines_js")%>
+	<script src="http://mps.resnet.com/cdn/angular/angular.min.js"></script>
+</asp:Content>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-	<title>MPS Machines</title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<script type="text/javascript" src="Scripts/jquery/jquery-1.11.2.js"></script>
-	<script type="text/javascript" src="Scripts/jquery/jquery-ui.min.js"></script>
-	<script src="http://mps.resnet.com/cdn/jquery/jquery.cookie.js"></script>
-	<script type="text/javascript" src="Scripts/Common.js"></script>
-	<script src="http://mps.resnet.com/cdn/mpshelper.js"></script>
-	<script type="text/javascript" src="Scripts/Machines.js"></script>
-	<link rel="stylesheet" type="text/css" href="Scripts/jquery/jquery-ui.min.css" />
-	<link rel="stylesheet" type="text/css" href="Styles/Common.css" />
-</head>
-<body>
-	<form id="form1" runat="server">
-		<div class="container">
-			<div class="row">
-				<h1>Manage machines</h1>
-				<p id="hint" runat="server">Select machine:</p>
+<asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
+	<div ng-app="mpsapplication" ng-controller="mpscontroller">
+		<div ng-show="!hasMachine()">
+			<div class="row" ng-repeat="m in machines | orderBy : 'NAME'">
+				<button ng-click="setMachine(m.NAME)" type='button' class='btn btn-block btn-info btn-lg machinebutton'>{{m.NAME}}</button>
 			</div>
-				<div class="col-sm-12" id="maindiv" runat="server">
-				</div>
 		</div>
-	</form>
-</body>
-</html>
+		<div ng-show="hasMachine()">
+			<button type='button' class='btn btn-block btn-primary btn-lg' id='wake'>Wake Up</button>
+			<button type='button' class='btn btn-block btn-primary btn-lg' id='shut'>Shut Down</button>
+			<button type='button' class='btn btn-block btn-primary btn-lg' id='scan'>Scan for MAC</button>
+			<button type='button' class='btn btn-block btn-primary btn-lg' id='remove'>Remove</button>
+			<button ng-click="setMachine('')" type='button' class='btn btn-block btn-primary btn-lg'>Back</button>
+		</div>
+	</div>
+</asp:Content>

@@ -1098,4 +1098,14 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 		TRRec r = new TRRec();
 		return r.Enum(datetimes.ToArray());
 	}
+	[WebMethod(EnableSession = true)]
+	public List<Machine> getMachines()
+	{
+		if (!CurrentContext.Valid)
+		{
+			return new List<Machine>();
+		}
+		Machine r = new Machine();
+		return r.Enum();
+	}
 }

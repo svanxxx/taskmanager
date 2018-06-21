@@ -71,6 +71,7 @@ public partial class Machines : GTOHelper
 
 	protected void Page_Load(object sender, EventArgs e)
 	{
+		/*
 		if (string.IsNullOrEmpty(Machine))
 		{
 			hint.InnerHtml = "Select Machine:";
@@ -132,6 +133,7 @@ public partial class Machines : GTOHelper
 				}
 			}
 		}
+		*/
 	}
 	public static List<string> GetComputers()
 	{

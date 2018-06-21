@@ -165,6 +165,7 @@
 							{{h.EVENT}}
 						</div>
 						<div class="col-sm-3">
+							<img ng-show="h.ASSIGNUSERID > 0" ng-src="{{h.ASSIGNUSERID | getUserImgById:this}}" alt="Smile" height="20" width="20"></img>
 							<b>{{h.ASSIGNUSERID | getUserById:this}}</b> <span class="badge">{{h.TIME}}</span>
 						</div>
 						{{h.NOTES}}	&nbsp;
@@ -174,17 +175,17 @@
 			<div id="history" class="tab-pane fade">
 				<div class="list-group">
 					<a href="#" class="list-group-item" ng-repeat="h in history">
-						<div class="col-sm-2">
+						<div class="col-sm-3">
 							<img ng-src="{{h.IDUSER | getUserImgById:this}}" alt="Smile" height="20" width="20">
 							<b>{{h.IDUSER | getUserById:this}}</b>
 						</div>
 						<div class="col-sm-2">
-							{{h.DATE}}
+							<span>{{h.DATE}}</span>
 						</div>
-						<div class="col-sm-7">
-							{{h.NOTES}}
+						<div class="col-sm-6">
+							<span>{{h.NOTES}}</span>
 						</div>
-						&nbsp;
+						<span>&nbsp</span>
 					</a>
 				</div>
 			</div>
