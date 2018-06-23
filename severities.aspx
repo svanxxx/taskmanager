@@ -21,7 +21,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="d in severs | orderBy : 'FORDER'">
+				<tr ng-repeat="d in severs | orderBy : 'FORDER'" class="{{d.changed?'data-changed':''}}">
 					<td ng-click="enterdata(d, 'DESCR')">{{d.DESCR}}</td>
 					<td ng-click="enterdata(d, 'FORDER')">{{d.FORDER}}</td>
 					<td ng-click="enterdata(d, 'PLAN')">{{d.PLAN}}</td>

@@ -3,10 +3,6 @@
 	padding: 2px;
 }
 
-.task-moved {
-	background: repeating-linear-gradient( -45deg, transparent, transparent 10px, lightgray 10px, lightgray 20px );
-}
-
 .person {
 	padding-left: 5px;
 	padding-right: 5px;
@@ -14,12 +10,6 @@
 
 .taskselector {
 	float: right;
-}
-
-.savebutton {
-	position: absolute;
-	top: 10%;
-	left: 0;
 }
 
 .userslist {

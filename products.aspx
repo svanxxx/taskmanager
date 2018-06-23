@@ -20,9 +20,9 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="p in products | orderBy : 'FORDER'">
-					<td ng-click="enterdata(p, 'DESCR')">{{p.DESCR}}</td>
-					<td ng-click="enterdata(p, 'FORDER')">{{p.FORDER}}</td>
+				<tr ng-repeat="d in products | orderBy : 'FORDER'" class="{{d.changed?'data-changed':''}}">
+					<td ng-click="enterdata(d, 'DESCR')">{{d.DESCR}}</td>
+					<td ng-click="enterdata(d, 'FORDER')">{{d.FORDER}}</td>
 				</tr>
 			</tbody>
 		</table>

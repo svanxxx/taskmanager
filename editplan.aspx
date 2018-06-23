@@ -26,7 +26,7 @@
 			</ul>
 			<div class="tab-content panel panel-default">
 				<div id="plan" class="tab-pane fade in active">
-					<div ng-repeat="d in defects" ng-style="{{d.DISPO | getDispoColorById:this}}" class="task alert {{d.orderchanged?'task-moved':''}}">
+					<div ng-repeat="d in defects" ng-style="{{d.DISPO | getDispoColorById:this}}" class="task alert {{d.orderchanged?'data-changed':''}}">
 						<a href="showtask.aspx?ttid={{d.ID}}" target="_blank">
 							<span class="badge">{{d.ID}}</span>
 						</a>
@@ -38,7 +38,7 @@
 					</div>
 				</div>
 				<div id="unscheduled" class="tab-pane fade">
-					<div ng-repeat="d in unscheduled" ng-style="{{d.DISPO | getDispoColorById:this}}" class="task alert {{d.orderchanged?'task-moved':''}}">
+					<div ng-repeat="d in unscheduled" ng-style="{{d.DISPO | getDispoColorById:this}}" class="task alert {{d.orderchanged?'data-changed':''}}">
 						<a href="showtask.aspx?ttid={{d.ID}}" target="_blank">
 							<span class="badge">{{d.ID}}</span>
 						</a>

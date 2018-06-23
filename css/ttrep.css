@@ -15,9 +15,3 @@
 	height: 500px;
 	overflow: scroll;
 }
-
-.savebutton {
-	position: absolute;
-	top: 10%;
-	left: 0;
-}

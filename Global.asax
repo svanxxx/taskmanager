@@ -12,7 +12,8 @@
 				, string.Format("~/scripts/{0}.js", file)
 				));
 			System.Web.Optimization.BundleTable.Bundles.Add(new System.Web.Optimization.StyleBundle(string.Format("~/bundles/{0}_css", file)).Include(
-				string.Format("~/css/{0}.css", file)
+				string.Format("~/css/dataedit.css", file)
+				, string.Format("~/css/{0}.css", file)
 				));
 		}
 	}
