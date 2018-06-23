@@ -28,6 +28,7 @@
 	</script>
 </head>
 <body>
+	<input type="hidden" id="referenceid" value="<%=ReferenceVersion.REFSVERSION()%>"/>
 	<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -48,7 +49,8 @@
 					<li><a href="machines.aspx"><span class="glyphicon glyphicon-phone"></span>Machines</a></li>
 					<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">References<span class="caret"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="dispositions.aspx"><span class="glyphicon glyphicon-bookmark"></span>Dispos</a></li>
+							<li><a href="dispositions.aspx"><span class="glyphicon glyphicon-bookmark"></span>Dispositions</a></li>
+							<li><a href="components.aspx"><span class="glyphicon glyphicon-bookmark"></span>Components</a></li>
 							<li><a href="severities.aspx"><span class="glyphicon glyphicon-bookmark"></span>Severities</a></li>
 							<li><a href="users.aspx"><span class="glyphicon glyphicon-user"></span>Users</a></li>
 						</ul>

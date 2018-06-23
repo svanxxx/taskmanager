@@ -53,6 +53,10 @@ public class IdBasedObject
 	bool[] _modified;
 	DataRow _values;
 
+	public int GetID()
+	{
+		return Convert.ToInt32(this[_fldid]);
+	}
 	public void FromAnotherObject(IdBasedObject obj)
 	{
 		foreach (var c in _columns)

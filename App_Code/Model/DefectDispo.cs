@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class DefectDispo : IdBasedObject
+public class DefectDispo : Reference
 {
 	static string _ID = "idRecord";
 	static string _Desc = "Descriptor";

@@ -1,9 +1,9 @@
-﻿var storageversion = "0";
-function loadReference($scope, member, $http, localmember, functionname) {
+﻿function loadReference($scope, member, $http, localmember, functionname) {
 	var m = localmember + "_storageversion";
-	if (localStorage[m] != storageversion) {
+	var curr = document.getElementById("referenceid").value;
+	if (localStorage[m] != curr) {
 		localStorage.removeItem(localmember);
-		localStorage[m] = storageversion;
+		localStorage[m] = curr;
 	}
 
 	if (localStorage[localmember]) {

@@ -14,18 +14,15 @@
 					dispos.push($scope.dispos[i])
 				}
 			}
-			$http.post("trservice.asmx/setdispos", angular.toJson({ "dispos": dispos }), )
+			$http.post("trservice.asmx/setdispos", angular.toJson({ "data": dispos }), )
 				.then(function (response) {
 					EndProgress(prg);
 					$scope.changed = false;
 				});
 		}
-		var taskprg = StartProgress("Loading data...");
-		$scope.dispos = [];
-		$http.post("trservice.asmx/gettaskdispos", JSON.stringify({}))
-			.then(function (result) {
-				$scope.dispos = result.data.d;
-			});
+
+		getDispos($scope, "dispos", $http);
+
 		$scope.changed = false;
 		$scope.enterdata = function (object, prop) {
 			var oldval = object[prop];
@@ -39,6 +36,5 @@
 				$scope.changed = true;
 			}
 		}
-		EndProgress(taskprg);
 	}]);
 })

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class DefectSeverity : IdBasedObject
+public class DefectSeverity : Reference
 {
 	private const string _ID = "idRecord";
 	private const string _Desc = "Descriptor";

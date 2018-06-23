@@ -795,7 +795,50 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 		return ls;
 	}
 
+	//========================references==============================================================
 	//================================================================================================
+	void StoreObjects(IdBasedObject[] data)
+	{
+		foreach (var d in data)
+		{
+			var dstore = Activator.CreateInstance(d.GetType(), d.GetID()) as IdBasedObject;
+			dstore.FromAnotherObject(d);
+			if (dstore.IsModified())
+			{
+				dstore.Store();
+			}
+		}
+	}
+	[WebMethod(EnableSession = true)]
+	public List<DefectComp> gettaskcomps()
+	{
+		return DefectComp.Enum();
+	}
+	[WebMethod(EnableSession = true)]
+	public void settaskcomps(List<DefectComp> data)
+	{
+		StoreObjects(data.ToArray());
+	}
+	[WebMethod(EnableSession = true)]
+	public List<DefectDispo> gettaskdispos()
+	{
+		return DefectDispo.Enum();
+	}
+	[WebMethod(EnableSession = true)]
+	public void setdispos(List<DefectDispo> data)
+	{
+		StoreObjects(data.ToArray());
+	}
+	[WebMethod(EnableSession = true)]
+	public List<DefectSeverity> gettasksevers()
+	{
+		return DefectSeverity.Enum();
+	}
+	[WebMethod(EnableSession = true)]
+	public void setsevers(List<DefectSeverity> data)
+	{
+		StoreObjects(data.ToArray());
+	}
 	//================================================================================================
 	//================================================================================================
 	[WebMethod(EnableSession = true)]
@@ -847,25 +890,6 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 		return "OK";
 	}
 	[WebMethod(EnableSession = true)]
-	public List<DefectDispo> gettaskdispos()
-	{
-		return DefectDispo.Enum();
-	}
-	[WebMethod(EnableSession = true)]
-	public string setdispos(List<DefectDispo> dispos)
-	{
-		foreach (DefectDispo d in dispos)
-		{
-			DefectDispo dstore = new DefectDispo(d.ID);
-			dstore.FromAnotherObject(d);
-			if (dstore.IsModified())
-			{
-				dstore.Store();
-			}
-		}
-		return "OK";
-	}
-	[WebMethod(EnableSession = true)]
 	public List<DefectHistory> gettaskhistory(string ttid)
 	{
 		if (string.IsNullOrEmpty(ttid))
@@ -900,29 +924,6 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 	public List<DefectPriority> gettaskpriorities()
 	{
 		return DefectPriority.Enum();
-	}
-	[WebMethod(EnableSession = true)]
-	public List<DefectComp> gettaskcomps()
-	{
-		return DefectComp.Enum();
-	}
-	[WebMethod(EnableSession = true)]
-	public List<DefectSeverity> gettasksevers()
-	{
-		return DefectSeverity.Enum();
-	}
-	[WebMethod(EnableSession = true)]
-	public void setsevers(List<DefectSeverity> severs)
-	{
-		foreach (var s in severs)
-		{
-			DefectSeverity dstore = new DefectSeverity(s.ID);
-			dstore.FromAnotherObject(s);
-			if (dstore.IsModified())
-			{
-				dstore.Store();
-			}
-		}
 	}
 	[WebMethod(EnableSession = true)]
 	public List<DefectUser> gettaskusers()
