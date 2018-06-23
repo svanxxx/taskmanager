@@ -6,22 +6,22 @@
 		}
 		$scope.save = function () {
 			var prg = StartProgress("Saving data...");
-			var comps = [];
-			for (var i = 0; i < $scope.comps.length; i++) {
-				var ch = $scope.comps[i].changed;
+			var products = [];
+			for (var i = 0; i < $scope.products.length; i++) {
+				var ch = $scope.products[i].changed;
 				if (ch) {
-					delete $scope.comps[i].changed;
-					comps.push($scope.comps[i])
+					delete $scope.products[i].changed;
+					products.push($scope.products[i])
 				}
 			}
-			$http.post("trservice.asmx/settaskcomps", angular.toJson({ "data": comps }), )
+			$http.post("trservice.asmx/settaskproducts", angular.toJson({ "data": products }), )
 				.then(function (response) {
 					EndProgress(prg);
 					$scope.changed = false;
 				});
 		}
 
-		getComps($scope, "comps", $http);
+		getProducts($scope, "products", $http);
 
 		$scope.changed = false;
 		$scope.enterdata = function (object, prop) {

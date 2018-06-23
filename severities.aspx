@@ -21,7 +21,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="d in severs">
+				<tr ng-repeat="d in severs | orderBy : 'FORDER'">
 					<td ng-click="enterdata(d, 'DESCR')">{{d.DESCR}}</td>
 					<td ng-click="enterdata(d, 'FORDER')">{{d.FORDER}}</td>
 					<td ng-click="enterdata(d, 'PLAN')">{{d.PLAN}}</td>

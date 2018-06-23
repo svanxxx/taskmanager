@@ -3,9 +3,6 @@ using System.Collections.Generic;
 
 public class DefectDispo : Reference
 {
-	static string _ID = "idRecord";
-	static string _Desc = "Descriptor";
-	static string _idOrd = "FieldOrder";
 	static string _Color = "Color";
 	static string _ReqWork = "RequireWork";
 	static string _Working = "BeingEorked";
@@ -13,11 +10,6 @@ public class DefectDispo : Reference
 	static string _Tabl = "[TT_RES].[DBO].[FLDDISPO]";
 	static string[] _allCols = new string[] { _ID, _Desc, _idOrd, _Color, _ReqWork, _Working };
 
-	public int ID
-	{
-		get { return Convert.ToInt32(this[_ID]); }
-		set { this[_ID] = value; }
-	}
 	public int REQUIREWORK
 	{
 		get { return Convert.ToInt32(this[_ReqWork]); }
@@ -32,16 +24,6 @@ public class DefectDispo : Reference
 	{
 		get { return this[_Color].ToString(); }
 		set { this[_Color] = value; }
-	}
-	public string DESCR
-	{
-		get { return this[_Desc].ToString(); }
-		set { this[_Desc] = value; }
-	}
-	public string FORDER
-	{
-		get { return this[_idOrd].ToString(); }
-		set { this[_idOrd] = value; }
 	}
 	public DefectDispo()
 		: base(_Tabl, _allCols, 1.ToString(), _ID, false)

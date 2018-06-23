@@ -839,6 +839,16 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 	{
 		StoreObjects(data.ToArray());
 	}
+	[WebMethod(EnableSession = true)]
+	public List<DefectProduct> gettaskproducts()
+	{
+		return DefectProduct.Enum();
+	}
+	[WebMethod(EnableSession = true)]
+	public void settaskproducts(List<DefectProduct> data)
+	{
+		StoreObjects(data.ToArray());
+	}
 	//================================================================================================
 	//================================================================================================
 	[WebMethod(EnableSession = true)]
@@ -914,11 +924,6 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 	public List<DefectType> gettasktypes()
 	{
 		return DefectType.Enum();
-	}
-	[WebMethod(EnableSession = true)]
-	public List<DefectProduct> gettaskproducts()
-	{
-		return DefectProduct.Enum();
 	}
 	[WebMethod(EnableSession = true)]
 	public List<DefectPriority> gettaskpriorities()

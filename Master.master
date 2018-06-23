@@ -52,6 +52,7 @@
 							<li><a href="dispositions.aspx"><span class="glyphicon glyphicon-bookmark"></span>Dispositions</a></li>
 							<li><a href="components.aspx"><span class="glyphicon glyphicon-bookmark"></span>Components</a></li>
 							<li><a href="severities.aspx"><span class="glyphicon glyphicon-bookmark"></span>Severities</a></li>
+							<li><a href="products.aspx"><span class="glyphicon glyphicon-bookmark"></span>Products</a></li>
 							<li><a href="users.aspx"><span class="glyphicon glyphicon-user"></span>Users</a></li>
 						</ul>
 					</li>
