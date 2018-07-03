@@ -18,7 +18,7 @@
 			<div class="col-sm-3">
 				<div class="row">
 					<div class="col-sm-3">
-						<h6>Type:</h6>
+						<h6><a href="types.aspx" target="_blank">Type:</a></h6>
 					</div>
 					<div class="col-sm-9">
 						<select class="form-control input-sm" id="type" ng-disabled="!canChangeDefect()" ng-model="defect.TYPE">
@@ -28,7 +28,7 @@
 				</div>
 				<div class="row">
 					<div class="col-sm-3">
-						<h6>Product:</h6>
+						<h6><a href="products.aspx" target="_blank">Product:</a></h6>
 					</div>
 					<div class="col-sm-9">
 						<select class="form-control input-sm" id="product" ng-disabled="!canChangeDefect()" ng-model="defect.PRODUCT">
@@ -48,7 +48,7 @@
 			<div class="col-sm-3">
 				<div class="row">
 					<div class="col-sm-3">
-						<h6>Disposition:</h6>
+						<h6><a href="dispositions.aspx" target="_blank">Disposition:</a></h6>
 					</div>
 					<div class="col-sm-9">
 						<select class="form-control input-sm" id="dispo" ng-disabled="!canChangeDefect()" ng-model="defect.DISPO">
@@ -58,7 +58,7 @@
 				</div>
 				<div class="row">
 					<div class="col-sm-3">
-						<h6>Priority:</h6>
+						<h6><a href="priorities.aspx" target="_blank">Priorities:</a></h6>
 					</div>
 					<div class="col-sm-9">
 						<select class="form-control input-sm" id="prio" ng-disabled="!canChangeDefect()" ng-model="defect.PRIO">
@@ -68,7 +68,7 @@
 				</div>
 				<div class="row">
 					<div class="col-sm-3">
-						<h6>Component:</h6>
+						<h6><a href="components.aspx" target="_blank">Component:</a></h6>
 					</div>
 					<div class="col-sm-9">
 						<select class="form-control input-sm" id="comp" ng-disabled="!canChangeDefect()" ng-model="defect.COMP">
@@ -80,7 +80,7 @@
 			<div class="col-sm-3">
 				<div class="row">
 					<div class="col-sm-3">
-						<h6>Severity:</h6>
+						<h6><a href="severities.aspx" target="_blank">Severity:</a></h6>
 					</div>
 					<div class="col-sm-9">
 						<select class="form-control input-sm" id="dispo" ng-disabled="!canChangeDefect()" ng-model="defect.SEVE">

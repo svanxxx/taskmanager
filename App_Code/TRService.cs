@@ -849,6 +849,26 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 	{
 		StoreObjects(data.ToArray());
 	}
+	[WebMethod(EnableSession = true)]
+	public List<DefectType> gettasktypes()
+	{
+		return DefectType.Enum();
+	}
+	[WebMethod(EnableSession = true)]
+	public void settasktypes(List<DefectType> data)
+	{
+		StoreObjects(data.ToArray());
+	}
+	[WebMethod(EnableSession = true)]
+	public List<DefectPriority> gettaskpriorities()
+	{
+		return DefectPriority.Enum();
+	}
+	[WebMethod(EnableSession = true)]
+	public void settaskpriorities(List<DefectPriority> data)
+	{
+		StoreObjects(data.ToArray());
+	}
 	//================================================================================================
 	//================================================================================================
 	[WebMethod(EnableSession = true)]
@@ -919,16 +939,6 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 		if (string.IsNullOrEmpty(ttid))
 			return null;
 		return DefectEvent.GetEventsByTask(Convert.ToInt32(ttid));
-	}
-	[WebMethod(EnableSession = true)]
-	public List<DefectType> gettasktypes()
-	{
-		return DefectType.Enum();
-	}
-	[WebMethod(EnableSession = true)]
-	public List<DefectPriority> gettaskpriorities()
-	{
-		return DefectPriority.Enum();
 	}
 	[WebMethod(EnableSession = true)]
 	public List<DefectUser> gettaskusers()

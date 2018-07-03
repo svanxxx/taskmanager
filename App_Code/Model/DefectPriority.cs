@@ -1,33 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-public class DefectPriority : IdBasedObject
+public class DefectPriority : Reference
 {
-	private const string _ID = "idRecord";
-	private const string _Desc = "Descriptor";
-	private const string _idOrd = "FieldOrder";
 	private const string _Tabl = "[TT_RES].[DBO].[FLDPRIOR]";
-	public string ID
-	{
-		get { return this[_ID].ToString(); }
-		set { this[_ID] = value; }
-	}
-	public string DESCR
-	{
-		get { return this[_Desc].ToString(); }
-		set { this[_Desc] = value; }
-	}
-	public string FORDER
-	{
-		get { return this[_idOrd].ToString(); }
-		set { this[_idOrd] = value; }
-	}
 	public DefectPriority()
-		: base(_Tabl, new string[] { _ID }, 1.ToString(), _ID, false)
+		: base(_Tabl, _allBaseCols, 1.ToString(), _ID, false)
 	{
 	}
 	public DefectPriority(int id)
-		: base(	_Tabl, new string[] {_ID, _Desc, _idOrd }, id.ToString(), _ID)
+		: base(	_Tabl, _allBaseCols, id.ToString(), _ID)
 	{
 	}
 	public static List<DefectPriority> Enum()

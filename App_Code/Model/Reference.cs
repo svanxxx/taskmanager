@@ -26,6 +26,7 @@ public class Reference : IdBasedObject
 	protected const string _ID = "idRecord";
 	protected const string _Desc = "Descriptor";
 	protected const string _idOrd = "FieldOrder";
+	protected static string[] _allBaseCols = new string[] { _ID, _Desc, _idOrd };
 
 	public int ID
 	{
