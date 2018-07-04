@@ -38,4 +38,24 @@ public class DefectComp : Reference
 		}
 		return res;
 	}
+	static int _VacationRec = -1;
+	override public void Store()
+	{
+		_VacationRec = -1;
+		base.Store();
+	}
+	public static int GetVacationRec()
+	{
+		if (_VacationRec != -1)
+		{
+			return _VacationRec;
+		}
+
+		foreach (int i in EnumRecords(_Tabl, _ID, new string[] { _Vac }, new object[] { 1 }))
+		{
+			_VacationRec = i;
+			return i;
+		}
+		return 1;
+	}
 }

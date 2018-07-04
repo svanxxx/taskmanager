@@ -22,6 +22,7 @@ $(function () {
 		};
 	});
 
+	app.filter('getCompById', getCompById);
 	app.filter('getDispoById', getDispoById);
 	app.filter('getDispoColorById', getDispoColorById);
 
@@ -45,6 +46,9 @@ $(function () {
 			}
 			if (!("dispositions" in $scope.DefectsFilter)) {
 				$scope.DefectsFilter.dispositions = [];
+			}
+			if (!("components" in $scope.DefectsFilter)) {
+				$scope.DefectsFilter.components = [];
 			}
 			if (!("users" in $scope.DefectsFilter)) {
 				$scope.DefectsFilter.users = [];

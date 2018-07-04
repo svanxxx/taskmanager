@@ -49,13 +49,14 @@ public class DefectBase : IdBasedObject
 	protected static string _AsUser = "idUsr";
 	protected static string _Seve = "idSeverity";
 	protected static string _sMod = "sModifier";
+	static protected string _Comp = "idCompon";
 
 	protected static string _BackOr = "_BackOr";
 
 	protected static string _Tabl = "[TT_RES].[DBO].[DEFECTS]";
 
-	static string[] _allcols = new string[] { _ID, _Summ, _idRec, _Disp, _Est, _Order, _AsUser, _Seve, _sMod, _BackOrder };
-	static string[] _allcolsNames = new string[] { _ID, "Summary", _idRec, "Disposition", "Estimation", "Schedule Order", "Assigned User", "Severity", "", "Schedule Order" };
+	static string[] _allcols = new string[] { _ID, _Summ, _idRec, _Disp, _Est, _Order, _AsUser, _Seve, _sMod, _BackOrder, _Comp };
+	static string[] _allcolsNames = new string[] { _ID, "Summary", _idRec, "Disposition", "Estimation", "Schedule Order", "Assigned User", "Severity", "", "Schedule Order", "Component" };
 
 	public string SEVE
 	{
@@ -152,6 +153,11 @@ public class DefectBase : IdBasedObject
 			}
 			this[_AsUser] = Convert.ToInt32(value);
 		}
+	}
+	public string COMP
+	{
+		get { return this[_Comp].ToString(); }
+		set { this[_Comp] = Convert.ToInt32(value); }
 	}
 
 	protected override void OnProcessComplexColumn(string col, object val)
@@ -303,9 +309,14 @@ public class DefectBase : IdBasedObject
 		{
 			w_where2 = string.Format(" AND  ({0} in ({1}))", _AsUser, string.Join(",", f.users));
 		}
+		string w_where3 = "";
+		if (f.components.Count > 0)
+		{
+			w_where3 = string.Format(" AND  ({0} in ({1}))", _Comp, string.Join(",", f.components));
+		}
 
 		List<DefectBase> ls = new List<DefectBase>();
-		string where = string.Format(" WHERE ({0} > 0 {1} {2}) ORDER BY {0} DESC", _ID, w_where1, w_where2);
+		string where = string.Format(" WHERE ({0} > 0 {1} {2} {3}) ORDER BY {0} DESC", _ID, w_where1, w_where2, w_where3);
 		foreach (DataRow r in GetRecords(where, 200))
 		{
 			DefectBase d = new DefectBase();
@@ -320,6 +331,7 @@ public class DefectsFilter
 	public DefectsFilter() { }
 	public List<int> dispositions;
 	public List<int> users;
+	public List<int> components;
 }
 public class Defect : DefectBase
 {
@@ -332,7 +344,6 @@ public class Defect : DefectBase
 	static protected string _Prod = "idProduct";
 	static protected string _Ref = "Reference";
 	static protected string _Prio = "idPriority";
-	static protected string _Comp = "idCompon";
 	static protected string _Date = "dateEnter";
 	static protected string _Crea = "idCreateBy";
 	static string[] _allcols = new string[] { _ID, _Specs, _Summ, _Desc, _idRec, _Type, _Prod, _Ref, _Disp, _Prio, _Comp, _Seve, _Date, _Crea, _Est, _Order, _AsUser, _sMod, _BackOrder };
@@ -495,11 +506,6 @@ public class Defect : DefectBase
 	{
 		get { return this[_Crea].ToString(); }
 		set { this[_Crea] = Convert.ToUInt32(value); }
-	}
-	public string COMP
-	{
-		get { return this[_Comp].ToString(); }
-		set { this[_Comp] = Convert.ToInt32(value); }
 	}
 	public string PRIO
 	{

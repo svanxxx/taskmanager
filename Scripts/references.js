@@ -39,6 +39,11 @@ function getDispoById() {
 		return $scope.dispos.filter(function (x) { return x.ID == id; })[0].DESCR;
 	};
 }
+function getCompById() {
+	return function (id, $scope) {
+		return $scope.comps.filter(function (x) { return x.ID == id; })[0].DESCR;
+	};
+}
 function getUsers($scope, member, $http) {
 	loadReference($scope, member, $http, "users", "gettaskusers");
 }

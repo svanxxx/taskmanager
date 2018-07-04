@@ -49,6 +49,20 @@
 					</th>
 					<th nowrap>
 						<div class="dropdown middlecol">
+							<a href="#" data-toggle="dropdown" class="dropdown-toggle">Component<b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li>
+									<div ng-repeat="d in comps" class="checkbox">
+										<label>
+											<input ng-click="changeReferenceFilter(d.ID, 'components')" type="checkbox" ng-checked="{{referenceFiltered(d.ID, 'components')}}">{{d.DESCR}}
+										</label>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</th>
+					<th nowrap>
+						<div class="dropdown middlecol">
 							<a href="#" data-toggle="dropdown" class="dropdown-toggle">Created<b class="caret"></b></a>
 							<ul class="dropdown-menu">
 								<li class="usersshortlist">
@@ -71,6 +85,7 @@
 					<td nowrap>{{d.REFERENCE}}</td>
 					<td nowrap>{{d.SUMMARY}}</td>
 					<td nowrap>{{d.DISPO | getDispoById:this}}</td>
+					<td nowrap>{{d.COMP | getCompById:this}}</td>
 					<td nowrap>{{d.CREATEDBY | getUserById:this}}</td>
 				</tr>
 			</tbody>
