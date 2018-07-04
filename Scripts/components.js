@@ -6,35 +6,35 @@
 		}
 		$scope.save = function () {
 			var prg = StartProgress("Saving data...");
-			var comps = [];
-			for (var i = 0; i < $scope.comps.length; i++) {
-				var ch = $scope.comps[i].changed;
+			var refs = [];
+			for (var i = 0; i < $scope.refs.length; i++) {
+				var ch = $scope.refs[i].changed;
 				if (ch) {
-					delete $scope.comps[i].changed;
-					comps.push($scope.comps[i])
+					delete $scope.refs[i].changed;
+					refs.push($scope.refs[i])
 				}
 			}
-			$http.post("trservice.asmx/settaskcomps", angular.toJson({ "data": comps }), )
+			$http.post("trservice.asmx/settaskcomps", angular.toJson({ "data": refs }), )
 				.then(function (response) {
 					EndProgress(prg);
 					$scope.changed = false;
+					$scope.refs.sort(function (a, b) { return a.FORDER - b.FORDER; });
 				});
 		}
 
-		getComps($scope, "comps", $http);
+		getComps($scope, "refs", $http);
+		$scope.$watchCollection('refs', function (newval, oldval) {
+			if (!$scope.changed && newval && newval.length > 0) {
+				newval.sort(function (a, b) {
+					return a.FORDER - b.FORDER;
+				});
+			}
+		});
 
 		$scope.changed = false;
-		$scope.enterdata = function (object, prop) {
-			var oldval = object[prop];
-			var newvalue = window.prompt("Please enter the value", oldval);
-			if (newvalue == null || newvalue == "") {
-				return;
-			}
-			if (newvalue != oldval) {
-				object[prop] = newvalue;
-				object.changed = true;
-				$scope.changed = true;
-			}
+		$scope.itemchanged = function (r) {
+			r.changed = true;
+			$scope.changed = true;
 		}
 	}]);
 })

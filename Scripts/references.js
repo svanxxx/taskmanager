@@ -12,7 +12,8 @@
 		if (!("loaders" in $scope)) {
 			$scope["loaders"] = 0;
 		}
-		var prgtypes = StartProgress("Loading " + localmember + "..."); $scope["loaders"]++;
+		var prgtypes = StartProgress("Loading " + localmember + "..."); 
+		$scope["loaders"]++;
 		$http.post("trservice.asmx/" + functionname, JSON.stringify({}))
 			.then(function (result) {
 				$scope[member] = result.data.d;
