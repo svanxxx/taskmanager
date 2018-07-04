@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class DefectSeverity : Reference
 {
 	private const string _plan = "Planable";
 
 	private const string _Tabl = "[TT_RES].[DBO].[FLDSEVER]";
-	private static string[] _allCols = new string[] { _ID, _Desc, _idOrd, _plan };
+	static string[] _allCols = _allBaseCols.Concat(new string[] { _plan }).ToArray();
 
 	public bool PLAN
 	{

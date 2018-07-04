@@ -9,6 +9,7 @@
 		{
 			System.Web.Optimization.BundleTable.Bundles.Add(new System.Web.Optimization.ScriptBundle(string.Format("~/bundles/{0}_js", file)).Include(
 				string.Format("~/scripts/references.js", file)
+				, string.Format("~/scripts/commonrefeditor.js", file)
 				, string.Format("~/scripts/{0}.js", file)
 				));
 			System.Web.Optimization.BundleTable.Bundles.Add(new System.Web.Optimization.StyleBundle(string.Format("~/bundles/{0}_css", file)).Include(

@@ -23,12 +23,12 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="d in dispos | orderBy : 'FORDER'" class="{{d.changed?'data-changed':''}}">
-					<td ng-click="enterdata(d, 'DESCR')">{{d.DESCR}}</td>
-					<td ng-click="enterdata(d, 'COLOR')">{{d.COLOR}}</td>
-					<td ng-click="enterdata(d, 'FORDER')">{{d.FORDER}}</td>
-					<td ng-click="enterdata(d, 'REQUIREWORK')">{{d.REQUIREWORK}}</td>
-					<td ng-click="enterdata(d, 'WORKING')">{{d.WORKING}}</td>
+				<tr ng-repeat="r in refs" class="{{r.changed?'data-changed':''}}">
+					<td><input class="intable-data-input" type="text" ng-model="r.DESCR" ng-change="itemchanged(r)"></td>
+					<td><input class="intable-data-input" type="color" ng-model="r.COLOR" ng-change="itemchanged(r)"></td>
+					<td><input class="intable-data-input" type="number" min="1" max="999" ng-model="r.FORDER" ng-change="itemchanged(r)"></td>
+					<td align="center"><input type="checkbox" ng-model="r.REQUIREWORK" ng-change="itemchanged(r)"></td>
+					<td align="center"><input type="checkbox" ng-model="r.WORKING" ng-change="itemchanged(r)"></td>
 				</tr>
 			</tbody>
 		</table>

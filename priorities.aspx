@@ -20,9 +20,9 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="d in priors | orderBy : 'FORDER'" class="{{d.changed?'data-changed':''}}">
-					<td ng-click="enterdata(d, 'DESCR')">{{d.DESCR}}</td>
-					<td ng-click="enterdata(d, 'FORDER')">{{d.FORDER}}</td>
+				<tr ng-repeat="r in refs" class="{{r.changed?'data-changed':''}}">
+					<td><input class="intable-data-input" type="text" ng-model="r.DESCR" ng-change="itemchanged(r)"></td>
+					<td><input class="intable-data-input" type="number" min="1" max="999" ng-model="r.FORDER" ng-change="itemchanged(r)"></td>
 				</tr>
 			</tbody>
 		</table>

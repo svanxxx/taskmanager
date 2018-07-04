@@ -1,30 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class DefectDispo : Reference
 {
 	static string _Color = "Color";
 	static string _ReqWork = "RequireWork";
 	static string _Working = "BeingEorked";
-	
-	static string _Tabl = "[TT_RES].[DBO].[FLDDISPO]";
-	static string[] _allCols = new string[] { _ID, _Desc, _idOrd, _Color, _ReqWork, _Working };
 
-	public int REQUIREWORK
+	static string _Tabl = "[TT_RES].[DBO].[FLDDISPO]";
+	static string[] _allCols = _allBaseCols.Concat(new string[] { _Color, _ReqWork, _Working }).ToArray();
+
+	public bool REQUIREWORK
 	{
-		get { return Convert.ToInt32(this[_ReqWork]); }
-		set { this[_ReqWork] = value; }
+		get { return Convert.ToBoolean(this[_ReqWork]); }
+		set { this[_ReqWork] = value ? 1 : 0; }
 	}
-	public int WORKING
+	public bool WORKING
 	{
-		get { return Convert.ToInt32(this[_Working]); }
-		set { this[_Working] = value; }
+		get { return Convert.ToBoolean(this[_Working]); }
+		set { this[_Working] = value ? 1 : 0; }
 	}
 	public string COLOR
 	{
 		get { return this[_Color].ToString(); }
 		set { this[_Color] = value; }
 	}
+
 	public DefectDispo()
 		: base(_Tabl, _allCols, 1.ToString(), _ID, false)
 	{
