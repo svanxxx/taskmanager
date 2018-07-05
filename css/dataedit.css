@@ -14,3 +14,9 @@
 	width: 100%;
 	border: 0px;
 }
+
+@media print {
+	a[href]:after {
+		content: none !important;
+	}
+}
