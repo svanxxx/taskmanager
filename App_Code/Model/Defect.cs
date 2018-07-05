@@ -49,14 +49,14 @@ public class DefectBase : IdBasedObject
 	protected static string _AsUser = "idUsr";
 	protected static string _Seve = "idSeverity";
 	protected static string _sMod = "sModifier";
-	static protected string _Comp = "idCompon";
-
+	protected static string _Comp = "idCompon";
+	protected static string _Date = "dateEnter";
 	protected static string _BackOr = "_BackOr";
 
 	protected static string _Tabl = "[TT_RES].[DBO].[DEFECTS]";
 
-	static string[] _allcols = new string[] { _ID, _Summ, _idRec, _Disp, _Est, _Order, _AsUser, _Seve, _sMod, _BackOrder, _Comp };
-	static string[] _allcolsNames = new string[] { _ID, "Summary", _idRec, "Disposition", "Estimation", "Schedule Order", "Assigned User", "Severity", "", "Schedule Order", "Component" };
+	static string[] _allcols = new string[] { _ID, _Summ, _idRec, _Disp, _Est, _Order, _AsUser, _Seve, _sMod, _BackOrder, _Comp, _Date };
+	static string[] _allcolsNames = new string[] { _ID, "Summary", _idRec, "Disposition", "Estimation", "Schedule Order", "Assigned User", "Severity", "", "Schedule Order", "Component", "Date Entered" };
 
 	public string SEVE
 	{
@@ -158,6 +158,11 @@ public class DefectBase : IdBasedObject
 	{
 		get { return this[_Comp].ToString(); }
 		set { this[_Comp] = Convert.ToInt32(value); }
+	}
+	public string DATE
+	{
+		get { return (this[_Date] == DBNull.Value ? default(DateTime) : Convert.ToDateTime(this[_Date])).ToString(defDateFormat, CultureInfo.InvariantCulture); }
+		set { this[_Date] = Convert.ToDateTime(value, CultureInfo.InvariantCulture); }
 	}
 
 	protected override void OnProcessComplexColumn(string col, object val)
@@ -297,33 +302,47 @@ public class DefectBase : IdBasedObject
 		}
 		return ls;
 	}
-	public List<DefectBase> Enum(DefectsFilter f)
+	public List<DefectBase> Enum(DefectsFilter f, int maxrecs = 200)
 	{
-		string w_where1 = "";
-		if (f.dispositions.Count > 0)
+		List<string> lswhere = new List<string>();
+		if (f.dispositions != null && f.dispositions.Count > 0)
 		{
-			w_where1 = string.Format(" AND  ({0} in ({1}))", _Disp, string.Join(",", f.dispositions));
+			lswhere.Add(string.Format(" AND  ({0} in ({1}))", _Disp, string.Join(",", f.dispositions)));
 		}
-		string w_where2 = "";
-		if (f.users.Count > 0)
+		if (f.users != null && f.users.Count > 0)
 		{
-			w_where2 = string.Format(" AND  ({0} in ({1}))", _AsUser, string.Join(",", f.users));
+			lswhere.Add(string.Format(" AND  ({0} in ({1}))", _AsUser, string.Join(",", f.users)));
 		}
-		string w_where3 = "";
-		if (f.components.Count > 0)
+		if (f.components != null && f.components.Count > 0)
 		{
-			w_where3 = string.Format(" AND  ({0} in ({1}))", _Comp, string.Join(",", f.components));
+			lswhere.Add(string.Format(" AND  ({0} in ({1}))", _Comp, string.Join(",", f.components)));
+		}
+		if (!string.IsNullOrEmpty(f.startDateEnter))
+		{
+			lswhere.Add(string.Format(" AND  ({0} >= '{1}')", _Date, DateTime.ParseExact(f.startDateEnter, defDateFormat, CultureInfo.InvariantCulture).ToString(DBHelper.SQLDateFormat)));
+		}
+		if (!string.IsNullOrEmpty(f.endDateEnter))
+		{
+			lswhere.Add(string.Format(" AND  ({0} <= '{1}')", _Date, DateTime.ParseExact(f.endDateEnter, defDateFormat, CultureInfo.InvariantCulture).ToString(DBHelper.SQLDateFormat)));
 		}
 
 		List<DefectBase> ls = new List<DefectBase>();
-		string where = string.Format(" WHERE ({0} > 0 {1} {2} {3}) ORDER BY {0} DESC", _ID, w_where1, w_where2, w_where3);
-		foreach (DataRow r in GetRecords(where, 200))
+		string where = string.Format(" WHERE ({0} > 0 {1}) ORDER BY {0} DESC", _ID, string.Join(string.Empty, lswhere));
+		foreach (DataRow r in GetRecords(where, maxrecs))
 		{
 			DefectBase d = new DefectBase();
 			d.Load(r);
 			ls.Add(d);
 		}
 		return ls;
+	}
+	public List<DefectBase> EnumCloseVacations(string startdate)
+	{
+		DefectsFilter f = new DefectsFilter();
+		f.components = new List<int>() { DefectComp.GetVacationRec() };
+		f.startDateEnter = startdate;
+		f.endDateEnter = DateTime.ParseExact(startdate, defDateFormat, CultureInfo.InvariantCulture).AddDays(15).ToString(defDateFormat);//two weeks adnvance
+		return Enum(f, 2000);
 	}
 }
 public class DefectsFilter
@@ -332,6 +351,8 @@ public class DefectsFilter
 	public List<int> dispositions;
 	public List<int> users;
 	public List<int> components;
+	public string startDateEnter;
+	public string endDateEnter;
 }
 public class Defect : DefectBase
 {
@@ -344,7 +365,6 @@ public class Defect : DefectBase
 	static protected string _Prod = "idProduct";
 	static protected string _Ref = "Reference";
 	static protected string _Prio = "idPriority";
-	static protected string _Date = "dateEnter";
 	static protected string _Crea = "idCreateBy";
 	static string[] _allcols = new string[] { _ID, _Specs, _Summ, _Desc, _idRec, _Type, _Prod, _Ref, _Disp, _Prio, _Comp, _Seve, _Date, _Crea, _Est, _Order, _AsUser, _sMod, _BackOrder };
 	static string[] _allcolsNames = new string[] { _ID, "Specification", "Summary", "Details", _idRec, "Type", "Product", "Reference", "Disposition", "Priority", "Component", "Severity", "Date", "Created By", "Estimation", "Schedule Order", "Assigned User", "", "Schedule Order" };
@@ -496,11 +516,6 @@ public class Defect : DefectBase
 	{
 		get { return this[_Specs].ToString(); }
 		set { this[_Specs] = value; }
-	}
-	public string DATE
-	{
-		get { return (this[_Date] == DBNull.Value ? default(DateTime) : Convert.ToDateTime(this[_Date])).ToString(defDateFormat, CultureInfo.InvariantCulture); }
-		set { this[_Date] = Convert.ToDateTime(value, CultureInfo.InvariantCulture); }
 	}
 	public string CREATEDBY
 	{

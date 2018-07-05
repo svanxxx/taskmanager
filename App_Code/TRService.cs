@@ -1124,4 +1124,9 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 		Machine r = new Machine();
 		return r.Enum();
 	}
+	[WebMethod(EnableSession = true)]
+	public List<DefectBase> EnumCloseVacations(string start)
+	{
+		return (new DefectBase()).EnumCloseVacations(start);
+	}
 }

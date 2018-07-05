@@ -7,3 +7,11 @@
 .task {
 	white-space: nowrap;
 }
+
+.vacation-box {
+	display: inline;
+}
+
+table > tbody > tr > td:first-child {
+	text-align: center;
+}

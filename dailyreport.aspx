@@ -17,6 +17,12 @@
 			</div>
 		</div>
 		<table class="table table-hover table-bordered">
+			<colgroup>
+				<col width="10%" />
+				<col width="30%" />
+				<col width="30%" />
+				<col width="30%" />
+			</colgroup>
 			<thead>
 				<tr class="info">
 					<th>Person</th>
@@ -27,20 +33,39 @@
 			</thead>
 			<tbody>
 				<tr ng-repeat="u in users | filter:{ INWORK: true } | orderBy : 'PERSON_NAME'">
-					<td>{{u.PERSON_NAME}}</td>
 					<td>
+						<img ng-src="{{u.ID | getUserImgById:this}}" alt="Smile" height="20" width="20">
+						{{u.PERSON_NAME}}
+					</td>
+					<td>
+						<div ng-repeat="v in vacations | filter: { AUSER : u.TTUSERID, DATE: yesterdaystring }">
+							<a href="showtask.aspx?ttid={{v.ID}}" target="_blank">
+								<h3><span class="glyphicon glyphicon-plane"></span></h3>
+							</a>
+						</div>
 						<div ng-repeat="l in u.YESTERDAY track by $index">
-							<span>{{l}}</span><br>
+							<span>{{l | limitTo:80}}</span><br>
 						</div>
 					</td>
 					<td>
+						<div ng-repeat="v in vacations | filter: { AUSER : u.TTUSERID, DATE: todaystring }">
+							<a href="showtask.aspx?ttid={{v.ID}}" target="_blank">
+								<h3><span class="glyphicon glyphicon-plane"></span></h3>
+							</a>
+						</div>
 						<div ng-repeat="l in u.TODAY track by $index">
-							<span>{{l}}</span><br>
+							<span>{{l | limitTo:80}}</span><br>
 						</div>
 					</td>
 					<td>
-						<img src="IMAGES/process.gif" ng-hide="planLoaded(u.ID)"/>
-						<div class="task" ng-repeat="d in u.PLAN track by $index">
+						<img src="IMAGES/process.gif" ng-hide="planLoaded(u.ID)" />
+						<div>
+							<h3 class="vacation-box">{{getUpcomingdays(u)}}</h3>
+							<a href="showtask.aspx?ttid={{v.ID}}" target="_blank" ng-repeat="v in vacations | filter: { AUSER : u.TTUSERID } | filter: {DATE: '!' + todaystring} | filter: {DATE: '!' + yesterdaystring}">
+								<h3 class="vacation-box"><span class="glyphicon glyphicon-plane"></span></h3>
+							</a>
+						</div>
+						<div ng-repeat="d in u.PLAN track by $index" ng-style="{{d.DISPO | getDispoColorById:this}}" class="task">
 							<a href="showtask.aspx?ttid={{d.ID}}" target="_blank">
 								<span class="badge">{{d.ID}}</span>
 							</a>

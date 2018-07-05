@@ -1,17 +1,71 @@
 ﻿$(function () {
 	var app = angular.module('mpsapplication', []);
+	app.filter('getDispoColorById', getDispoColorById);
+	app.filter('getUserImgById', function () {
+		return function (id, $scope) {
+			for (i = 0; i < $scope.users.length; i++) {
+				if ($scope.users[i].ID == id) {
+					return $scope.getPersonImg($scope.users[i].EMAIL);
+				}
+			}
+			return "";
+		};
+	});
+
 	app.controller('mpscontroller', ["$scope", "$http", function ($scope, $http) {
 		$scope["loaders"] = 0;
+
 		$scope.today = new Date();
+		$scope.today.setHours(0, 0, 0, 0);
 		$scope.yesterday = new Date();
 		$scope.yesterday.setDate($scope.yesterday.getDate() - 1);
+		$scope.yesterday.setHours(0, 0, 0, 0);
+
+		$scope.vacations = [];
+		$scope.users = [];
+
+		getDispos($scope, "dispos", $http);
+
+		$scope.getPersonImg = function (email) {
+			if ($scope.users && email != "") {
+				return "images/personal/" + email + ".jpg";
+			}
+			return "";
+		}
+
+		$scope.getUpcomingdays = function (u) {
+			var difference = 0;
+			for (var i = 0; i < $scope.vacations.length; i++) {
+				var vac = $scope.vacations[i];
+				var d = StringToDate(vac.DATE);
+				if (vac.AUSER == u.TTUSERID && d > $scope.today) {
+					difference = d - $scope.today;
+				}
+			}
+			difference = Math.floor(difference / 1000 / 60 / 60 / 24);
+			if (difference < 2) {
+				return "";
+			} else {
+				return "Upcoming in " + difference + " days: ";
+			}
+		}
+
 		$scope.loadData = function () {
+			$scope.todaystring = DateToString($scope.today);
+			$scope.yesterdaystring = DateToString($scope.yesterday);
+
 			var taskprg = StartProgress("Loading data..."); $scope["loaders"]++;
-			$scope.users = [];
 			$http.post("trservice.asmx/getMPSusers", JSON.stringify({ "active": true }))
 				.then(function (result) {
 					EndProgress(taskprg); $scope["loaders"]--;
 					$scope.users = result.data.d;
+					var vacationprg = StartProgress("Loading vacations..."); $scope["loaders"]++
+					$http.post("trservice.asmx/EnumCloseVacations", JSON.stringify({ "start": DateToString($scope.yesterday) }))
+						.then(function (result) {
+							$scope.vacations = result.data.d;
+							EndProgress(vacationprg); $scope["loaders"]--;
+						})
+
 					var reportskprg = StartProgress("Loading reports..."); $scope["loaders"]++
 					$http.post("trservice.asmx/getreports", JSON.stringify({ "dates": [DateToString($scope.today), DateToString($scope.yesterday)] }))
 						.then(function (result) {
