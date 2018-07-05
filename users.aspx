@@ -24,13 +24,13 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="u in users">
-					<td ng-click="enterdata(u, 'PERSON_NAME')">{{u.PERSON_NAME}}</td>
-					<td ng-click="enterdata(u, 'ADDRESS')">{{u.ADDRESS}}</td>
-					<td ng-click="enterdata(u, 'LOGIN')">{{u.LOGIN}}</td>
-					<td ng-click="enterdata(u, 'PASSWORD')">{{u.PASSWORD | passwordFilter}}</td>
-					<td ng-click="enterdata(u, 'PHONE')">{{u.PHONE}}</td>
-					<td ng-click="enterdata(u, 'INWORK')">{{u.INWORK}}</td>
+				<tr ng-repeat="u in users | orderBy : 'PERSON_NAME'">
+					<td><input class="intable-data-input" type="text" ng-model="u.PERSON_NAME" ng-change="itemchanged(u)"></td>
+					<td><input class="intable-data-input" type="text" ng-model="u.ADDRESS" ng-change="itemchanged(u)"></td>
+					<td><input class="intable-data-input" type="text" ng-model="u.LOGIN" ng-change="itemchanged(u)"></td>
+					<td><input class="intable-data-input" type="password" ng-model="u.PASSWORD" ng-change="itemchanged(u)" placeholder="********"></td>
+					<td><input class="intable-data-input" type="text" ng-model="u.PHONE" ng-change="itemchanged(u)"></td>
+					<td align="center"><input type="checkbox" ng-model="u.INWORK" ng-change="itemchanged(u)"></td>
 				</tr>
 			</tbody>
 		</table>

@@ -38,17 +38,9 @@
 				$scope.users = result.data.d;
 			});
 		$scope.changed = false;
-		$scope.enterdata = function (object, prop) {
-			var oldval = object[prop];
-			var newvalue = window.prompt("Please enter the value", oldval);
-			if (newvalue == null || newvalue == "") {
-				return;
-			}
-			if (newvalue != oldval) {
-				object[prop] = newvalue;
-				object.changed = true;
-				$scope.changed = true;
-			}
+		$scope.itemchanged = function (r) {
+			r.changed = true;
+			$scope.changed = true;
 		}
 		EndProgress(taskprg);
 	}]);
