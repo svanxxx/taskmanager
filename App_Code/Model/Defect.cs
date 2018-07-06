@@ -103,6 +103,9 @@ public class DefectBase : IdBasedObject
 			}
 		}
 	}
+	protected virtual void OnBackOrderChanged()
+	{
+	}
 	public int BACKORDER
 	{
 		get { return this[_BackOrder] == DBNull.Value ? -1 : Convert.ToInt32(this[_BackOrder]); }
@@ -110,7 +113,7 @@ public class DefectBase : IdBasedObject
 		{
 			if (BACKORDER != value)
 			{
-				this[_sMod] = CurrentContext.User.EMAIL;
+				OnBackOrderChanged();
 			}
 			if (value == -1)
 			{
@@ -541,6 +544,10 @@ public class Defect : DefectBase
 	{
 		get { return this[_Prod].ToString(); }
 		set { this[_Prod] = Convert.ToInt32(value); }
+	}
+	protected override void OnBackOrderChanged()
+	{
+		this[_sMod] = CurrentContext.User.EMAIL;
 	}
 	public Defect()
 		: base(_Tabl, _allcols, "0", _ID, false)
