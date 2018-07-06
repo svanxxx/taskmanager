@@ -1,7 +1,6 @@
 ﻿using System;
-using GTOHELPER;
 
-public partial class MyTR : GTOHelper
+public partial class MyTR : SecurityPage
 {
 	protected void Page_Load(object sender, EventArgs e)
 	{

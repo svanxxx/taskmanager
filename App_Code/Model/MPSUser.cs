@@ -113,4 +113,20 @@ public class MPSUser : IdBasedObject
 		}
 		return ls;
 	}
+	public static MPSUser FindUser(string name, string pass)
+	{
+		foreach (int i in EnumRecords(_Tabl, _pid, new string[]{ _login, _pass}, new object[] { name, pass }))
+		{
+			return new MPSUser(i);
+		}
+		return null;
+	}
+	public static MPSUser FindUserbyID(int id)
+	{
+		foreach (int i in EnumRecords(_Tabl, _pid, new string[] { _pid }, new object[] { id }))
+		{
+			return new MPSUser(i);
+		}
+		return null;
+	}
 }
