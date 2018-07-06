@@ -26,6 +26,7 @@ public class Machine : IdBasedObject
 		get { return this[_Mac].ToString(); }
 		set { this[_Mac] = value; }
 	}
+
 	public Machine()
 		: base(_Tabl, _allCols, 1.ToString(), _ID, false)
 	{
@@ -33,6 +34,11 @@ public class Machine : IdBasedObject
 	public Machine(int id)
 		: base(_Tabl, _allCols, id.ToString(), _ID)
 	{
+	}
+
+	public static void Delete(string machine)
+	{
+		DeleteObject(_Tabl, string.Format("'{0}'", machine), _Name);
 	}
 	public List<Machine> Enum()
 	{
@@ -44,5 +50,14 @@ public class Machine : IdBasedObject
 			ls.Add(m);
 		}
 		return ls;
+	}
+	public static Machine FindOrCreate(string m)
+	{
+		foreach (var id in EnumRecords(_Tabl, _ID, new string[] { _Name }, new object[] { m }))
+		{
+			return new Machine(id);
+		}
+		var newid = AddObject(_Tabl, new string[] { _Name }, new object[] { m });
+		return new Machine(newid);
 	}
 }

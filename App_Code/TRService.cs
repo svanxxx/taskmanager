@@ -7,6 +7,9 @@ using System.Web.Services;
 using GTOHELPER;
 using System.Net.Mail;
 using System.Globalization;
+using System.DirectoryServices;
+using System.Diagnostics;
+using System.Management;
 
 [WebService(Namespace = "http://tempuri.org/")]
 [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
@@ -1128,5 +1131,81 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 	public List<DefectBase> EnumCloseVacations(string start)
 	{
 		return (new DefectBase()).EnumCloseVacations(start);
+	}
+	[WebMethod(EnableSession = true)]
+	public void remMachine(string m)
+	{
+		Machine.Delete(m);
+	}
+	[WebMethod(EnableSession = true, CacheDuration = 600)]
+	public List<string> getDomainComputers()
+	{
+		List<string> ComputerNames = new List<string>();
+
+		DirectoryEntry entry = new DirectoryEntry("LDAP://mps");
+		DirectorySearcher mySearcher = new DirectorySearcher(entry);
+		mySearcher.Filter = ("(objectClass=computer)");
+		mySearcher.SizeLimit = int.MaxValue;
+		mySearcher.PageSize = int.MaxValue;
+		foreach (SearchResult resEnt in mySearcher.FindAll())
+		{
+			string ComputerName = resEnt.GetDirectoryEntry().Name;
+			if (ComputerName.StartsWith("CN="))
+				ComputerName = ComputerName.Remove(0, "CN=".Length);
+			ComputerNames.Add(ComputerName);
+		}
+		mySearcher.Dispose();
+		entry.Dispose();
+		return ComputerNames;
+	}
+	[WebMethod(EnableSession = true)]
+	public void wakeMachine(string m)
+	{
+		Machine ma = Machine.FindOrCreate(m);
+		Process process = new Process();
+		process.StartInfo.RedirectStandardOutput = true;
+		process.StartInfo.UseShellExecute = false;
+		process.StartInfo.CreateNoWindow = true;
+		process.StartInfo.FileName = HttpRuntime.AppDomainAppPath + "bin\\WolCmd.exe";
+		process.StartInfo.Arguments = ma.MAC + " 192.168.0.1 255.255.255.0 3";
+		process.Start();
+	}
+	[WebMethod(EnableSession = true)]
+	public void shutMachine(string m)
+	{
+		Machine ma = Machine.FindOrCreate(m);
+		Process process = new Process();
+		process.StartInfo.RedirectStandardOutput = true;
+		process.StartInfo.UseShellExecute = false;
+		process.StartInfo.CreateNoWindow = true;
+		process.StartInfo.FileName = "shutdown";
+		process.StartInfo.Arguments = string.Format(@"/s /m \\{0} /t 0", ma.NAME);
+		process.Start();
+	}
+	[WebMethod(EnableSession = true)]
+	public void scanMachine(string m)
+	{
+		try
+		{
+			Machine ma = Machine.FindOrCreate(m);
+			string scope = string.Format("\\\\{0}\\root\\CIMV2", ma.NAME);
+			ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, "SELECT * FROM Win32_NetworkAdapterConfiguration");
+			foreach (ManagementObject queryObj in searcher.Get())
+			{
+				object o = queryObj["MACAddress"];
+				if (o == null)
+				{
+					continue;
+				}
+				if (string.IsNullOrEmpty(ma.MAC))
+					ma.MAC = o.ToString().Replace(":", "");
+				else
+					ma.MAC += " " + o.ToString().Replace(":", "");
+			}
+			ma.Store();
+		}
+		catch (Exception /*e*/)
+		{
+		}
 	}
 }
