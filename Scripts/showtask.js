@@ -17,7 +17,8 @@ $(function () {
 
 	var ttid = getParameterByName("ttid");
 	if (ttid == "") {
-		while (enterTT() == false) {
+		if (enterTT() == false) {
+			window.location.href = GetSitePath();
 		}
 	}
 
