@@ -1,4 +1,11 @@
-﻿function loadReference($scope, member, $http, localmember, functionname) {
+﻿var _admin = undefined;
+function IsAdmin() {
+	if (typeof _admin === "undefined") {
+		_admin = document.getElementById("isadmin").value;
+	}
+	return _admin == "True";	
+}
+function loadReference($scope, member, $http, localmember, functionname) {
 	var m = localmember + "_storageversion";
 	var curr = document.getElementById("referenceid").value;
 	if (localStorage[m] != curr) {

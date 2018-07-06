@@ -29,6 +29,7 @@
 </head>
 <body>
 	<input type="hidden" id="referenceid" value="<%=ReferenceVersion.REFSVERSION()%>"/>
+	<input type="hidden" id="isadmin" value="<%=CurrentContext.Admin.ToString()%>"/>
 	<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -60,7 +61,7 @@
 					</li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a class="bstusername" id="logina" runat="server" href="login.aspx"><span style="padding-right: 5px" class="glyphicon glyphicon-log-in"></span>-Login-</a></li>
+					<li><a class="bstusername" id="logina" runat="server" href="<%=SecurityPage.loginpage%>"><span style="padding-right: 5px" class="glyphicon glyphicon-log-in"></span>-Login-</a></li>
 				</ul>
 			</div>
 		</div>

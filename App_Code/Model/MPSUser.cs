@@ -14,8 +14,9 @@ public class MPSUser : IdBasedObject
 	const string _pass = "USER_PASSWORD";
 	const string _isAdm = "IS_ADMIN";
 	const string _phone = "PERSON_PHONE";
+	const string _ret = "RETIRED";
 
-	static string[] _allcols = new string[] { _pid, _pname, _email, _ttuser, _addr, _login, _pass, _isAdm, _phone, _work };
+	static string[] _allcols = new string[] { _pid, _pname, _email, _ttuser, _addr, _login, _pass, _isAdm, _phone, _work, _ret };
 	static string _Tabl = "[PERSONS]";
 
 	public string PHONE
@@ -27,6 +28,17 @@ public class MPSUser : IdBasedObject
 	{
 		get { return Convert.ToBoolean(this[_isAdm]); }
 		set { this[_isAdm] = value; }
+	}
+	public bool RETIRED
+	{
+		get
+		{
+			if (this[_ret] == DBNull.Value)
+				return false;
+
+			return Convert.ToBoolean(this[_ret]);
+		}
+		set { this[_ret] = value; }
 	}
 	public string LOGIN
 	{
@@ -89,6 +101,15 @@ public class MPSUser : IdBasedObject
 		}
 		return base.OnTransformCol(col);
 	}
+	protected override void OnProcessComplexColumn(string col, object val)
+	{
+		if (col == _ttuser)
+		{
+			return;//nothing to do: readonly data
+		}
+		base.OnProcessComplexColumn(col, val);
+	}
+
 	public MPSUser(int id)
 	  : base(_Tabl, _allcols, id.ToString(), _pid)
 	{

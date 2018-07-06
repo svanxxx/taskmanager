@@ -6,6 +6,10 @@ public partial class Login : System.Web.UI.Page
 	{
 		if (!IsPostBack)
 		{
+			if (Request.QueryString[CurrentContext.retiredURL] != null)
+			{
+				message.Text = "This user has retired!";
+			}
 			CurrentContext.User = null;
 			return;
 		}

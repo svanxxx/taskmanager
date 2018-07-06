@@ -20,17 +20,21 @@
 					<th>Login</th>
 					<th>Password</th>
 					<th>Phone</th>
-					<th>WORK</th>
+					<th>Admin</th>
+					<th>WORKFLOW</th>
+					<th>RETIRED</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="u in users | orderBy : 'PERSON_NAME'">
-					<td><input class="intable-data-input" type="text" ng-model="u.PERSON_NAME" ng-change="itemchanged(u)"></td>
-					<td><input class="intable-data-input" type="text" ng-model="u.ADDRESS" ng-change="itemchanged(u)"></td>
-					<td><input class="intable-data-input" type="text" ng-model="u.LOGIN" ng-change="itemchanged(u)"></td>
-					<td><input class="intable-data-input" type="password" ng-model="u.PASSWORD" ng-change="itemchanged(u)" placeholder="********"></td>
-					<td><input class="intable-data-input" type="text" ng-model="u.PHONE" ng-change="itemchanged(u)"></td>
-					<td align="center"><input type="checkbox" ng-model="u.INWORK" ng-change="itemchanged(u)"></td>
+				<tr ng-repeat="u in users | orderBy : 'PERSON_NAME'" class="{{u.changed?'data-changed':''}}">
+					<td><input ng-disabled="readonly" class="intable-data-input" type="text" ng-model="u.PERSON_NAME" ng-change="itemchanged(u)"></td>
+					<td><input ng-disabled="readonly" class="intable-data-input" type="text" ng-model="u.ADDRESS" ng-change="itemchanged(u)"></td>
+					<td><input ng-disabled="readonly" class="intable-data-input" type="text" ng-model="u.LOGIN" ng-change="itemchanged(u)"></td>
+					<td><input ng-disabled="readonly" class="intable-data-input" type="password" ng-model="u.PASSWORD" ng-change="itemchanged(u)" placeholder="********"></td>
+					<td><input ng-disabled="readonly" class="intable-data-input" type="text" ng-model="u.PHONE" ng-change="itemchanged(u)"></td>
+					<td align="center"><input ng-disabled="readonly" type="checkbox" ng-model="u.ISADMIN" ng-change="itemchanged(u)"></td>
+					<td align="center"><input ng-disabled="readonly" type="checkbox" ng-model="u.INWORK" ng-change="itemchanged(u)"></td>
+					<td align="center"><input ng-disabled="readonly" type="checkbox" ng-model="u.RETIRED" ng-change="itemchanged(u)"></td>
 				</tr>
 			</tbody>
 		</table>

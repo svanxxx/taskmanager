@@ -3,6 +3,7 @@ using System.Web;
 
 public static class CurrentContext
 {
+	public static string retiredURL = "retired";
 	static string _id = "userid";
 	static string _us = "currentuser";
 	public static bool Valid
@@ -10,6 +11,13 @@ public static class CurrentContext
 		get
 		{
 			return User != null;
+		}
+	}
+	public static bool Admin
+	{
+		get
+		{
+			return User != null && User.ISADMIN;
 		}
 	}
 	public static MPSUser User

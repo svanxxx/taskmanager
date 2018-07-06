@@ -15,5 +15,6 @@
 		<label for="pwd">Password:</label>
 		<asp:TextBox runat="server" TextMode="Password" class="form-control" ID="pwd"></asp:TextBox>
 	</div>
+	<h3><asp:Label runat="server" ID="message"></asp:Label></h3>
 	<input type="submit" class="btn btn-info" value="Login">
 </asp:Content>

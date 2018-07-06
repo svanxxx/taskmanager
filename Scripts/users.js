@@ -11,6 +11,7 @@
 		};
 	});
 	app.controller('mpscontroller', ["$scope", "$http", function ($scope, $http) {
+		$scope.readonly = !IsAdmin();
 		$scope.discard = function () {
 			window.location.reload();
 		}

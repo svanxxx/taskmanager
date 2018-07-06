@@ -5,12 +5,21 @@ using System.Web;
 public class SecurityPage : System.Web.UI.Page
 {
 	public static string returl = "ReturnUrl";
-	static string _ucook = "userid";
-	static string _login = "login.aspx";
+	public static string loginpage = "login.aspx";
 
+	static string _ucook = "userid";
+
+	void CheckRetired()
+	{
+		if (CurrentContext.Valid && CurrentContext.User.RETIRED)
+		{
+			Response.Redirect(string.Format("{0}?{1}=1", loginpage, CurrentContext.retiredURL), false);
+			Context.ApplicationInstance.CompleteRequest();
+		}
+	}
 	protected void Page_PreInit(object sender, EventArgs e)
 	{
-		if (Request.Url.Segments.Last().ToUpper() == _login.ToUpper())
+		if (Request.Url.Segments.Last().ToUpper() == loginpage.ToUpper())
 		{
 			return;
 		}
@@ -22,6 +31,7 @@ public class SecurityPage : System.Web.UI.Page
 				CurrentContext.User = MPSUser.FindUser(Request.Params["susername"].ToString(), Request.Params["suserpass"].ToString());
 				if (CurrentContext.Valid)
 				{
+					CheckRetired();
 					return;
 				}
 			}
@@ -34,6 +44,7 @@ public class SecurityPage : System.Web.UI.Page
 					CurrentContext.User = MPSUser.FindUserbyID(id);
 					if (CurrentContext.Valid)
 					{
+						CheckRetired();
 						return;
 					}
 				}
@@ -41,9 +52,10 @@ public class SecurityPage : System.Web.UI.Page
 		}
 		if (!CurrentContext.Valid)
 		{
-			Response.Redirect(_login + "?" + returl + "=" + Request.Url.PathAndQuery, false);
+			Response.Redirect(loginpage + "?" + returl + "=" + Request.Url.PathAndQuery, false);
 			Context.ApplicationInstance.CompleteRequest();
 		}
+		CheckRetired();
 		return;
 	}
 }

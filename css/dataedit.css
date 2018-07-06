@@ -1,7 +1,7 @@
 ﻿.savebutton {
-	position: absolute;
-	top: 10%;
-	left: 0;
+	position: fixed;
+	top: 10px;
+	left: 10px;
 }
 
 .data-changed {
