@@ -1,7 +1,6 @@
 ﻿using System;
-using GTOHELPER;
 
-public partial class Severities : GTOHelper
+public partial class Severities : SecurityPage
 {
 	protected void Page_Load(object sender, EventArgs e)
 	{

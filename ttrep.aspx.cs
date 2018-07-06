@@ -1,7 +1,6 @@
-﻿using GTOHELPER;
-using System;
+﻿using System;
 
-public partial class TTRep : GTOHelper
+public partial class TTRep : SecurityPage
 {
 		protected void Page_Load(object sender, EventArgs e)
 	{

@@ -1,7 +1,6 @@
 ﻿using System;
-using GTOHELPER;
 
-public partial class PlanEditor : GTOHelper
+public partial class PlanEditor : SecurityPage
 {
 	protected void Page_Load(object sender, EventArgs e)
 	{

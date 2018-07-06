@@ -1,7 +1,6 @@
 ﻿using System;
-using GTOHELPER;
 
-public partial class DailyReport : GTOHelper
+public partial class DailyReport : SecurityPage
 {
 	protected void Page_Load(object sender, EventArgs e)
 	{

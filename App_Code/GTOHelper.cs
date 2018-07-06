@@ -47,6 +47,7 @@ namespace GTOHELPER
 		{
 			get
 			{
+				return -1;
 				if (LoginPageName.ToUpper() == CurrentPageName.ToUpper())
 					return -1;
 
