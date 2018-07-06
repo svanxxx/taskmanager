@@ -31,7 +31,7 @@
 							<span class="badge">{{d.ID}}</span>
 						</a>
 						<span class="label label-danger">{{d.ESTIM}}</span>
-						<span data-toggle="tooltip" title="{{d.SUMMARY}}">{{d.SUMMARY | limitTo:135}}</span>
+						<span class="tt-label" data-toggle="tooltip" title="{{d.SUMMARY}}">{{d.SUMMARY | limitTo:135}}</span>
 						<button ng-click="unscheduletask(d)" data-toggle="tooltip" title="Remove from the schedule list" type="button" class="btn btn-default btn-xs taskselector"><span class="glyphicon glyphicon glyphicon-arrow-right"></span></button>
 						<img height="20" width="20" class="taskselector" ng-src="{{getPersonImg(d.SMODIFIER)}}" title="{{d.SMODIFIER}}" />
 						<input class="taskselector" type="radio" name="optradio" ng-keydown="taskMove(d, $event)">
@@ -43,7 +43,7 @@
 							<span class="badge">{{d.ID}}</span>
 						</a>
 						<span class="label label-danger">{{d.ESTIM}}</span>
-						<span data-toggle="tooltip" title="{{d.SUMMARY}}">{{d.SUMMARY | limitTo:135}}</span>
+						<span class="tt-label" data-toggle="tooltip" title="{{d.SUMMARY}}">{{d.SUMMARY | limitTo:135}}</span>
 						<button ng-click="scheduletask(d)" data-toggle="tooltip" title="Add to schedule list" type="button" class="btn btn-default btn-xs taskselector"><span class="glyphicon glyphicon-arrow-left"></span></button>
 					</div>
 				</div>

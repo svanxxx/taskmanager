@@ -19,3 +19,9 @@
 .userssublist {
 	background-color: #cff7b2;
 }
+
+.tt-label {
+	width: 50%;
+	display: inline-block;
+	white-space: nowrap;
+}
