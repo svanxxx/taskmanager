@@ -12,9 +12,9 @@ public class DefectUser : IdBasedObject
 	static string[] _Allcols = new string[] { _ID, _Firn, _Lasn, _Emai, _Atci };
 	static string _Tabl = "[TT_RES].[DBO].[USERS]";
 
-	public string ID
+	public int ID
 	{
-		get { return this[_ID].ToString(); }
+		get { return Convert.ToInt32(this[_ID]); }
 		set { this[_ID] = value; }
 	}
 	public bool ACTIVE
