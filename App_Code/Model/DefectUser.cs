@@ -42,7 +42,7 @@ public class DefectUser : IdBasedObject
 	{
 	}
 	public DefectUser(int id)
-		: base(	_Tabl, _Allcols, id.ToString(), _ID)
+		: base(_Tabl, _Allcols, id.ToString(), _ID)
 	{
 	}
 	public static List<DefectUser> Enum()
@@ -53,5 +53,13 @@ public class DefectUser : IdBasedObject
 			res.Add(new DefectUser(i));
 		}
 		return res;
+	}
+	public static DefectUser FindByEmail(string em)
+	{
+		foreach (int i in EnumRecords(_Tabl, _ID, new string[] { _Emai }, new object[] { em.ToLower() }))
+		{
+			return new DefectUser(i);
+		}
+		return null;
 	}
 }
