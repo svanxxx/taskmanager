@@ -44,18 +44,30 @@ public class DefectDispo : Reference
 		}
 		return res;
 	}
+	static List<int> _gWorkable;
+	static Object thisLock = new Object();
 	public static List<int> EnumWorkable()
 	{
-		List<int> res = new List<int>();
-		foreach (int i in EnumRecords(_Tabl, _ID, new string[] { _ReqWork }, new object[] { 1 }))
+		lock (thisLock)
 		{
-			res.Add(i);
+			if (_gWorkable == null)
+			{
+				_gWorkable = new List<int>();
+				foreach (int i in EnumRecords(_Tabl, _ID, new string[] { _ReqWork }, new object[] { 1 }))
+				{
+					_gWorkable.Add(i);
+				}
+			}
+			return new List<int>(_gWorkable);
 		}
-		return res;
 	}
 	static int _WorkingRec = -1;
 	override public void Store()
 	{
+		lock (thisLock)
+		{
+			_gWorkable = null;
+		}
 		_WorkingRec = -1;
 		base.Store();
 	}
