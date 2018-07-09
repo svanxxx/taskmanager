@@ -986,6 +986,10 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 	[WebMethod(EnableSession = true)]
 	public TRRec gettrrec(string date)
 	{
+		if (!CurrentContext.Valid)
+		{
+			return null;
+		}
 		DateTime d = DateTime.ParseExact(date, defDateFormat, CultureInfo.InvariantCulture);
 		TRRec r = TRRec.GetRec(d, CurrentContext.User.ID);
 		return r;

@@ -20,6 +20,14 @@ public static class CurrentContext
 			return User != null && User.ISADMIN;
 		}
 	}
+	public static string UserName()
+	{
+		if (!Valid)
+		{
+			return "";
+		}
+		return User.PERSON_NAME;
+	}
 	public static MPSUser User
 	{
 		set

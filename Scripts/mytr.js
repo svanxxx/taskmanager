@@ -47,6 +47,21 @@ $(function () {
 			}
 		}, 2000);
 
+		$interval(function () {
+			if ("hidden" in document && document.hidden) {
+				return;
+			}
+			$http.post("trservice.asmx/gettrrec", JSON.stringify({ "date": DateToString($scope.date) }))
+				.then(function (response) {
+					if (response.data.d && $scope.trrec) {
+						$scope.trrec.CREATEDTASKS = response.data.d.CREATEDTASKS;
+						$scope.trrec.SCHEDULEDTASKS = response.data.d.SCHEDULEDTASKS;
+						$scope.trrec.MODIFIEDTASKS = response.data.d.MODIFIEDTASKS;
+					}
+				});
+
+		}, 60000);
+
 		$scope.percentdonestyle = "progress-bar-danger"
 		$scope.recalcPercent = function () {
 			if ($scope.trrec) {

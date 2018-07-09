@@ -85,7 +85,51 @@ public class TRRec : IdBasedObject
 		get { return this[_done].ToString(); }
 		set { this[_done] = value; }
 	}
-
+	public List<int> SCHEDULEDTASKS
+	{
+		get
+		{
+			List<int> res = new List<int>();
+			if (!IsLoaded())
+				return res;
+			MPSUser u = new MPSUser(USER);
+			foreach (var d in DefectBase.EnumScheduled(DATE, u.EMAIL))
+			{
+				res.Add(d.ID);
+			}
+			return res;
+		}
+	}
+	public List<int> CREATEDTASKS
+	{
+		get
+		{
+			List<int> res = new List<int>();
+			if (!IsLoaded())
+				return res;
+			MPSUser u = new MPSUser(USER);
+			foreach (var d in DefectBase.EnumCreated(DATE, u.EMAIL))
+			{
+				res.Add(d.ID);
+			}
+			return res;
+		}
+	}
+	public List<int> MODIFIEDTASKS
+	{
+		get
+		{
+			List<int> res = new List<int>();
+			if (!IsLoaded())
+				return res;
+			MPSUser u = new MPSUser(USER);
+			foreach (var d in DefectBase.EnumModified(DATE, u.EMAIL))
+			{
+				res.Add(d.ID);
+			}
+			return res;
+		}
+	}
 	public TRRec()
 	  : base(_Tabl, _allcols, 0.ToString(), _pid, false)
 	{

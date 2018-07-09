@@ -46,6 +46,15 @@
 						<div ng-repeat="l in u.YESTERDAY track by $index">
 							<span>{{l | limitTo:80}}</span><br>
 						</div>
+						<div ng-hide="u.CREATEDTASKS1.length < 1">
+							<strong>Created tasks:</strong><a ng-repeat="t in u.CREATEDTASKS1" href="showtask.aspx?ttid={{t}}" target="_blank"><span class="badge">{{t}}</span></a>
+						</div>
+						<div ng-hide="u.SCHEDULEDTASKS1.length < 1">
+							<strong>Scheduled tasks:</strong><a ng-repeat="t in u.SCHEDULEDTASKS1" href="showtask.aspx?ttid={{t}}" target="_blank"><span class="badge">{{t}}</span></a>
+						</div>
+						<div ng-hide="u.MODIFIEDTASKS1.length < 1">
+							<strong>Modified tasks:</strong><a ng-repeat="t in u.MODIFIEDTASKS1" href="showtask.aspx?ttid={{t}}" target="_blank"><span class="badge">{{t}}</span></a>
+						</div>
 					</td>
 					<td>
 						<div ng-repeat="v in vacations | filter: { AUSER : u.TTUSERID, DATE: todaystring }">
@@ -55,6 +64,15 @@
 						</div>
 						<div ng-repeat="l in u.TODAY track by $index">
 							<span>{{l | limitTo:80}}</span><br>
+						</div>
+						<div ng-hide="u.CREATEDTASKS2.length < 1">
+							<strong>Created tasks:</strong><a ng-repeat="t in u.CREATEDTASKS2" href="showtask.aspx?ttid={{t}}" target="_blank"><span class="badge">{{t}}</span></a>
+						</div>
+						<div ng-hide="u.SCHEDULEDTASKS2.length < 1">
+							<strong>Scheduled tasks:</strong><a ng-repeat="t in u.SCHEDULEDTASKS2" href="showtask.aspx?ttid={{t}}" target="_blank"><span class="badge">{{t}}</span></a>
+						</div>
+						<div ng-hide="u.MODIFIEDTASKS2.length < 1">
+							<strong>Modified tasks:</strong><a ng-repeat="t in u.MODIFIEDTASKS2" href="showtask.aspx?ttid={{t}}" target="_blank"><span class="badge">{{t}}</span></a>
 						</div>
 					</td>
 					<td>

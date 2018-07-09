@@ -61,7 +61,11 @@
 					</li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a class="bstusername" id="logina" runat="server" href="<%=SecurityPage.loginpage%>"><span style="padding-right: 5px" class="glyphicon glyphicon-log-in"></span>-Login-</a></li>
+					<li>
+						<a class="bstusername" id="logina" href="<%=SecurityPage.loginpage.ToString()%>">
+							<span style="padding-right: 5px" class="glyphicon glyphicon-log-in"></span><%=CurrentContext.UserName()%>
+						</a>
+					</li>
 				</ul>
 			</div>
 		</div>

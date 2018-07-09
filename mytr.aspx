@@ -75,6 +75,7 @@
 		<ul class="nav nav-pills">
 			<li class="small active"><a data-toggle="pill" href="#plan">Plan<span class="badge">{{defects.length}}</span></a></li>
 			<li class="small"><a data-toggle="pill" href="#unscheduled">Unscheduled<span class="badge">{{unscheduled.length}}</span></a></li>
+			<li class="small"><a data-toggle="pill" href="#activity">Tasks Activity</a></li>
 		</ul>
 		<div class="tab-content panel panel-default">
 			<div id="plan" class="tab-pane fade in active">
@@ -100,6 +101,13 @@
 					<span>{{d.SUMMARY}}</span>
 					<button ng-click="workTaskUns(d)" data-toggle="tooltip" title="Start work on this task now!" type="button" class="btn btn-default btn-xs btn-workme"><span class="glyphicon glyphicon-circle-arrow-up"></span></button>
 				</div>
+			</div>
+			<div id="activity" class="tab-pane fade">
+				<strong>Created tasks:</strong><a ng-repeat="t in trrec.CREATEDTASKS" href="showtask.aspx?ttid={{t}}" target="_blank"><span class="badge">{{t}}</span></a>
+				<br />
+				<strong>Scheduled tasks:</strong><a ng-repeat="t in trrec.SCHEDULEDTASKS" href="showtask.aspx?ttid={{t}}" target="_blank"><span class="badge">{{t}}</span></a>
+				<br />
+				<strong>Modified tasks:</strong><a ng-repeat="t in trrec.MODIFIEDTASKS" href="showtask.aspx?ttid={{t}}" target="_blank"><span class="badge">{{t}}</span></a>
 			</div>
 		</div>
 	</div>

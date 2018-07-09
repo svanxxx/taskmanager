@@ -14,8 +14,10 @@
 
 	app.controller('mpscontroller', ["$scope", "$http", function ($scope, $http) {
 		$scope["loaders"] = 0;
-
 		$scope.today = new Date();
+		if (getParameterByName("date") != "") {
+			$scope.today = StringToDate(getParameterByName("date"));
+		}
 		$scope.today.setHours(0, 0, 0, 0);
 		$scope.yesterday = new Date();
 		$scope.yesterday.setDate($scope.yesterday.getDate() - 1);
@@ -79,14 +81,26 @@
 										var txts = recs[r].DONE.split(/\r?\n/);
 										if (recs[r].DATE == d1) {
 											$scope.users[u].TODAY = txts;
+											$scope.users[u].CREATEDTASKS2 = recs[r].CREATEDTASKS;
+											$scope.users[u].SCHEDULEDTASKS2 = recs[r].SCHEDULEDTASKS;
+											$scope.users[u].MODIFIEDTASKS2 = recs[r].MODIFIEDTASKS;
 										} else {
 											$scope.users[u].YESTERDAY = txts;
+											$scope.users[u].CREATEDTASKS1 = recs[r].CREATEDTASKS;
+											$scope.users[u].SCHEDULEDTASKS1 = recs[r].SCHEDULEDTASKS;
+											$scope.users[u].MODIFIEDTASKS1 = recs[r].MODIFIEDTASKS;
 										}
 									}
 								}
 							}
 						});
 					$scope.users.forEach(function (user) {
+						user.CREATEDTASKS1 = [];
+						user.SCHEDULEDTASKS1 = [];
+						user.MODIFIEDTASKS1 = [];
+						user.CREATEDTASKS2 = [];
+						user.SCHEDULEDTASKS2 = [];
+						user.MODIFIEDTASKS2 = [];
 						var user4proc = user;
 						var newuserprog = StartProgress("Loading plan for " + user4proc.PERSON_NAME + "..."); $scope["loaders"]++
 						$http.post("trservice.asmx/getplannedShort", JSON.stringify({ "userid": user4proc.TTUSERID }))
@@ -111,6 +125,7 @@
 		$scope.changeDate = function () {
 			$scope.yesterday = new Date($scope.today.getTime());
 			$scope.yesterday.setDate($scope.yesterday.getDate() - 1);
+			window.history.pushState("date" + $scope.today, "date" + $scope.today, replaceUrlParam(location.href, "date", DateToString($scope.today)));
 			$scope.loadData();
 		}
 		$scope.loadData();

@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 
 public class LockInfo
 {
@@ -51,12 +52,20 @@ public class DefectBase : IdBasedObject
 	protected static string _sMod = "sModifier";
 	protected static string _Comp = "idCompon";
 	protected static string _Date = "dateEnter";
-	protected static string _BackOr = "_BackOr";
+	protected static string _Created = "dateCreate";
+	protected static string _CreaBy = "idCreateBy";
+	protected static string _Type = "idType";
+	protected static string _Prod = "idProduct";
+	protected static string _Ref = "Reference";
+	protected static string _Prio = "idPriority";
+	protected static string _OrderDate = "IOrderDate";
+	protected static string _ModDate = "dateModify";
+	protected static string _ModBy = "idModifyBy";
 
 	protected static string _Tabl = "[TT_RES].[DBO].[DEFECTS]";
 
-	static string[] _allcols = new string[] { _ID, _Summ, _idRec, _Disp, _Est, _Order, _AsUser, _Seve, _sMod, _BackOrder, _Comp, _Date };
-	static string[] _allcolsNames = new string[] { _ID, "Summary", _idRec, "Disposition", "Estimation", "Schedule Order", "Assigned User", "Severity", "", "Schedule Order", "Component", "Date Entered" };
+	protected static string[] _allBaseCols = new string[] { _ID, _Summ, _idRec, _Disp, _Est, _Order, _AsUser, _Seve, _sMod, _BackOrder, _Comp, _Date, _Created, _CreaBy, _Type, _Prod, _Ref, _Prio, _OrderDate, _ModDate, _ModBy };
+	protected static string[] _allBaseColsNames = new string[] { _ID, "Summary", _idRec, "Disposition", "Estimation", "Schedule Order", "Assigned User", "Severity", "", "Schedule Order", "Component", "Date Entered", "Date Created", "Created By", "Type", "Product", "Reference", "Priority", "Schedule Date", "", "" };
 
 	public string SEVE
 	{
@@ -167,6 +176,46 @@ public class DefectBase : IdBasedObject
 		get { return (this[_Date] == DBNull.Value ? default(DateTime) : Convert.ToDateTime(this[_Date])).ToString(defDateFormat, CultureInfo.InvariantCulture); }
 		set { this[_Date] = Convert.ToDateTime(value, CultureInfo.InvariantCulture); }
 	}
+	public string CREATED
+	{
+		get { return (this[_Created] == DBNull.Value ? default(DateTime) : Convert.ToDateTime(this[_Created])).ToString(defDateFormat, CultureInfo.InvariantCulture); }
+		set { this[_Created] = Convert.ToDateTime(value, CultureInfo.InvariantCulture); }
+	}
+	public string MODIFIED
+	{
+		get { return (this[_ModDate] == DBNull.Value ? default(DateTime) : Convert.ToDateTime(this[_ModDate])).ToString(defDateFormat, CultureInfo.InvariantCulture); }
+		set { this[_ModDate] = Convert.ToDateTime(value, CultureInfo.InvariantCulture); }
+	}
+	public int MODIFIEDBY
+	{
+		get { return Convert.ToInt32(this[_ModBy]); }
+		set { this[_ModBy] = value; }
+	}
+	public string CREATEDBY
+	{
+		get { return this[_CreaBy].ToString(); }
+		set { this[_CreaBy] = Convert.ToInt32(value); }
+	}
+	public string PRIO
+	{
+		get { return this[_Prio].ToString(); }
+		set { this[_Prio] = Convert.ToInt32(value); }
+	}
+	public string REFERENCE
+	{
+		get { return this[_Ref].ToString(); }
+		set { this[_Ref] = value; }
+	}
+	public string TYPE
+	{
+		get { return this[_Type].ToString(); }
+		set { this[_Type] = Convert.ToInt32(value); }
+	}
+	public string PRODUCT
+	{
+		get { return this[_Prod].ToString(); }
+		set { this[_Prod] = Convert.ToInt32(value); }
+	}
 
 	protected override void OnProcessComplexColumn(string col, object val)
 	{
@@ -238,12 +287,12 @@ public class DefectBase : IdBasedObject
 	}
 
 	public DefectBase()
-		: base(_Tabl, _allcols, "0", _ID, false)
+		: base(_Tabl, _allBaseCols, "0", _ID, false)
 	{
 	}
 	public DefectBase(int ttid)
 		: base(_Tabl,
-					_allcols,
+					_allBaseCols,
 					ttid.ToString(),
 					_ID)
 	{
@@ -316,6 +365,14 @@ public class DefectBase : IdBasedObject
 		{
 			lswhere.Add(string.Format(" AND  ({0} in ({1}))", _AsUser, string.Join(",", f.users)));
 		}
+		if (f.createdUsers != null && f.createdUsers.Count > 0)
+		{
+			lswhere.Add(string.Format(" AND  ({0} in ({1}))", _CreaBy, string.Join(",", f.createdUsers)));
+		}
+		if (f.modifiedUsers != null && f.modifiedUsers.Count > 0)
+		{
+			lswhere.Add(string.Format(" AND  ({0} in ({1}))", _ModBy, string.Join(",", f.modifiedUsers)));
+		}
 		if (f.components != null && f.components.Count > 0)
 		{
 			lswhere.Add(string.Format(" AND  ({0} in ({1}))", _Comp, string.Join(",", f.components)));
@@ -327,6 +384,34 @@ public class DefectBase : IdBasedObject
 		if (!string.IsNullOrEmpty(f.endDateEnter))
 		{
 			lswhere.Add(string.Format(" AND  ({0} <= '{1}')", _Date, DateTime.ParseExact(f.endDateEnter, defDateFormat, CultureInfo.InvariantCulture).ToString(DBHelper.SQLDateFormat)));
+		}
+		if (!string.IsNullOrEmpty(f.startDateCreated))
+		{
+			lswhere.Add(string.Format(" AND  ({0} >= '{1}')", _Created, DateTime.ParseExact(f.startDateCreated, defDateFormat, CultureInfo.InvariantCulture).ToString(DBHelper.SQLDateFormat)));
+		}
+		if (!string.IsNullOrEmpty(f.endDateCreated))
+		{
+			lswhere.Add(string.Format(" AND  ({0} <= '{1}')", _Created, DateTime.ParseExact(f.endDateCreated, defDateFormat, CultureInfo.InvariantCulture).ToString(DBHelper.SQLDateFormat)));
+		}
+		if (!string.IsNullOrEmpty(f.startDateScheduled))
+		{
+			lswhere.Add(string.Format(" AND  ({0} >= '{1}')", _OrderDate, DateTime.ParseExact(f.startDateScheduled, defDateFormat, CultureInfo.InvariantCulture).ToString(DBHelper.SQLDateFormat)));
+		}
+		if (!string.IsNullOrEmpty(f.endDateScheduled))
+		{
+			lswhere.Add(string.Format(" AND  ({0} <= '{1}')", _OrderDate, DateTime.ParseExact(f.endDateScheduled, defDateFormat, CultureInfo.InvariantCulture).ToString(DBHelper.SQLDateFormat)));
+		}
+		if (!string.IsNullOrEmpty(f.startDateModified))
+		{
+			lswhere.Add(string.Format(" AND  ({0} >= '{1}')", _ModDate, DateTime.ParseExact(f.startDateModified, defDateFormat, CultureInfo.InvariantCulture).ToString(DBHelper.SQLDateFormat)));
+		}
+		if (!string.IsNullOrEmpty(f.endDateModified))
+		{
+			lswhere.Add(string.Format(" AND  ({0} <= '{1}')", _ModDate, DateTime.ParseExact(f.endDateModified, defDateFormat, CultureInfo.InvariantCulture).ToString(DBHelper.SQLDateFormat)));
+		}
+		if (!string.IsNullOrEmpty(f.orderer))
+		{
+			lswhere.Add(string.Format(" AND  ({0} = '{1}')", _sMod, f.orderer));
 		}
 
 		List<DefectBase> ls = new List<DefectBase>();
@@ -347,15 +432,64 @@ public class DefectBase : IdBasedObject
 		f.endDateEnter = DateTime.ParseExact(startdate, defDateFormat, CultureInfo.InvariantCulture).AddDays(15).ToString(defDateFormat);//two weeks adnvance
 		return Enum(f, 2000);
 	}
+	public static List<DefectBase> EnumScheduled(string date, string email)
+	{
+		DefectsFilter f = new DefectsFilter();
+		f.startDateScheduled = date;
+		f.endDateScheduled = DateTime.ParseExact(date, defDateFormat, CultureInfo.InvariantCulture).AddDays(1).ToString(defDateFormat);
+		f.orderer = email;
+		DefectBase temp = new DefectBase();
+		return temp.Enum(f, 100);
+	}
+	public static List<DefectBase> EnumCreated(string date, string email)
+	{
+		DefectsFilter f = new DefectsFilter();
+		f.startDateCreated = date;
+		f.endDateCreated = DateTime.ParseExact(date, defDateFormat, CultureInfo.InvariantCulture).AddDays(1).ToString(defDateFormat);
+		DefectUser u = DefectUser.FindByEmail(email);
+		if (u != null)
+		{
+			f.createdUsers = new List<int>() { u.ID };
+		}
+		DefectBase temp = new DefectBase();
+		return temp.Enum(f, 100);
+	}
+	public static List<DefectBase> EnumModified(string date, string email)
+	{
+		DefectsFilter f = new DefectsFilter();
+		f.startDateModified = date;
+		f.endDateModified = DateTime.ParseExact(date, defDateFormat, CultureInfo.InvariantCulture).AddDays(1).ToString(defDateFormat);
+		DefectUser u = DefectUser.FindByEmail(email);
+		if (u != null)
+		{
+			f.modifiedUsers = new List<int>() { u.ID };
+		}
+		DefectBase temp = new DefectBase();
+		return temp.Enum(f, 100);
+	}
 }
 public class DefectsFilter
 {
 	public DefectsFilter() { }
 	public List<int> dispositions;
 	public List<int> users;
+	public List<int> createdUsers;
+	public List<int> modifiedUsers;
 	public List<int> components;
+
+	public string orderer;
+
 	public string startDateEnter;
 	public string endDateEnter;
+
+	public string startDateCreated;
+	public string endDateCreated;
+
+	public string startDateScheduled;
+	public string endDateScheduled;
+
+	public string startDateModified;
+	public string endDateModified;
 }
 public class Defect : DefectBase
 {
@@ -364,13 +498,9 @@ public class Defect : DefectBase
 
 	static protected string _Desc = "DESCR";
 	static protected string _Specs = "ReproSteps";
-	static protected string _Type = "idType";
-	static protected string _Prod = "idProduct";
-	static protected string _Ref = "Reference";
-	static protected string _Prio = "idPriority";
-	static protected string _Crea = "idCreateBy";
-	static string[] _allcols = new string[] { _ID, _Specs, _Summ, _Desc, _idRec, _Type, _Prod, _Ref, _Disp, _Prio, _Comp, _Seve, _Date, _Crea, _Est, _Order, _AsUser, _sMod, _BackOrder };
-	static string[] _allcolsNames = new string[] { _ID, "Specification", "Summary", "Details", _idRec, "Type", "Product", "Reference", "Disposition", "Priority", "Component", "Severity", "Date", "Created By", "Estimation", "Schedule Order", "Assigned User", "", "Schedule Order" };
+
+	static string[] _allcols = _allBaseCols.Concat(new string[] { _Specs, _Desc }).ToArray();
+	static string[] _allcolsNames = _allBaseColsNames.Concat(new string[] { "Specification", "Details" }).ToArray();
 	public static string _RepTable = "[TT_RES].[DBO].[REPORTBY]";
 
 	public static void UnLocktask(string ttid, string lockid)
@@ -433,6 +563,11 @@ public class Defect : DefectBase
 	string _HistoryChanges = "";
 	protected override void PreStore()
 	{
+		if (IsModified())
+		{
+			MODIFIEDBY = CurrentContext.User.TTUSERID;
+			MODIFIED = DateTime.UtcNow.ToString(defDateFormat, CultureInfo.InvariantCulture);
+		}
 		_HistoryChanges = "";
 	}
 	protected override void PostStore()
@@ -519,31 +654,6 @@ public class Defect : DefectBase
 	{
 		get { return this[_Specs].ToString(); }
 		set { this[_Specs] = value; }
-	}
-	public string CREATEDBY
-	{
-		get { return this[_Crea].ToString(); }
-		set { this[_Crea] = Convert.ToUInt32(value); }
-	}
-	public string PRIO
-	{
-		get { return this[_Prio].ToString(); }
-		set { this[_Prio] = Convert.ToInt32(value); }
-	}
-	public string REFERENCE
-	{
-		get { return this[_Ref].ToString(); }
-		set { this[_Ref] = value; }
-	}
-	public string TYPE
-	{
-		get { return this[_Type].ToString(); }
-		set { this[_Type] = Convert.ToInt32(value); }
-	}
-	public string PRODUCT
-	{
-		get { return this[_Prod].ToString(); }
-		set { this[_Prod] = Convert.ToInt32(value); }
 	}
 	protected override void OnBackOrderChanged()
 	{
