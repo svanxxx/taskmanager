@@ -48,6 +48,7 @@
 					<li><a href="editplan.aspx"><span class="glyphicon glyphicon-calendar"></span>Edit Plan</a></li>
 					<li><a href="dailyreport.aspx"><span class="glyphicon glyphicon-book"></span>Daily Report</a></li>
 					<li><a href="machines.aspx"><span class="glyphicon glyphicon-phone"></span>Machines</a></li>
+					<li><a target="_blank" href="http://mps.resnet.com/FieldproWiki/index.php?title=Main_Page"><span class="glyphicon glyphicon-oil"></span>FiP Wiki</a></li>
 					<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">References<span class="caret"></span></a>
 						<ul class="dropdown-menu">
 							<li><a href="dispositions.aspx"><span class="glyphicon glyphicon-bookmark"></span>Dispositions</a></li>
