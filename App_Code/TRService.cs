@@ -1194,6 +1194,7 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 			Machine ma = Machine.FindOrCreate(m);
 			string scope = string.Format("\\\\{0}\\root\\CIMV2", ma.NAME);
 			ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, "SELECT * FROM Win32_NetworkAdapterConfiguration");
+			string newmac = "";
 			foreach (ManagementObject queryObj in searcher.Get())
 			{
 				object o = queryObj["MACAddress"];
@@ -1201,12 +1202,16 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 				{
 					continue;
 				}
-				if (string.IsNullOrEmpty(ma.MAC))
-					ma.MAC = o.ToString().Replace(":", "");
+				if (string.IsNullOrEmpty(newmac))
+					newmac = o.ToString().Replace(":", "");
 				else
-					ma.MAC += " " + o.ToString().Replace(":", "");
+					newmac += " " + o.ToString().Replace(":", "");
 			}
-			ma.Store();
+			if (!string.IsNullOrEmpty(newmac))
+			{
+				ma.MAC = newmac;
+				ma.Store();
+			}
 		}
 		catch (Exception /*e*/)
 		{
