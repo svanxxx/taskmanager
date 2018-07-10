@@ -1212,4 +1212,9 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 		{
 		}
 	}
+	[WebMethod(EnableSession = true)]
+	public void pageLoadedComplete(int id)
+	{
+		PageLoadNofify.RemoveLoad(id);
+	}
 }

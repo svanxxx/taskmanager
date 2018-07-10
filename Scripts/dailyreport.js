@@ -12,7 +12,7 @@
 		};
 	});
 
-	app.controller('mpscontroller', ["$scope", "$http", function ($scope, $http) {
+	app.controller('mpscontroller', ["$scope", "$http", "$interval", function ($scope, $http, $interval) {
 		$scope["loaders"] = 0;
 		$scope.today = new Date();
 		if (getParameterByName("date") != "") {
@@ -120,7 +120,7 @@
 			return false;
 		}
 		$scope.loaded = function () {
-			return $scope["loaders"] == 0;
+			return $scope.users.length > 0 && $scope["loaders"] == 0;
 		}
 		$scope.changeDate = function () {
 			$scope.yesterday = new Date($scope.today.getTime());
@@ -129,5 +129,14 @@
 			$scope.loadData();
 		}
 		$scope.loadData();
+
+		var pageisloading = $interval(function () {
+			if ($scope.loaded) {
+				var s = $("#pageloadnotify").attr("src");
+				s = s.substring(s.indexOf("id=") + 3);
+				$http.post("trservice.asmx/pageLoadedComplete", JSON.stringify({ "id": s }));
+				$interval.cancel(pageisloading);
+			}
+		}, 1000);
 	}]);
 })

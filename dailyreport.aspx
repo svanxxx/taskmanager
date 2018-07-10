@@ -7,6 +7,7 @@
 </asp:Content>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
+	<img style="visibility:hidden" id="pageloadnotify" src="pageloadnotify.ashx?id=<%=PageLoadNofify.NewLoad()%>"/>
 	<div ng-app="mpsapplication" ng-controller="mpscontroller">
 		<div class="row">
 			<div class="col-sm-2">

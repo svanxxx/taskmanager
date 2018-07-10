@@ -36,7 +36,7 @@ public class SecurityPage : System.Web.UI.Page
 				}
 			}
 			HttpCookie cookie = Request.Cookies.Get(_ucook);
-			if (cookie != null || !string.IsNullOrEmpty(cookie.Value))
+			if (cookie != null && !string.IsNullOrEmpty(cookie.Value))
 			{
 				int id = -1;
 				if (int.TryParse(cookie.Value, out id))
