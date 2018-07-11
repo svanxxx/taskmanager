@@ -7,8 +7,6 @@ public class SecurityPage : System.Web.UI.Page
 	public static string returl = "ReturnUrl";
 	public static string loginpage = "login.aspx";
 
-	static string _ucook = "userid";
-
 	void CheckRetired()
 	{
 		if (CurrentContext.Valid && CurrentContext.User.RETIRED)
@@ -23,34 +21,12 @@ public class SecurityPage : System.Web.UI.Page
 		{
 			return;
 		}
-
-		if (!CurrentContext.Valid)
+		if (CurrentContext.Valid)
 		{
-			if (Request.Params["susername"] != null && Request.Params["suserpass"] != null)
-			{
-				CurrentContext.User = MPSUser.FindUser(Request.Params["susername"].ToString(), Request.Params["suserpass"].ToString());
-				if (CurrentContext.Valid)
-				{
-					CheckRetired();
-					return;
-				}
-			}
-			HttpCookie cookie = Request.Cookies.Get(_ucook);
-			if (cookie != null && !string.IsNullOrEmpty(cookie.Value))
-			{
-				int id = -1;
-				if (int.TryParse(cookie.Value, out id))
-				{
-					CurrentContext.User = MPSUser.FindUserbyID(id);
-					if (CurrentContext.Valid)
-					{
-						CheckRetired();
-						return;
-					}
-				}
-			}
+			CheckRetired();
+			return;
 		}
-		if (!CurrentContext.Valid)
+		else
 		{
 			Response.Redirect(loginpage + "?" + returl + "=" + Request.Url.PathAndQuery, false);
 			Context.ApplicationInstance.CompleteRequest();

@@ -3,6 +3,7 @@ using System.Web;
 
 public static class CurrentContext
 {
+	public static string ucook = "userid";
 	public static string retiredURL = "retired";
 	static string _id = "userid";
 	static string _us = "currentuser";
@@ -28,34 +29,49 @@ public static class CurrentContext
 		}
 		return User.PERSON_NAME;
 	}
+	static object _lockobject = new object();
 	public static MPSUser User
 	{
 		set
 		{
-			if (value == null)
+			lock (_lockobject)
 			{
-				HttpContext.Current.Session.Remove(_id);
-				HttpContext.Current.Session.Remove(_us);
-				return;
+				if (value == null)
+				{
+					HttpContext.Current.Session.Remove(_id);
+					HttpContext.Current.Session.Remove(_us);
+					return;
+				}
+				HttpContext.Current.Session[_id] = value.ID;
+				HttpContext.Current.Session[_us] = value;
 			}
-			HttpContext.Current.Session[_id] = value.ID;
-			HttpContext.Current.Session[_us] = value;
 		}
 		get
 		{
-			//old version compatibility (stored by id only):
-			object o = HttpContext.Current.Session[_id];
-			if (o == null)
-				return null;
-
-			int userid = Convert.ToInt32(o);
-			o = HttpContext.Current.Session[_us];
-			if (o == null)
+			object ous = HttpContext.Current.Session[_us];
+			if (ous == null)
 			{
-				o = new MPSUser(userid);
-				HttpContext.Current.Session[_us] = o;
+				HttpRequest r = HttpContext.Current.Request;
+				if (r != null && r.Params["susername"] != null && r.Params["suserpass"] != null)
+				{
+					ous = MPSUser.FindUser(r.Params["susername"].ToString(), r.Params["suserpass"].ToString());
+				}
+				else
+				{
+					HttpCookie cookie = r.Cookies.Get(ucook);
+					if (cookie != null && !string.IsNullOrEmpty(cookie.Value))
+					{
+						int id = -1;
+						if (int.TryParse(cookie.Value, out id))
+						{
+							ous = MPSUser.FindUserbyID(id);
+						}
+					}
+				}
+
 			}
-			return (o as MPSUser);
+			HttpContext.Current.Session[_us] = ous;
+			return (ous as MPSUser);
 		}
 	}
 }

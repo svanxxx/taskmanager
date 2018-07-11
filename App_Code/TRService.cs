@@ -1012,6 +1012,10 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 	[WebMethod(EnableSession = true)]
 	public void todayrrec(string lastday)
 	{
+		if (!CurrentContext.Valid)
+		{
+			return;
+		}
 		DateTime d = DateTime.Today;
 		TRRec r = TRRec.GetRec(d, CurrentContext.User.ID);
 		if (r == null)
@@ -1128,8 +1132,7 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 		{
 			return new List<Machine>();
 		}
-		Machine r = new Machine();
-		return r.Enum();
+		return Machine.Enum();
 	}
 	[WebMethod(EnableSession = true)]
 	public List<DefectBase> EnumCloseVacations(string start)

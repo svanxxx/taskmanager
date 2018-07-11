@@ -40,10 +40,11 @@ public class Machine : IdBasedObject
 	{
 		DeleteObject(_Tabl, string.Format("'{0}'", machine), _Name);
 	}
-	public List<Machine> Enum()
+	public static List<Machine> Enum()
 	{
+		Machine temp = new Machine();
 		List<Machine> ls = new List<Machine>();
-		foreach(DataRow r in GetRecords(""))
+		foreach(DataRow r in temp.GetRecords(""))
 		{
 			Machine m = new Machine();
 			m.Load(r);

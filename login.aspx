@@ -17,4 +17,5 @@
 	</div>
 	<h3><asp:Label runat="server" ID="message"></asp:Label></h3>
 	<input type="submit" class="btn btn-info" value="Login">
+	<asp:CheckBox runat="server" ID="keeplogged" Text="Keep me logged in"/>
 </asp:Content>

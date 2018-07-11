@@ -1,10 +1,20 @@
 ﻿$(function () {
 	var app = angular.module('mpsapplication', []);
+	app.filter('mcol', function () {
+		return function (m, $scope) {
+			if (m.ping == true) {
+				return { "background-color": "#337ab7" };				
+			} else {
+				return { "background-color": "gray" };
+			}
+		};
+	});
 	app.controller('mpscontroller', ["$scope", "$http", function ($scope, $http) {
 		var taskprg = StartProgress("Loading data...");
 		$scope.workmachine = undefined;
 		$scope.searchMachine = false;
 		$scope.machines = [];
+
 		$http.post("trservice.asmx/getMachines", JSON.stringify({}))
 			.then(function (result) {
 				$scope.machines = result.data.d;
@@ -24,6 +34,23 @@
 				$scope.workmachine = m;
 			}
 		}
+
+		$scope.mLoadSignal = new EventSource("machinesping.ashx");
+		$scope.mLoadSignal.addEventListener("machine", function (e) {
+			var data = e.data.split("-");
+			if (data.length > 1) {
+				for (var i = 0; i < $scope.machines.length; i++) {
+					if ($scope.machines[i].NAME == data[0]) {
+						var val = (data[1] == "Success");
+						if ($scope.machines[i].ping !== val) {
+							$scope.machines[i].ping = val;
+							$scope.$apply();
+						}
+						break;
+					}
+				}
+			}
+		}, false);
 
 		$scope.shutMachine = function () {
 			var scankprg = StartProgress("Shutting down...");
