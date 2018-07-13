@@ -47,6 +47,12 @@ $(function () {
 	app.filter('getDispoColorById', getDispoColorById);
 
 	app.controller('mpscontroller', ["$scope", "$http", function ($scope, $http) {
+		localStorage.DefectsFilter = getParameterByName("filter");
+
+		window.addEventListener("popstate", function (event) {
+			localStorage.DefectsFilter = JSON.stringify(Object.assign({}, event.state));
+			$scope.loadData();
+		});
 
 		$scope.onGo = function (keyEvent) {
 			if (keyEvent.which === 13) {
@@ -94,6 +100,8 @@ $(function () {
 
 		$scope.applyfilter = function () {
 			localStorage.DefectsFilter = JSON.stringify($scope.DefectsFilter);
+			var o = Object.assign({}, $scope.DefectsFilter);
+			window.history.pushState(o, "filter:" + localStorage.DefectsFilter, replaceUrlParam(location.href, "filter", localStorage.DefectsFilter));
 			$scope.loadData();
 		}
 		$scope.discardfilter = function () {
