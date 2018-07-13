@@ -186,14 +186,14 @@ public class DefectBase : IdBasedObject
 		get { return (this[_ModDate] == DBNull.Value ? default(DateTime) : Convert.ToDateTime(this[_ModDate])).ToString(defDateFormat, CultureInfo.InvariantCulture); }
 		set { this[_ModDate] = Convert.ToDateTime(value, CultureInfo.InvariantCulture); }
 	}
-	public int MODIFIEDBY
+	public decimal MODIFIEDBY
 	{
-		get { return Convert.ToInt32(this[_ModBy]); }
+		get { return Convert.ToDecimal(this[_ModBy]); }
 		set { this[_ModBy] = value; }
 	}
-	public string CREATEDBY
+	public decimal CREATEDBY
 	{
-		get { return this[_CreaBy].ToString(); }
+		get { return Convert.ToDecimal(this[_CreaBy]); }
 		set { this[_CreaBy] = Convert.ToInt32(value); }
 	}
 	public string PRIO
@@ -413,6 +413,22 @@ public class DefectBase : IdBasedObject
 		{
 			lswhere.Add(string.Format(" AND  ({0} = '{1}')", _sMod, f.orderer));
 		}
+		if (!string.IsNullOrEmpty(f.text))
+		{
+			if (f.text.StartsWith("\"") && f.text.EndsWith("\""))
+			{
+				f.text = f.text.Trim('"');
+				lswhere.Add(string.Format(" AND  ({0} like '%{1}%')", _Summ, f.text));
+			}
+			else
+			{
+				string[] words = f.text.Split(null);
+				foreach (var w in words)
+				{
+					lswhere.Add(string.Format(" AND  ({0} like '%{1}%')", _Summ, w));
+				}
+			}
+		}
 
 		List<DefectBase> ls = new List<DefectBase>();
 		string where = string.Format(" WHERE ({0} > 0 {1}) ORDER BY {0} DESC", _ID, string.Join(string.Empty, lswhere));
@@ -477,6 +493,7 @@ public class DefectsFilter
 	public List<int> modifiedUsers;
 	public List<int> components;
 
+	public string text;
 	public string orderer;
 
 	public string startDateEnter;

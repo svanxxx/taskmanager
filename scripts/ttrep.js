@@ -6,7 +6,27 @@
 	}
 	return false;
 }
+var _callsettname = "JColResizer0";
+function getTabKey() {
+	return GetPageName() + _callsettname;
+}
+
 $(function () {
+
+	sessionStorage[_callsettname] = localStorage[getTabKey()];
+
+	$("table").colResizable({
+		liveDrag: true,
+		postbackSafe: true,
+		onResize: function (target) {
+			setTimeout(function () {
+				localStorage[getTabKey()] = sessionStorage[_callsettname];
+			}, 1000);
+		}
+	});
+
+	$("table thead tr th").css("overflow", "visible");
+
 	var app = angular.module('mpsapplication', []);
 	app.filter('getUserById', function () {
 		return function (id, $scope) {
@@ -27,6 +47,13 @@ $(function () {
 	app.filter('getDispoColorById', getDispoColorById);
 
 	app.controller('mpscontroller', ["$scope", "$http", function ($scope, $http) {
+
+		$scope.onGo = function (keyEvent) {
+			if (keyEvent.which === 13) {
+				$scope.applyfilter();
+				keyEvent.preventDefault();
+			}
+		}
 
 		//references section
 		getDispos($scope, "dispos", $http);
@@ -53,6 +80,9 @@ $(function () {
 			if (!("users" in $scope.DefectsFilter)) {
 				$scope.DefectsFilter.users = [];
 			}
+			if (!("text" in $scope.DefectsFilter)) {
+				$scope.DefectsFilter.text = "";
+			}
 			$http.post("trservice.asmx/gettasks", JSON.stringify({ "f": $scope.DefectsFilter }))
 				.then(function (response) {
 					$scope.defects = response.data.d;
@@ -65,6 +95,9 @@ $(function () {
 		$scope.applyfilter = function () {
 			localStorage.DefectsFilter = JSON.stringify($scope.DefectsFilter);
 			$scope.loadData();
+		}
+		$scope.discardfilter = function () {
+			window.location.reload();
 		}
 		$scope.referenceFiltered = function (id, refname) {
 			return $scope.DefectsFilter[refname].findIndex(function (x) { return x == id; }) > -1;

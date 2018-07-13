@@ -1,23 +1,28 @@
-﻿<%@ Page Title="Task" Language="C#" MasterPageFile="~/Master.Master" AutoEventWireup="true" CodeFile="ttrep.aspx.cs" Inherits="TTRep" %>
+﻿<%@ Page Title="Tasks" Language="C#" MasterPageFile="~/Master.Master" AutoEventWireup="true" CodeFile="ttrep.aspx.cs" Inherits="TTRep" %>
 
 <asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
 	<%=System.Web.Optimization.Styles.Render("~/bundles/ttrep_css")%>
 	<%=System.Web.Optimization.Scripts.Render("~/bundles/ttrep_js")%>
 	<script src="http://mps.resnet.com/cdn/angular/angular.min.js"></script>
+	<script src="http://mps.resnet.com/cdn/colResizable/colResizable-1.5.min.js"></script>
 </asp:Content>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
 	<div ng-app="mpsapplication" ng-controller="mpscontroller">
 		<div class="alert alert-danger savebutton btn-group-vertical" ng-cloak ng-show="changed">
 			<button type="button" class="btn btn-lg btn-info" ng-click="applyfilter()">Apply Filter</button>
-			<button type="button" class="btn btn-lg btn-danger">Discard</button>
+			<button type="button" class="btn btn-lg btn-danger" ng-click="discardfilter()">Discard</button>
 		</div>
+		<label for="searchtxt">Enter phrase in double quotes or a set of words to be found:</label>
+		<input class="form-control" id="searchtxt" type="text" ng-model="DefectsFilter.text" ng-change="changed=true" ng-keypress="onGo($event)" autofocus />
 		<table class="table table-bordered">
 			<thead>
 				<tr>
-					<th nowrap>TT ID</th>
-					<th nowrap>Time</th>
-					<th nowrap>
+					<th>
+						TT ID
+					</th>
+					<th>Time</th>
+					<th>
 						<div class="dropdown middlecol">
 							<a href="#" data-toggle="dropdown" class="dropdown-toggle">User<b class="caret"></b></a>
 							<ul class="dropdown-menu">
@@ -31,9 +36,9 @@
 							</ul>
 						</div>
 					</th>
-					<th nowrap>Reference</th>
-					<th nowrap>Summary</th>
-					<th nowrap>
+					<th>Reference</th>
+					<th>Summary</th>
+					<th>
 						<div class="dropdown middlecol">
 							<a href="#" data-toggle="dropdown" class="dropdown-toggle">Disposition<b class="caret"></b></a>
 							<ul class="dropdown-menu">
@@ -47,7 +52,7 @@
 							</ul>
 						</div>
 					</th>
-					<th nowrap>
+					<th>
 						<div class="dropdown middlecol">
 							<a href="#" data-toggle="dropdown" class="dropdown-toggle">Component<b class="caret"></b></a>
 							<ul class="dropdown-menu">
@@ -61,7 +66,7 @@
 							</ul>
 						</div>
 					</th>
-					<th nowrap>
+					<th>
 						<div class="dropdown middlecol">
 							<a href="#" data-toggle="dropdown" class="dropdown-toggle">Created<b class="caret"></b></a>
 							<ul class="dropdown-menu">
@@ -78,15 +83,15 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="d in defects" ng-style="{{d.DISPO | getDispoColorById:this}}">
+				<tr ng-repeat="d in defects" ng-style="d.DISPO | getDispoColorById:this">
 					<td><a href="showtask.aspx?ttid={{d.ID}}">{{d.ID}}</a></td>
 					<td>{{d.ESTIM}}</td>
-					<td nowrap>{{d.AUSER | getUserById:this}}</td>
-					<td nowrap>{{d.REFERENCE}}</td>
-					<td nowrap>{{d.SUMMARY}}</td>
-					<td nowrap>{{d.DISPO | getDispoById:this}}</td>
-					<td nowrap>{{d.COMP | getCompById:this}}</td>
-					<td nowrap>{{d.CREATEDBY | getUserById:this}}</td>
+					<td>{{d.AUSER | getUserById:this}}</td>
+					<td>{{d.REFERENCE}}</td>
+					<td>{{d.SUMMARY}}</td>
+					<td>{{d.DISPO | getDispoById:this}}</td>
+					<td>{{d.COMP | getCompById:this}}</td>
+					<td>{{d.CREATEDBY | getUserById:this}}</td>
 				</tr>
 			</tbody>
 		</table>
