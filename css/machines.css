@@ -6,3 +6,8 @@
 .label-center {
 	text-align: center;
 }
+
+.ping {
+	width: 20px;
+	float: right;
+}

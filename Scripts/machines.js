@@ -15,6 +15,10 @@
 		$scope.searchMachine = false;
 		$scope.machines = [];
 
+		$scope.unpinged = function (m) {
+			return (typeof m.ping === "undefined");
+		}
+
 		$http.post("trservice.asmx/getMachines", JSON.stringify({}))
 			.then(function (result) {
 				$scope.machines = result.data.d;

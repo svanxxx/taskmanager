@@ -11,7 +11,7 @@
 		<div ng-show="!searchMachine && !hasMachine()">
 			<h1 class="label-center">Select machine to process</h1>
 			<div class="row" ng-repeat="m in machines | orderBy : 'NAME'">
-				<button ng-click="setMachine(m.NAME)" type='button' class="btn btn-block btn-lg machinebutton" ng-style="m | mcol:this">{{m.NAME}}</button>
+				<button ng-click="setMachine(m.NAME)" type='button' class="btn btn-block btn-lg machinebutton" ng-style="m | mcol:this">{{m.NAME}}<img ng-show="unpinged(m)" class="ping" src="images/process.gif"/></button>
 			</div>
 			<button ng-click="searchMachine=true" type='button' class='btn btn-block btn-danger btn-lg machinebutton'>Add machine</button>
 		</div>
