@@ -25,6 +25,7 @@ $(function () {
 		}
 	});
 
+	//fix after resizable columns support:
 	$("table thead tr th").css("overflow", "visible");
 
 	var app = angular.module('mpsapplication', []);
@@ -47,7 +48,11 @@ $(function () {
 	app.filter('getDispoColorById', getDispoColorById);
 
 	app.controller('mpscontroller', ["$scope", "$http", function ($scope, $http) {
-		localStorage.DefectsFilter = getParameterByName("filter");
+		var f = getParameterByName("filter");
+		if (f) {
+			localStorage.DefectsFilter = f;
+		}
+		
 
 		window.addEventListener("popstate", function (event) {
 			localStorage.DefectsFilter = JSON.stringify(Object.assign({}, event.state));
