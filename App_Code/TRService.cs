@@ -1225,4 +1225,13 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 	{
 		PageLoadNofify.RemoveLoad(id);
 	}
+	[WebMethod(EnableSession = true)]
+	public List<TRRecSignal> enumTRSignal(string from, string to)
+	{
+		if (!CurrentContext.Valid)
+		{
+			return new List<TRRecSignal>();
+		}
+		return TRRecSignal.Enum(DateTime.ParseExact(from, defDateFormat, CultureInfo.InvariantCulture), DateTime.ParseExact(to, defDateFormat, CultureInfo.InvariantCulture));
+	}
 }

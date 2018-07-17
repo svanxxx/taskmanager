@@ -2,36 +2,66 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
-using System.Web;
+using System.Linq;
 
-public class TRRec : IdBasedObject
+public class TRRecSignal : IdBasedObject
 {
-	const string _TIMEFORMAT = "HH\\:mm\\:ss";
-	const string _pid = "REPORT_ID";
-	const string _perid = "PERSON_ID";
-	const string _start = "TIME_START";
-	const string _end = "TIME_END";
-	const string _dat = "REPORT_DATE";
-	const string _done = "REPORT_DONE";
-	const string _break = "REPORT_BREAK";
-	static string[] _allcols = new string[] { _pid, _perid, _start, _end, _dat, _done, _break };
-	static string _Tabl = "[TASKS].[dbo].[REPORTS]";
+	protected static string _pid = "REPORT_ID";
+	protected static string _dat = "REPORT_DATE";
+	protected static string _perid = "PERSON_ID";
+	protected static string _Tabl = "[TASKS].[dbo].[REPORTS]";
+	protected static string[] _allBasecols = new string[] { _pid, _perid, _dat };
 
 	public int ID
 	{
 		get { return Convert.ToInt32(this[_pid]); }
 		set { this[_pid] = value; }
 	}
-	public int USER
-	{
-		get { return Convert.ToInt32(this[_perid]); }
-		set { this[_perid] = value; }
-	}
 	public string DATE
 	{
 		get { return (this[_dat] == DBNull.Value ? default(DateTime) : Convert.ToDateTime(this[_dat])).ToString(defDateFormat, CultureInfo.InvariantCulture); }
 		set { this[_dat] = Convert.ToDateTime(value, CultureInfo.InvariantCulture); }
 	}
+	public int USER
+	{
+		get { return Convert.ToInt32(this[_perid]); }
+		set { this[_perid] = value; }
+	}
+	public TRRecSignal()
+	  : base(_Tabl, _allBasecols, 0.ToString(), _pid, false)
+	{
+	}
+	public TRRecSignal(int id)
+	  : base(_Tabl, _allBasecols, id.ToString(), _pid)
+	{
+	}
+	public TRRecSignal(string table, string[] columns, string id, string pcname = "ID", bool doload = true)
+		: base(table, columns, id, pcname, doload)
+	{
+	}
+	public static List<TRRecSignal> Enum(DateTime from, DateTime to)
+	{
+		List<TRRecSignal> ls = new List<TRRecSignal>();
+		string where = string.Format(" WHERE ( [{0}] >= '{1}' AND [{0}] <= '{2}')", _dat, from.ToString(DBHelper.SQLDateFormat), to.ToString(DBHelper.SQLDateFormat));
+		TRRecSignal loader = new TRRecSignal();
+		foreach (DataRow r in loader.GetRecords(where))
+		{
+			TRRecSignal rec = new TRRecSignal();
+			rec.Load(r);
+			ls.Add(rec);
+		}
+		return ls;
+	}
+}
+public class TRRec : TRRecSignal
+{
+	static string _TIMEFORMAT = "HH\\:mm\\:ss";
+	static string _start = "TIME_START";
+	static string _end = "TIME_END";
+	static string _done = "REPORT_DONE";
+	static string _break = "REPORT_BREAK";
+	static string[] _allcols = _allBasecols.Concat(new string[] { _start, _end, _done, _break }).ToArray();
+
 	public string IN
 	{
 		get

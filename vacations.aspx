@@ -36,8 +36,11 @@
 					<td week="{{d.getDay()}}" style="background-color: {{(d.getDay() == 6 || d.getDay() == 0) ? 'DodgerBlue' : (d.valueOf() == today.valueOf() ? 'yellow' : '')}}">{{d.getDate()}}
 					</td>
 					<td style="background-color: {{(d.getDay() == 6 || d.getDay() == 0) ? 'DodgerBlue' : (d.valueOf() == today.valueOf() ? 'yellow' : '')}}" ng-repeat="u in users | orderBy : 'PERSON_NAME'">
-						<a ng-show="hasVacation(u, d)" href="showtask.aspx?ttid={{getVacation(u, d)}}" target="_blank">
+						<a ng-show="hasVacation(u, d)" href="showtask.aspx?ttid={{getVacation(u, d)}}" target="_blank" class="vac">
 							<span class="glyphicon glyphicon-plane"></span>
+						</a>
+						<a ng-show="hasWorkRec(u, d)" href="#" class="wrec">
+							<span class="glyphicon glyphicon-wrench"></span>
 						</a>
 					</td>
 				</tr>

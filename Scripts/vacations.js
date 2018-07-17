@@ -31,8 +31,12 @@ $(function () {
 			$scope.vacations = [];
 			$scope.days = [];
 			$scope.monthNames = monthNames;
+
 			var d = new Date();
 			$scope.daterep = new Date(d.getFullYear(), d.getMonth(), 1);
+			$scope.daterepend = new Date();
+			$scope.daterepend.setDate($scope.daterep.getDate() + 366);			
+
 			$scope.getVacation = function (u, d) {
 				for (var i = 0; i < u.scheduled.length; i++) {
 					if (u.scheduled[i].DATE == DateToString(d)) {
@@ -49,11 +53,20 @@ $(function () {
 				}
 				return false;
 			}
+			$scope.hasWorkRec = function (u, d) {
+				for (var i = 0; i < u.workrecs.length; i++) {
+					if (u.workrecs[i].DATE == DateToString(d)) {
+						return true;
+					}
+				}
+				return false;
+			}
 
 			$scope.cleanUsers = function () {
 				for (var i = 0; i < $scope.users.length; i++) {
 					$scope.users[i].unscheduled = [];
 					$scope.users[i].scheduled = [];
+					$scope.users[i].workrecs = [];
 				}
 			}
 			var usersprg = StartProgress("Loading users...");
@@ -82,6 +95,19 @@ $(function () {
 								}
 							}
 							EndProgress(vacationprg); $scope["loaders"]--;
+							$http.post("trservice.asmx/enumTRSignal", JSON.stringify({ "from": DateToString($scope.daterep), "to": DateToString($scope.daterepend) }))
+								.then(function (result) {
+									for (var i = 0; i < result.data.d.length; i++) {
+										var v = result.data.d[i];
+										for (var j = 0; j < $scope.users.length; j++) {
+											var u = $scope.users[j];
+											if (u.ID == v.USER) {
+												u.workrecs.push(v);
+												break;
+											}
+										}
+									}
+								})
 						})
 				})
 		}
