@@ -1135,9 +1135,9 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 		return Machine.Enum();
 	}
 	[WebMethod(EnableSession = true)]
-	public List<DefectBase> EnumCloseVacations(string start)
+	public List<DefectBase> EnumCloseVacations(string start, int days)
 	{
-		return (new DefectBase()).EnumCloseVacations(start);
+		return (new DefectBase()).EnumCloseVacations(start, days);
 	}
 	[WebMethod(EnableSession = true)]
 	public void remMachine(string m)

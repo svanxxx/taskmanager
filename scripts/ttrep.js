@@ -6,25 +6,7 @@
 	}
 	return false;
 }
-var _callsettname = "JColResizer0";
-function getTabKey() {
-	return GetPageName() + _callsettname;
-}
-
 $(function () {
-
-	sessionStorage[_callsettname] = localStorage[getTabKey()];
-
-	$("table").colResizable({
-		liveDrag: true,
-		postbackSafe: true,
-		onResize: function (target) {
-			setTimeout(function () {
-				localStorage[getTabKey()] = sessionStorage[_callsettname];
-			}, 1000);
-		}
-	});
-
 	//fix after resizable columns support:
 	$("table thead tr th").css("overflow", "visible");
 

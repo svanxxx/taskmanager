@@ -62,7 +62,7 @@
 					EndProgress(taskprg); $scope["loaders"]--;
 					$scope.users = result.data.d;
 					var vacationprg = StartProgress("Loading vacations..."); $scope["loaders"]++
-					$http.post("trservice.asmx/EnumCloseVacations", JSON.stringify({ "start": DateToString($scope.yesterday) }))
+					$http.post("trservice.asmx/EnumCloseVacations", JSON.stringify({ "start": DateToString($scope.yesterday), "days": 15 }))
 						.then(function (result) {
 							$scope.vacations = result.data.d;
 							EndProgress(vacationprg); $scope["loaders"]--;

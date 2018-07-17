@@ -47,6 +47,7 @@
 					<li><a href="showtask.aspx"><span class="glyphicon glyphicon-flash"></span>Show Task</a></li>
 					<li><a href="editplan.aspx"><span class="glyphicon glyphicon-calendar"></span>Edit Plan</a></li>
 					<li><a href="dailyreport.aspx"><span class="glyphicon glyphicon-book"></span>Daily Report</a></li>
+					<li><a href="vacations.aspx"><span class="glyphicon glyphicon-plane"></span>Vacations</a></li>
 					<li><a href="machines.aspx"><span class="glyphicon glyphicon-phone"></span>Machines</a></li>
 					<li><a target="_blank" href="http://mps.resnet.com/FieldproWiki/index.php?title=Main_Page"><span class="glyphicon glyphicon-oil"></span>FiP Wiki</a></li>
 					<li><a target="_blank" href="http://mps.resnet.com/METADATA/METADATA/METADATAMODEL/"><span class="glyphicon glyphicon-oil"></span>Metadata</a></li>

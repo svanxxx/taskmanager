@@ -1,0 +1,40 @@
+.rotate {
+	/* FF3.5+ */
+	-moz-transform: rotate(-90.0deg);
+	/* Opera 10.5 */
+	-o-transform: rotate(-90.0deg);
+	/* Saf3.1+, Chrome */
+	-webkit-transform: rotate(-90.0deg);
+	/* IE6,IE7 */
+	filter: progid: DXImageTransform.Microsoft.BasicImage(rotation=0.083);
+	/* IE8 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083)";
+	/* Standard */
+	transform: rotate(-90.0deg);
+}
+
+table tbody tr td {
+	text-align: center;
+}
+
+table thead tr th {
+	text-align: center;
+}
+
+.sticky {
+	position: fixed;
+	top: 0;
+}
+
+.table-dataheader {
+	table-layout: fixed;
+	width: 100%;
+	margin: 0;
+	background-color: white;
+	z-index: 1000;
+}
+
+.table-datadata {
+	table-layout: fixed;
+	width: 100%;
+}

@@ -38,24 +38,29 @@ public class DefectComp : Reference
 		}
 		return res;
 	}
-	static int _VacationRec = -1;
+
+	static object _lockobject = new object();
+	static List<int> _VacationRec = new List<int>();
 	override public void Store()
 	{
-		_VacationRec = -1;
+		lock(_lockobject)
+		{
+			_VacationRec.Clear();
+		}
 		base.Store();
 	}
-	public static int GetVacationRec()
+	public static List<int> GetVacationRec()
 	{
-		if (_VacationRec != -1)
+		lock (_lockobject)
 		{
-			return _VacationRec;
+			if (_VacationRec.Count < 1)
+			{
+				foreach (int i in EnumRecords(_Tabl, _ID, new string[] { _Vac }, new object[] { 1 }))
+				{
+					_VacationRec.Add(i);
+				}
+			}
+			return new List<int>(_VacationRec);
 		}
-
-		foreach (int i in EnumRecords(_Tabl, _ID, new string[] { _Vac }, new object[] { 1 }))
-		{
-			_VacationRec = i;
-			return i;
-		}
-		return 1;
 	}
 }

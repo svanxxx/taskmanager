@@ -440,12 +440,12 @@ public class DefectBase : IdBasedObject
 		}
 		return ls;
 	}
-	public List<DefectBase> EnumCloseVacations(string startdate)
+	public List<DefectBase> EnumCloseVacations(string startdate, int days = 15)
 	{
 		DefectsFilter f = new DefectsFilter();
-		f.components = new List<int>() { DefectComp.GetVacationRec() };
+		f.components = new List<int>(DefectComp.GetVacationRec());
 		f.startDateEnter = startdate;
-		f.endDateEnter = DateTime.ParseExact(startdate, defDateFormat, CultureInfo.InvariantCulture).AddDays(15).ToString(defDateFormat);//two weeks adnvance
+		f.endDateEnter = DateTime.ParseExact(startdate, defDateFormat, CultureInfo.InvariantCulture).AddDays(days).ToString(defDateFormat);//two weeks adnvance
 		return Enum(f, 2000);
 	}
 	public static List<DefectBase> EnumScheduled(string date, string email)
