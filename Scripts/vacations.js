@@ -21,6 +21,55 @@ $(function () {
 		$scope.numOfDays = function (d) {
 			return new Date(d.getFullYear(), d.getMonth(), 0).getDate();
 		}
+		$scope.getVacation = function (u, d) {
+			for (var i = 0; i < u.scheduled.length; i++) {
+				if (u.scheduled[i].DATE == DateToString(d)) {
+					return u.scheduled[i].ID;
+				}
+			}
+			return "";
+		}
+		$scope.hasVacation = function (u, d) {
+			for (var i = 0; i < u.scheduled.length; i++) {
+				if (u.scheduled[i].DATE == DateToString(d)) {
+					return true;
+				}
+			}
+			return false;
+		}
+		$scope.hasWorkRec = function (u, d) {
+			for (var i = 0; i < u.workrecs.length; i++) {
+				if (u.workrecs[i].DATE == DateToString(d)) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		$scope.cleanUsers = function () {
+			for (var i = 0; i < $scope.users.length; i++) {
+				$scope.users[i].unscheduled = [];
+				$scope.users[i].scheduled = [];
+				$scope.users[i].workrecs = [];
+			}
+		}
+
+		$scope.getColor = function (u, d) {
+			if (u) {
+				if ($scope.hasWorkRec(u, d))
+					return "#0000ff26";
+				if ($scope.hasVacation(u, d))
+					return "#ffa50045";
+			}
+			if (d.valueOf() == $scope.today.valueOf())
+				return "yellow";
+			if (d.getDay() == 6 || d.getDay() == 0)
+				return "DodgerBlue";
+		}
+			
+		var d = new Date();
+		$scope.daterep = new Date(d.getFullYear(), d.getMonth(), 1);
+
 		$scope.loadData = function () {
 			$scope["loaders"] = 1;
 			$scope.users = [];
@@ -32,43 +81,9 @@ $(function () {
 			$scope.days = [];
 			$scope.monthNames = monthNames;
 
-			var d = new Date();
-			$scope.daterep = new Date(d.getFullYear(), d.getMonth(), 1);
 			$scope.daterepend = new Date();
 			$scope.daterepend.setDate($scope.daterep.getDate() + 366);			
 
-			$scope.getVacation = function (u, d) {
-				for (var i = 0; i < u.scheduled.length; i++) {
-					if (u.scheduled[i].DATE == DateToString(d)) {
-						return u.scheduled[i].ID;
-					}
-				}
-				return "";
-			}
-			$scope.hasVacation = function (u, d) {
-				for (var i = 0; i < u.scheduled.length; i++) {
-					if (u.scheduled[i].DATE == DateToString(d)) {
-						return true;
-					}
-				}
-				return false;
-			}
-			$scope.hasWorkRec = function (u, d) {
-				for (var i = 0; i < u.workrecs.length; i++) {
-					if (u.workrecs[i].DATE == DateToString(d)) {
-						return true;
-					}
-				}
-				return false;
-			}
-
-			$scope.cleanUsers = function () {
-				for (var i = 0; i < $scope.users.length; i++) {
-					$scope.users[i].unscheduled = [];
-					$scope.users[i].scheduled = [];
-					$scope.users[i].workrecs = [];
-				}
-			}
 			var usersprg = StartProgress("Loading users...");
 			$http.post("trservice.asmx/getMPSusers", JSON.stringify({ "active": true }))
 				.then(function (result) {
@@ -95,6 +110,7 @@ $(function () {
 								}
 							}
 							EndProgress(vacationprg); $scope["loaders"]--;
+							var trprg = StartProgress("Loading records..."); $scope["loaders"]++
 							$http.post("trservice.asmx/enumTRSignal", JSON.stringify({ "from": DateToString($scope.daterep), "to": DateToString($scope.daterepend) }))
 								.then(function (result) {
 									for (var i = 0; i < result.data.d.length; i++) {
@@ -107,6 +123,7 @@ $(function () {
 											}
 										}
 									}
+									EndProgress(trprg); $scope["loaders"]--;
 								})
 						})
 				})
