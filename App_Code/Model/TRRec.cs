@@ -72,7 +72,11 @@ public class TRRec : TRRecSignal
 		}
 		set
 		{
-			DateTime d = Convert.ToDateTime(this[_dat]);
+			DateTime d = DateTime.Today;
+			if (this[_dat] != DBNull.Value)
+			{
+				d = Convert.ToDateTime(this[_dat]);
+			}
 			string[] nums = value.Split(':');
 			TimeSpan time = new TimeSpan(Convert.ToInt32(nums[0]), Convert.ToInt32(nums[1]), Convert.ToInt32(nums[2]));
 			this[_start] = d.Add(time);
@@ -88,7 +92,11 @@ public class TRRec : TRRecSignal
 		}
 		set
 		{
-			DateTime d = Convert.ToDateTime(this[_dat]);
+			DateTime d = DateTime.Today;
+			if (this[_dat] != DBNull.Value)
+			{
+				d = Convert.ToDateTime(this[_dat]);
+			}
 			string[] nums = value.Split(':');
 			TimeSpan time = new TimeSpan(Convert.ToInt32(nums[0]), Convert.ToInt32(nums[1]), Convert.ToInt32(nums[2]));
 			this[_end] = d.Add(time);
@@ -104,7 +112,11 @@ public class TRRec : TRRecSignal
 		}
 		set
 		{
-			DateTime d = Convert.ToDateTime(this[_dat]);
+			DateTime d = DateTime.Today;
+			if (this[_dat] != DBNull.Value)
+			{
+				d = Convert.ToDateTime(this[_dat]);
+			}
 			string[] nums = value.Split(':');
 			TimeSpan time = new TimeSpan(Convert.ToInt32(nums[0]), Convert.ToInt32(nums[1]), Convert.ToInt32(nums[2]));
 			this[_break] = d.Add(time);

@@ -89,7 +89,7 @@
 							<span class="caret"></span>
 						</button>
 						<ul class="dropdown-menu">
-							<li ng-repeat="disp in dispos" ng-click="changeDispo(d, disp)"><a href="#">{{disp.DESCR}}</a></li>
+							<li ng-repeat="disp in dispos" ng-click="changeDispo(d, disp)" style="background-color:{{disp.COLOR}}"><a href="#">{{disp.DESCR}}</a></li>
 						</ul>
 					</div>
 				</div>

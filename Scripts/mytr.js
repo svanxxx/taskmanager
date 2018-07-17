@@ -131,10 +131,16 @@ $(function () {
 			if ($scope.loaded()) {
 				$http.post("trservice.asmx/settaskdispo", JSON.stringify({ "ttid": d.ID, "disp": disp.ID })).then(function (response) {
 					if (response.data.d) {
-						for (var i = 0; i < $scope.defects.length; i++) {
-							if ($scope.defects[i].ID == response.data.d.ID) {
-								$scope.defects[i] = response.data.d;
-								return;
+						var idxDisp = $scope.dispos.findIndex(function (x) { return x.ID == disp.ID; });
+						if (!$scope.dispos[idxDisp].REQUIREWORK) {
+							var idx = $scope.defects.findIndex(function (x) { return x.ID == d.ID; });
+							$scope.defects.splice(idx, 1);
+						} else {
+							for (var i = 0; i < $scope.defects.length; i++) {
+								if ($scope.defects[i].ID == response.data.d.ID) {
+									$scope.defects[i] = response.data.d;
+									return;
+								}
 							}
 						}
 					} else {
