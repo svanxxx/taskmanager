@@ -64,7 +64,7 @@
 					</div>
 				</div>
 				<div class="col-sm-2">
-					<input ng-model="copylastday" ng-change="oncopylastday()" type="checkbox" value="" data-toggle="tooltip" title="When you add a recrod - previous day details will be automatically copied.">Copy last day
+					<input ng-model="copylastday" ng-change="oncopylastday()" type="checkbox" value="" data-toggle="tooltip" title="When you add a record - previous day details will be automatically copied.">Copy last day
 					<button ng-click="todayRec()" ng-disabled="isTodayRecord()" type="button" class="btn {{isTodayRecord() ? 'btn-default' : 'btn-primary'}} btn-lg btn-block" data-toggle="tooltip" title="Click this button to create new daily record for today or show the data from already created recrod.">Today!</button>
 				</div>
 			</div>
