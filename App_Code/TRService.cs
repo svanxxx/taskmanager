@@ -1234,4 +1234,13 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 		}
 		return TRRecSignal.Enum(DateTime.ParseExact(from, defDateFormat, CultureInfo.InvariantCulture), DateTime.ParseExact(to, defDateFormat, CultureInfo.InvariantCulture));
 	}
+	[WebMethod(EnableSession = true)]
+	public List<string> getVersionLog()
+	{
+		if (!CurrentContext.Valid)
+		{
+			return new List<string>();
+		}
+		return new List<string>(System.IO.File.ReadAllLines(@"\\builder\D\Code\FIP315AGit\v8\Projects.32\ChangeLog.txt"));
+	}
 }
