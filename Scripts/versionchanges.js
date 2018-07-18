@@ -23,6 +23,7 @@
 						$scope.versions[$scope.versions.length - 1].changes.push({ ttid: ttid, summary: summary })
 					}
 				}
+				$scope.versions.reverse();
 			})
 	}]);
 })
