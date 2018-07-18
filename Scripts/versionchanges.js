@@ -2,6 +2,8 @@
 	var app = angular.module('mpsapplication', []);
 	app.controller('mpscontroller', ["$scope", "$http", function ($scope, $http) {
 		$scope.versions = [];
+		$scope["loaders"] = 0;
+		var taskprg = StartProgress("Loading data..."); $scope["loaders"]++;
 		$http.post("trservice.asmx/getVersionLog", JSON.stringify({}))
 			.then(function (result) {
 				for (var i = 0; i < result.data.d.length; i++) {
@@ -24,6 +26,7 @@
 					}
 				}
 				$scope.versions.reverse();
+				EndProgress(taskprg); $scope["loaders"]--;
 			})
 	}]);
 })
