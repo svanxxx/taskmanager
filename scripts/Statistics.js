@@ -1,22 +1,83 @@
 ﻿$(function () {
-	$('#startdate').datepicker({
-		changeMonth: true,
-		changeYear: true,
-		showButtonPanel: true,
-		dateFormat: 'MM yy',
-		onClose: function (dateText, inst) {
-			var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
-			var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-			var d = new Date(year, month, 1);
-			var sd = $.datepicker.formatDate("MM yy", d);
-			if ($(this).val() != sd)
-				window.location.href = window.location.href.substring(0, location.href.lastIndexOf(".aspx") + 5) + "?date=" + convertDateShort(d);
-		}
-	});
-	$('#startdate').prop('readonly', true);
-	var date = getParameterByName("date");
-	var d = new Date();
-	if (date)
-		var d = new Date(date.substring(4, 8), parseInt(date.substring(2, 4)) - 1);
-	$('#startdate').val($.datepicker.formatDate("MM yy", d));
-});
+	var app = angular.module('mpsapplication', []);
+	app.controller('mpscontroller', ["$scope", "$http", function ($scope, $http) {
+
+		var ctx_hourspermonth = document.getElementById("hourspermonth").getContext('2d');
+		var ctx_hourspermonthP = document.getElementById("hourspermonthP").getContext('2d');
+
+		var ctx_countpermonth = document.getElementById("countpermonth").getContext('2d');
+		var ctx_countpermonthP = document.getElementById("countpermonthP").getContext('2d');
+
+		var config = {
+			type: 'pie',
+			data: {
+				datasets: [{
+					data: [
+						1,
+						2,
+						3,
+						4,
+						5,
+					],
+					backgroundColor: [
+						'Red',
+						'Orange',
+						'Yellow',
+						'Green',
+						'Blue'
+					],
+					label: 'Dataset 1'
+				}],
+				labels: [
+					'Red',
+					'Orange',
+					'Yellow',
+					'Green',
+					'Blue'
+				]
+			},
+			options: {
+				responsive: true
+			}
+		};
+		var configbar = {
+			type: 'bar',
+			data: {
+				datasets: [{
+					data: [
+						1,
+						2,
+						3,
+						4,
+						5,
+					],
+					backgroundColor: [
+						'Red',
+						'Orange',
+						'Yellow',
+						'Green',
+						'Blue'
+					],
+					label: 'Dataset 1'
+				}],
+				labels: [
+					'Red',
+					'Orange',
+					'Yellow',
+					'Green',
+					'Blue'
+				]
+			},
+			options: {
+				responsive: true
+			}
+		};
+
+
+		window.hourspermonth = new Chart(hourspermonth, config);
+		window.hourspermonthP = new Chart(hourspermonthP, configbar);
+
+		window.countpermonth = new Chart(countpermonth, config);
+		window.countpermonthP = new Chart(countpermonthP, configbar);
+	}]);
+})

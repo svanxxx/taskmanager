@@ -28,8 +28,8 @@
 	</script>
 </head>
 <body>
-	<input type="hidden" id="referenceid" value="<%=ReferenceVersion.REFSVERSION()%>"/>
-	<input type="hidden" id="isadmin" value="<%=CurrentContext.Admin.ToString()%>"/>
+	<input type="hidden" id="referenceid" value="<%=ReferenceVersion.REFSVERSION()%>" />
+	<input type="hidden" id="isadmin" value="<%=CurrentContext.Admin.ToString()%>" />
 	<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -46,7 +46,12 @@
 					<li><a href="ttrep.aspx"><span class="glyphicon glyphicon-tasks"></span>Tasks</a></li>
 					<li><a href="showtask.aspx"><span class="glyphicon glyphicon-flash"></span>Show Task</a></li>
 					<li><a href="editplan.aspx"><span class="glyphicon glyphicon-calendar"></span>Edit Plan</a></li>
-					<li><a href="dailyreport.aspx"><span class="glyphicon glyphicon-book"></span>Daily Report</a></li>
+					<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Reports<span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="dailyreport.aspx"><span class="glyphicon glyphicon-book"></span>Daily Report</a></li>
+							<li><a href="statistics.aspx"><span class="glyphicon glyphicon-book"></span>Statistics</a></li>
+						</ul>
+					</li>
 					<li><a href="vacations.aspx"><span class="glyphicon glyphicon-plane"></span>Vacations</a></li>
 					<li><a href="machines.aspx"><span class="glyphicon glyphicon-phone"></span>Machines</a></li>
 					<li><a href="versionchanges.aspx"><span class="glyphicon glyphicon-check"></span>Version Changes</a></li>
