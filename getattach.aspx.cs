@@ -1,8 +1,7 @@
-﻿using GTOHELPER;
-using System;
+﻿using System;
 using System.IO;
 
-public partial class GetAttach : GTOHelper
+public partial class GetAttach : SecurityPage
 {
 	private string ReturnExtension(string fileExt)
 	{
@@ -28,6 +27,10 @@ public partial class GetAttach : GTOHelper
 	protected void Page_Load(object sender, EventArgs e)
 	{
 		int id = Convert.ToInt32(Request.QueryString["idrecord"]);
+		if (id < 1)
+		{
+			return;
+		}
 		DefectAttach d = new DefectAttach(id);
 		string ext = Path.GetExtension(d.FILENAME);
 		Response.ClearContent();
