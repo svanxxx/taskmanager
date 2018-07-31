@@ -87,6 +87,11 @@ public class DefectBase : IdBasedObject
 		get { return this[_Summ].ToString().Replace("\n", String.Empty).Replace("\r", String.Empty); }
 		set { this[_Summ] = value; }
 	}
+	public bool SICK
+	{
+		get { return SUMMARY.ToUpper().Contains("SICK"); }
+		set { }
+	}
 	public string SMODIFIER
 	{
 		get { return this[_sMod].ToString().Trim(); }
@@ -440,13 +445,13 @@ public class DefectBase : IdBasedObject
 		}
 		return ls;
 	}
-	public List<DefectBase> EnumCloseVacations(string startdate, int days = 15)
+	public static List<DefectBase> EnumCloseVacations(string startdate, int days = 15)
 	{
 		DefectsFilter f = new DefectsFilter();
 		f.components = new List<int>(DefectComp.GetVacationRec());
 		f.startDateEnter = startdate;
 		f.endDateEnter = DateTime.ParseExact(startdate, defDateFormat, CultureInfo.InvariantCulture).AddDays(days).ToString(defDateFormat);//two weeks adnvance
-		return Enum(f, 2000);
+		return (new DefectBase()).Enum(f, 2000);
 	}
 	public static List<DefectBase> EnumScheduled(string date, string email)
 	{

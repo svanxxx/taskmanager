@@ -20,6 +20,7 @@
 					<th>Order</th>
 					<th>Requires Work</th>
 					<th>Working Now</th>
+					<th>Cannot Start</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -29,6 +30,7 @@
 					<td><input class="intable-data-input" type="number" min="1" max="999" ng-model="r.FORDER" ng-change="itemchanged(r)"></td>
 					<td align="center"><input type="checkbox" ng-model="r.REQUIREWORK" ng-change="itemchanged(r)"></td>
 					<td align="center"><input type="checkbox" ng-model="r.WORKING" ng-change="itemchanged(r)"></td>
+					<td align="center"><input type="checkbox" ng-model="r.CANNOTSTART" ng-change="itemchanged(r)"></td>
 				</tr>
 			</tbody>
 		</table>

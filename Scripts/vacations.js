@@ -22,7 +22,7 @@ $(function () {
 		getDispos($scope, "dispos", $http);
 		$scope.isVacationScheduled = function (v) {
 			var idxDisp = $scope.dispos.findIndex(function (x) { return x.ID == v.DISPO; });
-			return $scope.dispos[idxDisp].REQUIREWORK;
+			return !$scope.dispos[idxDisp].CANNOTSTART;
 		}
 
 		$scope.numOfDays = function (d) {
@@ -40,6 +40,14 @@ $(function () {
 			for (var i = 0; i < u.scheduled.length; i++) {
 				if (u.scheduled[i].DATE == DateToString(d)) {
 					return true;
+				}
+			}
+			return false;
+		}
+		$scope.hasVacationSick = function (u, d) {
+			for (var i = 0; i < u.scheduled.length; i++) {
+				if (u.scheduled[i].DATE == DateToString(d)) {
+					return u.scheduled[i].SICK;
 				}
 			}
 			return false;
@@ -78,15 +86,19 @@ $(function () {
 			if (u) {
 				if ($scope.hasWorkRec(u, d))
 					return "#0000ff26";
-				if ($scope.hasVacation(u, d))
+				if ($scope.hasVacation(u, d)) {
+					if ($scope.hasVacationSick(u, d)) {
+						return "green";
+					}
 					return "#ffa50045";
+				}
 			}
 			if (d.valueOf() == $scope.today.valueOf())
 				return "yellow";
 			if (d.getDay() == 6 || d.getDay() == 0)
 				return "DodgerBlue";
 		}
-			
+
 		var d = new Date();
 		$scope.daterep = new Date(d.getFullYear(), d.getMonth(), 1);
 
@@ -102,7 +114,7 @@ $(function () {
 			$scope.monthNames = monthNames;
 
 			$scope.daterepend = new Date();
-			$scope.daterepend.setDate($scope.daterep.getDate() + 366);			
+			$scope.daterepend.setDate($scope.daterep.getDate() + 366);
 
 			var usersprg = StartProgress("Loading users...");
 			$http.post("trservice.asmx/getMPSusers", JSON.stringify({ "active": true }))
@@ -116,7 +128,7 @@ $(function () {
 					}
 					$scope.cleanUsers();
 					var vacationprg = StartProgress("Loading vacations..."); $scope["loaders"]++
-					$http.post("trservice.asmx/EnumCloseVacations", JSON.stringify({ "start": DateToString($scope.daterep), "days" : 366 }))
+					$http.post("trservice.asmx/EnumCloseVacations", JSON.stringify({ "start": DateToString($scope.daterep), "days": 366 }))
 						.then(function (result) {
 							$scope.cleanUsers();
 							for (var i = 0; i < result.data.d.length; i++) {

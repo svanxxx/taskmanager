@@ -6,10 +6,11 @@ public class DefectDispo : Reference
 {
 	static string _Color = "Color";
 	static string _ReqWork = "RequireWork";
-	static string _Working = "BeingEorked";
+	static string _Working = "BeingWorked";
+	static string _CannotStart = "CannotStart";
 
 	static string _Tabl = "[TT_RES].[DBO].[FLDDISPO]";
-	static string[] _allCols = _allBaseCols.Concat(new string[] { _Color, _ReqWork, _Working }).ToArray();
+	static string[] _allCols = _allBaseCols.Concat(new string[] { _Color, _ReqWork, _Working, _CannotStart }).ToArray();
 
 	public bool REQUIREWORK
 	{
@@ -20,6 +21,11 @@ public class DefectDispo : Reference
 	{
 		get { return Convert.ToBoolean(this[_Working]); }
 		set { this[_Working] = value ? 1 : 0; }
+	}
+	public bool CANNOTSTART
+	{
+		get { return Convert.ToBoolean(this[_CannotStart]); }
+		set { this[_CannotStart] = value ? 1 : 0; }
 	}
 	public string COLOR
 	{
