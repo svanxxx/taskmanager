@@ -26,7 +26,7 @@
 				<tr>
 					<th>Mon</th>
 					<th>Day</th>
-					<th ng-repeat="u in users | orderBy : 'PERSON_NAME'">{{u.LOGIN}}</th>
+					<th ng-repeat="u in users | orderBy : 'PERSON_NAME'"><span>{{u.LOGIN}}</span><span class="label label-default">{{u.unscheduled.length}}</span></th>
 				</tr>
 			</thead>
 		</table>
@@ -50,6 +50,7 @@
 						<a ng-show="hasWorkRec(u, d)" href="#" class="wrec">
 							<span class="glyphicon glyphicon-wrench"></span>
 						</a>
+						<button type="button" ng-show="!hasWorkRec(u, d) && !hasVacation(u, d)" class="addvac" ng-click="scheduleVacation(u, d)">+</button>
 					</td>
 				</tr>
 			</tbody>

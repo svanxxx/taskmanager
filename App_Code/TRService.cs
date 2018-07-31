@@ -1056,6 +1056,17 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 		return new DefectBase(Convert.ToInt32(ttid));
 	}
 	[WebMethod(EnableSession = true)]
+	public DefectBase scheduletask(string ttid, string date)
+	{
+		if (Defect.Locked(ttid))
+			return null;
+		Defect d = new Defect(Convert.ToInt32(ttid));
+		d.DISPO = DefectDispo.GetWorkingRec().ToString();
+		d.DATE = date;
+		d.Store();
+		return new DefectBase(Convert.ToInt32(ttid));
+	}
+	[WebMethod(EnableSession = true)]
 	public List<MPSUser> getMPSusers(bool active)
 	{
 		return MPSUser.EnumAllUsers(active);

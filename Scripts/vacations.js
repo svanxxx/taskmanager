@@ -18,6 +18,13 @@ $(function () {
 
 	var app = angular.module('mpsapplication', []);
 	app.controller('mpscontroller', ["$scope", "$http", function ($scope, $http) {
+
+		getDispos($scope, "dispos", $http);
+		$scope.isVacationScheduled = function (v) {
+			var idxDisp = $scope.dispos.findIndex(function (x) { return x.ID == v.DISPO; });
+			return $scope.dispos[idxDisp].REQUIREWORK;
+		}
+
 		$scope.numOfDays = function (d) {
 			return new Date(d.getFullYear(), d.getMonth(), 0).getDate();
 		}
@@ -54,6 +61,19 @@ $(function () {
 			}
 		}
 
+		$scope.scheduleVacation = function (u, d) {
+			if (u.unscheduled.length < 1) {
+				alert("User has no free vacations!");
+				return;
+			}
+
+			var toSchedule = u.unscheduled[0];
+			$http.post("trservice.asmx/scheduletask", JSON.stringify({ "ttid": toSchedule.ID, "date": DateToString(d) }))
+				.then(function (result) {
+					u.unscheduled.splice(0, 1);
+					u.scheduled.push(result.data.d);
+				})
+		}
 		$scope.getColor = function (u, d) {
 			if (u) {
 				if ($scope.hasWorkRec(u, d))
@@ -71,7 +91,7 @@ $(function () {
 		$scope.daterep = new Date(d.getFullYear(), d.getMonth(), 1);
 
 		$scope.loadData = function () {
-			$scope["loaders"] = 1;
+			$scope["loaders"]++;
 			$scope.users = [];
 
 			$scope.today = new Date();
@@ -104,7 +124,11 @@ $(function () {
 								for (var j = 0; j < $scope.users.length; j++) {
 									var u = $scope.users[j];
 									if (u.TTUSERID == v.AUSER) {
-										u.scheduled.push(v);
+										if ($scope.isVacationScheduled(v)) {
+											u.scheduled.push(v);
+										} else {
+											u.unscheduled.push(v);
+										}
 										break;
 									}
 								}
