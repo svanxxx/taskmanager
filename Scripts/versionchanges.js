@@ -3,6 +3,10 @@
 	app.controller('mpscontroller', ["$scope", "$http", function ($scope, $http) {
 		$scope.versions = [];
 		$scope["loaders"] = 0;
+		$scope.GetFile = function (v, t) {
+			window.open('getinstall.ashx?type=' + t + '&version=' + v.version);
+		}
+
 		var taskprg = StartProgress("Loading data..."); $scope["loaders"]++;
 		$http.post("trservice.asmx/getVersionLog", JSON.stringify({}))
 			.then(function (result) {
