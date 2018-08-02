@@ -10,11 +10,30 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
 	<div ng-app="mpsapplication" ng-controller="mpscontroller">
 		<div class="row">
+			<div class="col-sm-4">
+				<h4>Report for: </h4>
+			</div>
+			<div class="col-sm-4">
+				<input class="form-control" ng-change="loadData()" ng-model="daterep" type="month"/>
+			</div>
+			<div class="col-sm-4">
+				<input class="form-control" ng-change="loadData()" ng-model="daterepend" type="month"/>
+			</div>
+		</div>
+		<div class="row">
+			<div class="panel panel-primary">
+				<div class="panel-heading">Sick days and vacations</div>
+				<div class="panel-body">
+					<canvas id="sick" width="800" height="400"></canvas>
+				</div>
+			</div>
+		</div>
+		<div class="row">
 			<div class="col-sm-6">
 				<div class="panel panel-primary">
 					<div class="panel-heading">Total Hours</div>
 					<div class="panel-body">
-						<canvas id="hourspermonth" width="400" height="400"></canvas>
+						<canvas id="hourspermonth" width="100" height="100"></canvas>
 					</div>
 				</div>
 			</div>
