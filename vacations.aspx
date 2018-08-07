@@ -38,8 +38,8 @@
 			</colgroup>
 			<tbody>
 				<tr ng-repeat="d in days" style="background-color: {{d.getMonth() % 2 ? 'white' : 'lightgray'}}" year="{{d.getFullYear()}}" month="{{d.getMonth()+1}}" day="{{d.getDate()}}">
-					<td class="rotate" style="vertical-align: middle; display: {{d.getDate() == 1 ? 'table-cell' : 'none'}}" rowspan="{{d.getDate() == 1 ? d.monthDays() : 1}}">
-						{{monthNames[d.getMonth()]}}
+					<td style="vertical-align: middle; display: {{d.getDate() == 1 ? 'table-cell' : 'none'}}" rowspan="{{d.getDate() == 1 ? d.monthDays() : 1}}">
+						<div class="rotate">{{monthNames[d.getMonth()]}}</div>
 					</td>
 					<td week="{{d.getDay()}}" style="background-color: {{getColor(null, d)}}"">{{d.getDate()}}
 					</td>
