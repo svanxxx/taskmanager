@@ -1252,6 +1252,11 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 		{
 			return new List<string>();
 		}
-		return new List<string>(System.IO.File.ReadAllLines(@"\\builder\D\Code\FIP315AGit\v8\Projects.32\ChangeLog.txt"));
+		return new List<string>(System.IO.File.ReadAllLines(@"\\builder\v8\Projects.32\ChangeLog.txt"));
+	}
+	[WebMethod(EnableSession = true)]
+	public List<Statistic> GetStatistics(string start, string days)
+	{
+		return Defect.EnumStatistics(DateTime.ParseExact(start, defDateFormat, CultureInfo.InvariantCulture), Convert.ToInt32(days));
 	}
 }

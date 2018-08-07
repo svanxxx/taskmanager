@@ -9,7 +9,7 @@ public class DefectDispo : Reference
 	static string _Working = "BeingWorked";
 	static string _CannotStart = "CannotStart";
 
-	static string _Tabl = "[TT_RES].[DBO].[FLDDISPO]";
+	public static string _Tabl = "[TT_RES].[DBO].[FLDDISPO]";
 	static string[] _allCols = _allBaseCols.Concat(new string[] { _Color, _ReqWork, _Working, _CannotStart }).ToArray();
 
 	public bool REQUIREWORK
@@ -50,8 +50,10 @@ public class DefectDispo : Reference
 		}
 		return res;
 	}
-	static List<int> _gWorkable;
+
 	static Object thisLock = new Object();
+
+	static List<int> _gWorkable;
 	public static List<int> EnumWorkable()
 	{
 		lock (thisLock)
@@ -67,12 +69,31 @@ public class DefectDispo : Reference
 			return new List<int>(_gWorkable);
 		}
 	}
+
+	static List<int> _gCannotStart;
+	public static List<int> EnumCannotStart()
+	{
+		lock (thisLock)
+		{
+			if (_gCannotStart == null)
+			{
+				_gCannotStart = new List<int>();
+				foreach (int i in EnumRecords(_Tabl, _ID, new string[] { _CannotStart }, new object[] { 1 }))
+				{
+					_gCannotStart.Add(i);
+				}
+			}
+			return new List<int>(_gCannotStart);
+		}
+	}
+
 	static int _WorkingRec = -1;
 	override public void Store()
 	{
 		lock (thisLock)
 		{
 			_gWorkable = null;
+			_gCannotStart = null;
 		}
 		_WorkingRec = -1;
 		base.Store();

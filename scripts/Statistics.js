@@ -1,54 +1,98 @@
-﻿function CreateSickChart() {
-	var labels = [];
-	var sick = [];
-	var used = [];
-	var free = [];
-	var total = [];
+﻿function CreateHoursCharts() {
+	var config = {
+		type: "pie",
+		data: {
+			datasets: [{
+				data: [1, 1],
+				backgroundColor: ["Red", "Blue"],
+				label: "Total Hours"
+			}],
+			labels: [
+				"Created",
+				"Finished"
+			],
+		},
+		options: {
+			responsive: true,
+			title: {
+				display: true,
+				position: "bottom",
+				text: "Totals:"
+			}
+		}
+	};
+	var configbar = {
+		type: "bar",
+		data: {
+			datasets: [{
+				data: [1, 2],
+				backgroundColor: "Red",
+				label: "Created"
+			}, {
+				data: [1, 2],
+				backgroundColor: "Blue",
+				label: "Finished"
+			}],
+			labels: [
+				"User 1",
+				"User 2"
+			]
+		},
+		options: {
+			responsive: true
+		}
+	};
+	var ctx_hourspermonth = document.getElementById("hourspermonth").getContext("2d");
+	var ctx_hourspermonthP = document.getElementById("hourspermonthP").getContext("2d");
+	window.hourspermonth = new Chart(hourspermonth, config);
+	window.hourspermonthP = new Chart(hourspermonthP, configbar);
+}
+function CreateSickChart() {
 	var barChartData = {
-		labels: labels,
+		labels: [],
 		datasets: [{
-			label: 'Sick',
+			label: "Sick",
 			backgroundColor: "red",
 			borderColor: "red",
 			borderWidth: 1,
-			data: sick
+			data: []
 		}, {
-			label: 'Vacations',
+			label: "Vacations",
 			backgroundColor: "yellow",
 			borderColor: "yellow",
 			borderWidth: 1,
-			data: used
+			data: []
 		}, {
-			label: 'Unused Vacations',
+			label: "Unused Vacations",
 			backgroundColor: "blue",
 			borderColor: "blue",
 			borderWidth: 1,
-			data: free
+			data: []
 		}, {
-			label: 'Total out of work',
+			label: "Total out of work",
 			backgroundColor: "orange",
 			borderColor: "orange",
 			borderWidth: 1,
-			data: total
+			data: []
 		}]
 	};
-	var ctx = document.getElementById("sick").getContext('2d');
+	var ctx = document.getElementById("sick").getContext("2d");
 	window.SickChart = new Chart(ctx, {
-		type: 'bar',
+		type: "bar",
 		data: barChartData,
 		options: {
 			responsive: true,
 			legend: {
-				position: 'top',
+				position: "top",
 			},
 			title: {
 				display: true,
-				text: 'Vacations and sick days'
+				text: "Vacations and sick days"
 			}
 		}
 	});
 }
-function DrawSick(users) {
+function DrawSickChart(users) {
 	var labels = [];
 	var sick = [];
 	var used = [];
@@ -78,12 +122,44 @@ function DrawSick(users) {
 	d.datasets[3].data = total;
 	window.SickChart.update();
 }
+function DrawHoursCharts(users) {
+	var labels = [];
+	var createdH = 0;
+	var finishedH = 0;
+	var arrcreatedH = [];
+	var arrfinishedH = [];
+	for (var i = 0; i < users.length; i++) {
+		var u = users[i];
+		labels.push(u.LOGIN);
+		arrcreatedH.push(u.createdH);
+		arrfinishedH.push(u.finishedH);
+		createdH += u.createdH;
+		finishedH += u.finishedH;
+	}
+	var d = window.hourspermonth.data;
+	d.datasets[0].data.pop();
+	window.hourspermonth.update();
+	d.datasets[0].data = [createdH, finishedH];
+	window.hourspermonth.update();
+
+	var d = window.hourspermonthP.data;
+	d.labels.pop();
+	d.datasets[0].data.pop();
+	d.datasets[1].data.pop();
+	window.hourspermonth.options.title.text = "Total hours: " + (createdH + finishedH);
+	window.hourspermonthP.update();
+	d.labels = labels;
+	d.datasets[0].data = arrcreatedH;
+	d.datasets[1].data = arrfinishedH;
+	window.hourspermonthP.update();
+}
 $(function () {
 
 	CreateSickChart();
+	CreateHoursCharts();
 
-	var app = angular.module('mpsapplication', []);
-	app.controller('mpscontroller', ["$scope", "$http", function ($scope, $http) {
+	var app = angular.module("mpsapplication", []);
+	app.controller("mpscontroller", ["$scope", "$http", function ($scope, $http) {
 
 		getDispos($scope, "dispos", $http);
 		$scope.isVacationScheduled = function (v) {
@@ -111,6 +187,10 @@ $(function () {
 						u.scheduled = 0;
 						u.unscheduled = 0;
 						u.sick = 0;
+						u.created = 0;
+						u.createdH = 0;
+						u.finished = 0;
+						u.finishedH = 0;
 					}
 
 					EndProgress(usersprg);
@@ -138,90 +218,31 @@ $(function () {
 								}
 							}
 							EndProgress(vacsprg);
-							DrawSick($scope.users);
+							DrawSickChart($scope.users);
+						})
+					$http.post("trservice.asmx/GetStatistics", JSON.stringify({ "start": DateToString($scope.daterep), "days": diff }))
+						.then(function (result) {
+							for (var i = 0; i < result.data.d.length; i++) {
+								var s = result.data.d[i];
+								for (var j = 0; j < $scope.users.length; j++) {
+									var u = $scope.users[j];
+									if (u.TTUSERID == s.TTUSER) {
+										if (s.FLAG == 1) {
+											u.created = s.CNT;
+											u.createdH = s.HOURS;
+										} else {
+											u.finished = s.CNT;
+											u.finishedH = s.HOURS;
+										}
+										break;
+									}
+								}
+							}
+							EndProgress(vacsprg);
+							DrawHoursCharts($scope.users);
 						})
 				});
 		}
-
 		$scope.loadData();
-
-		var ctx_hourspermonth = document.getElementById("hourspermonth").getContext('2d');
-		var ctx_hourspermonthP = document.getElementById("hourspermonthP").getContext('2d');
-
-		var ctx_countpermonth = document.getElementById("countpermonth").getContext('2d');
-		var ctx_countpermonthP = document.getElementById("countpermonthP").getContext('2d');
-
-
-		var config = {
-			type: 'pie',
-			data: {
-				datasets: [{
-					data: [
-						1,
-						2,
-						3,
-						4,
-						5,
-					],
-					backgroundColor: [
-						'Red',
-						'Orange',
-						'Yellow',
-						'Green',
-						'Blue'
-					],
-					label: 'Dataset 1'
-				}],
-				labels: [
-					'Red',
-					'Orange',
-					'Yellow',
-					'Green',
-					'Blue'
-				]
-			},
-			options: {
-				responsive: true
-			}
-		};
-		var configbar = {
-			type: 'bar',
-			data: {
-				datasets: [{
-					data: [
-						1,
-						2,
-						3,
-						4,
-						5,
-					],
-					backgroundColor: [
-						'Red',
-						'Orange',
-						'Yellow',
-						'Green',
-						'Blue'
-					],
-					label: 'Dataset 1'
-				}],
-				labels: [
-					'Red',
-					'Orange',
-					'Yellow',
-					'Green',
-					'Blue'
-				]
-			},
-			options: {
-				responsive: true
-			}
-		};
-
-
-		window.hourspermonth = new Chart(hourspermonth, config);
-		window.hourspermonthP = new Chart(hourspermonthP, configbar);
-
-		window.countpermonth = new Chart(countpermonth, config);
-		window.countpermonthP = new Chart(countpermonthP, configbar);
 	}]);
 })

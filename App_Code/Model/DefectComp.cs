@@ -5,7 +5,7 @@ using System.Linq;
 public class DefectComp : Reference
 {
 	protected const string _Vac = "Vacation";
-	private const string _Tabl = "[TT_RES].[DBO].[FLDCOMP]";
+	public static string _Tabl = "[TT_RES].[DBO].[FLDCOMP]";
 	static string[] _allCols = _allBaseCols.Concat(new string[] { _Vac }).ToArray();
 
 	public bool VACATION

@@ -82,4 +82,8 @@ public class DBHelper
 			return ds.Tables[0].Rows[0];
 		}
 	}
+	public static DataRowCollection GetRows(string strSQL)
+	{
+		return GetDataSet(strSQL).Tables[0].Rows;
+	}
 }

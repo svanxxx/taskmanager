@@ -304,7 +304,7 @@ public class IdBasedObject
 			return false;
 		}
 	}
-	bool IsModifiedCol(string col)
+	protected bool IsModifiedCol(string col)
 	{
 		{
 			for (int i = 0; i < _modified.Length; i++)

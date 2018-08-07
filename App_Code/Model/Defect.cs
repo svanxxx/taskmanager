@@ -513,7 +513,7 @@ public class DefectsFilter
 	public string startDateModified;
 	public string endDateModified;
 }
-public class Defect : DefectBase
+public partial class Defect : DefectBase
 {
 	static ConcurrentDictionary<string, LockEvent> locker = new ConcurrentDictionary<string, LockEvent>();
 	static Object thisLock = new Object();
@@ -589,6 +589,15 @@ public class Defect : DefectBase
 		{
 			MODIFIEDBY = CurrentContext.User.TTUSERID;
 			MODIFIED = DateTime.UtcNow.ToString(defDateFormat, CultureInfo.InvariantCulture);
+			if (IsModifiedCol(_Disp) && !IsModifiedCol(_Date))
+			{
+				var com = Convert.ToInt32(COMP);
+				var i = DefectComp.GetVacationRec().FindIndex(x => x == com);
+				if (i == -1)//change date enter all except vacations.
+				{
+					DATE = DateTime.Today.ToString(defDateFormat, CultureInfo.InvariantCulture);
+				}
+			}
 		}
 		_HistoryChanges = "";
 	}
