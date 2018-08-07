@@ -35,19 +35,21 @@ public class getinstall : IHttpHandler
 		folder += verfolder + "\\";
 		if (t == "efip" || t == "cx" || t == "onsite")
 		{
-			string download = "";
+			string prefix = "";
 			if (t == "efip")
 			{
-				download = folder + string.Format("eFIELDPRO_8{0}_{1}_{2}_{3}_ACT.msi", lett, nums[0], nums[1], nums[2]);
+				prefix = "eFIELDPRO_8";
 			}
 			else if (t == "cx")
 			{
-				download = folder + string.Format("FIELDPRO_ONSITE_MODELS_REAL_TIME_8{0}_{1}_{2}_{3}_ACT.msi", lett, nums[0], nums[1], nums[2]);
+				prefix = "FIELDPRO_MODELS_ONSITE_REAL_TIME_8";
 			}
 			else if (t == "onsite")
 			{
-				download = folder + string.Format("FIELDPRO_ONSITE_8{0}_{1}_{2}_{3}_ACT.msi", lett, nums[0], nums[1], nums[2]);
+				prefix = "FIELDPRO_ONSITE_8";
 			}
+			string download = string.Format("{0}{1}{2}_{3}_{4}_{5}_ACT.msi", folder, prefix, lett, nums[0], nums[1], nums[2]);;
+
 			context.Response.ContentType = "application/octet-stream";
 			context.Response.AddHeader("Content-Length", (new System.IO.FileInfo(download)).Length.ToString());
 			context.Response.AddHeader("Content-Disposition", "filename=" + '"' + System.IO.Path.GetFileName(download) + '"');
