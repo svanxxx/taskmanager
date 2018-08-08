@@ -75,7 +75,7 @@ function CreateSickChart() {
 			borderWidth: 1,
 			data: []
 		}, {
-			label: "Total work hours",
+			label: "Total work days",
 			backgroundColor: "gray",
 			borderColor: "gray",
 			borderWidth: 1,
@@ -111,7 +111,7 @@ function DrawSickChart(users) {
 		sick.push(u.sick);
 		used.push(u.scheduled);
 		free.push(u.unscheduled);
-		whours.push(u.whours);
+		whours.push(u.whours / 8.0);
 		total.push(u.sick + u.scheduled);
 	}
 	var d = window.SickChart.data;
@@ -239,7 +239,7 @@ $(function () {
 								var v = result.data.d[i];
 								for (var j = 0; j < $scope.users.length; j++) {
 									var u = $scope.users[j];
-									if (u.TTUSERID == v.AUSER) {
+									if (u.ID == v.IDUSER) {
 										u.whours = v.HOURS;
 										break;
 									}
