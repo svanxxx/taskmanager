@@ -52,7 +52,7 @@
 			if (difference < 2) {
 				return "";
 			} else {
-				return "Upcoming in " + difference + " days: ";
+				return "Upcoming in " + difference + " days:";
 			}
 		}
 

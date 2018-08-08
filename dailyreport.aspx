@@ -7,7 +7,7 @@
 </asp:Content>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
-	<img style="visibility:hidden" id="pageloadnotify" src="pageloadnotify.ashx?id=<%=PageLoadNofify.NewLoad()%>"/>
+	<img style="visibility: hidden" id="pageloadnotify" src="pageloadnotify.ashx?id=<%=PageLoadNofify.NewLoad()%>" />
 	<div ng-app="mpsapplication" ng-controller="mpscontroller">
 		<div class="row">
 			<div class="col-sm-2">
@@ -79,7 +79,9 @@
 					<td>
 						<img src="IMAGES/process.gif" ng-hide="planLoaded(u.ID)" />
 						<div>
-							<h3 class="vacation-box">{{getUpcomingdays(u)}}</h3>
+							<a target='_blank' href='vacations.aspx'>
+								<h3 class="vacation-box">{{getUpcomingdays(u)}}</h3>
+							</a>
 							<a href="showtask.aspx?ttid={{v.ID}}" target="_blank" ng-repeat="v in vacations | filter: { AUSER : u.TTUSERID } | filter: {DATE: '!' + todaystring} | filter: {DATE: '!' + yesterdaystring}">
 								<h3 class="vacation-box"><span class="glyphicon glyphicon-plane"></span></h3>
 							</a>
