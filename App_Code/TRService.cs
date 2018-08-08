@@ -1259,4 +1259,9 @@ Thanx, " + GTOHelper.GetUserNameByEmail(eml);
 	{
 		return Defect.EnumStatistics(DateTime.ParseExact(start, defDateFormat, CultureInfo.InvariantCulture), Convert.ToInt32(days));
 	}
+	[WebMethod(EnableSession = true)]
+	public List<TRStatistic> GetTRStatistic(string start, string days)
+	{
+		return TRRec.EnumTRStatistics(DateTime.ParseExact(start, defDateFormat, CultureInfo.InvariantCulture), Convert.ToInt32(days));
+	}
 }

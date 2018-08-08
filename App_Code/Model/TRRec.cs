@@ -53,7 +53,7 @@ public class TRRecSignal : IdBasedObject
 		return ls;
 	}
 }
-public class TRRec : TRRecSignal
+public partial class TRRec : TRRecSignal
 {
 	static string _TIMEFORMAT = "HH\\:mm\\:ss";
 	static string _start = "TIME_START";

@@ -74,6 +74,12 @@ function CreateSickChart() {
 			borderColor: "orange",
 			borderWidth: 1,
 			data: []
+		}, {
+			label: "Total work hours",
+			backgroundColor: "gray",
+			borderColor: "gray",
+			borderWidth: 1,
+			data: []
 		}]
 	};
 	var ctx = document.getElementById("sick").getContext("2d");
@@ -98,12 +104,14 @@ function DrawSickChart(users) {
 	var used = [];
 	var free = [];
 	var total = [];
+	var whours = [];
 	for (var i = 0; i < users.length; i++) {
 		var u = users[i];
 		labels.push(u.LOGIN);
 		sick.push(u.sick);
 		used.push(u.scheduled);
 		free.push(u.unscheduled);
+		whours.push(u.whours);
 		total.push(u.sick + u.scheduled);
 	}
 	var d = window.SickChart.data;
@@ -113,6 +121,7 @@ function DrawSickChart(users) {
 	d.datasets[1].data.pop();
 	d.datasets[2].data.pop();
 	d.datasets[3].data.pop();
+	d.datasets[4].data.pop();
 	window.SickChart.update();
 
 	d.labels = labels;
@@ -120,6 +129,7 @@ function DrawSickChart(users) {
 	d.datasets[1].data = used;
 	d.datasets[2].data = free;
 	d.datasets[3].data = total;
+	d.datasets[4].data = whours;
 	window.SickChart.update();
 }
 function DrawHoursCharts(users) {
@@ -186,6 +196,8 @@ $(function () {
 						var u = $scope.users[i];
 						u.scheduled = 0;
 						u.unscheduled = 0;
+						u.whours = 0;
+						u.wdays = 0;
 						u.sick = 0;
 						u.created = 0;
 						u.createdH = 0;
@@ -218,6 +230,22 @@ $(function () {
 								}
 							}
 							EndProgress(vacsprg);
+							DrawSickChart($scope.users);
+						})
+					var drecsprg = StartProgress("Loading daily reports...");
+					$http.post("trservice.asmx/GetTRStatistic", JSON.stringify({ "start": DateToString($scope.daterep), "days": diff }))
+						.then(function (result) {
+							for (var i = 0; i < result.data.d.length; i++) {
+								var v = result.data.d[i];
+								for (var j = 0; j < $scope.users.length; j++) {
+									var u = $scope.users[j];
+									if (u.TTUSERID == v.AUSER) {
+										u.whours = v.HOURS;
+										break;
+									}
+								}
+							}
+							EndProgress(drecsprg);
 							DrawSickChart($scope.users);
 						})
 					$http.post("trservice.asmx/GetStatistics", JSON.stringify({ "start": DateToString($scope.daterep), "days": diff }))
