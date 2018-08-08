@@ -210,7 +210,7 @@ $(function () {
 					var vacsprg = StartProgress("Loading vacations...");
 					var repto = new Date($scope.daterepend.getFullYear(), $scope.daterepend.getMonth() + 1, 0);
 					var diff = (repto - $scope.daterep) / (24 * 3600 * 1000);
-					$http.post("trservice.asmx/EnumCloseVacations", JSON.stringify({ "start": DateToString($scope.daterep), "days": diff }))
+					$http.post("trservice.asmx/enumCloseVacations", JSON.stringify({ "start": DateToString($scope.daterep), "days": diff }))
 						.then(function (result) {
 							for (var i = 0; i < result.data.d.length; i++) {
 								var v = result.data.d[i];
@@ -234,7 +234,7 @@ $(function () {
 							DrawSickChart($scope.users);
 						})
 					var drecsprg = StartProgress("Loading daily reports...");
-					$http.post("trservice.asmx/GetTRStatistic", JSON.stringify({ "start": DateToString($scope.daterep), "days": diff }))
+					$http.post("trservice.asmx/getTRStatistic", JSON.stringify({ "start": DateToString($scope.daterep), "days": diff }))
 						.then(function (result) {
 							for (var i = 0; i < result.data.d.length; i++) {
 								var v = result.data.d[i];
@@ -250,7 +250,7 @@ $(function () {
 							EndProgress(drecsprg);
 							DrawSickChart($scope.users);
 						})
-					$http.post("trservice.asmx/GetStatistics", JSON.stringify({ "start": DateToString($scope.daterep), "days": diff }))
+					$http.post("trservice.asmx/getStatistics", JSON.stringify({ "start": DateToString($scope.daterep), "days": diff }))
 						.then(function (result) {
 							for (var i = 0; i < result.data.d.length; i++) {
 								var s = result.data.d[i];

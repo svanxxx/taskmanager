@@ -128,7 +128,7 @@ $(function () {
 					}
 					$scope.cleanUsers();
 					var vacationprg = StartProgress("Loading vacations..."); $scope["loaders"]++
-					$http.post("trservice.asmx/EnumCloseVacations", JSON.stringify({ "start": DateToString($scope.daterep), "days": 366 }))
+					$http.post("trservice.asmx/enumCloseVacations", JSON.stringify({ "start": DateToString($scope.daterep), "days": 366 }))
 						.then(function (result) {
 							$scope.cleanUsers();
 							for (var i = 0; i < result.data.d.length; i++) {

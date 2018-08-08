@@ -7,6 +7,7 @@ using System.Linq;
 
 public class LockInfo
 {
+	public LockInfo() { }
 	public LockInfo(string lockedby, string globallock)
 	{
 		this.lockedby = lockedby;

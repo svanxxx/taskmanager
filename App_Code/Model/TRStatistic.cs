@@ -5,9 +5,10 @@ using System.Globalization;
 
 public class TRStatistic
 {
+	public TRStatistic() { }
 	public TRStatistic(DataRow dr)
 	{
-		IDUSER = dr["IDUSER"] == DBNull.Value ? -1 : Convert.ToInt32( dr["IDUSER"]);
+		IDUSER = dr["IDUSER"] == DBNull.Value ? -1 : Convert.ToInt32(dr["IDUSER"]);
 		HOURS = dr["HOURS"] == DBNull.Value ? 0 : Convert.ToDouble(dr["HOURS"]);
 		CNT = dr["CNT"] == DBNull.Value ? -1 : Convert.ToInt32(dr["CNT"]);
 	}
@@ -28,7 +29,7 @@ public partial class TRRec
 			WHERE {4} >= '{5}' AND {4} <= '{6}'
 			GROUP BY {0}",
 		_perid, _start, _end, _Tabl, _dat, start.ToString(defDateFormat, CultureInfo.InvariantCulture), end.ToString(defDateFormat, CultureInfo.InvariantCulture));
-		
+
 		foreach (DataRow d in DBHelper.GetRows(sql))
 		{
 			ls.Add(new TRStatistic(d));

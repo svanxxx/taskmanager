@@ -5,9 +5,10 @@ using System.Globalization;
 
 public class Statistic
 {
+	public Statistic() { }
 	public Statistic(DataRow dr)
 	{
-		TTUSER = dr["TTUSER"] == DBNull.Value ? -1 : Convert.ToInt32( dr["TTUSER"]);
+		TTUSER = dr["TTUSER"] == DBNull.Value ? -1 : Convert.ToInt32(dr["TTUSER"]);
 		HOURS = dr["HOURS"] == DBNull.Value ? -1 : Convert.ToInt32(dr["HOURS"]);
 		CNT = dr["CNT"] == DBNull.Value ? -1 : Convert.ToInt32(dr["CNT"]);
 		FLAG = Convert.ToInt32(dr["FLAG"]);//1 - created, 2 - finished
@@ -39,9 +40,9 @@ partial class Defect
 			GROUP BY {0}
 		",
 		_AsUser, _Tabl, _Est, _Created, start.ToString(defDateFormat, CultureInfo.InvariantCulture), _Date, end.ToString(defDateFormat, CultureInfo.InvariantCulture),
-		vacs, 
+		vacs,
 		DefectDispo._Tabl);
-		
+
 		foreach (DataRow d in DBHelper.GetRows(sql))
 		{
 			ls.Add(new Statistic(d));

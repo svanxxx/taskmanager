@@ -594,28 +594,6 @@ namespace GTOHELPER
 				est", GetUserEmail(user), count);
 			return GetDataSet(sql);
 		}
-		public static DataSet Get2DoCount()
-		{
-			return GetDataSet(@"
-				SELECT 
-				(SELECT P.PERSON_NAME FROM PERSONS P WHERE P.WORK_EMAIL = USR) NAM
-				,NUM
-				FROM
-				(SELECT 
-				COUNT(DEFECTNUM) NUM
-				, USR
-				FROM 
-				(SELECT 
-				D.DEFECTNUM
-				,RTRIM(D.USR) AS USR
-				FROM [TT_RES].[DBO].[DEFECTS] D
-				WHERE 
-				IDSEVERITY IN (SELECT S.IDRECORD FROM [TT_RES].[DBO].[FLDSEVER] S WHERE S.DESCRIPTOR LIKE 'A%')
-				AND D.IORDER IS NULL
-				AND D.IDDISPOSIT = 1) TBL
-				GROUP BY USR) TBL
-			");
-		}
 		public static string[] GetPlan(int iuserID)
 		{
 			string strLevel = GetUserLevel(iuserID);
