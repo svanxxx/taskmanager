@@ -39,9 +39,13 @@
 			var difference = 0;
 			for (var i = 0; i < $scope.vacations.length; i++) {
 				var vac = $scope.vacations[i];
-				var d = StringToDate(vac.DATE);
-				if (vac.AUSER == u.TTUSERID && d > $scope.today) {
-					difference = d - $scope.today;
+				if (vac.AUSER == u.TTUSERID) {
+					var d = StringToDate(vac.DATE);
+					if (d > $scope.today) {
+						var currd = d - $scope.today;
+						//looking for nearest vacation
+						difference = (difference == 0) ? currd : Math.min(currd, difference);
+					}
 				}
 			}
 			difference = Math.floor(difference / 1000 / 60 / 60 / 24);
