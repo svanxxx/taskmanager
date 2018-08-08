@@ -104,14 +104,14 @@ function DrawSickChart(users) {
 	var used = [];
 	var free = [];
 	var total = [];
-	var whours = [];
+	var reports = [];
 	for (var i = 0; i < users.length; i++) {
 		var u = users[i];
 		labels.push(u.LOGIN);
 		sick.push(u.sick);
 		used.push(u.scheduled);
 		free.push(u.unscheduled);
-		whours.push(u.whours / 8.0);
+		reports.push(u.reports);
 		total.push(u.sick + u.scheduled);
 	}
 	var d = window.SickChart.data;
@@ -129,7 +129,7 @@ function DrawSickChart(users) {
 	d.datasets[1].data = used;
 	d.datasets[2].data = free;
 	d.datasets[3].data = total;
-	d.datasets[4].data = whours;
+	d.datasets[4].data = reports;
 	window.SickChart.update();
 }
 function DrawHoursCharts(users) {
@@ -197,6 +197,7 @@ $(function () {
 						u.scheduled = 0;
 						u.unscheduled = 0;
 						u.whours = 0;
+						u.reports = 0;
 						u.wdays = 0;
 						u.sick = 0;
 						u.created = 0;
@@ -241,6 +242,7 @@ $(function () {
 									var u = $scope.users[j];
 									if (u.ID == v.IDUSER) {
 										u.whours = v.HOURS;
+										u.reports = v.CNT;
 										break;
 									}
 								}
