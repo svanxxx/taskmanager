@@ -32,16 +32,18 @@
 						</div>
 					</div>
 					<div class="col-lg-3 hidden-xs datelabel">
-						<h2>{{datestring}}</h2>
-						<h4>{{timedone}}</h4>
-						<h5><i>{{status}}</i></h5>
+						<div class="row">
+							<h3>{{datestring}}</h3>
+							<h4>{{timedone}}</h4>
+							<h5><i>{{status}}</i></h5>
+						</div>
 					</div>
 					<div class="col-lg-3 col-xs-6 panel person-box time-box">
 						<div class="row row-timeline">
 							<div class="col-sm-3">
 								<label for="timein">In:</label>
 							</div>
-							<div class="col-sm-8">
+							<div class="col-sm-7">
 								<input ng-disabled="!loaded()" id="timein" required type="time" class="input-sm form-control" ng-model="trrec.IN" />
 							</div>
 						</div>
@@ -60,7 +62,7 @@
 							<div class="col-sm-3">
 								<label for="timebr" style="">Break:</label>
 							</div>
-							<div class="col-sm-8">
+							<div class="col-sm-7">
 								<input ng-disabled="!loaded()" id="timebr" required type="time" class="input-sm form-control" ng-model="trrec.BREAK" />
 							</div>
 						</div>
