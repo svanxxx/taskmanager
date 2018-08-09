@@ -65,7 +65,12 @@ $(function () {
 		$scope.percentdonestyle = "progress-bar-danger"
 		$scope.recalcPercent = function () {
 			if ($scope.trrec) {
-				$scope.percentdone = Math.ceil(($scope.trrec.OUT.getTime() - $scope.trrec.IN.getTime()) / 1000 / 3600 / 9 * 100);
+				var diff = $scope.trrec.OUT.getTime() - $scope.trrec.IN.getTime();
+				$scope.percentdone = Math.ceil(diff / 1000 / 3600 / 9 * 100);
+				var secs = diff / 1000.0;
+				var hrs = Math.floor(secs / 3600.0);
+				var mins = Math.floor(secs / 60.0 - hrs * 60.0);
+				$scope.timedone = "presence: " + hrs + ":" + mins;
 				if ($scope.percentdone < 25) {
 					$scope.percentdonestyle = "progress-bar-danger";
 				} else if ($scope.percentdone < 50) {
