@@ -55,6 +55,7 @@
 					<li><a href="vacations.aspx"><span class="glyphicon glyphicon-plane"></span>Vacations</a></li>
 					<li><a href="machines.aspx"><span class="glyphicon glyphicon-phone"></span>Machines</a></li>
 					<li><a href="versionchanges.aspx"><span class="glyphicon glyphicon-check"></span>Version Changes</a></li>
+					<li><a target="_blank" href="http://mps.resnet.com:2222/requests.aspx"><span class="glyphicon glyphicon-link"></span>BST</a></li>
 					<li><a target="_blank" href="http://mps.resnet.com/FieldproWiki/index.php?title=Main_Page"><span class="glyphicon glyphicon-oil"></span>FiP Wiki</a></li>
 					<li><a target="_blank" href="http://mps.resnet.com/METADATA/METADATA/METADATAMODEL/"><span class="glyphicon glyphicon-oil"></span>Metadata</a></li>
 					<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">References<span class="caret"></span></a>
