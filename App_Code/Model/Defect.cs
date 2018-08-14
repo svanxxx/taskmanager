@@ -67,7 +67,7 @@ public class DefectBase : IdBasedObject
 	protected static string _Tabl = "[TT_RES].[DBO].[DEFECTS]";
 
 	protected static string[] _allBaseCols = new string[] { _ID, _Summ, _idRec, _Disp, _Est, _Order, _AsUser, _Seve, _sMod, _BackOrder, _Comp, _Date, _Created, _CreaBy, _Type, _Prod, _Ref, _Prio, _OrderDate, _ModDate, _ModBy, _sModTRID };
-	protected static string[] _allBaseColsNames = new string[] { _ID, "Summary", _idRec, "Disposition", "Estimation", "Schedule Order", "Assigned User", "Severity", "", "Schedule Order", "Component", "Date Entered", "Date Created", "Created By", "Type", "Product", "Reference", "Priority", "Schedule Date", "", "" };
+	protected static string[] _allBaseColsNames = new string[] { _ID, "Summary", _idRec, "Disposition", "Estimation", "Schedule Order", "Assigned User", "Severity", "", "Schedule Order", "Component", "Date Entered", "Date Created", "Created By", "Type", "Product", "Reference", "Priority", "Schedule Date", "", "", "" };
 
 	public string SEVE
 	{
