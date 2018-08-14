@@ -5,9 +5,9 @@ using System.Web;
 
 public class MPSUser : IdBasedObject
 {
-	const string _pid = "PERSON_ID";
+	public const string _pid = "PERSON_ID";
 	const string _pname = "PERSON_NAME";
-	const string _email = "WORK_EMAIL";
+	public const string _email = "WORK_EMAIL";
 	const string _work = "IN_WORK";
 	const string _ttuser = "ttuserid";
 	const string _addr = "ADDRESS";
@@ -20,7 +20,7 @@ public class MPSUser : IdBasedObject
 	const string _imgTransfer = "IMAGETRANSFER";
 
 	static string[] _allcols = new string[] { _pid, _pname, _email, _ttuser, _addr, _login, _pass, _isAdm, _phone, _work, _ret, _imgTransfer };
-	static string _Tabl = "[PERSONS]";
+	public static string _Tabl = "[PERSONS]";
 
 	public string PHONE
 	{

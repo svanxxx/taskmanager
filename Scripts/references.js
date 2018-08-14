@@ -51,6 +51,9 @@ function getCompById() {
 		return $scope.comps.filter(function (x) { return x.ID == id; })[0].DESCR;
 	};
 }
+function getMPSusers($scope, member, $http) {
+	loadReference($scope, member, $http, "mpsusers", "getActiveMPSusers");
+}
 function getUsers($scope, member, $http) {
 	loadReference($scope, member, $http, "users", "gettaskusers");
 }

@@ -22,7 +22,7 @@ public class LockEvent
 	{
 		Prolongate();
 		lockid = id;
-		usr = CurrentContext.User.EMAIL;
+		usr = CurrentContext.User.ID.ToString();
 	}
 	public void Prolongate()
 	{

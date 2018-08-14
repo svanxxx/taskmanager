@@ -39,16 +39,6 @@ $(function () {
 			return "";
 		};
 	});
-	app.filter('getUserImgById', function () {
-		return function (id, $scope) {
-			for (i = 0; i < $scope.users.length; i++) {
-				if ($scope.users[i].ID == id) {
-					return $scope.getPersonImg($scope.users[i].EMAIL);
-				}
-			}
-			return "";
-		};
-	});
 
 	app.controller('mpscontroller', ["$scope", "$http", "$interval", "$window", function ($scope, $http, $interval, $window) {
 
@@ -87,13 +77,6 @@ $(function () {
 		$interval(function () {
 			$scope.locktask();
 		}, 20000);
-
-		$scope.getPersonImg = function (email) {
-			if ($scope.lockedby) {
-				return "images/personal/" + email + ".jpg";
-			}
-			return "";
-		};
 
 		$scope.deleteAttach = function (id) {
 			var index = $scope.attachs.findIndex(function (x) { return x.ID == id; });
@@ -181,6 +164,7 @@ $(function () {
 		}
 
 		//references secion:
+		getMPSusers($scope, "mpsusers", $http);
 		getUsers($scope, "users", $http);
 		getDispos($scope, "dispos", $http);
 		getTypes($scope, "types", $http);
@@ -189,6 +173,18 @@ $(function () {
 		getProducts($scope, "products", $http);
 		getComps($scope, "comps", $http);
 
+		$scope.getMPSUserName = function (id) {
+			var users = $scope["mpsusers"];
+			if (!users) {
+				return "ghost";
+			}
+			for (var i = 0; i < users.length; i++) {
+				if (users[i].ID == id) {
+					return users[i].PERSON_NAME;
+				}
+			}
+			return "ghost";
+		}
 		//data section
 		var taskprg = StartProgress("Loading task..."); $scope.loaders++;
 		$http.post("trservice.asmx/gettask", JSON.stringify({ "ttid": ttid }))

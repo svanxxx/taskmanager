@@ -291,6 +291,11 @@ public class TRService : System.Web.Services.WebService
 		return new DefectBase(Convert.ToInt32(ttid));
 	}
 	[WebMethod(EnableSession = true)]
+	public List<MPSUser> getActiveMPSusers()
+	{
+		return getMPSusers(true);
+	}
+	[WebMethod(EnableSession = true)]
 	public List<MPSUser> getMPSusers(bool active)
 	{
 		return MPSUser.EnumAllUsers(active);

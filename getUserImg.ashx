@@ -20,8 +20,20 @@ public class getUserImg : IHttpHandler
 		string sid = context.Request.QueryString["id"];
 		if (string.IsNullOrEmpty(sid))
 		{
-			error(context);
-			return;
+			string sttid = context.Request.QueryString["ttid"];
+			if (string.IsNullOrEmpty(sttid))
+			{
+				error(context);
+				return;
+			}
+			int ttid = Convert.ToInt32(sttid);
+			if (ttid < 1)
+			{
+				error(context);
+				return;
+			}
+			DefectUser du = new DefectUser(ttid);
+			sid = du.TRID.ToString();
 		}
 		int id = Convert.ToInt32(sid);
 		if (id < 1)

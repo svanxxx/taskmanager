@@ -8,8 +8,9 @@ public class DefectUser : IdBasedObject
 	static string _Lasn = "LastName";
 	static string _Emai = "EMailAddr";
 	static string _Atci = "Active";
+	static string _trID = "TRID";
 
-	static string[] _Allcols = new string[] { _ID, _Firn, _Lasn, _Emai, _Atci };
+	static string[] _Allcols = new string[] { _ID, _Firn, _Lasn, _Emai, _Atci, _trID };
 	static string _Tabl = "[TT_RES].[DBO].[USERS]";
 
 	public int ID
@@ -37,6 +38,29 @@ public class DefectUser : IdBasedObject
 		get { return this[_Lasn].ToString(); }
 		set { this[_Lasn] = value; }
 	}
+	public int TRID
+	{
+		get { return (this[_trID] == DBNull.Value) ? -1 : Convert.ToInt32(this[_trID]); }
+		set { this[_trID] = value; }
+	}
+
+	protected override string OnTransformCol(string col)
+	{
+		if (col == _trID)
+		{
+			return string.Format("(SELECT P.{0} FROM {1} P WHERE UPPER(P.{2}) = UPPER({3})) {4}", MPSUser._pid, MPSUser._Tabl, MPSUser._email, _Emai, _trID);
+		}
+		return base.OnTransformCol(col);
+	}
+	protected override void OnProcessComplexColumn(string col, object val)
+	{
+		if (col == _trID)
+		{
+			return;//nothing to do: readonly data
+		}
+		base.OnProcessComplexColumn(col, val);
+	}
+
 	public DefectUser()
 		: base(_Tabl, _Allcols, 0.ToString(), _ID, false)
 	{
