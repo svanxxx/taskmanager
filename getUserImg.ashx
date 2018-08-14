@@ -7,15 +7,23 @@ public class getUserImg : IHttpHandler
 {
 	void error(HttpContext context)
 	{
-		context.Response.ContentType = "text/plain";
-		context.Response.Write("no image");
-		context.Response.Flush();
-		context.Response.Close();
-		context.Response.End();
+		context.Response.Cache.SetCacheability(HttpCacheability.Public);
+		context.Response.Cache.SetExpires(DateTime.Now.AddHours(2));
+		context.Response.Cache.SetMaxAge(new TimeSpan(2, 0, 0));
+		context.Response.ContentType = "image/png";
+		string file = context.Server.MapPath("images/img_avatar.png");
+		context.Response.AddHeader("Content-Length", (new System.IO.FileInfo(file)).Length.ToString());
+		context.Response.WriteFile(file);
 	}
 	public void ProcessRequest(HttpContext context)
 	{
-		int id = Convert.ToInt32(context.Request.QueryString["id"]);
+		string sid = context.Request.QueryString["id"];
+		if (string.IsNullOrEmpty(sid))
+		{
+			error(context);
+			return;
+		}
+		int id = Convert.ToInt32(sid);
 		if (id < 1)
 		{
 			error(context);

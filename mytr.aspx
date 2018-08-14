@@ -14,7 +14,7 @@
 					<div class="col-lg-2 col-xs-6 col-centered">
 						<div class="panel panel-primary person-box">
 							<div class="panel-heading person-img">
-								<img ng-src="{{userimg}}" alt="smile" width="80" height="80" />
+								<img ng-src="{{'getUserImg.ashx?id=' + user.ID}}" alt="smile" width="80" height="80" />
 							</div>
 							<div class="panel-body person-lab">
 								<label>{{user.PERSON_NAME}}</label>

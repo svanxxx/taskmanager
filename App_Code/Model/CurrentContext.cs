@@ -68,9 +68,8 @@ public static class CurrentContext
 						}
 					}
 				}
-
+				HttpContext.Current.Session[_us] = ous;
 			}
-			HttpContext.Current.Session[_us] = ous;
 			return (ous as MPSUser);
 		}
 	}

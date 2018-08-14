@@ -240,7 +240,6 @@ $(function () {
 		$http.post("trservice.asmx/getcurrentuser", JSON.stringify({}))
 			.then(function (response) {
 				$scope.user = response.data.d;
-				$scope.userimg = "images/personal/" + $scope.user.EMAIL + ".jpg";
 			});
 	}]);
 })
