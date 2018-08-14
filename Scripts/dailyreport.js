@@ -1,16 +1,6 @@
 ﻿$(function () {
 	var app = angular.module('mpsapplication', []);
 	app.filter('getDispoColorById', getDispoColorById);
-	app.filter('getUserImgById', function () {
-		return function (id, $scope) {
-			for (i = 0; i < $scope.users.length; i++) {
-				if ($scope.users[i].ID == id) {
-					return $scope.getPersonImg($scope.users[i].EMAIL);
-				}
-			}
-			return "";
-		};
-	});
 
 	app.controller('mpscontroller', ["$scope", "$http", "$interval", function ($scope, $http, $interval) {
 		$scope["loaders"] = 0;
@@ -27,13 +17,6 @@
 		$scope.users = [];
 
 		getDispos($scope, "dispos", $http);
-
-		$scope.getPersonImg = function (email) {
-			if ($scope.users && email != "") {
-				return "images/personal/" + email + ".jpg";
-			}
-			return "";
-		}
 
 		$scope.getUpcomingdays = function (u) {
 			var difference = 0;
