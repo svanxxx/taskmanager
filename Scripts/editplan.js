@@ -1,26 +1,10 @@
 ﻿$(function () {
 	var app = angular.module('mpsapplication', []);
-	app.filter('getUserImgById', function () {
-		return function (id, $scope) {
-			for (i = 0; i < $scope.users.length; i++) {
-				if ($scope.users[i].ID == id) {
-					return $scope.getPersonImg($scope.users[i].EMAIL);
-				}
-			}
-			return "";
-		};
-	});
 
 	app.filter('getDispoColorById', getDispoColorById);
 
 	app.controller('mpscontroller', ["$scope", "$http", "$timeout", function ($scope, $http, $timeout) {
 		$scope.Math = window.Math;
-		$scope.getPersonImg = function (email) {
-			if ($scope.users && email != "") {
-				return "images/personal/" + email + ".jpg";
-			}
-			return "";
-		}
 
 		$scope.discardDefects = function () {
 			$scope.changeuser($scope.currentuser);

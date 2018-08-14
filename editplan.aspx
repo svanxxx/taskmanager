@@ -15,7 +15,7 @@
 		<ul class="nav nav-pills userslist">
 			<li class="{{currentuserid===u.TTUSERID?'active':''}}" ng-click="changeuser(u)" ng-repeat="u in filtered = (users | filter:{ INWORK: true })">
 				<a class="person" data-toggle="pill" href="#">
-					<img ng-src="{{u.ID | getUserImgById:this}}" alt="Smile" height="20" width="20">{{u.LOGIN}}
+					<img ng-src="{{'getUserImg.ashx?id=' + u.ID}}" alt="Smile" height="20" width="20">{{u.LOGIN}}
 				</a>
 			</li>
 		</ul>
@@ -33,7 +33,7 @@
 						<span class="label label-danger">{{d.ESTIM}}</span>
 						<span class="tt-label" data-toggle="tooltip" title="{{d.SUMMARY}}">{{d.SUMMARY | limitTo:135}}</span>
 						<button ng-click="unscheduletask(d)" data-toggle="tooltip" title="Remove from the schedule list" type="button" class="btn btn-default btn-xs taskselector"><span class="glyphicon glyphicon glyphicon-arrow-right"></span></button>
-						<img height="20" width="20" class="taskselector" ng-src="{{getPersonImg(d.SMODIFIER)}}" title="{{d.SMODIFIER}}" />
+						<img height="20" width="20" class="taskselector" ng-src="{{'getUserImg.ashx?id=' + d.SMODTRID}}" title="{{d.SMODIFIER}}" />
 						<input class="taskselector" type="radio" name="optradio" ng-keydown="taskMove(d, $event)">
 					</div>
 				</div>

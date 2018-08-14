@@ -51,6 +51,7 @@ public class DefectBase : IdBasedObject
 	protected static string _AsUser = "idUsr";
 	protected static string _Seve = "idSeverity";
 	protected static string _sMod = "sModifier";
+	protected static string _sModTRID = "sModifierTRID";
 	protected static string _Comp = "idCompon";
 	protected static string _Date = "dateEnter";
 	protected static string _Created = "dateCreate";
@@ -65,7 +66,7 @@ public class DefectBase : IdBasedObject
 
 	protected static string _Tabl = "[TT_RES].[DBO].[DEFECTS]";
 
-	protected static string[] _allBaseCols = new string[] { _ID, _Summ, _idRec, _Disp, _Est, _Order, _AsUser, _Seve, _sMod, _BackOrder, _Comp, _Date, _Created, _CreaBy, _Type, _Prod, _Ref, _Prio, _OrderDate, _ModDate, _ModBy };
+	protected static string[] _allBaseCols = new string[] { _ID, _Summ, _idRec, _Disp, _Est, _Order, _AsUser, _Seve, _sMod, _BackOrder, _Comp, _Date, _Created, _CreaBy, _Type, _Prod, _Ref, _Prio, _OrderDate, _ModDate, _ModBy, _sModTRID };
 	protected static string[] _allBaseColsNames = new string[] { _ID, "Summary", _idRec, "Disposition", "Estimation", "Schedule Order", "Assigned User", "Severity", "", "Schedule Order", "Component", "Date Entered", "Date Created", "Created By", "Type", "Product", "Reference", "Priority", "Schedule Date", "", "" };
 
 	public string SEVE
@@ -139,6 +140,11 @@ public class DefectBase : IdBasedObject
 				this[_BackOrder] = value;
 			}
 		}
+	}
+	public int SMODTRID
+	{
+		get { return this[_sModTRID] == DBNull.Value ? -1 : Convert.ToInt32(this[_sModTRID]); }
+		set { this[_sModTRID] = Convert.ToInt32(value); _id = ID.ToString(); }
 	}
 	public int ORDER
 	{
@@ -225,7 +231,11 @@ public class DefectBase : IdBasedObject
 
 	protected override void OnProcessComplexColumn(string col, object val)
 	{
-		if (col == _BackOrder)
+		if (col == _sModTRID)
+		{
+			return;//readonly
+		}
+		else if (col == _BackOrder)
 		{
 			string sqlupdate = string.Format("UPDATE {0} SET {1} = {2} WHERE {3} = {4}", _Tabl, _Order, BACKORDER, _idRec, IDREC);
 			SQLExecute(sqlupdate);
@@ -273,7 +283,11 @@ public class DefectBase : IdBasedObject
 	}
 	protected override string OnTransformCol(string col)
 	{
-		if (col == _Order)
+		if (col == _sModTRID)
+		{
+			return string.Format("(SELECT P.{0} FROM {1} P WHERE UPPER(P.{2}) = UPPER({3})) {4}", MPSUser._pid, MPSUser._Tabl, MPSUser._email, _sMod, _sModTRID);
+		}
+		else if (col == _Order)
 		{
 			List<int> wl = DefectDispo.EnumWorkable();
 			return string.Format("(CASE WHEN {1}.{0} IS NULL THEN NULL ELSE (SELECT COUNT(*) + 1 FROM {1} D2 WHERE D2.IDUSR = {1}.IDUSR AND D2.{0} > {1}.{0} AND {3} in ({4}))END) {2}", _Order, _Tabl, _Order, _Disp, string.Join(",", wl));
@@ -286,7 +300,7 @@ public class DefectBase : IdBasedObject
 	}
 	protected override bool IsColumnComplex(string col)
 	{
-		if (col == _Order || col == _BackOrder)
+		if (col == _Order || col == _BackOrder || col == _sModTRID)
 			return true;
 
 		return base.IsColumnComplex(col);
