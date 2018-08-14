@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.OleDb;
 using System.Web;
 
 public class MPSUser : IdBasedObject
@@ -15,8 +16,10 @@ public class MPSUser : IdBasedObject
 	const string _isAdm = "IS_ADMIN";
 	const string _phone = "PERSON_PHONE";
 	const string _ret = "RETIRED";
+	const string _img = "IMAGE";
+	const string _imgTransfer = "IMAGETRANSFER";
 
-	static string[] _allcols = new string[] { _pid, _pname, _email, _ttuser, _addr, _login, _pass, _isAdm, _phone, _work, _ret };
+	static string[] _allcols = new string[] { _pid, _pname, _email, _ttuser, _addr, _login, _pass, _isAdm, _phone, _work, _ret, _imgTransfer };
 	static string _Tabl = "[PERSONS]";
 
 	public string PHONE
@@ -92,6 +95,11 @@ public class MPSUser : IdBasedObject
 		}
 		set { this[_ttuser] = value; }
 	}
+	public string IMGTRANSFER
+	{
+		get { return this[_imgTransfer].ToString(); }
+		set { this[_imgTransfer] = value; }
+	}
 
 	protected override string OnTransformCol(string col)
 	{
@@ -99,17 +107,40 @@ public class MPSUser : IdBasedObject
 		{
 			return string.Format("(SELECT TOP 1 IDRECORD FROM TT_RES.DBO.USERS WHERE UPPER(EMAILADDR) = (SELECT UPPER(WORK_EMAIL) FROM PERSONS WHERE PERSON_ID = {0})) {1}", _id, _ttuser);
 		}
+		if (col == _imgTransfer)
+		{
+			return "'' " + _imgTransfer;
+		}
 		return base.OnTransformCol(col);
 	}
 	protected override void OnProcessComplexColumn(string col, object val)
 	{
-		if (col == _ttuser)
+		if (col == _imgTransfer)
+		{
+			string sval = val.ToString();
+			if (!string.IsNullOrEmpty(sval))
+			{
+				sval = sval.Remove(0, sval.IndexOf("base64,") + 7);
+				byte[] filedata = Convert.FromBase64String(sval);
+				OleDbParameter p = new OleDbParameter("@" + _img, OleDbType.VarBinary);
+				p.Value = filedata;
+				List<OleDbParameter> pars = new List<OleDbParameter>();
+				pars.Add(p);
+				DBHelper.SQLExecute(string.Format("UPDATE {0} SET [{1}] = ? WHERE {2} = {3}", _Tabl, _img, _pid, ID), pars.ToArray());
+			}
+			return;
+		}
+		else if (col == _ttuser)
 		{
 			return;//nothing to do: readonly data
 		}
 		base.OnProcessComplexColumn(col, val);
 	}
 
+	public byte[] GetImage()
+	{
+		return DBHelper.GetValue(string.Format("SELECT [{0}] FROM {1} WHERE {2} = {3}", _img, _Tabl, _pid, ID)) as byte[];
+	}
 	public MPSUser(int id)
 	  : base(_Tabl, _allcols, id.ToString(), _pid)
 	{
@@ -136,7 +167,7 @@ public class MPSUser : IdBasedObject
 	}
 	public static MPSUser FindUser(string name, string pass)
 	{
-		foreach (int i in EnumRecords(_Tabl, _pid, new string[]{ _login, _pass}, new object[] { name, pass }))
+		foreach (int i in EnumRecords(_Tabl, _pid, new string[] { _login, _pass }, new object[] { name, pass }))
 		{
 			return new MPSUser(i);
 		}

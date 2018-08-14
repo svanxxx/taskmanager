@@ -15,6 +15,7 @@
 		<table class="table table-hover table-bordered">
 			<thead>
 				<tr class="info">
+					<th>IM</th>
 					<th>Name</th>
 					<th>Address</th>
 					<th>Login</th>
@@ -27,6 +28,7 @@
 			</thead>
 			<tbody>
 				<tr ng-repeat="u in users | orderBy : 'PERSON_NAME'" class="{{u.changed?'data-changed':''}}">
+					<td><button ng-click="changeImg(u.ID)" type="button" class="btn btn-info"><img class="rep-img" src="{{'getUserImg.ashx?id='+u.ID}}" alt=" " height="20" width="20"></button></td>
 					<td><input ng-disabled="readonly" class="intable-data-input" type="text" ng-model="u.PERSON_NAME" ng-change="itemchanged(u)"></td>
 					<td><input ng-disabled="readonly" class="intable-data-input" type="text" ng-model="u.ADDRESS" ng-change="itemchanged(u)"></td>
 					<td><input ng-disabled="readonly" class="intable-data-input" type="text" ng-model="u.LOGIN" ng-change="itemchanged(u)"></td>

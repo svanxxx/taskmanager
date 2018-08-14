@@ -205,7 +205,7 @@ public partial class TRRec : TRRecSignal
 			SQLExecute(update, new object[] { d, personid, d, personid });
 		}
 	}
-	public List<TRRec> Enum(DateTime[] d)
+	public static List<TRRec> Enum(DateTime[] d)
 	{
 		List<TRRec> ls = new List<TRRec>();
 		if (d.Length < 1)
@@ -227,7 +227,20 @@ public partial class TRRec : TRRecSignal
 			where += string.Format(" [{0}] = '{1}' ", _dat, date.ToString(DBHelper.SQLDateFormat));
 		}
 
-		foreach (DataRow r in GetRecords(where))
+		foreach (DataRow r in (new TRRec()).GetRecords(where))
+		{
+			TRRec rec = new TRRec();
+			rec.Load(r);
+			ls.Add(rec);
+		}
+		return ls;
+	}
+	public static List<TRRec> EnumPersonal(int id, DateTime start, int days)
+	{
+		List<TRRec> ls = new List<TRRec>();
+		DateTime end = (new DateTime(start.Year, start.Month, start.Day)).AddDays(days);
+		string where = string.Format(" WHERE [{0}] = '{1}' AND [{2}] >= '{3}' AND [{2}] <= '{4}'", _perid, id, _dat, start.ToString(DBHelper.SQLDateFormat), end.ToString(DBHelper.SQLDateFormat));
+		foreach (DataRow r in (new TRRec()).GetRecords(where))
 		{
 			TRRec rec = new TRRec();
 			rec.Load(r);

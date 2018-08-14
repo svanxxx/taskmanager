@@ -15,6 +15,26 @@
 		$scope.discard = function () {
 			window.location.reload();
 		}
+		$scope.changeImg = function (id) {
+			var file = $('<input type="file" name="filefor" style="display: none;" />');
+			file.on('input', function (e) {
+				var r = new FileReader();
+				r.attfilename = this.files[0].name;
+				r.onloadend = function (e) {
+					for (var i = 0; i < $scope.users.length; i++) {
+						if ($scope.users[i].ID == id) {
+							$scope.users[i].IMGTRANSFER = e.target.result;
+							$scope.users[i].changed = true;
+							$scope.changed = true;
+							$scope.$apply();
+							break;
+						}
+					}
+				}
+				r.readAsDataURL(this.files[0]);
+			});
+			file.trigger('click');
+		}
 		$scope.save = function () {
 			var prg = StartProgress("Saving data...");
 			var users = [];

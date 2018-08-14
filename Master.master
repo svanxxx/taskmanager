@@ -49,6 +49,7 @@
 					<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Reports<span class="caret"></span></a>
 						<ul class="dropdown-menu">
 							<li><a href="dailyreport.aspx"><span class="glyphicon glyphicon-book"></span>Daily Report</a></li>
+							<li><a href="dailysearch.aspx"><span class="glyphicon glyphicon-book"></span>Daily Search</a></li>
 							<li><a href="statistics.aspx"><span class="glyphicon glyphicon-book"></span>Statistics</a></li>
 						</ul>
 					</li>

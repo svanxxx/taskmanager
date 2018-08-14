@@ -357,8 +357,7 @@ public class TRService : System.Web.Services.WebService
 		{
 			datetimes.Add(DateTime.ParseExact(d, defDateFormat, CultureInfo.InvariantCulture));
 		}
-		TRRec r = new TRRec();
-		return r.Enum(datetimes.ToArray());
+		return TRRec.Enum(datetimes.ToArray());
 	}
 	[WebMethod(EnableSession = true)]
 	public List<Machine> getMachines()
@@ -487,5 +486,14 @@ public class TRService : System.Web.Services.WebService
 	public List<TRStatistic> getTRStatistic(string start, string days)
 	{
 		return TRRec.EnumTRStatistics(DateTime.ParseExact(start, defDateFormat, CultureInfo.InvariantCulture), Convert.ToInt32(days));
+	}
+	[WebMethod(EnableSession = true)]
+	public List<TRRec> getreports4Person(int personid, string start, int days)
+	{
+		if (!CurrentContext.Valid)
+		{
+			return new List<TRRec>();
+		}
+		return TRRec.EnumPersonal(personid, DateTime.ParseExact(start, defDateFormat, CultureInfo.InvariantCulture), days);
 	}
 }
