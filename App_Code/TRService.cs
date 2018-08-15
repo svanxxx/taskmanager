@@ -146,6 +146,19 @@ public class TRService : System.Web.Services.WebService
 		return "OK";
 	}
 	[WebMethod(EnableSession = true)]
+	public void settaskBase(List<DefectBase> defects)
+	{
+		foreach (DefectBase d in defects)
+		{
+			Defect dstore = new Defect(d.ID);
+			dstore.FromAnotherObject(d);
+			if (dstore.IsModified())
+			{
+				dstore.Store();
+			}
+		}
+	}
+	[WebMethod(EnableSession = true)]
 	public List<DefectHistory> gettaskhistory(string ttid)
 	{
 		if (string.IsNullOrEmpty(ttid))

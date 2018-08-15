@@ -185,17 +185,28 @@ public class DefectBase : IdBasedObject
 	}
 	public string DATE
 	{
-		get { return (this[_Date] == DBNull.Value ? default(DateTime) : Convert.ToDateTime(this[_Date])).ToString(defDateFormat, CultureInfo.InvariantCulture); }
-		set { this[_Date] = Convert.ToDateTime(value, CultureInfo.InvariantCulture); }
+		get { return this[_Date] == DBNull.Value ? DBHelper.sdefaultDate : Convert.ToDateTime(this[_Date]).ToString(defDateFormat, CultureInfo.InvariantCulture); }
+		set
+		{
+			var dt = Convert.ToDateTime(value, CultureInfo.InvariantCulture);
+			if (value == DBHelper.sdefaultDate)
+			{
+				this[_Date] = DBNull.Value;
+			}
+			else
+			{
+				this[_Date] = dt;
+			}
+		}
 	}
 	public string CREATED
 	{
-		get { return (this[_Created] == DBNull.Value ? default(DateTime) : Convert.ToDateTime(this[_Created])).ToString(defDateFormat, CultureInfo.InvariantCulture); }
+		get { return this[_Created] == DBNull.Value ? DBHelper.sdefaultDate : Convert.ToDateTime(this[_Created]).ToString(defDateFormat, CultureInfo.InvariantCulture); }
 		set { this[_Created] = Convert.ToDateTime(value, CultureInfo.InvariantCulture); }
 	}
 	public string MODIFIED
 	{
-		get { return (this[_ModDate] == DBNull.Value ? default(DateTime) : Convert.ToDateTime(this[_ModDate])).ToString(defDateFormat, CultureInfo.InvariantCulture); }
+		get { return this[_ModDate] == DBNull.Value ? DBHelper.sdefaultDate : Convert.ToDateTime(this[_ModDate]).ToString(defDateFormat, CultureInfo.InvariantCulture); }
 		set { this[_ModDate] = Convert.ToDateTime(value, CultureInfo.InvariantCulture); }
 	}
 	public decimal MODIFIEDBY
@@ -206,7 +217,7 @@ public class DefectBase : IdBasedObject
 	public decimal CREATEDBY
 	{
 		get { return Convert.ToDecimal(this[_CreaBy]); }
-		set { this[_CreaBy] = Convert.ToInt32(value); }
+		set { this[_CreaBy] = Convert.ToDecimal(value); }
 	}
 	public string PRIO
 	{

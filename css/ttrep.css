@@ -8,6 +8,14 @@
 	margin: 0px;
 }
 
+.table-bordered > thead > tr > th {
+	text-align: center;
+}
+
+.table-bordered > tbody > tr > td:nth-child(1) {
+	text-align: center;
+}
+
 .middlecol {
 	text-align: center;
 }

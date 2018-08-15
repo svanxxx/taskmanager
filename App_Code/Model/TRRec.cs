@@ -19,7 +19,7 @@ public class TRRecSignal : IdBasedObject
 	}
 	public string DATE
 	{
-		get { return (this[_dat] == DBNull.Value ? default(DateTime) : Convert.ToDateTime(this[_dat])).ToString(defDateFormat, CultureInfo.InvariantCulture); }
+		get { return this[_dat] == DBNull.Value ? DBHelper.sdefaultDate : Convert.ToDateTime(this[_dat]).ToString(defDateFormat, CultureInfo.InvariantCulture); }
 		set { this[_dat] = Convert.ToDateTime(value, CultureInfo.InvariantCulture); }
 	}
 	public int USER

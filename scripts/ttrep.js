@@ -24,7 +24,6 @@ $(function () {
 			return "";
 		};
 	});
-
 	app.filter('getCompById', getCompById);
 	app.filter('getDispoById', getDispoById);
 	app.filter('getDispoColorById', getDispoColorById);
@@ -34,7 +33,7 @@ $(function () {
 		if (f) {
 			localStorage.DefectsFilter = f;
 		}
-		
+
 
 		window.addEventListener("popstate", function (event) {
 			localStorage.DefectsFilter = JSON.stringify(Object.assign({}, event.state));
@@ -58,6 +57,7 @@ $(function () {
 		getComps($scope, "comps", $http);
 
 		$scope.loadData = function () {
+			$scope.defectsselected = false;
 			var taskprg = StartProgress("Loading tasks...");
 			$scope.changed = false;
 			$scope.DefectsFilter = {};
@@ -79,23 +79,90 @@ $(function () {
 			$http.post("trservice.asmx/gettasks", JSON.stringify({ "f": $scope.DefectsFilter }))
 				.then(function (response) {
 					$scope.defects = response.data.d;
+					for (var i = 0; i < $scope.defects.length; i++) {
+						$scope.defects.checked = false;
+					}
 					EndProgress(taskprg);;
 				});
 		}
 
 		$scope.loadData();
 
+		$scope.apply = {};
+		$scope.apply.disposition = { "use": false, "value": -1 };
+
+		$scope.checkall = function () {
+			if ($scope.defects.length < 1) {
+				return;
+			}
+			var check = !$scope.defects[0].checked;
+			$scope.defects.forEach(function (d) {
+				d.checked = check;
+			})
+			$scope.defectsselected = check;
+		}
 		$scope.applyfilter = function () {
 			localStorage.DefectsFilter = JSON.stringify($scope.DefectsFilter);
 			var o = Object.assign({}, $scope.DefectsFilter);
 			window.history.pushState(o, "filter:" + localStorage.DefectsFilter, replaceUrlParam(location.href, "filter", localStorage.DefectsFilter));
 			$scope.loadData();
+			$scope.$apply();
 		}
 		$scope.discardfilter = function () {
 			window.location.reload();
 		}
 		$scope.referenceFiltered = function (id, refname) {
 			return $scope.DefectsFilter[refname].findIndex(function (x) { return x == id; }) > -1;
+		}
+		$scope.styleFiltered = function (refname) {
+			if ($scope.DefectsFilter[refname].length > 0) {
+				return { "background-color": "yellow" };
+			}
+			return {};
+		}
+
+		$scope.changeDefects = function () {
+			var updated = [];
+			$scope.defects.forEach(function (d) {
+				if (d.checked) {
+					var copy = Object.assign({}, d);
+					if ($scope.apply.disposition.use && $scope.apply.disposition.value > 0) {
+						copy.DISPO = $scope.apply.disposition.value;
+					}
+					delete copy["checked"];
+					updated.push(copy);
+				}
+			})
+			if (confirm("Are you sure you want to change " + updated.length + " defects ?")) {
+				var updatingprg = StartProgress("Updating tasks...");
+				$http.post("trservice.asmx/settaskBase", JSON.stringify({ "defects": updated }))
+					.then(function (response) {
+						$scope.loadData();
+						EndProgress(updatingprg);
+					});
+			} else {
+				// Do nothing!
+			}
+		}
+
+		$scope.$watch("defects", function (newVal, oldVal) {
+			if (newVal && oldVal && $scope.defects.length > 0) {
+				var newcheck = false;
+				$scope.defects.forEach(function (d) {
+					if (d.checked) {
+						newcheck = true;
+					}
+				})
+				if ($scope.defectsselected != newcheck) {
+					$scope.defectsselected = newcheck;
+				}
+			}
+		}, true);
+
+		$scope.resetReferenceFilter = function (refname, obj) {
+			$(obj.target).parent().find("input").prop("checked", false)
+			$scope.changed = true;
+			$scope.DefectsFilter[refname] = [];
 		}
 		$scope.changeReferenceFilter = function (id, refname) {
 			$scope.changed = true;

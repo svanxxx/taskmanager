@@ -60,7 +60,7 @@ public class IdBasedObject
 	{
 		foreach (var c in _columns)
 		{
-			if (obj[c].ToString() != this[c].ToString())
+			if (obj._columns.Contains(c) && obj[c].ToString() != this[c].ToString())
 			{
 				this[c] = obj[c];
 			}
