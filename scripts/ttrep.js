@@ -90,6 +90,7 @@ $(function () {
 
 		$scope.apply = {};
 		$scope.apply.disposition = { "use": false, "value": -1 };
+		$scope.apply.component = { "use": false, "value": -1 };
 
 		$scope.checkall = function () {
 			if ($scope.defects.length < 1) {
@@ -128,6 +129,9 @@ $(function () {
 					var copy = Object.assign({}, d);
 					if ($scope.apply.disposition.use && $scope.apply.disposition.value > 0) {
 						copy.DISPO = $scope.apply.disposition.value;
+					}
+					if ($scope.apply.component.use && $scope.apply.component.value > 0) {
+						copy.COMP = $scope.apply.component.value;
 					}
 					delete copy["checked"];
 					updated.push(copy);

@@ -27,6 +27,17 @@
 						</select>
 					</div>
 				</div>
+				<div class="row">
+					<div class="col-sm-2">
+						<input type="checkbox" ng-model="apply.component.use">
+						<label>Component:</label>
+					</div>
+					<div class="col-sm-10">
+						<select class="form-control input-sm" ng-model="apply.component.value">
+							<option ng-repeat="c in comps" value="{{c.ID}}">{{c.DESCR}}</option>
+						</select>
+					</div>
+				</div>
 				<button type="button" class="btn btn-success" ng-click="changeDefects()">Apply</button>
 			</div>
 		</div>
