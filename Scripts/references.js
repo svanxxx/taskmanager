@@ -29,12 +29,7 @@ function loadReference($scope, member, $http, localmember, functionname) {
 			});
 	}
 }
-function getTypes($scope, member, $http) {
-	loadReference($scope, member, $http, "types", "gettasktypes");
-}
-function getDispos($scope, member, $http) {
-	loadReference($scope, member, $http, "dispos", "gettaskdispos");
-}
+
 function getDispoColorById() {
 	return function (id, $scope) {
 		var col = ($scope.dispos && $scope.dispos.length > 0) ? $scope.dispos.filter(function (x) { return x.ID == id; })[0].COLOR : "white";
@@ -50,6 +45,22 @@ function getCompById() {
 	return function (id, $scope) {
 		return $scope.comps.filter(function (x) { return x.ID == id; })[0].DESCR;
 	};
+}
+function getSeveById() {
+	return function (id, $scope) {
+		var r = $scope.severs.filter(function (x) { return x.ID == id; });
+		if (r.length > 0) {
+			return r[0].DESCR;
+		}
+		return "";
+	};
+}
+
+function getTypes($scope, member, $http) {
+	loadReference($scope, member, $http, "types", "gettasktypes");
+}
+function getDispos($scope, member, $http) {
+	loadReference($scope, member, $http, "dispos", "gettaskdispos");
 }
 function getMPSusers($scope, member, $http) {
 	loadReference($scope, member, $http, "mpsusers", "getActiveMPSusers");

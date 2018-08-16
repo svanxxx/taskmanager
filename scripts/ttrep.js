@@ -25,6 +25,7 @@ $(function () {
 		};
 	});
 	app.filter('getCompById', getCompById);
+	app.filter('getSeveById', getSeveById);
 	app.filter('getDispoById', getDispoById);
 	app.filter('getDispoColorById', getDispoColorById);
 
@@ -45,7 +46,7 @@ $(function () {
 				$scope.applyfilter();
 				keyEvent.preventDefault();
 			}
-		}
+		};
 
 		//references section
 		getDispos($scope, "dispos", $http);
@@ -70,6 +71,9 @@ $(function () {
 			if (!("components" in $scope.DefectsFilter)) {
 				$scope.DefectsFilter.components = [];
 			}
+			if (!("severities" in $scope.DefectsFilter)) {
+				$scope.DefectsFilter.severities = [];
+			}
 			if (!("users" in $scope.DefectsFilter)) {
 				$scope.DefectsFilter.users = [];
 			}
@@ -84,13 +88,14 @@ $(function () {
 					}
 					EndProgress(taskprg);;
 				});
-		}
+		};
 
 		$scope.loadData();
 
 		$scope.apply = {};
 		$scope.apply.disposition = { "use": false, "value": -1 };
 		$scope.apply.component = { "use": false, "value": -1 };
+		$scope.apply.severity = { "use": false, "value": -1 };
 
 		$scope.checkall = function () {
 			if ($scope.defects.length < 1) {
@@ -99,28 +104,27 @@ $(function () {
 			var check = !$scope.defects[0].checked;
 			$scope.defects.forEach(function (d) {
 				d.checked = check;
-			})
+			});
 			$scope.defectsselected = check;
-		}
+		};
 		$scope.applyfilter = function () {
 			localStorage.DefectsFilter = JSON.stringify($scope.DefectsFilter);
 			var o = Object.assign({}, $scope.DefectsFilter);
 			window.history.pushState(o, "filter:" + localStorage.DefectsFilter, replaceUrlParam(location.href, "filter", localStorage.DefectsFilter));
 			$scope.loadData();
-			$scope.$apply();
-		}
+		};
 		$scope.discardfilter = function () {
 			window.location.reload();
-		}
+		};
 		$scope.referenceFiltered = function (id, refname) {
 			return $scope.DefectsFilter[refname].findIndex(function (x) { return x == id; }) > -1;
-		}
+		};
 		$scope.styleFiltered = function (refname) {
 			if ($scope.DefectsFilter[refname].length > 0) {
 				return { "background-color": "yellow" };
 			}
 			return {};
-		}
+		};
 
 		$scope.changeDefects = function () {
 			var updated = [];
@@ -133,10 +137,13 @@ $(function () {
 					if ($scope.apply.component.use && $scope.apply.component.value > 0) {
 						copy.COMP = $scope.apply.component.value;
 					}
+					if ($scope.apply.severity.use && $scope.apply.severity.value > 0) {
+						copy.SEVE = $scope.apply.severity.value;
+					}
 					delete copy["checked"];
 					updated.push(copy);
 				}
-			})
+			});
 			if (confirm("Are you sure you want to change " + updated.length + " defects ?")) {
 				var updatingprg = StartProgress("Updating tasks...");
 				$http.post("trservice.asmx/settaskBase", JSON.stringify({ "defects": updated }))
@@ -147,7 +154,7 @@ $(function () {
 			} else {
 				// Do nothing!
 			}
-		}
+		};
 
 		$scope.$watch("defects", function (newVal, oldVal) {
 			if (newVal && oldVal && $scope.defects.length > 0) {
@@ -156,7 +163,7 @@ $(function () {
 					if (d.checked) {
 						newcheck = true;
 					}
-				})
+				});
 				if ($scope.defectsselected != newcheck) {
 					$scope.defectsselected = newcheck;
 				}
@@ -167,7 +174,7 @@ $(function () {
 			$(obj.target).parent().find("input").prop("checked", false)
 			$scope.changed = true;
 			$scope.DefectsFilter[refname] = [];
-		}
+		};
 		$scope.changeReferenceFilter = function (id, refname) {
 			$scope.changed = true;
 			var index = $scope.DefectsFilter[refname].findIndex(function (x) { return x == id; });
@@ -176,6 +183,6 @@ $(function () {
 			} else {
 				$scope.DefectsFilter[refname].push(id);
 			}
-		}
+		};
 	}]);
 })

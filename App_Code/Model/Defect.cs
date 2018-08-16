@@ -392,6 +392,10 @@ public class DefectBase : IdBasedObject
 		{
 			lswhere.Add(string.Format(" AND  ({0} in ({1}))", _Disp, string.Join(",", f.dispositions)));
 		}
+		if (f.severities != null && f.severities.Count > 0)
+		{
+			lswhere.Add(string.Format(" AND  ({0} in ({1}))", _Seve, string.Join(",", f.severities)));
+		}
 		if (f.users != null && f.users.Count > 0)
 		{
 			lswhere.Add(string.Format(" AND  ({0} in ({1}))", _AsUser, string.Join(",", f.users)));
@@ -523,6 +527,7 @@ public class DefectsFilter
 	public List<int> createdUsers;
 	public List<int> modifiedUsers;
 	public List<int> components;
+	public List<int> severities;
 
 	public string text;
 	public string orderer;

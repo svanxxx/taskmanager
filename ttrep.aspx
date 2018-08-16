@@ -38,6 +38,17 @@
 						</select>
 					</div>
 				</div>
+				<div class="row">
+					<div class="col-sm-2">
+						<input type="checkbox" ng-model="apply.severity.use">
+						<label>Severity:</label>
+					</div>
+					<div class="col-sm-10">
+						<select class="form-control input-sm" ng-model="apply.severity.value">
+							<option ng-repeat="c in severs" value="{{c.ID}}">{{c.DESCR}}</option>
+						</select>
+					</div>
+				</div>
 				<button type="button" class="btn btn-success" ng-click="changeDefects()">Apply</button>
 			</div>
 		</div>
@@ -98,6 +109,21 @@
 						</div>
 					</th>
 					<th>
+						<div class="dropdown middlecol" ng-style="{{styleFiltered('severities')}}">
+							<a href="#" data-toggle="dropdown" class="dropdown-toggle">Severity<b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<button type="button" ng-click="resetReferenceFilter('severities', $event)">--</button>
+								<li>
+									<div ng-repeat="s in severs" class="checkbox">
+										<label>
+											<input ng-click="changeReferenceFilter(s.ID, 'severities')" type="checkbox" ng-checked="{{referenceFiltered(s.ID, 'severities')}}">{{s.DESCR}}
+										</label>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</th>
+					<th>
 						<div class="dropdown middlecol">
 							<a href="#" data-toggle="dropdown" class="dropdown-toggle">Created<b class="caret"></b></a>
 							<ul class="dropdown-menu">
@@ -124,6 +150,7 @@
 					<td>{{d.SUMMARY}}</td>
 					<td>{{d.DISPO | getDispoById:this}}</td>
 					<td>{{d.COMP | getCompById:this}}</td>
+					<td>{{d.SEVE | getSeveById:this}}</td>
 					<td>{{d.CREATEDBY | getUserById:this}}</td>
 					<td>{{d.CREATED}}</td>
 				</tr>
