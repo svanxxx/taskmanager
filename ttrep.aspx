@@ -100,12 +100,12 @@
 							</ul>
 						</div>
 					</th>
+					<th>Date Created</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr ng-repeat="d in defects" ng-style="d.DISPO | getDispoColorById:this">
-					<td>
-						<input type="checkbox" ng-model="d.checked" ng-checked="alert()"></td>
+					<td><input type="checkbox" ng-model="d.checked"></td>
 					<td><a href="showtask.aspx?ttid={{d.ID}}">{{d.ID}}</a></td>
 					<td>{{d.ESTIM}}</td>
 					<td>{{d.AUSER | getUserById:this}}</td>
@@ -114,6 +114,7 @@
 					<td>{{d.DISPO | getDispoById:this}}</td>
 					<td>{{d.COMP | getCompById:this}}</td>
 					<td>{{d.CREATEDBY | getUserById:this}}</td>
+					<td>{{d.CREATED}}</td>
 				</tr>
 			</tbody>
 		</table>
