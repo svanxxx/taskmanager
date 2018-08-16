@@ -11,19 +11,7 @@ $(function () {
 	$("table thead tr th").css("overflow", "visible");
 
 	var app = angular.module('mpsapplication', []);
-	app.filter('getUserById', function () {
-		return function (id, $scope) {
-			if (!$scope.users) {
-				return "";
-			}
-			for (i = 0; i < $scope.users.length; i++) {
-				if ($scope.users[i].ID == id) {
-					return $scope.users[i].FIRSTNAME + " " + $scope.users[i].LASTNAME;
-				}
-			}
-			return "";
-		};
-	});
+	app.filter('getUserById', getUserById);
 	app.filter('getCompById', getCompById);
 	app.filter('getSeveById', getSeveById);
 	app.filter('getDispoById', getDispoById);
@@ -96,6 +84,7 @@ $(function () {
 		$scope.apply.disposition = { "use": false, "value": -1 };
 		$scope.apply.component = { "use": false, "value": -1 };
 		$scope.apply.severity = { "use": false, "value": -1 };
+		$scope.apply.user = { "use": false, "value": -1 };
 
 		$scope.checkall = function () {
 			if ($scope.defects.length < 1) {
@@ -139,6 +128,9 @@ $(function () {
 					}
 					if ($scope.apply.severity.use && $scope.apply.severity.value > 0) {
 						copy.SEVE = $scope.apply.severity.value;
+					}
+					if ($scope.apply.user.use && $scope.apply.user.value > 0) {
+						copy.AUSER = $scope.apply.user.value;
 					}
 					delete copy["checked"];
 					updated.push(copy);

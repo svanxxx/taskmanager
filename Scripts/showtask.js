@@ -29,16 +29,7 @@ $(function () {
 	});
 
 	var app = angular.module('mpsapplication', []);
-	app.filter('getUserById', function () {
-		return function (id, $scope) {
-			for (i = 0; i < $scope.users.length; i++) {
-				if ($scope.users[i].ID == id) {
-					return $scope.users[i].FIRSTNAME + " " + $scope.users[i].LASTNAME;
-				}
-			}
-			return "";
-		};
-	});
+	app.filter('getUserById', getUserById);
 
 	app.controller('mpscontroller', ["$scope", "$http", "$interval", "$window", function ($scope, $http, $interval, $window) {
 

@@ -55,6 +55,18 @@ function getSeveById() {
 		return "";
 	};
 }
+function getUserById() {
+	return function (id, $scope) {
+		if (!$scope.users) {
+			return "";
+		}
+		var r = $scope.users.filter(function (x) { return x.ID == id; });
+		if (r.length > 0) {
+			return r[0].FULLNAME;
+		}
+		return "";
+	};
+}
 
 function getTypes($scope, member, $http) {
 	loadReference($scope, member, $http, "types", "gettasktypes");

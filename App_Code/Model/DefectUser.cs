@@ -38,6 +38,11 @@ public class DefectUser : IdBasedObject
 		get { return this[_Lasn].ToString(); }
 		set { this[_Lasn] = value; }
 	}
+	public string FULLNAME
+	{
+		get { return FIRSTNAME + " " + LASTNAME; }
+		set { }
+	}
 	public int TRID
 	{
 		get { return (this[_trID] == DBNull.Value) ? -1 : Convert.ToInt32(this[_trID]); }

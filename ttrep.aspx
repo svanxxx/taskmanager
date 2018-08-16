@@ -49,6 +49,17 @@
 						</select>
 					</div>
 				</div>
+				<div class="row">
+					<div class="col-sm-2">
+						<input type="checkbox" ng-model="apply.user.use">
+						<label>User:</label>
+					</div>
+					<div class="col-sm-10">
+						<select class="form-control input-sm" ng-model="apply.user.value">
+							<option ng-repeat="u in users" value="{{u.ID}}">{{u.FULLNAME}}</option>
+						</select>
+					</div>
+				</div>
 				<button type="button" class="btn btn-success" ng-click="changeDefects()">Apply</button>
 			</div>
 		</div>
@@ -69,7 +80,7 @@
 								<li class="usersshortlist">
 									<div ng-repeat="u in users" class="checkbox">
 										<label>
-											<input ng-click="changeReferenceFilter(u.ID, 'users')" type="checkbox" ng-checked="{{referenceFiltered(u.ID, 'users')}}">{{u.FIRSTNAME + ' ' + u.LASTNAME}}
+											<input ng-click="changeReferenceFilter(u.ID, 'users')" type="checkbox" ng-checked="{{referenceFiltered(u.ID, 'users')}}">{{u.FULLNAME}}
 										</label>
 									</div>
 								</li>
@@ -130,7 +141,7 @@
 								<li class="usersshortlist">
 									<div ng-repeat="u in users" class="checkbox">
 										<label>
-											<input type="checkbox">{{u.FIRSTNAME + ' ' + u.LASTNAME}}
+											<input type="checkbox">{{u.FULLNAME}}
 										</label>
 									</div>
 								</li>

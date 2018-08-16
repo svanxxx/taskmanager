@@ -102,7 +102,7 @@
 					</div>
 					<div class="col-sm-9">
 						<select class="form-control input-sm" id="created" ng-disabled="!canChangeDefect()" ng-model="defect.CREATEDBY">
-							<option ng-repeat="u in users" ng-show="u.ACTIVE" value="{{u.ID}}">{{u.FIRSTNAME}} {{u.LASTNAME}}</option>
+							<option ng-repeat="u in users" ng-show="u.ACTIVE" value="{{u.ID}}">{{u.FULLNAME}}</option>
 						</select>
 					</div>
 				</div>
@@ -114,7 +114,7 @@
 					</div>
 					<div class="col-sm-9">
 						<select class="form-control input-sm" id="auser" ng-disabled="!canChangeDefect()" ng-model="defect.AUSER">
-							<option ng-repeat="u in users" ng-show="u.ACTIVE" value="{{u.ID}}">{{u.FIRSTNAME}} {{u.LASTNAME}}</option>
+							<option ng-repeat="u in users" ng-show="u.ACTIVE" value="{{u.ID}}">{{u.FULLNAME}}</option>
 						</select>
 					</div>
 				</div>
