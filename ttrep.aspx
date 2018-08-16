@@ -13,7 +13,7 @@
 			<button type="button" class="btn btn-lg btn-info" ng-click="applyfilter()">Apply Filter</button>
 			<button type="button" class="btn btn-lg btn-danger" ng-click="discardfilter()">Discard</button>
 		</div>
-		<div ng-show="defectsselected" class="panel panel-primary">
+		<div ng-cloak ng-show="defectsselected" class="panel panel-primary">
 			<div class="panel-heading">Select Action</div>
 			<div class="panel-body">
 				<div class="row">
