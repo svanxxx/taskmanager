@@ -36,3 +36,11 @@ table tbody tr td {
 	width: 50%;
 	float: right;
 }
+
+.refselector{
+	width: 70%;
+}
+
+.refclear {
+	width: 20%;
+}

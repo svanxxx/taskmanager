@@ -10,6 +10,33 @@ $(function () {
 	//fix after resizable columns support:
 	$("table thead tr th").css("overflow", "visible");
 
+	$(".refmenu").click(function (event) {
+		var el = event.target.parentElement.querySelector(".refselector");
+		setTimeout(function () { el.focus(); }, 100);
+	});
+	$(".refselector").keyup(function (event) {
+		if (event.keyCode === 27) { //esc
+			event.target.parentElement.parentElement.classList.remove("open");
+			return;
+		}
+		var txt = event.target.value.toLowerCase();
+		var items = event.target.parentElement.querySelectorAll("label");
+		if (txt === "") {
+			items.forEach(function (i) {
+				i.style.display = "";
+			});
+		}
+		else {
+			items.forEach(function (i) {
+				if (i.innerText.toLowerCase().includes(txt)) {
+					i.style.display = "";
+				} else {
+					i.style.display = "none";
+				}
+			});
+		}
+	});
+
 	var app = angular.module('mpsapplication', []);
 	app.filter('getUserById', getUserById);
 	app.filter('getCompById', getCompById);
@@ -61,6 +88,9 @@ $(function () {
 			}
 			if (!("severities" in $scope.DefectsFilter)) {
 				$scope.DefectsFilter.severities = [];
+			}
+			if (!("createdUsers" in $scope.DefectsFilter)) {
+				$scope.DefectsFilter.createdUsers = [];
 			}
 			if (!("users" in $scope.DefectsFilter)) {
 				$scope.DefectsFilter.users = [];
