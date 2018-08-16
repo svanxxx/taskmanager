@@ -20,6 +20,7 @@
 					<th>Address</th>
 					<th>Login</th>
 					<th>Password</th>
+					<th>Email</th>
 					<th>Phone</th>
 					<th>Admin</th>
 					<th>WORKFLOW</th>
@@ -33,6 +34,7 @@
 					<td><input ng-disabled="readonly" class="intable-data-input" type="text" ng-model="u.ADDRESS" ng-change="itemchanged(u)"></td>
 					<td><input ng-disabled="readonly" class="intable-data-input" type="text" ng-model="u.LOGIN" ng-change="itemchanged(u)"></td>
 					<td><input ng-disabled="readonly" class="intable-data-input" type="password" ng-model="u.PASSWORD" ng-change="itemchanged(u)" placeholder="********"></td>
+					<td><input ng-disabled="readonly" class="intable-data-input" type="text" ng-model="u.EMAIL" ng-change="itemchanged(u)"></td>
 					<td><input ng-disabled="readonly" class="intable-data-input" type="text" ng-model="u.PHONE" ng-change="itemchanged(u)"></td>
 					<td align="center"><input ng-disabled="readonly" type="checkbox" ng-model="u.ISADMIN" ng-change="itemchanged(u)"></td>
 					<td align="center"><input ng-disabled="readonly" type="checkbox" ng-model="u.INWORK" ng-change="itemchanged(u)"></td>
