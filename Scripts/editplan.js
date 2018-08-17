@@ -5,6 +5,9 @@
 
 	app.controller('mpscontroller', ["$scope", "$http", "$timeout", function ($scope, $http, $timeout) {
 		$scope.Math = window.Math;
+		$scope.currentuserid = -1;
+		$scope.currentuser = {};
+		getDispos($scope, "dispos", $http);
 
 		$scope.discardDefects = function () {
 			$scope.changeuser($scope.currentuser);
@@ -21,7 +24,6 @@
 				}
 			}
 		}
-
 		$scope.unscheduletask = function (d) {
 			for (var i = $scope.defects.length - 1; i >= 0; i--) {
 				if ($scope.defects[i].ID == d.ID) {
@@ -33,7 +35,6 @@
 				}
 			}
 		}
-
 		$scope.saveDefects = function () {
 			var recs = [];
 			for (var i = $scope.defects.length - 1; i >= 0; i--) {
@@ -62,7 +63,6 @@
 				$scope.changeuser($scope.currentuser);
 			});
 		}
-
 		$scope.taskMove = function (d, $event) {
 			if (($event.keyCode == 38 || $event.keyCode == 40) && $event.ctrlKey == true) {
 				$event.preventDefault();
@@ -88,7 +88,6 @@
 				}, 10);
 			}
 		}
-
 		$scope.changeuser = function (u) {
 			$scope.defects = [];
 			$scope.currentuserid = u.TTUSERID;
@@ -108,15 +107,16 @@
 				});
 		}
 
-		getDispos($scope, "dispos", $http);
-
 		var userskprg = StartProgress("Loading users...");
 		$scope.users = [];
 		$http.post("trservice.asmx/getMPSusers", JSON.stringify({ "active": true }))
 			.then(function (result) {
 				$scope.users = result.data.d;
-				$scope.currentuserid = $scope.users[0].TTUSERID;
-				$scope.changeuser($scope.users[0]);
+				$http.post("trservice.asmx/getcurrentuser", JSON.stringify({}))
+					.then(function (response) {
+						$scope.currentuserid = $scope.users[0].TTUSERID;
+						$scope.changeuser(response.data.d);
+					});
 				EndProgress(userskprg);
 			});
 		$scope.changed = false;
