@@ -5,7 +5,7 @@
 	return new Date(0, 0, 0, vals[0], vals[1], vals[2]);
 }
 function TimeToString(dt) {
-	return pad((dt.getHours()), 2) + ":" + pad(dt.getMinutes(), 2) + ":" + pad(dt.getSeconds(), 2);
+	return pad(dt.getHours(), 2) + ":" + pad(dt.getMinutes(), 2) + ":" + pad(dt.getSeconds(), 2);
 }
 $(function () {
 	var app = angular.module('mpsapplication', []);
@@ -39,7 +39,7 @@ $(function () {
 				$scope.status = "Saved.";
 			});
 			$scope.changed = false;
-		}
+		};
 
 		$interval(function () {
 			if ($scope.changed) {
@@ -85,7 +85,7 @@ $(function () {
 				$scope.percentdonestyle = "progress-bar-danger"
 				$scope.percentdone = 0;
 			}
-		}
+		};
 
 		$interval(function () {
 			if ($scope.autotime && $scope.isTodayRecord()) {
@@ -98,7 +98,7 @@ $(function () {
 		$scope.findRec = function () {
 			$scope.storeData();
 			$scope.loadData();
-		}
+		};
 
 		$scope.loadData = function () {
 			var taskprg = StartProgress("Loading data...");
@@ -117,7 +117,7 @@ $(function () {
 					$scope.datestring = $scope.date.toDateString();
 					EndProgress(taskprg);
 				});
-		}
+		};
 
 		$scope.defects = [];
 		$http.post("trservice.asmx/getplanned", JSON.stringify({ "userid": "" }))
@@ -151,9 +151,9 @@ $(function () {
 					} else {
 						alert("The task is locked - cannot change it - please go to task details and see who has locked it!");
 					}
-				})
+				});
 			}
-		}
+		};
 
 		$scope.workTaskUns = function (d) {
 			if ($scope.loaded()) {
@@ -168,7 +168,7 @@ $(function () {
 					$scope.changeDispo(d, $scope.dispos[index]);
 				}
 			}
-		}
+		};
 
 		$scope.workTask = function (d) {
 			if ($scope.loaded()) {
@@ -179,7 +179,7 @@ $(function () {
 					}
 				}
 			}
-		}
+		};
 
 		$scope.changed = false;
 		$scope.$watchCollection('trrec', function (newval, oldval) {
@@ -199,43 +199,43 @@ $(function () {
 				d.setHours(0, 0, 0, 0);
 				$scope.date = d;
 				$scope.loadData();
-			})
-		}
+			});
+		};
 
 		$scope.autotime = $.cookie("autotime") == "true";
 		$scope.copylastday = $.cookie("copylastday") == "true";
 		$scope.oncopylastday = function () {
-			$.cookie("copylastday", $scope.copylastday), { expires: 365 };
-		}
+			$.cookie("copylastday", $scope.copylastday, { expires: 365 });
+		};
 		$scope.changeAutoDate = function () {
-			$.cookie("autotime", $scope.autotime), { expires: 365 };
-		}
+			$.cookie("autotime", $scope.autotime, { expires: 365 });
+		};
 
 		$scope.loaded = function () {
 			if ($scope.trrec)
 				return true;
 			return false;
-		}
+		};
 
 		$scope.deleteRec = function () {
 			if (confirm("Are you sure you want to delete current record?")) {
 				$http.post("trservice.asmx/deltrrec", JSON.stringify({ "id": $scope.trrec.ID })).then(function () {
 					$scope.loadData();
-				})
+				});
 			}
-		}
+		};
 
 		$scope.addRec = function () {
 			$http.post("trservice.asmx/addrec", JSON.stringify({ "date": DateToString($scope.date), "lastday": 1 })).then(function () {
 				$scope.loadData();
-			})
-		}
+			});
+		};
 
 		$scope.isTodayRecord = function () {
 			var d = new Date();
 			d.setHours(0, 0, 0, 0);
 			return ($scope.trrec) && ($scope.date.getTime() === d.getTime());
-		}
+		};
 
 		$http.post("trservice.asmx/getcurrentuser", JSON.stringify({}))
 			.then(function (response) {
