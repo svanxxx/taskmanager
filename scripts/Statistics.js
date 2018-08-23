@@ -175,7 +175,7 @@ $(function () {
 		$scope.isVacationScheduled = function (v) {
 			var idxDisp = $scope.dispos.findIndex(function (x) { return x.ID == v.DISPO; });
 			return !$scope.dispos[idxDisp].CANNOTSTART;
-		}
+		};
 
 		$scope.daterep = new Date();
 		$scope.daterep.setDate(1);
@@ -207,32 +207,9 @@ $(function () {
 					}
 
 					EndProgress(usersprg);
-					var vacsprg = StartProgress("Loading vacations...");
+					var vacsprg = StartProgress("Loading data...");
 					var repto = new Date($scope.daterepend.getFullYear(), $scope.daterepend.getMonth() + 1, 0);
 					var diff = (repto - $scope.daterep) / (24 * 3600 * 1000);
-					$http.post("trservice.asmx/enumCloseVacations", JSON.stringify({ "start": DateToString($scope.daterep), "days": diff }))
-						.then(function (result) {
-							for (var i = 0; i < result.data.d.length; i++) {
-								var v = result.data.d[i];
-								for (var j = 0; j < $scope.users.length; j++) {
-									var u = $scope.users[j];
-									if (u.TTUSERID == v.AUSER) {
-										if ($scope.isVacationScheduled(v)) {
-											if (v.SICK) {
-												u.sick++;
-											} else {
-												u.scheduled++;
-											}
-										} else {
-											u.unscheduled++;
-										}
-										break;
-									}
-								}
-							}
-							EndProgress(vacsprg);
-							DrawSickChart($scope.users);
-						})
 					var drecsprg = StartProgress("Loading daily reports...");
 					$http.post("trservice.asmx/getTRStatistic", JSON.stringify({ "start": DateToString($scope.daterep), "days": diff }))
 						.then(function (result) {
@@ -249,7 +226,7 @@ $(function () {
 							}
 							EndProgress(drecsprg);
 							DrawSickChart($scope.users);
-						})
+						});
 					$http.post("trservice.asmx/getStatistics", JSON.stringify({ "start": DateToString($scope.daterep), "days": diff }))
 						.then(function (result) {
 							for (var i = 0; i < result.data.d.length; i++) {
@@ -260,7 +237,17 @@ $(function () {
 										if (s.FLAG == 1) {
 											u.created = s.CNT;
 											u.createdH = s.HOURS;
-										} else {
+										}
+										else if (s.FLAG == 3) {
+											u.unscheduled = s.CNT;
+										}
+										else if (s.FLAG == 4) {
+											u.sick = s.CNT;
+										}
+										else if (s.FLAG == 5) {
+											u.scheduled = s.CNT;
+										}
+										else {
 											u.finished = s.CNT;
 											u.finishedH = s.HOURS;
 										}
@@ -269,10 +256,11 @@ $(function () {
 								}
 							}
 							EndProgress(vacsprg);
+							DrawSickChart($scope.users);
 							DrawHoursCharts($scope.users);
-						})
+						});
 				});
-		}
+		};
 		$scope.loadData();
 	}]);
-})
+});

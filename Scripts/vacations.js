@@ -1,7 +1,7 @@
 ﻿Date.prototype.monthDays = function () {
 	var d = new Date(this.getFullYear(), this.getMonth() + 1, 0);
 	return d.getDate();
-}
+};
 
 $(function () {
 	var headertable = document.getElementById("headertable");
@@ -14,7 +14,7 @@ $(function () {
 		} else {
 			headertable.classList.remove("sticky");
 		}
-	}
+	};
 
 	var app = angular.module('mpsapplication', []);
 	app.controller('mpscontroller', ["$scope", "$http", function ($scope, $http) {
@@ -23,11 +23,11 @@ $(function () {
 		$scope.isVacationScheduled = function (v) {
 			var idxDisp = $scope.dispos.findIndex(function (x) { return x.ID == v.DISPO; });
 			return !$scope.dispos[idxDisp].CANNOTSTART;
-		}
+		};
 
 		$scope.numOfDays = function (d) {
 			return new Date(d.getFullYear(), d.getMonth(), 0).getDate();
-		}
+		};
 		$scope.getVacation = function (u, d) {
 			for (var i = 0; i < u.scheduled.length; i++) {
 				if (u.scheduled[i].DATE == DateToString(d)) {
@@ -35,7 +35,7 @@ $(function () {
 				}
 			}
 			return "";
-		}
+		};
 		$scope.hasVacation = function (u, d) {
 			for (var i = 0; i < u.scheduled.length; i++) {
 				if (u.scheduled[i].DATE == DateToString(d)) {
@@ -43,7 +43,7 @@ $(function () {
 				}
 			}
 			return false;
-		}
+		};
 		$scope.hasVacationSick = function (u, d) {
 			for (var i = 0; i < u.scheduled.length; i++) {
 				if (u.scheduled[i].DATE == DateToString(d)) {
@@ -51,7 +51,7 @@ $(function () {
 				}
 			}
 			return false;
-		}
+		};
 		$scope.hasWorkRec = function (u, d) {
 			for (var i = 0; i < u.workrecs.length; i++) {
 				if (u.workrecs[i].DATE == DateToString(d)) {
@@ -59,7 +59,7 @@ $(function () {
 				}
 			}
 			return false;
-		}
+		};
 
 		$scope.cleanUsers = function () {
 			for (var i = 0; i < $scope.users.length; i++) {
@@ -67,7 +67,7 @@ $(function () {
 				$scope.users[i].scheduled = [];
 				$scope.users[i].workrecs = [];
 			}
-		}
+		};
 
 		$scope.scheduleVacation = function (u, d) {
 			if (u.unscheduled.length < 1) {
@@ -80,8 +80,8 @@ $(function () {
 				.then(function (result) {
 					u.unscheduled.splice(0, 1);
 					u.scheduled.push(result.data.d);
-				})
-		}
+				});
+		};
 		$scope.getColor = function (u, d) {
 			if (u) {
 				if ($scope.hasWorkRec(u, d))
@@ -97,7 +97,7 @@ $(function () {
 				return "yellow";
 			if (d.getDay() == 6 || d.getDay() == 0)
 				return "DodgerBlue";
-		}
+		};
 
 		var d = new Date();
 		$scope.daterep = new Date(d.getFullYear(), d.getMonth(), 1);
@@ -130,40 +130,50 @@ $(function () {
 					var vacationprg = StartProgress("Loading vacations..."); $scope["loaders"]++
 					$http.post("trservice.asmx/enumCloseVacations", JSON.stringify({ "start": DateToString($scope.daterep), "days": 366 }))
 						.then(function (result) {
-							$scope.cleanUsers();
 							for (var i = 0; i < result.data.d.length; i++) {
 								var v = result.data.d[i];
 								for (var j = 0; j < $scope.users.length; j++) {
 									var u = $scope.users[j];
 									if (u.TTUSERID == v.AUSER) {
-										if ($scope.isVacationScheduled(v)) {
-											u.scheduled.push(v);
-										} else {
-											u.unscheduled.push(v);
-										}
+										u.scheduled.push(v);
 										break;
 									}
 								}
 							}
 							EndProgress(vacationprg); $scope["loaders"]--;
-							var trprg = StartProgress("Loading records..."); $scope["loaders"]++
-							$http.post("trservice.asmx/enumTRSignal", JSON.stringify({ "from": DateToString($scope.daterep), "to": DateToString($scope.daterepend) }))
-								.then(function (result) {
-									for (var i = 0; i < result.data.d.length; i++) {
-										var v = result.data.d[i];
-										for (var j = 0; j < $scope.users.length; j++) {
-											var u = $scope.users[j];
-											if (u.ID == v.USER) {
-												u.workrecs.push(v);
-												break;
-											}
-										}
+						});
+					var trprg = StartProgress("Loading records..."); $scope["loaders"]++
+					$http.post("trservice.asmx/enumTRSignal", JSON.stringify({ "from": DateToString($scope.daterep), "to": DateToString($scope.daterepend) }))
+						.then(function (result) {
+							for (var i = 0; i < result.data.d.length; i++) {
+								var v = result.data.d[i];
+								for (var j = 0; j < $scope.users.length; j++) {
+									var u = $scope.users[j];
+									if (u.ID == v.USER) {
+										u.workrecs.push(v);
+										break;
 									}
-									EndProgress(trprg); $scope["loaders"]--;
-								})
-						})
-				})
-		}
+								}
+							}
+							EndProgress(trprg); $scope["loaders"]--;
+						});
+					var freevacationprg = StartProgress("Loading free vacations..."); $scope["loaders"]++
+					$http.post("trservice.asmx/enumUnusedVacations", JSON.stringify({}))
+						.then(function (result) {
+							for (var i = 0; i < result.data.d.length; i++) {
+								var v = result.data.d[i];
+								for (var j = 0; j < $scope.users.length; j++) {
+									var u = $scope.users[j];
+									if (u.TTUSERID == v.AUSER) {
+										u.unscheduled.push(v);
+										break;
+									}
+								}
+							}
+							EndProgress(freevacationprg); $scope["loaders"]--;
+						});
+				});
+		};
 		$scope.loadData();
 	}]);
-})
+});

@@ -391,6 +391,11 @@ public class TRService : System.Web.Services.WebService
 		return DefectBase.EnumCloseVacations(start, days);
 	}
 	[WebMethod(EnableSession = true)]
+	public List<DefectBase> enumUnusedVacations()
+	{
+		return DefectBase.EnumUnusedVacations();
+	}
+	[WebMethod(EnableSession = true)]
 	public void remMachine(string m)
 	{
 		Machine.Delete(m);

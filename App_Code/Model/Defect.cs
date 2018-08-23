@@ -385,7 +385,7 @@ public class DefectBase : IdBasedObject
 		}
 		return ls;
 	}
-	public List<DefectBase> Enum(DefectsFilter f, int maxrecs = 200)
+	string PrepareQueryForEnum(DefectsFilter f, bool order)
 	{
 		List<string> lswhere = new List<string>();
 		if (f.dispositions != null && f.dispositions.Count > 0)
@@ -464,9 +464,18 @@ public class DefectBase : IdBasedObject
 				}
 			}
 		}
-
+		return string.Format(" WHERE ({0} > 0 {1}) {2}", _ID, string.Join(string.Empty, lswhere), order ? string.Format("ORDER BY {0} DESC", _ID) : "");
+	}
+	public int EnumCount(DefectsFilter f)
+	{
+		string where = PrepareQueryForEnum(f, false);
+		string sql = string.Format("select count({0}) from {1} {2}", _ID, _Tabl, where);
+		return Convert.ToInt32(DBHelper.GetValue(sql));
+	}
+	public List<DefectBase> Enum(DefectsFilter f, int maxrecs = 200)
+	{
+		string where = PrepareQueryForEnum(f, true);
 		List<DefectBase> ls = new List<DefectBase>();
-		string where = string.Format(" WHERE ({0} > 0 {1}) ORDER BY {0} DESC", _ID, string.Join(string.Empty, lswhere));
 		foreach (DataRow r in GetRecords(where, maxrecs))
 		{
 			DefectBase d = new DefectBase();
@@ -475,10 +484,27 @@ public class DefectBase : IdBasedObject
 		}
 		return ls;
 	}
+
+	static DefectsFilter UnusedVacations()
+	{
+		DefectsFilter f = new DefectsFilter();
+		f.components = new List<int>(DefectComp.GetVacationRec());
+		f.dispositions = new List<int>(DefectDispo.EnumCannotStart());
+		return f;
+	}
+	public static List<DefectBase> EnumUnusedVacations()
+	{
+		return (new DefectBase()).Enum(UnusedVacations(), 2000);
+	}
+	public static int CountUnusedVacations()
+	{
+		return (new DefectBase()).EnumCount(UnusedVacations());
+	}
 	public static List<DefectBase> EnumCloseVacations(string startdate, int days = 15)
 	{
 		DefectsFilter f = new DefectsFilter();
 		f.components = new List<int>(DefectComp.GetVacationRec());
+		f.dispositions = new List<int>(DefectDispo.EnumCanStart());
 		f.startDateEnter = startdate;
 		f.endDateEnter = DateTime.ParseExact(startdate, defDateFormat, CultureInfo.InvariantCulture).AddDays(days).ToString(defDateFormat);//two weeks adnvance
 		return (new DefectBase()).Enum(f, 2000);

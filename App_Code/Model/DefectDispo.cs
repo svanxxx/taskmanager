@@ -86,6 +86,22 @@ public class DefectDispo : Reference
 			return new List<int>(_gCannotStart);
 		}
 	}
+	static List<int> _gCanStart;
+	public static List<int> EnumCanStart()
+	{
+		lock (thisLock)
+		{
+			if (_gCanStart == null)
+			{
+				_gCanStart = new List<int>();
+				foreach (int i in EnumRecords(_Tabl, _ID, new string[] { _CannotStart }, new object[] { 0 }))
+				{
+					_gCanStart.Add(i);
+				}
+			}
+			return new List<int>(_gCanStart);
+		}
+	}
 
 	static int _WorkingRec = -1;
 	override public void Store()
@@ -94,6 +110,7 @@ public class DefectDispo : Reference
 		{
 			_gWorkable = null;
 			_gCannotStart = null;
+			_gCanStart = null;
 		}
 		_WorkingRec = -1;
 		base.Store();
