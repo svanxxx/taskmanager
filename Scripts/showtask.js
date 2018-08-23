@@ -155,7 +155,7 @@ $(function () {
 		}
 
 		//references secion:
-		getMPSusers($scope, "mpsusers", $http);
+		getMPSUsers($scope, "mpsusers", $http);
 		getUsers($scope, "users", $http);
 		getDispos($scope, "dispos", $http);
 		getTypes($scope, "types", $http);

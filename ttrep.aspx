@@ -77,7 +77,7 @@
 							<a href="#" data-toggle="dropdown" class="refmenu dropdown-toggle">User<b class="caret"></b></a>
 							<ul class="dropdown-menu">
 								<button class="refclear" type="button" ng-click="resetReferenceFilter('users', $event)">&#9746</button>
-								<input class="refselector" type="text"/>
+								<input class="refselector" type="text" />
 								<li class="usersshortlist">
 									<div ng-repeat="u in users" class="checkbox">
 										<label>
@@ -95,7 +95,7 @@
 							<a href="#" data-toggle="dropdown" class="refmenu dropdown-toggle">Disposition<b class="caret"></b></a>
 							<ul class="dropdown-menu">
 								<button class="refclear" type="button" ng-click="resetReferenceFilter('dispositions', $event)">&#9746</button>
-								<input class="refselector" type="text"/>
+								<input class="refselector" type="text" />
 								<li>
 									<div ng-repeat="d in dispos" class="checkbox">
 										<label>
@@ -111,7 +111,7 @@
 							<a href="#" data-toggle="dropdown" class="refmenu dropdown-toggle">Component<b class="caret"></b></a>
 							<ul class="dropdown-menu">
 								<button class="refclear" type="button" ng-click="resetReferenceFilter('components', $event)">&#9746</button>
-								<input class="refselector" type="text"/>
+								<input class="refselector" type="text" />
 								<li>
 									<div ng-repeat="d in comps" class="checkbox">
 										<label>
@@ -127,7 +127,7 @@
 							<a href="#" data-toggle="dropdown" class="refmenu dropdown-toggle">Severity<b class="caret"></b></a>
 							<ul class="dropdown-menu">
 								<button class="refclear" type="button" ng-click="resetReferenceFilter('severities', $event)">&#9746</button>
-								<input class="refselector" type="text"/>
+								<input class="refselector" type="text" />
 								<li>
 									<div ng-repeat="s in severs" class="checkbox">
 										<label>
@@ -139,11 +139,11 @@
 						</div>
 					</th>
 					<th>
-						<div class="dropdown middlecol ng-style="{{styleFiltered('createdUsers')}}">
+						<div class="dropdown middlecol" ng-style="{{styleFiltered('createdUsers')}}">
 							<a href="#" data-toggle="dropdown" class="refmenu dropdown-toggle">Created<b class="caret"></b></a>
 							<ul class="dropdown-menu">
 								<button class="refclear" type="button" ng-click="resetReferenceFilter('createdUsers', $event)">&#9746</button>
-								<input class="refselector" type="text"/>
+								<input class="refselector" type="text" />
 								<li class="usersshortlist">
 									<div ng-repeat="u in users" class="checkbox">
 										<label>
@@ -160,9 +160,16 @@
 			</thead>
 			<tbody>
 				<tr ng-repeat="d in defects" ng-style="d.DISPO | getDispoColorById:this">
-					<td><input type="checkbox" ng-model="d.checked"></td>
-					<td><a href="showtask.aspx?ttid={{d.ID}}">{{d.ID}}</a></td>
-					<td>{{d.ESTIM}}</td>
+					<td>
+						<input type="checkbox" ng-model="d.checked"></td>
+					<td>
+						<a href="showtask.aspx?ttid={{d.ID}}" target="_blank">
+							<span class="badge">{{d.ID}}</span>
+						</a>
+					</td>
+					<td>
+						<span class="label label-danger">{{d.ESTIM}}</span>
+					</td>
 					<td>{{d.AUSER | getUserById:this}}</td>
 					<td>{{d.REFERENCE}}</td>
 					<td>{{d.SUMMARY}}</td>

@@ -11,8 +11,7 @@
 
 		$scope.discardDefects = function () {
 			$scope.changeuser($scope.currentuser);
-		}
-
+		};
 		$scope.scheduletask = function (d) {
 			for (var i = $scope.unscheduled.length - 1; i >= 0; i--) {
 				if ($scope.unscheduled[i].ID == d.ID) {
@@ -105,20 +104,12 @@
 				.then(function (response) {
 					$scope.unscheduled = response.data.d;
 				});
-		}
+		};
 
-		var userskprg = StartProgress("Loading users...");
-		$scope.users = [];
-		$http.post("trservice.asmx/getMPSusers", JSON.stringify({ "active": true }))
-			.then(function (result) {
-				$scope.users = result.data.d;
-				$http.post("trservice.asmx/getcurrentuser", JSON.stringify({}))
-					.then(function (response) {
-						$scope.currentuserid = $scope.users[0].TTUSERID;
-						$scope.changeuser(response.data.d);
-					});
-				EndProgress(userskprg);
-			});
+		getMPSUsers($scope, "users", $http, function () {
+			$scope.currentuserid = userID();
+			$scope.changeuser($scope.users.find(function (x) { return x.ID == $scope.currentuserid;}));
+		});
 		$scope.changed = false;
-	}])
-})
+	}]);
+});

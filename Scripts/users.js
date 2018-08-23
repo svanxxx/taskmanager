@@ -54,7 +54,7 @@
 
 		var taskprg = StartProgress("Loading data...");
 		$scope.users = [];
-		$http.post("trservice.asmx/getMPSusers", JSON.stringify({ "active": false }))
+		$http.post("trservice.asmx/getMPSUsers", JSON.stringify({ "active": false }))
 			.then(function (result) {
 				$scope.users = result.data.d;
 			});

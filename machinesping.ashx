@@ -31,8 +31,14 @@ public class machinesping : IHttpHandler
 				}
 				lock (_lockobject)
 				{
-					context.Response.Write(string.Format("event: machine\ndata: {0}\n\n", machine.NAME + "-" + status.ToString()));
-					context.Response.Flush();
+					try
+					{
+						context.Response.Write(string.Format("event: machine\ndata: {0}\n\n", machine.NAME + "-" + status.ToString()));
+						context.Response.Flush();
+					}
+					catch (Exception /*e*/) //connection is closed
+					{
+					}
 				}
 			});
 			System.Threading.Thread.Sleep(10000);

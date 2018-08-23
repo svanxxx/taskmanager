@@ -14,7 +14,7 @@
 		$scope.startdate.setHours(0, 0, 0, 0);
 		$scope.enddate = new Date($scope.startdate.getFullYear(), $scope.startdate.getMonth() + 1, 0);
 
-		$scope.selectedpersonID = "1";
+		$scope.selectedpersonID = "-1";
 
 		$scope.loadData = function () {
 			var d1 = DateToString($scope.startdate);
@@ -43,16 +43,12 @@
 						}
 					}
 					EndProgress(repsprg);
-				})
-		}
+				});
+		};
 
-		var usersprg = StartProgress("Loading users...");
-		$http.post("trservice.asmx/getMPSusers", JSON.stringify({ 'active': true }))
-			.then(function (result) {
-				$scope.mpsusers = result.data.d;
-				$scope.selectedpersonID = "" + $scope.mpsusers[0].ID;
-				EndProgress(usersprg);
-				$scope.loadData();
-			})
+		getMPSUsers($scope, "mpsusers", $http, function () {
+			$scope.selectedpersonID = "" + $scope.mpsusers[0].ID;
+			$scope.loadData();
+		});
 	}]);
 })

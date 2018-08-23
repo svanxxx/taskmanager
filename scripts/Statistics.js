@@ -189,77 +189,76 @@ $(function () {
 
 		$scope.loadData = function () {
 			var usersprg = StartProgress("Loading users...");
-			$http.post("trservice.asmx/getMPSusers", JSON.stringify({ "active": true }))
-				.then(function (result) {
-					$scope.users = result.data.d;
-					for (var i = 0; i < $scope.users.length; i++) {
-						var u = $scope.users[i];
-						u.scheduled = 0;
-						u.unscheduled = 0;
-						u.whours = 0;
-						u.reports = 0;
-						u.wdays = 0;
-						u.sick = 0;
-						u.created = 0;
-						u.createdH = 0;
-						u.finished = 0;
-						u.finishedH = 0;
-					}
+			getMPSUsers($scope, "users", $http, function () {
+				for (var i = 0; i < $scope.users.length; i++) {
+					var u = $scope.users[i];
+					u.scheduled = 0;
+					u.unscheduled = 0;
+					u.whours = 0;
+					u.reports = 0;
+					u.wdays = 0;
+					u.sick = 0;
+					u.created = 0;
+					u.createdH = 0;
+					u.finished = 0;
+					u.finishedH = 0;
+				}
 
-					EndProgress(usersprg);
-					var vacsprg = StartProgress("Loading data...");
-					var repto = new Date($scope.daterepend.getFullYear(), $scope.daterepend.getMonth() + 1, 0);
-					var diff = (repto - $scope.daterep) / (24 * 3600 * 1000);
-					var drecsprg = StartProgress("Loading daily reports...");
-					$http.post("trservice.asmx/getTRStatistic", JSON.stringify({ "start": DateToString($scope.daterep), "days": diff }))
-						.then(function (result) {
-							for (var i = 0; i < result.data.d.length; i++) {
-								var v = result.data.d[i];
-								for (var j = 0; j < $scope.users.length; j++) {
-									var u = $scope.users[j];
-									if (u.ID == v.IDUSER) {
-										u.whours = v.HOURS;
-										u.reports = v.CNT;
-										break;
-									}
+				EndProgress(usersprg);
+				var vacsprg = StartProgress("Loading data...");
+				var repto = new Date($scope.daterepend.getFullYear(), $scope.daterepend.getMonth() + 1, 0);
+				var diff = (repto - $scope.daterep) / (24 * 3600 * 1000);
+				var drecsprg = StartProgress("Loading daily reports...");
+				$http.post("trservice.asmx/getTRStatistic", JSON.stringify({ "start": DateToString($scope.daterep), "days": diff }))
+					.then(function (result) {
+						for (var i = 0; i < result.data.d.length; i++) {
+							var v = result.data.d[i];
+							for (var j = 0; j < $scope.users.length; j++) {
+								var u = $scope.users[j];
+								if (u.ID == v.IDUSER) {
+									u.whours = v.HOURS;
+									u.reports = v.CNT;
+									break;
 								}
 							}
-							EndProgress(drecsprg);
-							DrawSickChart($scope.users);
-						});
-					$http.post("trservice.asmx/getStatistics", JSON.stringify({ "start": DateToString($scope.daterep), "days": diff }))
-						.then(function (result) {
-							for (var i = 0; i < result.data.d.length; i++) {
-								var s = result.data.d[i];
-								for (var j = 0; j < $scope.users.length; j++) {
-									var u = $scope.users[j];
-									if (u.TTUSERID == s.TTUSER) {
-										if (s.FLAG == 1) {
-											u.created = s.CNT;
-											u.createdH = s.HOURS;
-										}
-										else if (s.FLAG == 3) {
-											u.unscheduled = s.CNT;
-										}
-										else if (s.FLAG == 4) {
-											u.sick = s.CNT;
-										}
-										else if (s.FLAG == 5) {
-											u.scheduled = s.CNT;
-										}
-										else {
-											u.finished = s.CNT;
-											u.finishedH = s.HOURS;
-										}
-										break;
+						}
+						EndProgress(drecsprg);
+						DrawSickChart($scope.users);
+					});
+				$http.post("trservice.asmx/getStatistics", JSON.stringify({ "start": DateToString($scope.daterep), "days": diff }))
+					.then(function (result) {
+						for (var i = 0; i < result.data.d.length; i++) {
+							var s = result.data.d[i];
+							for (var j = 0; j < $scope.users.length; j++) {
+								var u = $scope.users[j];
+								if (u.TTUSERID == s.TTUSER) {
+									if (s.FLAG == 1) {
+										u.created = s.CNT;
+										u.createdH = s.HOURS;
 									}
+									else if (s.FLAG == 3) {
+										u.unscheduled = s.CNT;
+									}
+									else if (s.FLAG == 4) {
+										u.sick = s.CNT;
+									}
+									else if (s.FLAG == 5) {
+										u.scheduled = s.CNT;
+									}
+									else {
+										u.finished = s.CNT;
+										u.finishedH = s.HOURS;
+									}
+									break;
 								}
 							}
-							EndProgress(vacsprg);
-							DrawSickChart($scope.users);
-							DrawHoursCharts($scope.users);
-						});
-				});
+						}
+						EndProgress(vacsprg);
+						DrawSickChart($scope.users);
+						DrawHoursCharts($scope.users);
+					});
+				EndProgress(usersprg);
+			});
 		};
 		$scope.loadData();
 	}]);

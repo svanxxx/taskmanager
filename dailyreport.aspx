@@ -33,7 +33,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="u in users | filter:{ INWORK: true } | orderBy : 'PERSON_NAME'">
+				<tr ng-repeat="u in mpsusers | orderBy : 'PERSON_NAME'">
 					<td>
 						<img ng-src="{{'getUserImg.ashx?id=' + u.ID}}" alt="Smile" height="20" width="20">
 						{{u.PERSON_NAME}}

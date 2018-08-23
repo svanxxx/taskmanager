@@ -3,9 +3,13 @@ function IsAdmin() {
 	if (typeof _admin === "undefined") {
 		_admin = document.getElementById("isadmin").value;
 	}
-	return _admin == "True";	
+	return _admin === "True";
 }
-function loadReference($scope, member, $http, localmember, functionname) {
+function userID() {
+	return parseInt(document.getElementById("userid").value);
+}
+function loadReference($scope, member, $http, localmember, functionname, params, func) {
+	params = params || {};
 	var m = localmember + "_storageversion";
 	var curr = document.getElementById("referenceid").value;
 	if (localStorage[m] != curr) {
@@ -15,17 +19,19 @@ function loadReference($scope, member, $http, localmember, functionname) {
 
 	if (localStorage[localmember]) {
 		$scope[member] = JSON.parse(localStorage[localmember]);
+		if (func) func();
 	} else {
 		if (!("loaders" in $scope)) {
 			$scope["loaders"] = 0;
 		}
-		var prgtypes = StartProgress("Loading " + localmember + "..."); 
+		var prgtypes = StartProgress("Loading " + localmember + "...");
 		$scope["loaders"]++;
-		$http.post("trservice.asmx/" + functionname, JSON.stringify({}))
+		$http.post("trservice.asmx/" + functionname, JSON.stringify(params))
 			.then(function (result) {
 				$scope[member] = result.data.d;
 				localStorage[localmember] = JSON.stringify($scope[member]);
 				EndProgress(prgtypes); $scope["loaders"]--;
+				if (func) func();
 			});
 	}
 }
@@ -34,7 +40,7 @@ function getDispoColorById() {
 	return function (id, $scope) {
 		var col = ($scope.dispos && $scope.dispos.length > 0) ? $scope.dispos.filter(function (x) { return x.ID == id; })[0].COLOR : "white";
 		return { "background-color": col };
-	};
+	}
 }
 function getDispoById() {
 	return function (id, $scope) {
@@ -74,11 +80,12 @@ function getTypes($scope, member, $http) {
 function getDispos($scope, member, $http) {
 	loadReference($scope, member, $http, "dispos", "gettaskdispos");
 }
-function getMPSusers($scope, member, $http) {
-	loadReference($scope, member, $http, "mpsusers", "getActiveMPSusers");
-}
 function getUsers($scope, member, $http) {
 	loadReference($scope, member, $http, "users", "gettaskusers");
+}
+function getMPSUsers($scope, member, $http, func) {
+	$scope[member] = [];
+	loadReference($scope, member, $http, "MPSUsers", "getMPSUsers", { "active": true }, func);
 }
 function getPriorities($scope, member, $http) {
 	loadReference($scope, member, $http, "priorities", "gettaskpriorities");

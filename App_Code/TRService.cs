@@ -305,10 +305,10 @@ public class TRService : System.Web.Services.WebService
 	[WebMethod(EnableSession = true)]
 	public List<MPSUser> getActiveMPSusers()
 	{
-		return getMPSusers(true);
+		return getMPSUsers(true);
 	}
 	[WebMethod(EnableSession = true)]
-	public List<MPSUser> getMPSusers(bool active)
+	public List<MPSUser> getMPSUsers(bool active)
 	{
 		return MPSUser.EnumAllUsers(active);
 	}

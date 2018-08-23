@@ -104,7 +104,6 @@ $(function () {
 
 		$scope.loadData = function () {
 			$scope["loaders"]++;
-			$scope.users = [];
 
 			$scope.today = new Date();
 			$scope.today.setHours(0, 0, 0, 0);
@@ -116,63 +115,59 @@ $(function () {
 			$scope.daterepend = new Date();
 			$scope.daterepend.setDate($scope.daterep.getDate() + 366);
 
-			var usersprg = StartProgress("Loading users...");
-			$http.post("trservice.asmx/getMPSusers", JSON.stringify({ "active": true }))
-				.then(function (result) {
-					$scope.users = result.data.d;
-					EndProgress(usersprg); $scope["loaders"]--;
-					$scope.days = [];
-					var stopday = new Date($scope.daterep.getFullYear() + 1, $scope.daterep.getMonth(), $scope.daterep.getDate());
-					for (var d = new Date($scope.daterep.getFullYear(), $scope.daterep.getMonth(), 1); d < stopday; d.setDate(d.getDate() + 1)) {
-						$scope.days.push(new Date(d));
-					}
-					$scope.cleanUsers();
-					var vacationprg = StartProgress("Loading vacations..."); $scope["loaders"]++
-					$http.post("trservice.asmx/enumCloseVacations", JSON.stringify({ "start": DateToString($scope.daterep), "days": 366 }))
-						.then(function (result) {
-							for (var i = 0; i < result.data.d.length; i++) {
-								var v = result.data.d[i];
-								for (var j = 0; j < $scope.users.length; j++) {
-									var u = $scope.users[j];
-									if (u.TTUSERID == v.AUSER) {
-										u.scheduled.push(v);
-										break;
-									}
+			getMPSUsers($scope, "users", $http, function () {
+				$scope.days = [];
+				var stopday = new Date($scope.daterep.getFullYear() + 1, $scope.daterep.getMonth(), $scope.daterep.getDate());
+				for (var d = new Date($scope.daterep.getFullYear(), $scope.daterep.getMonth(), 1); d < stopday; d.setDate(d.getDate() + 1)) {
+					$scope.days.push(new Date(d));
+				}
+				$scope.cleanUsers();
+				var vacationprg = StartProgress("Loading vacations..."); $scope["loaders"]++;
+				$http.post("trservice.asmx/enumCloseVacations", JSON.stringify({ "start": DateToString($scope.daterep), "days": 366 }))
+					.then(function (result) {
+						for (var i = 0; i < result.data.d.length; i++) {
+							var v = result.data.d[i];
+							for (var j = 0; j < $scope.users.length; j++) {
+								var u = $scope.users[j];
+								if (u.TTUSERID == v.AUSER) {
+									u.scheduled.push(v);
+									break;
 								}
 							}
-							EndProgress(vacationprg); $scope["loaders"]--;
-						});
-					var trprg = StartProgress("Loading records..."); $scope["loaders"]++
-					$http.post("trservice.asmx/enumTRSignal", JSON.stringify({ "from": DateToString($scope.daterep), "to": DateToString($scope.daterepend) }))
-						.then(function (result) {
-							for (var i = 0; i < result.data.d.length; i++) {
-								var v = result.data.d[i];
-								for (var j = 0; j < $scope.users.length; j++) {
-									var u = $scope.users[j];
-									if (u.ID == v.USER) {
-										u.workrecs.push(v);
-										break;
-									}
+						}
+						EndProgress(vacationprg); $scope["loaders"]--;
+					});
+				var trprg = StartProgress("Loading records..."); $scope["loaders"]++;
+				$http.post("trservice.asmx/enumTRSignal", JSON.stringify({ "from": DateToString($scope.daterep), "to": DateToString($scope.daterepend) }))
+					.then(function (result) {
+						for (var i = 0; i < result.data.d.length; i++) {
+							var v = result.data.d[i];
+							for (var j = 0; j < $scope.users.length; j++) {
+								var u = $scope.users[j];
+								if (u.ID == v.USER) {
+									u.workrecs.push(v);
+									break;
 								}
 							}
-							EndProgress(trprg); $scope["loaders"]--;
-						});
-					var freevacationprg = StartProgress("Loading free vacations..."); $scope["loaders"]++
-					$http.post("trservice.asmx/enumUnusedVacations", JSON.stringify({}))
-						.then(function (result) {
-							for (var i = 0; i < result.data.d.length; i++) {
-								var v = result.data.d[i];
-								for (var j = 0; j < $scope.users.length; j++) {
-									var u = $scope.users[j];
-									if (u.TTUSERID == v.AUSER) {
-										u.unscheduled.push(v);
-										break;
-									}
+						}
+						EndProgress(trprg); $scope["loaders"]--;
+					});
+				var freevacationprg = StartProgress("Loading free vacations..."); $scope["loaders"]++;
+				$http.post("trservice.asmx/enumUnusedVacations", JSON.stringify({}))
+					.then(function (result) {
+						for (var i = 0; i < result.data.d.length; i++) {
+							var v = result.data.d[i];
+							for (var j = 0; j < $scope.users.length; j++) {
+								var u = $scope.users[j];
+								if (u.TTUSERID == v.AUSER) {
+									u.unscheduled.push(v);
+									break;
 								}
 							}
-							EndProgress(freevacationprg); $scope["loaders"]--;
-						});
-				});
+						}
+						EndProgress(freevacationprg); $scope["loaders"]--;
+					});
+			});
 		};
 		$scope.loadData();
 	}]);
