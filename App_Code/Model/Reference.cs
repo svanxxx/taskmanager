@@ -2,13 +2,17 @@
 
 public class ReferenceVersion
 {
-	private static string _refsid = System.Guid.NewGuid().ToString();
+	private static string _refsid = "";
 	private static Object _lock = new Object();
 
 	public static string REFSVERSION()
 	{
 		lock (_lock)
 		{
+			if (string.IsNullOrEmpty(_refsid))
+			{
+				_refsid = DBHelper.GetValue("SELECT [VALUE] FROM [TT_RES].[DBO].[SETTINGS] WHERE [NAME] = 'REFID'").ToString();
+			}
 			return _refsid;
 		}
 	}
@@ -16,7 +20,9 @@ public class ReferenceVersion
 	{
 		lock (_lock)
 		{
-			_refsid = System.Guid.NewGuid().ToString();
+			string val = System.Guid.NewGuid().ToString();
+			DBHelper.SQLExecute(string.Format("UPDATE [TT_RES].[DBO].[SETTINGS] SET [VALUE] = '{0}' WHERE [NAME] = 'REFID'", val));
+			_refsid = val;
 		}
 	}
 }

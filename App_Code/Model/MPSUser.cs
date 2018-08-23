@@ -136,6 +136,10 @@ public class MPSUser : IdBasedObject
 		}
 		base.OnProcessComplexColumn(col, val);
 	}
+	protected override void PostStore()
+	{
+		ReferenceVersion.Updatekey();
+	}
 
 	public byte[] GetImage()
 	{
