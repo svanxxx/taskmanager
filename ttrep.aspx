@@ -155,6 +155,7 @@
 						</div>
 					</th>
 					<th>Date Created</th>
+					<th>Date Enter</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -170,8 +171,10 @@
 					<td>{{d.SEVE | getSeveById:this}}</td>
 					<td>{{d.CREATEDBY | getUserById:this}}</td>
 					<td>{{d.CREATED}}</td>
+					<td>{{d.DATE}}</td>
 				</tr>
 			</tbody>
 		</table>
+		<h5>{{'Number of defects:' + defects.length}}</h5>
 	</div>
 </asp:Content>
