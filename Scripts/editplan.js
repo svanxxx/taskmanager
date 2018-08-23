@@ -5,7 +5,12 @@
 
 	app.controller('mpscontroller', ["$scope", "$http", "$timeout", function ($scope, $http, $timeout) {
 		$scope.Math = window.Math;
+
 		$scope.currentuserid = -1;
+		if (getParameterByName("userid") != "") {
+			$scope.currentuserid = parseInt(getParameterByName("userid"));
+		}
+		
 		$scope.currentuser = {};
 		getDispos($scope, "dispos", $http);
 
@@ -107,7 +112,9 @@
 		};
 
 		getMPSUsers($scope, "users", $http, function () {
-			$scope.currentuserid = userID();
+			if ($scope.currentuserid < 0) {
+				$scope.currentuserid = userID();
+			}
 			$scope.changeuser($scope.users.find(function (x) { return x.ID == $scope.currentuserid;}));
 		});
 		$scope.changed = false;

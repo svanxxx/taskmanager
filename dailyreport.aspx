@@ -47,6 +47,7 @@
 						<div ng-repeat="l in u.YESTERDAY track by $index">
 							<span>{{l | limitTo:80}}</span><br>
 						</div>
+						<hr>
 						<div ng-hide="u.CREATEDTASKS1.length < 1">
 							<strong>Created tasks:</strong><a ng-repeat="t in u.CREATEDTASKS1" href="showtask.aspx?ttid={{t}}" target="_blank"><span class="badge">{{t}}</span></a>
 						</div>
@@ -66,6 +67,7 @@
 						<div ng-repeat="l in u.TODAY track by $index">
 							<span>{{l | limitTo:80}}</span><br>
 						</div>
+						<hr>
 						<div ng-hide="u.CREATEDTASKS2.length < 1">
 							<strong>Created tasks:</strong><a ng-repeat="t in u.CREATEDTASKS2" href="showtask.aspx?ttid={{t}}" target="_blank"><span class="badge">{{t}}</span></a>
 						</div>
@@ -86,7 +88,7 @@
 								<h3 class="vacation-box"><span class="glyphicon glyphicon-plane"></span></h3>
 							</a>
 						</div>
-						<div ng-repeat="d in u.PLAN | limitTo : 9 track by $index" ng-style="{{d.DISPO | getDispoColorById:this}}" class="task task-first">
+						<div ng-repeat="d in u.PLAN track by $index" ng-style="{{d.DISPO | getDispoColorById:this}}" class="task {{$index < 10 ? 'task-first' : 'task-last'}}">
 							<div>
 								<a href="showtask.aspx?ttid={{d.ID}}" target="_blank">
 									<span class="badge">{{d.ID}}</span>
@@ -95,16 +97,8 @@
 								<span data-toggle="tooltip" title="{{d.SUMMARY}}">{{d.SUMMARY | limitTo:80}}</span>
 							</div>
 						</div>
-						<div ng-repeat="d in u.PLAN | limitTo : 19 : 9 track by $index" ng-style="{{d.DISPO | getDispoColorById:this}}" class="task task-last">
-							<div>
-								<a href="showtask.aspx?ttid={{d.ID}}" target="_blank">
-									<span class="badge">{{d.ID}}</span>
-								</a>
-								<span class="label label-danger">{{d.ESTIM}}</span>
-								<span data-toggle="tooltip" title="{{d.SUMMARY}}">{{d.SUMMARY | limitTo:80}}</span>
-							</div>
-						</div>
-						<button onclick="moretasks(this)" type="button" class="btn btn-default btn-xs">...</button>
+						<button title="Click to see more items. Number of items is limited by 20 tasks. For more items click plan button near" onclick="moretasks(this)" type="button" class="btn btn-default btn-xs">...</button>
+						<a title="Click to see full plan for selected person" target="_blank" href="editplan.aspx?userid={{u.ID}}" class="btn btn-default btn-xs" role="button">Full plan...</a>
 					</td>
 				</tr>
 			</tbody>
