@@ -334,7 +334,7 @@ public class DefectBase : IdBasedObject
 	}
 	public List<DefectBase> EnumPlanShort(int userid)
 	{
-		return EnumPlanLim(userid, 10);
+		return EnumPlanLim(userid, 20);
 	}
 	public List<DefectBase> EnumPlan(int userid)
 	{

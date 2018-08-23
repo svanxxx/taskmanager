@@ -1,4 +1,14 @@
-﻿$(function () {
+﻿function moretasks(elem) {
+	var items = elem.parentElement.querySelectorAll(".task-last");
+	items.forEach(function (i) {
+		if (i.style.display === "none" || i.style.display === "") {
+			i.style.display = "block";
+		} else {
+			i.style.display = "none";
+		}
+	});
+}
+$(function () {
 	var app = angular.module('mpsapplication', []);
 	app.filter('getDispoColorById', getDispoColorById);
 

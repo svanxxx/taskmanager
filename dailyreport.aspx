@@ -86,13 +86,25 @@
 								<h3 class="vacation-box"><span class="glyphicon glyphicon-plane"></span></h3>
 							</a>
 						</div>
-						<div ng-repeat="d in u.PLAN track by $index" ng-style="{{d.DISPO | getDispoColorById:this}}" class="task">
-							<a href="showtask.aspx?ttid={{d.ID}}" target="_blank">
-								<span class="badge">{{d.ID}}</span>
-							</a>
-							<span class="label label-danger">{{d.ESTIM}}</span>
-							<span data-toggle="tooltip" title="{{d.SUMMARY}}">{{d.SUMMARY | limitTo:80}}</span>
+						<div ng-repeat="d in u.PLAN | limitTo : 9 track by $index" ng-style="{{d.DISPO | getDispoColorById:this}}" class="task task-first">
+							<div>
+								<a href="showtask.aspx?ttid={{d.ID}}" target="_blank">
+									<span class="badge">{{d.ID}}</span>
+								</a>
+								<span class="label label-danger">{{d.ESTIM}}</span>
+								<span data-toggle="tooltip" title="{{d.SUMMARY}}">{{d.SUMMARY | limitTo:80}}</span>
+							</div>
 						</div>
+						<div ng-repeat="d in u.PLAN | limitTo : 19 : 9 track by $index" ng-style="{{d.DISPO | getDispoColorById:this}}" class="task task-last">
+							<div>
+								<a href="showtask.aspx?ttid={{d.ID}}" target="_blank">
+									<span class="badge">{{d.ID}}</span>
+								</a>
+								<span class="label label-danger">{{d.ESTIM}}</span>
+								<span data-toggle="tooltip" title="{{d.SUMMARY}}">{{d.SUMMARY | limitTo:80}}</span>
+							</div>
+						</div>
+						<button onclick="moretasks(this)" type="button" class="btn btn-default btn-xs">...</button>
 					</td>
 				</tr>
 			</tbody>
