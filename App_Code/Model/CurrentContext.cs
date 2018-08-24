@@ -21,6 +21,13 @@ public static class CurrentContext
 			return User != null && User.ISADMIN;
 		}
 	}
+	public static int UserID
+	{
+		get
+		{
+			return User != null ? User.ID : -1;
+		}
+	}
 	public static string UserName()
 	{
 		if (!Valid)
