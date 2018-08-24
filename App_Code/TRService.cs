@@ -424,14 +424,18 @@ public class TRService : System.Web.Services.WebService
 	[WebMethod(EnableSession = true)]
 	public void wakeMachine(string m)
 	{
-		Machine ma = Machine.FindOrCreate(m);
-		Process process = new Process();
-		process.StartInfo.RedirectStandardOutput = true;
-		process.StartInfo.UseShellExecute = false;
-		process.StartInfo.CreateNoWindow = true;
-		process.StartInfo.FileName = HttpRuntime.AppDomainAppPath + "bin\\WolCmd.exe";
-		process.StartInfo.Arguments = ma.MAC + " 192.168.0.1 255.255.255.0 3";
-		process.Start();
+		Machine mach = Machine.FindOrCreate(m);
+		string[] macs = mach.MAC.Split(' ');
+		foreach (var mac in macs)
+		{
+			Process process = new Process();
+			process.StartInfo.RedirectStandardOutput = true;
+			process.StartInfo.UseShellExecute = false;
+			process.StartInfo.CreateNoWindow = true;
+			process.StartInfo.FileName = HttpRuntime.AppDomainAppPath + "bin\\WolCmd.exe";
+			process.StartInfo.Arguments = mac + " 192.168.0.1 255.255.255.0 3";
+			process.Start();
+		}
 	}
 	[WebMethod(EnableSession = true)]
 	public void shutMachine(string m)
