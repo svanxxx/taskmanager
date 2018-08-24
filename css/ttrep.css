@@ -12,7 +12,9 @@
 	text-align: center;
 }
 
-.table-bordered > tbody > tr > td:nth-child(1) {
+.table-bordered > tbody > tr > td:nth-child(1),
+.table-bordered > tbody > tr > td:nth-child(2),
+.table-bordered > tbody > tr > td:nth-child(3) {
 	text-align: center;
 }
 
@@ -37,7 +39,7 @@ table tbody tr td {
 	float: right;
 }
 
-.refselector{
+.refselector {
 	width: 70%;
 }
 
