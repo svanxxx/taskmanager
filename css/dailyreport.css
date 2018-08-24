@@ -17,6 +17,12 @@ table > tbody > tr > td:first-child {
 	vertical-align: middle;
 }
 
-.task-last{
-	display:none;
+.task-last {
+	display: none;
+}
+
+#pageloadnotify {
+	visibility: hidden;
+	position: absolute;
+	top: 0px;
 }

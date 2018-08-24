@@ -51,6 +51,9 @@ $(function () {
 		};
 
 		$scope.loadData = function () {
+			$scope.personsOnline = 0;
+			$scope.personsVacation = 0;
+
 			$scope.todaystring = DateToString($scope.today);
 			$scope.yesterdaystring = DateToString($scope.yesterday);
 
@@ -58,6 +61,11 @@ $(function () {
 			$http.post("trservice.asmx/enumCloseVacations", JSON.stringify({ "start": DateToString($scope.yesterday), "days": 15 }))
 				.then(function (result) {
 					$scope.vacations = result.data.d;
+					$scope.vacations.forEach(function (vac) {
+						if (vac.DATE == $scope.todaystring) {
+							$scope.personsVacation++;
+						}
+					});
 					EndProgress(vacationprg); $scope["loaders"]--;
 				});
 
@@ -71,6 +79,7 @@ $(function () {
 							if (recs[r].USER == $scope.mpsusers[u].ID) {
 								var txts = recs[r].DONE.split(/\r?\n/);
 								if (recs[r].DATE == d1) {
+									$scope.personsOnline++;
 									$scope.mpsusers[u].TODAY = txts;
 									$scope.mpsusers[u].CREATEDTASKS2 = recs[r].CREATEDTASKS;
 									$scope.mpsusers[u].SCHEDULEDTASKS2 = recs[r].SCHEDULEDTASKS;
@@ -101,6 +110,7 @@ $(function () {
 						EndProgress(newuserprog); $scope["loaders"]--;
 					});
 			});
+			setTimeout(function () { $('[data-toggle="tooltip"]').tooltip(); }, 1000);//when data loaded - activate tooltip.
 		};
 		$scope.planLoaded = function (id) {
 			for (var i = 0; i < $scope.mpsusers.length; i++) {
