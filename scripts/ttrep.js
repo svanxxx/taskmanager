@@ -49,8 +49,6 @@ $(function () {
 		if (f) {
 			localStorage.DefectsFilter = f;
 		}
-
-
 		window.addEventListener("popstate", function (event) {
 			localStorage.DefectsFilter = JSON.stringify(Object.assign({}, event.state));
 			$scope.loadData();
@@ -98,16 +96,33 @@ $(function () {
 			if (!("text" in $scope.DefectsFilter)) {
 				$scope.DefectsFilter.text = "";
 			}
-			$http.post("trservice.asmx/gettasks", JSON.stringify({ "f": $scope.DefectsFilter }))
+			if (!("startDateEnter" in $scope.DefectsFilter)) {
+				$scope.DefectsFilter.startDateEnter = "";
+			} else {
+				if ($scope.DefectsFilter.startDateEnter !== "") {
+					$scope.DefectsFilter.startDateEnter = StringToDate($scope.DefectsFilter.startDateEnter);
+				}
+			}
+			if (!("endDateEnter" in $scope.DefectsFilter)) {
+				$scope.DefectsFilter.endDateEnter = "";
+			} else {
+				if ($scope.DefectsFilter.endDateEnter !== "") {
+					$scope.DefectsFilter.endDateEnter = StringToDate($scope.DefectsFilter.endDateEnter);
+				}
+			}
+
+			var o = Object.assign({}, $scope.DefectsFilter);
+			o.startDateEnter = o.startDateEnter === "" ? "" : DateToString(o.startDateEnter);
+			o.endDateEnter = o.endDateEnter === "" ? "" : DateToString(o.endDateEnter);
+			$http.post("trservice.asmx/gettasks", JSON.stringify({ "f": o }))
 				.then(function (response) {
 					$scope.defects = response.data.d;
 					for (var i = 0; i < $scope.defects.length; i++) {
 						$scope.defects.checked = false;
 					}
-					EndProgress(taskprg);;
+					EndProgress(taskprg);
 				});
 		};
-
 		$scope.loadData();
 
 		$scope.apply = {};
@@ -124,11 +139,16 @@ $(function () {
 			$scope.defects.forEach(function (d) {
 				d.checked = check;
 			});
-			$scope.defectsselected = check;
+			if ($scope.defectsselected !== check) {
+				$scope.defectsselected = check;
+			}
 		};
 		$scope.applyfilter = function () {
-			localStorage.DefectsFilter = JSON.stringify($scope.DefectsFilter);
-			var o = Object.assign({}, $scope.DefectsFilter);
+			var proccessed = Object.assign({}, $scope.DefectsFilter);
+			proccessed.startDateEnter = proccessed.startDateEnter === "" ? "" : DateToString(proccessed.startDateEnter);
+			proccessed.endDateEnter = proccessed.endDateEnter === "" ? "" : DateToString(proccessed.endDateEnter);
+			localStorage.DefectsFilter = JSON.stringify(proccessed);
+			var o = Object.assign({}, proccessed);
 			window.history.pushState(o, "filter:" + localStorage.DefectsFilter, replaceUrlParam(location.href, "filter", localStorage.DefectsFilter));
 			$scope.loadData();
 		};
@@ -144,7 +164,6 @@ $(function () {
 			}
 			return {};
 		};
-
 		$scope.changeDefects = function () {
 			var updated = [];
 			$scope.defects.forEach(function (d) {
@@ -177,25 +196,18 @@ $(function () {
 				// Do nothing!
 			}
 		};
-
-		$scope.$watch("defects", function (newVal, oldVal) {
-			if (newVal && oldVal && $scope.defects.length > 0) {
-				var newcheck = false;
-				$scope.defects.forEach(function (d) {
-					if (d.checked) {
-						newcheck = true;
-					}
-				});
-				if ($scope.defectsselected != newcheck) {
-					$scope.defectsselected = newcheck;
-				}
-			}
-		}, true);
-
 		$scope.resetReferenceFilter = function (refname, obj) {
 			$(obj.target).parent().find("input").prop("checked", false)
 			$scope.changed = true;
 			$scope.DefectsFilter[refname] = [];
+		};
+		$scope.ChangeDate = function (dateparam) {
+			$scope.changed = true;
+			if ($scope.DefectsFilter[dateparam] === "") {
+				$scope.DefectsFilter[dateparam] = new Date();
+			} else {
+				$scope.DefectsFilter[dateparam] = "";
+			}
 		};
 		$scope.changeReferenceFilter = function (id, refname) {
 			$scope.changed = true;
@@ -206,5 +218,21 @@ $(function () {
 				$scope.DefectsFilter[refname].push(id);
 			}
 		};
+		$scope.$watch("defects", function (newval, oldval) {
+			if (newval && oldval && !inProgress()) {
+				var checked = false;
+				$scope.defects.forEach(function (d) {
+					if (d.checked) {
+						checked = true;
+					}
+				});
+				$scope.defectsselected = checked;
+			}
+		}, true);
+		$scope.$watch("DefectsFilter", function (newVal, oldVal) {
+			if (newVal && oldVal && !inProgress()) {
+				$scope.changed = true;
+			}
+		}, true);
 	}]);
 })

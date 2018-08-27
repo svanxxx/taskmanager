@@ -155,7 +155,25 @@
 						</div>
 					</th>
 					<th>Date Created</th>
-					<th>Date Enter</th>
+					<th>
+						<div class="dropdown middlecol" ng-style="{{styleFiltered('startDateEnter')}}">
+							<a href="#" data-toggle="dropdown" class="dropdown-toggle">Date Enter<b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li class="usersshortlist">
+									<div class="checkbox">
+										<label>
+											<input ng-checked="{{DefectsFilter.startDateEnter !== ''}}" ng-click="ChangeDate('startDateEnter');" type="checkbox">From:<input ng-model="DefectsFilter.startDateEnter" type="date">
+										</label>
+									</div>
+									<div class="checkbox">
+										<label>
+											<input ng-checked="{{DefectsFilter.endDateEnter !== ''}}" ng-click="ChangeDate('endDateEnter');" type="checkbox">To:<input ng-model="DefectsFilter.endDateEnter" type="date">
+										</label>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</th>
 				</tr>
 			</thead>
 			<tbody>
