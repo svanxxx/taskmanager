@@ -14,8 +14,6 @@
 		$scope.startdate.setHours(0, 0, 0, 0);
 		$scope.enddate = new Date($scope.startdate.getFullYear(), $scope.startdate.getMonth() + 1, 0);
 
-		$scope.selectedpersonID = "-1";
-
 		$scope.loadData = function () {
 			var d1 = DateToString($scope.startdate);
 			var diff = ($scope.enddate - $scope.startdate) / (24 * 3600 * 1000);
@@ -47,7 +45,10 @@
 		};
 
 		getMPSUsers($scope, "mpsusers", $http, function () {
-			$scope.selectedpersonID = "" + $scope.mpsusers[0].ID;
+			$scope.selectedpersonID = getParameterByName("userid");
+			if ($scope.selectedpersonID === "") {
+				$scope.selectedpersonID = "" + $scope.mpsusers[0].ID;
+			}
 			$scope.loadData();
 		});
 	}]);

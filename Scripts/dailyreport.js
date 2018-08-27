@@ -1,4 +1,5 @@
 ﻿function moretasks(elem) {
+	setTimeout(function () { $(elem).tooltip("hide"); }, 200);
 	var items = elem.parentElement.querySelectorAll(".task-last");
 	items.forEach(function (i) {
 		if (i.style.display === "none" || i.style.display === "") {

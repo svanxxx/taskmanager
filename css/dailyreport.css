@@ -4,15 +4,12 @@
 	width: 100%;
 }
 
-.task {
-	white-space: nowrap;
-}
-
 .vacation-box {
 	display: inline;
 }
 
-table > tbody > tr > td:first-child {
+table > tbody > tr > td:first-child,
+table > thead > tr > th{
 	text-align: center;
 	vertical-align: middle;
 }

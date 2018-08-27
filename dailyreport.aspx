@@ -27,9 +27,9 @@
 				<table class="table table-hover table-bordered">
 					<colgroup>
 						<col width="10%" />
-						<col width="30%" />
-						<col width="30%" />
-						<col width="30%" />
+						<col width="25%" />
+						<col width="25%" />
+						<col width="40%" />
 					</colgroup>
 					<thead>
 						<tr class="info">
@@ -42,8 +42,13 @@
 					<tbody>
 						<tr ng-repeat="u in mpsusers | orderBy : 'PERSON_NAME'">
 							<td>
-								<img ng-src="{{'getUserImg.ashx?id=' + u.ID}}" alt="Smile" height="20" width="20">
-								<a data-toggle="tooltip" title="Click to see all user's activity." target="_blank" href="dailysearch.aspx?userid={{u.ID}}" class="btn btn-default btn-xs" role="button">{{u.PERSON_NAME}}</a>
+								<a data-toggle="tooltip" title="Click to see all user's activity." target="_blank" href="dailysearch.aspx?userid={{u.ID}}" class="btn btn-default btn-xs" role="button">
+									<img ng-src="{{'getUserImg.ashx?id=' + u.ID}}" alt="Smile" height="60" width="60">
+									<br />
+									<span>{{u.LOGIN}}</span>
+									<br />
+									<span>{{u.PERSON_NAME}}</span>
+								</a>
 							</td>
 							<td>
 								<div ng-repeat="v in vacations | filter: { AUSER : u.TTUSERID, DATE: yesterdaystring }">
@@ -52,7 +57,7 @@
 									</a>
 								</div>
 								<div ng-repeat="l in u.YESTERDAY track by $index">
-									<span>{{l | limitTo:80}}</span><br>
+									<span>{{l}}</span><br>
 								</div>
 								<hr>
 								<div ng-hide="u.CREATEDTASKS1.length < 1">
@@ -72,7 +77,7 @@
 									</a>
 								</div>
 								<div ng-repeat="l in u.TODAY track by $index">
-									<span>{{l | limitTo:80}}</span><br>
+									<span>{{l}}</span><br>
 								</div>
 								<hr>
 								<div ng-hide="u.CREATEDTASKS2.length < 1">
@@ -96,13 +101,11 @@
 									</a>
 								</div>
 								<div ng-repeat="d in u.PLAN track by $index" ng-style="{{d.DISPO | getDispoColorById:this}}" class="task {{$index < 10 ? 'task-first' : 'task-last'}}">
-									<div>
-										<a href="showtask.aspx?ttid={{d.ID}}" target="_blank">
-											<span class="badge">{{d.ID}}</span>
-										</a>
-										<span class="label label-danger">{{d.ESTIM}}</span>
-										<span data-toggle="tooltip" title="{{d.SUMMARY}}">{{d.SUMMARY | limitTo:80}}</span>
-									</div>
+									<a href="showtask.aspx?ttid={{d.ID}}" target="_blank">
+										<span class="badge">{{d.ID}}</span>
+									</a>
+									<span class="label label-danger">{{d.ESTIM}}</span>
+									<span>{{d.SUMMARY}}</span>
 								</div>
 								<button data-toggle="tooltip" title="Click to see additional 10 items. Number of items is limited by 20. For more items click plan button near" onclick="moretasks(this)" type="button" class="btn btn-default btn-xs">...</button>
 								<a data-toggle="tooltip" title="Click to see full plan for selected person" target="_blank" href="editplan.aspx?userid={{u.ID}}" class="btn btn-default btn-xs" role="button">Full plan...</a>
