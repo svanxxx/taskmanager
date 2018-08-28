@@ -6,15 +6,31 @@
 		};
 	}]);
 	app.controller('mpscontroller', ["$scope", "$http", function ($scope, $http) {
+		window.addEventListener("popstate", function (event) {
+			$scope.selectedpersonID = event.state;
+			if (!$scope.selectedpersonID) {
+				$scope.selectedpersonID = userID();
+			}
+			$scope.loadData(true);
+		});
+
 		$scope.mpsusers = [];
-		$scope.reports = [];
 
 		$scope.startdate = new Date();
 		$scope.startdate.setDate(1);
 		$scope.startdate.setHours(0, 0, 0, 0);
 		$scope.enddate = new Date($scope.startdate.getFullYear(), $scope.startdate.getMonth() + 1, 0);
+		$scope.selectedpersonID = userID();
+		$scope.addHistory = function () {
+			window.history.pushState($scope.selectedpersonID, "userid:" + $scope.selectedpersonID, replaceUrlParam(location.href, "userid", $scope.selectedpersonID));
+		};
 
-		$scope.loadData = function () {
+		$scope.loadData = function (pop) {
+			if (!pop) {
+				$scope.addHistory();
+			}
+
+			$scope.reports = [];
 			var d1 = DateToString($scope.startdate);
 			var diff = ($scope.enddate - $scope.startdate) / (24 * 3600 * 1000);
 			var repsprg = StartProgress("Loading reports...");
@@ -49,7 +65,7 @@
 			if ($scope.selectedpersonID === "") {
 				$scope.selectedpersonID = "" + $scope.mpsusers[0].ID;
 			}
-			$scope.loadData();
+			$scope.loadData(false);
 		});
 	}]);
 })

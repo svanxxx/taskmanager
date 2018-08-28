@@ -17,17 +17,17 @@
 					</div>
 					<div class="col-lg-4">
 						<label>Person:</label>
-						<select ng-change="loadData()" ng-model="selectedpersonID" class="form-control">
+						<select ng-change="loadData(false)" ng-model="selectedpersonID" class="form-control">
 							<option ng-repeat="u in mpsusers" value="{{u.ID}}">{{u.PERSON_NAME}}</option>
 						</select>
 					</div>
 					<div class="col-lg-3">
 						<label>From:</label>
-						<input required ng-model="startdate" ng-change="loadData()" class="form-control" type="date" />
+						<input required ng-model="startdate" ng-change="loadData(false)" class="form-control" type="date" />
 					</div>
 					<div class="col-lg-3">
 						<label>Through:</label>
-						<input required ng-model="enddate" ng-change="loadData()" class="form-control" type="date" />
+						<input required ng-model="enddate" ng-change="loadData(false)" class="form-control" type="date" />
 					</div>
 				</div>
 			</div>
