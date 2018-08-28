@@ -188,7 +188,7 @@
 					<td>
 						<span class="label label-danger">{{d.ESTIM}}</span>
 					</td>
-					<td>{{d.AUSER | getUserById:this}}</td>
+					<td><a target="_blank" href="{{'editplan.aspx?userid='}}{{d.AUSER | getUserTRIDById:this}}">{{d.AUSER | getUserById:this}}</a></td>
 					<td>{{d.REFERENCE}}</td>
 					<td>{{d.SUMMARY}}</td>
 					<td>{{d.DISPO | getDispoById:this}}</td>

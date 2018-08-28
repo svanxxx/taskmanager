@@ -43,6 +43,7 @@ $(function () {
 	app.filter('getSeveById', getSeveById);
 	app.filter('getDispoById', getDispoById);
 	app.filter('getDispoColorById', getDispoColorById);
+	app.filter('getUserTRIDById', getUserTRIDById);
 
 	app.controller('mpscontroller', ["$scope", "$http", function ($scope, $http) {
 		var f = getParameterByName("filter");

@@ -35,21 +35,41 @@ function loadReference($scope, member, $http, localmember, functionname, params,
 			});
 	}
 }
-
+var defDispCol = { "background-color": "white" };
 function getDispoColorById() {
 	return function (id, $scope) {
-		var col = ($scope.dispos && $scope.dispos.length > 0) ? $scope.dispos.filter(function (x) { return x.ID == id; })[0].COLOR : "white";
-		return { "background-color": col };
-	}
+		if ($scope.dispos.length < 1) {
+			return defDispCol;
+		}
+		var res = $scope.dispos.filter(function (x) { return x.ID == id; });
+		if (res.length < 1) {
+			return defDispCol;
+		}
+		return { "background-color": res[0].COLOR };
+	};
 }
 function getDispoById() {
 	return function (id, $scope) {
-		return $scope.dispos.filter(function (x) { return x.ID == id; })[0].DESCR;
+		if ($scope.dispos.length < 1) {
+			return "";
+		}
+		var res = $scope.dispos.filter(function (x) { return x.ID == id; });
+		if (res.length < 1) {
+			return "";
+		}
+		return res[0].DESCR;
 	};
 }
 function getCompById() {
 	return function (id, $scope) {
-		return $scope.comps.filter(function (x) { return x.ID == id; })[0].DESCR;
+		if ($scope.comps.length < 1) {
+			return "";
+		}
+		var res = $scope.comps.filter(function (x) { return x.ID == id; });
+		if (res.length < 1) {
+			return "";
+		}
+		return res[0].DESCR;
 	};
 }
 function getSeveById() {
@@ -69,6 +89,18 @@ function getUserById() {
 		var r = $scope.users.filter(function (x) { return x.ID == id; });
 		if (r.length > 0) {
 			return r[0].FULLNAME;
+		}
+		return "";
+	};
+}
+function getUserTRIDById() {
+	return function (id, $scope) {
+		if (!$scope.users) {
+			return "";
+		}
+		var r = $scope.users.filter(function (x) { return x.ID == id; });
+		if (r.length > 0) {
+			return r[0].TRID;
 		}
 		return "";
 	};
