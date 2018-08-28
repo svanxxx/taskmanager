@@ -143,6 +143,7 @@
 			<li><a class="small" data-toggle="pill" href="#history">History</a></li>
 			<li><a class="small" data-toggle="pill" href="#attachments">Attachments</a></li>
 			<li><a class="small" data-toggle="pill" href="#lockinfo">Lock Info</a></li>
+			<li><a class="small" data-toggle="pill" href="#taskactions">Actions</a></li>
 		</ul>
 		<div class="tab-content">
 			<div id="specification" class="tab-pane fade in active">
@@ -198,6 +199,10 @@
 			<div id="lockinfo" class="tab-pane fade">
 				<span class="label label-info">{{getMPSUserName(lockedby)}}</span>
 				<img ng-src="{{'getUserImg.ashx?id=' + lockedby}}" alt="Smile" height="42" width="42">
+			</div>
+			<div id="taskactions" class="tab-pane fade">
+				<h5>Please commit your changes to git and push your branch named with TTxxxxxx where xxxxxx is the task number.</h5>
+				<button type="button" class="btn btn-lg btn-info" ng-click="testTask()">Test this task!</button>
 			</div>
 		</div>
 	</div>

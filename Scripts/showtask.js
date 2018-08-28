@@ -77,6 +77,9 @@ $(function () {
 			}
 		}
 
+		$scope.testTask = function () {
+			alert('Experiment: your task will be tested. ))');
+		}
 		$scope.addFile = function () {
 			var file = $('<input type="file" name="filefor" style="display: none;" />');
 			file.on('input', function (e) {
