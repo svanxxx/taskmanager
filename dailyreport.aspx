@@ -54,8 +54,8 @@
 							</td>
 							<td>
 								<div ng-repeat="v in vacations | filter: { AUSER : u.TTUSERID, DATE: yesterdaystring }">
-									<a href="showtask.aspx?ttid={{v.ID}}" target="_blank">
-										<h3><span class="glyphicon glyphicon-plane"></span></h3>
+									<a data-toggle="tooltip" title="{{v.ID}}" href="showtask.aspx?ttid={{v.ID}}" target="_blank">
+										<h3 class="vacation-box"><span class="glyphicon glyphicon-plane"></span></h3>
 									</a>
 								</div>
 								<div ng-repeat="l in u.YESTERDAY track by $index">
@@ -74,8 +74,8 @@
 							</td>
 							<td>
 								<div ng-repeat="v in vacations | filter: { AUSER : u.TTUSERID, DATE: todaystring }">
-									<a href="showtask.aspx?ttid={{v.ID}}" target="_blank">
-										<h3><span class="glyphicon glyphicon-plane"></span></h3>
+									<a data-toggle="tooltip" title="{{v.ID}}" href="showtask.aspx?ttid={{v.ID}}" target="_blank">
+										<h3 class="vacation-box"><span class="glyphicon glyphicon-plane"></span></h3>
 									</a>
 								</div>
 								<div ng-repeat="l in u.TODAY track by $index">
@@ -98,7 +98,7 @@
 									<a target='_blank' href='vacations.aspx'>
 										<h3 class="vacation-box">{{getUpcomingdays(u)}}</h3>
 									</a>
-									<a href="showtask.aspx?ttid={{v.ID}}" target="_blank" ng-repeat="v in vacations | filter: { AUSER : u.TTUSERID } | filter: {DATE: '!' + todaystring} | filter: {DATE: '!' + yesterdaystring}">
+									<a data-toggle="tooltip" title="{{v.ID}}" href="showtask.aspx?ttid={{v.ID}}" target="_blank" ng-repeat="v in vacations | filter: { AUSER : u.TTUSERID } | filter: {DATE: '!' + todaystring} | filter: {DATE: '!' + yesterdaystring}">
 										<h3 class="vacation-box"><span class="glyphicon glyphicon-plane"></span></h3>
 									</a>
 								</div>
