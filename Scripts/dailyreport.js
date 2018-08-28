@@ -76,20 +76,24 @@ $(function () {
 					var d1 = DateToString($scope.today);
 					var recs = result.data.d;
 					for (var r = 0; r < recs.length; r++) {
+						var rec = recs[r];
 						for (var u = 0; u < $scope.mpsusers.length; u++) {
-							if (recs[r].USER == $scope.mpsusers[u].ID) {
-								var txts = recs[r].DONE.split(/\r?\n/);
-								if (recs[r].DATE == d1) {
+							var user = $scope.mpsusers[u];
+							if (rec.USER == user.ID) {
+								var txts = rec.DONE.split(/\r?\n/);
+								if (rec.DATE == d1) {
 									$scope.personsOnline++;
-									$scope.mpsusers[u].TODAY = txts;
-									$scope.mpsusers[u].CREATEDTASKS2 = recs[r].CREATEDTASKS;
-									$scope.mpsusers[u].SCHEDULEDTASKS2 = recs[r].SCHEDULEDTASKS;
-									$scope.mpsusers[u].MODIFIEDTASKS2 = recs[r].MODIFIEDTASKS;
+									user.TODAY = txts;
+									user.TODAYIN = rec.IN.substring(0, 5);
+									user.TODAYOUT = rec.OUT.substring(0, 5);
+									user.CREATEDTASKS2 = rec.CREATEDTASKS;
+									user.SCHEDULEDTASKS2 = rec.SCHEDULEDTASKS;
+									user.MODIFIEDTASKS2 = rec.MODIFIEDTASKS;
 								} else {
-									$scope.mpsusers[u].YESTERDAY = txts;
-									$scope.mpsusers[u].CREATEDTASKS1 = recs[r].CREATEDTASKS;
-									$scope.mpsusers[u].SCHEDULEDTASKS1 = recs[r].SCHEDULEDTASKS;
-									$scope.mpsusers[u].MODIFIEDTASKS1 = recs[r].MODIFIEDTASKS;
+									user.YESTERDAY = txts;
+									user.CREATEDTASKS1 = rec.CREATEDTASKS;
+									user.SCHEDULEDTASKS1 = rec.SCHEDULEDTASKS;
+									user.MODIFIEDTASKS1 = rec.MODIFIEDTASKS;
 								}
 							}
 						}

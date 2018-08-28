@@ -45,10 +45,12 @@
 								<a data-toggle="tooltip" title="Click to see all user's activity." target="_blank" href="dailysearch.aspx?userid={{u.ID}}" class="btn btn-default btn-xs" role="button">
 									<img ng-src="{{'getUserImg.ashx?id=' + u.ID}}" alt="Smile" height="60" width="60">
 									<br />
-									<span>{{u.LOGIN}}</span>
+									<b><span>{{u.LOGIN}}</span></b>
 									<br />
 									<span>{{u.PERSON_NAME}}</span>
 								</a>
+								<br />
+								<span class="label label-info">{{u.TODAYIN}}-{{u.TODAYOUT}}</span>
 							</td>
 							<td>
 								<div ng-repeat="v in vacations | filter: { AUSER : u.TTUSERID, DATE: yesterdaystring }">
