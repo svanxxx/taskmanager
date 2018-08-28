@@ -19,14 +19,19 @@ $(function () {
 
 		$scope.haveBirthday = false;
 		$scope.birthdayID = "-1";
-		getMPSUsers($scope, "mpsusers", $http, function () {
+		$scope.birthdayYears = 0;
+		$scope.checkBirthday = function () {
 			var today = DateToString(new Date());
 			$scope.mpsusers.forEach(function (u) {
 				if (u.INWORK && u.BIRTHDAY.substring(0, 4) === today.substring(0, 4)) {
 					$scope.haveBirthday = true;
 					$scope.birthdayID = u.ID;
+					$scope.birthdayYears = (new Date()).getFullYear() - u.BIRTHDAY.substring(6, 10);
 				}
 			});
+		};
+		getMPSUsers($scope, "mpsusers", $http, function () {
+			$scope.checkBirthday();
 		});
 
 		var d = new Date();
@@ -211,6 +216,7 @@ $(function () {
 				d.setHours(0, 0, 0, 0);
 				$scope.date = d;
 				$scope.loadData();
+				$scope.checkBirthday();
 			});
 		};
 

@@ -10,7 +10,7 @@
 	<div ng-app="mpsapplication" ng-controller="mpscontroller">
 		<div class="alert alert-danger birthday" ng-cloak ng-show="haveBirthday">
 			<img ng-src="{{'getUserImg.ashx?id=' + birthdayID}}" alt="Smile" height="60" width="60">
-			<span>&hArr;</span>
+			<span>&hArr;&nbsp;{{birthdayYears}}*</span>
 			<img src="images/cake.jpg" alt="Smile" height="60" width="60">
 			<span>=&#9786;</span>
 		</div>
