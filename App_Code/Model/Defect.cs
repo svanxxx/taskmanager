@@ -185,29 +185,18 @@ public class DefectBase : IdBasedObject
 	}
 	public string DATE
 	{
-		get { return this[_Date] == DBNull.Value ? DBHelper.sdefaultDate : Convert.ToDateTime(this[_Date]).ToString(defDateFormat, CultureInfo.InvariantCulture); }
-		set
-		{
-			var dt = Convert.ToDateTime(value, CultureInfo.InvariantCulture);
-			if (value == DBHelper.sdefaultDate)
-			{
-				this[_Date] = DBNull.Value;
-			}
-			else
-			{
-				this[_Date] = dt;
-			}
-		}
+		get { return GetAsDate(_Date); }
+		set { SetAsDate(_Date, value); }
 	}
 	public string CREATED
 	{
-		get { return this[_Created] == DBNull.Value ? DBHelper.sdefaultDate : Convert.ToDateTime(this[_Created]).ToString(defDateFormat, CultureInfo.InvariantCulture); }
-		set { this[_Created] = Convert.ToDateTime(value, CultureInfo.InvariantCulture); }
+		get { return GetAsDate(_Created); }
+		set { SetAsDate(_Created, value); }
 	}
 	public string MODIFIED
 	{
-		get { return this[_ModDate] == DBNull.Value ? DBHelper.sdefaultDate : Convert.ToDateTime(this[_ModDate]).ToString(defDateFormat, CultureInfo.InvariantCulture); }
-		set { this[_ModDate] = Convert.ToDateTime(value, CultureInfo.InvariantCulture); }
+		get { return GetAsDate(_ModDate); }
+		set { SetAsDate(_ModDate, value); }
 	}
 	public decimal MODIFIEDBY
 	{

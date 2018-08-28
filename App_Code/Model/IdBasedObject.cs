@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
+using System.Globalization;
 
 public class Expression
 {
@@ -352,6 +353,22 @@ public class IdBasedObject
 				}
 				_values[columnName] = value;
 			}
+		}
+	}
+	protected string GetAsDate(string column)
+	{
+		return this[column] == DBNull.Value ? DBHelper.sdefaultDate : Convert.ToDateTime(this[column]).ToString(defDateFormat, CultureInfo.InvariantCulture);
+	}
+	protected void SetAsDate(string column, string value)
+	{
+		var dt = Convert.ToDateTime(value, CultureInfo.InvariantCulture);
+		if (value == DBHelper.sdefaultDate)
+		{
+			this[column] = DBNull.Value;
+		}
+		else
+		{
+			this[column] = dt;
 		}
 	}
 }

@@ -71,3 +71,9 @@
 .person-items {
 	width: 100%;
 }
+
+.birthday {
+	position: fixed;
+	top: 80px;
+	left: 20px;
+}

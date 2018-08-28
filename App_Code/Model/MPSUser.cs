@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.OleDb;
+using System.Globalization;
 using System.Web;
 
 public class MPSUser : IdBasedObject
@@ -18,8 +19,9 @@ public class MPSUser : IdBasedObject
 	const string _ret = "RETIRED";
 	const string _img = "IMAGE";
 	const string _imgTransfer = "IMAGETRANSFER";
+	const string _birth = "PERSON_BIRTHDAY";
 
-	static string[] _allcols = new string[] { _pid, _pname, _email, _ttuser, _addr, _login, _pass, _isAdm, _phone, _work, _ret, _imgTransfer };
+	static string[] _allcols = new string[] { _pid, _pname, _email, _ttuser, _addr, _login, _pass, _isAdm, _phone, _work, _ret, _imgTransfer, _birth };
 	public static string _Tabl = "[PERSONS]";
 
 	public string PHONE
@@ -83,6 +85,11 @@ public class MPSUser : IdBasedObject
 	{
 		get { return this[_pname].ToString(); }
 		set { this[_pname] = value; }
+	}
+	public string BIRTHDAY
+	{
+		get { return GetAsDate(_birth); }
+		set { SetAsDate(_birth, value); }
 	}
 	public int TTUSERID
 	{

@@ -19,8 +19,8 @@ public class TRRecSignal : IdBasedObject
 	}
 	public string DATE
 	{
-		get { return this[_dat] == DBNull.Value ? DBHelper.sdefaultDate : Convert.ToDateTime(this[_dat]).ToString(defDateFormat, CultureInfo.InvariantCulture); }
-		set { this[_dat] = Convert.ToDateTime(value, CultureInfo.InvariantCulture); }
+		get { return GetAsDate(_dat); }
+		set { SetAsDate(_dat, value); }
 	}
 	public int USER
 	{

@@ -17,6 +17,18 @@ $(function () {
 
 		getDispos($scope, "dispos", $http);
 
+		$scope.haveBirthday = false;
+		$scope.birthdayID = "-1";
+		getMPSUsers($scope, "mpsusers", $http, function () {
+			var today = DateToString(new Date());
+			$scope.mpsusers.forEach(function (u) {
+				if (u.INWORK && u.BIRTHDAY.substring(0, 4) === today.substring(0, 4)) {
+					$scope.haveBirthday = true;
+					$scope.birthdayID = u.ID;
+				}
+			});
+		});
+
 		var d = new Date();
 		d.setHours(0, 0, 0, 0);
 		$scope.date = d;
@@ -123,7 +135,7 @@ $(function () {
 		$http.post("trservice.asmx/getplanned", JSON.stringify({ "userid": "" }))
 			.then(function (response) {
 				$scope.defects = response.data.d;
-				$('[data-toggle="tooltip"]').tooltip();
+				setTimeout(function () { $('[data-toggle="tooltip"]').tooltip(); }, 1000);//when data loaded - activate tooltip.
 			});
 
 		$scope.unscheduled = [];

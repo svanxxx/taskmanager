@@ -102,12 +102,14 @@
 					$scope.defects = result.data.d;
 					EndProgress(prgtasks);
 					$scope.changed = false;
+					setTimeout(function () { $('[data-toggle="tooltip"]').tooltip(); }, 1000);//when data loaded - activate tooltip.
 				});
 
 			$scope.unscheduled = [];
 			$http.post("trservice.asmx/getunplanned", JSON.stringify({ "userid": $scope.currentuserid }))
 				.then(function (response) {
 					$scope.unscheduled = response.data.d;
+					setTimeout(function () { $('[data-toggle="tooltip"]').tooltip(); }, 1000);//when data loaded - activate tooltip.
 				});
 		};
 

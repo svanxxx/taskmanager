@@ -14,7 +14,7 @@
 		$scope.readonly = !IsAdmin();
 		$scope.discard = function () {
 			window.location.reload();
-		}
+		};
 		$scope.changeImg = function (id) {
 			var file = $('<input type="file" name="filefor" style="display: none;" />');
 			file.on('input', function (e) {
@@ -30,11 +30,11 @@
 							break;
 						}
 					}
-				}
+				};
 				r.readAsDataURL(this.files[0]);
 			});
 			file.trigger('click');
-		}
+		};
 		$scope.save = function () {
 			var prg = StartProgress("Saving data...");
 			var users = [];
@@ -45,24 +45,29 @@
 					users.push($scope.users[i])
 				}
 			}
-			$http.post("trservice.asmx/setusers", angular.toJson({ "users": users }), )
+			$http.post("trservice.asmx/setusers", angular.toJson({ "users": users }))
 				.then(function (response) {
 					EndProgress(prg);
 					$scope.changed = false;
 				});
-		}
+		};
 
 		var taskprg = StartProgress("Loading data...");
 		$scope.users = [];
 		$http.post("trservice.asmx/getMPSUsers", JSON.stringify({ "active": false }))
 			.then(function (result) {
 				$scope.users = result.data.d;
+				$scope.users.forEach(function (u) {
+					if (u.BIRTHDAY !== "") {
+						u.BIRTHDAY = StringToDate(u.BIRTHDAY);
+					}
+				});
 			});
 		$scope.changed = false;
 		$scope.itemchanged = function (r) {
 			r.changed = true;
 			$scope.changed = true;
-		}
+		};
 		EndProgress(taskprg);
 	}]);
 })

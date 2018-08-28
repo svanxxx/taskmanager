@@ -8,6 +8,12 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
 	<div ng-app="mpsapplication" ng-controller="mpscontroller">
+		<div class="alert alert-danger birthday" ng-cloak ng-show="haveBirthday">
+			<img ng-src="{{'getUserImg.ashx?id=' + birthdayID}}" alt="Smile" height="60" width="60">
+			<span>&hArr;</span>
+			<img src="images/cake.jpg" alt="Smile" height="60" width="60">
+			<span>=&#9786;</span>
+		</div>
 		<div class="panel panel-info person-box">
 			<div class="panel-heading vertical-align">
 				<div class="row person-items">
@@ -87,7 +93,7 @@
 				<div ng-repeat="d in defects" ng-style="{{d.DISPO | getDispoColorById:this}}" class="task alert">
 					<a href="showtask.aspx?ttid={{d.ID}}" target="_blank"><span class="badge">{{d.ID}}</span></a>
 					<span class="label label-danger">{{d.ESTIM}}</span>
-					<span>{{d.SUMMARY}}</span>
+					<span data-toggle="tooltip" title="{{d.SUMMARY}}">{{d.SUMMARY | limitTo:135}}</span>
 					<button ng-click="workTask(d)" data-toggle="tooltip" title="Start work on this task now!" type="button" class="btn btn-default btn-xs btn-workme"><span class="glyphicon glyphicon-circle-arrow-up"></span></button>
 					<div class="dropdown btn-workme">
 						<button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown">
