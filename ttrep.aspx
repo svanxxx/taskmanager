@@ -72,8 +72,8 @@
 						<input type="button" value="&#9745" ng-click="checkall()"></th>
 					<th>ID</th>
 					<th>Time</th>
-					<th>
-						<div class="dropdown middlecol" ng-style="{{styleFiltered('users')}}">
+					<th class="{{classFiltered('users')}}">
+						<div class="dropdown middlecol">
 							<a href="#" data-toggle="dropdown" class="refmenu dropdown-toggle">User<b class="caret"></b></a>
 							<ul class="dropdown-menu">
 								<button class="refclear" type="button" ng-click="resetReferenceFilter('users', $event)">&#9746</button>
@@ -90,8 +90,8 @@
 					</th>
 					<th>Ref</th>
 					<th>Summary</th>
-					<th>
-						<div class="dropdown middlecol" ng-style="{{styleFiltered('dispositions')}}">
+					<th class="{{classFiltered('dispositions')}}">
+						<div class="dropdown middlecol">
 							<a href="#" data-toggle="dropdown" class="refmenu dropdown-toggle">Disposition<b class="caret"></b></a>
 							<ul class="dropdown-menu">
 								<button class="refclear" type="button" ng-click="resetReferenceFilter('dispositions', $event)">&#9746</button>
@@ -106,8 +106,8 @@
 							</ul>
 						</div>
 					</th>
-					<th>
-						<div class="dropdown middlecol" ng-style="{{styleFiltered('components')}}">
+					<th class="{{classFiltered('components')}}">
+						<div class="dropdown middlecol">
 							<a href="#" data-toggle="dropdown" class="refmenu dropdown-toggle">Component<b class="caret"></b></a>
 							<ul class="dropdown-menu">
 								<button class="refclear" type="button" ng-click="resetReferenceFilter('components', $event)">&#9746</button>
@@ -122,8 +122,8 @@
 							</ul>
 						</div>
 					</th>
-					<th>
-						<div class="dropdown middlecol" ng-style="{{styleFiltered('severities')}}">
+					<th class="{{classFiltered('severities')}}">
+						<div class="dropdown middlecol">
 							<a href="#" data-toggle="dropdown" class="refmenu dropdown-toggle">Severity<b class="caret"></b></a>
 							<ul class="dropdown-menu">
 								<button class="refclear" type="button" ng-click="resetReferenceFilter('severities', $event)">&#9746</button>
@@ -138,8 +138,8 @@
 							</ul>
 						</div>
 					</th>
-					<th>
-						<div class="dropdown middlecol" ng-style="{{styleFiltered('createdUsers')}}">
+					<th class="{{classFiltered('createdUsers')}}">
+						<div class="dropdown middlecol">
 							<a href="#" data-toggle="dropdown" class="refmenu dropdown-toggle">Created<b class="caret"></b></a>
 							<ul class="dropdown-menu">
 								<button class="refclear" type="button" ng-click="resetReferenceFilter('createdUsers', $event)">&#9746</button>
@@ -154,9 +154,27 @@
 							</ul>
 						</div>
 					</th>
-					<th>Date Created</th>
-					<th>
-						<div class="dropdown middlecol" ng-style="{{styleFiltered('startDateEnter')}}">
+					<th class="{{classFiltered('startDateCreated')}}">
+						<div class="dropdown middlecol">
+							<a href="#" data-toggle="dropdown" class="dropdown-toggle">Date Created<b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li class="usersshortlist">
+									<div class="checkbox">
+										<label>
+											<input ng-checked="{{DefectsFilter.startDateCreated !== ''}}" ng-click="ChangeDate('startDateCreated');" type="checkbox">From:<input ng-model="DefectsFilter.startDateCreated" type="date">
+										</label>
+									</div>
+									<div class="checkbox">
+										<label>
+											<input ng-checked="{{DefectsFilter.endDateCreated !== ''}}" ng-click="ChangeDate('endDateCreated');" type="checkbox">To:<input ng-model="DefectsFilter.endDateCreated" type="date">
+										</label>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</th>
+					<th class="{{classFiltered('startDateEnter')}}">
+						<div class="dropdown middlecol">
 							<a href="#" data-toggle="dropdown" class="dropdown-toggle">Date Enter<b class="caret"></b></a>
 							<ul class="dropdown-menu">
 								<li class="usersshortlist">

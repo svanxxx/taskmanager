@@ -407,7 +407,7 @@ public class DefectBase : IdBasedObject
 		}
 		if (!string.IsNullOrEmpty(f.endDateEnter))
 		{
-			lswhere.Add(string.Format(" AND  ({0} <= '{1}')", _Date, DateTime.ParseExact(f.endDateEnter, defDateFormat, CultureInfo.InvariantCulture).ToString(DBHelper.SQLDateFormat)));
+			lswhere.Add(string.Format(" AND  ({0} < '{1}')", _Date, DateTime.ParseExact(f.endDateEnter, defDateFormat, CultureInfo.InvariantCulture).AddDays(1).ToString(DBHelper.SQLDateFormat)));
 		}
 		if (!string.IsNullOrEmpty(f.startDateCreated))
 		{
@@ -415,7 +415,7 @@ public class DefectBase : IdBasedObject
 		}
 		if (!string.IsNullOrEmpty(f.endDateCreated))
 		{
-			lswhere.Add(string.Format(" AND  ({0} <= '{1}')", _Created, DateTime.ParseExact(f.endDateCreated, defDateFormat, CultureInfo.InvariantCulture).ToString(DBHelper.SQLDateFormat)));
+			lswhere.Add(string.Format(" AND  ({0} < '{1}')", _Created, DateTime.ParseExact(f.endDateCreated, defDateFormat, CultureInfo.InvariantCulture).AddDays(1).ToString(DBHelper.SQLDateFormat)));
 		}
 		if (!string.IsNullOrEmpty(f.startDateScheduled))
 		{
@@ -423,7 +423,7 @@ public class DefectBase : IdBasedObject
 		}
 		if (!string.IsNullOrEmpty(f.endDateScheduled))
 		{
-			lswhere.Add(string.Format(" AND  ({0} <= '{1}')", _OrderDate, DateTime.ParseExact(f.endDateScheduled, defDateFormat, CultureInfo.InvariantCulture).ToString(DBHelper.SQLDateFormat)));
+			lswhere.Add(string.Format(" AND  ({0} < '{1}')", _OrderDate, DateTime.ParseExact(f.endDateScheduled, defDateFormat, CultureInfo.InvariantCulture).AddDays(1).ToString(DBHelper.SQLDateFormat)));
 		}
 		if (!string.IsNullOrEmpty(f.startDateModified))
 		{
@@ -431,7 +431,7 @@ public class DefectBase : IdBasedObject
 		}
 		if (!string.IsNullOrEmpty(f.endDateModified))
 		{
-			lswhere.Add(string.Format(" AND  ({0} <= '{1}')", _ModDate, DateTime.ParseExact(f.endDateModified, defDateFormat, CultureInfo.InvariantCulture).ToString(DBHelper.SQLDateFormat)));
+			lswhere.Add(string.Format(" AND  ({0} < '{1}')", _ModDate, DateTime.ParseExact(f.endDateModified, defDateFormat, CultureInfo.InvariantCulture).AddDays(1).ToString(DBHelper.SQLDateFormat)));
 		}
 		if (!string.IsNullOrEmpty(f.orderer))
 		{

@@ -6,6 +6,7 @@
 	}
 	return false;
 }
+var _styleFiltered = { "background-color": "#dff0d8" };
 $(function () {
 	//fix after resizable columns support:
 	$("table thead tr th").css("overflow", "visible");
@@ -111,10 +112,27 @@ $(function () {
 					$scope.DefectsFilter.endDateEnter = StringToDate($scope.DefectsFilter.endDateEnter);
 				}
 			}
+			if (!("startDateCreated" in $scope.DefectsFilter)) {
+				$scope.DefectsFilter.startDateCreated = "";
+			} else {
+				if ($scope.DefectsFilter.startDateCreated !== "") {
+					$scope.DefectsFilter.startDateCreated = StringToDate($scope.DefectsFilter.startDateCreated);
+				}
+			}
+			if (!("endDateCreated" in $scope.DefectsFilter)) {
+				$scope.DefectsFilter.endDateCreated = "";
+			} else {
+				if ($scope.DefectsFilter.endDateCreated !== "") {
+					$scope.DefectsFilter.endDateCreated = StringToDate($scope.DefectsFilter.endDateCreated);
+				}
+			}
 
 			var o = Object.assign({}, $scope.DefectsFilter);
 			o.startDateEnter = o.startDateEnter === "" ? "" : DateToString(o.startDateEnter);
 			o.endDateEnter = o.endDateEnter === "" ? "" : DateToString(o.endDateEnter);
+			o.startDateCreated = o.startDateCreated === "" ? "" : DateToString(o.startDateCreated);
+			o.endDateCreated = o.endDateCreated === "" ? "" : DateToString(o.endDateCreated);
+
 			$http.post("trservice.asmx/gettasks", JSON.stringify({ "f": o }))
 				.then(function (response) {
 					$scope.defects = response.data.d;
@@ -148,6 +166,8 @@ $(function () {
 			var proccessed = Object.assign({}, $scope.DefectsFilter);
 			proccessed.startDateEnter = proccessed.startDateEnter === "" ? "" : DateToString(proccessed.startDateEnter);
 			proccessed.endDateEnter = proccessed.endDateEnter === "" ? "" : DateToString(proccessed.endDateEnter);
+			proccessed.startDateCreated = proccessed.startDateCreated === "" ? "" : DateToString(proccessed.startDateCreated);
+			proccessed.endDateCreated = proccessed.endDateCreated === "" ? "" : DateToString(proccessed.endDateCreated);
 			localStorage.DefectsFilter = JSON.stringify(proccessed);
 			var o = Object.assign({}, proccessed);
 			window.history.pushState(o, "filter:" + localStorage.DefectsFilter, replaceUrlParam(location.href, "filter", localStorage.DefectsFilter));
@@ -159,11 +179,18 @@ $(function () {
 		$scope.referenceFiltered = function (id, refname) {
 			return $scope.DefectsFilter[refname].findIndex(function (x) { return x == id; }) > -1;
 		};
-		$scope.styleFiltered = function (refname) {
-			if ($scope.DefectsFilter[refname].length > 0) {
-				return { "background-color": "yellow" };
+		$scope.classFiltered = function (refname) {
+			var o = $scope.DefectsFilter[refname];
+			if (Array.isArray(o)) {
+				if (o.length > 0) {
+					return "filteredCol";
+				}
+			} else {
+				if (o !== "") {
+					return "filteredCol";
+				}
 			}
-			return {};
+			return "";
 		};
 		$scope.changeDefects = function () {
 			var updated = [];

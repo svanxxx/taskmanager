@@ -46,3 +46,7 @@ table tbody tr td {
 .refclear {
 	width: 20%;
 }
+
+.filteredCol {
+	background-color: #dff0d8;
+}
