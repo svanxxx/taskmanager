@@ -17,13 +17,13 @@ $(function () {
 
 		getDispos($scope, "dispos", $http);
 
-		$scope.haveBirthday = false;
-		$scope.birthdayID = "-1";
-		$scope.birthdayYears = 0;
 		$scope.checkBirthday = function () {
+			$scope.haveBirthday = false;
+			$scope.birthdayID = "-1";
+			$scope.birthdayYears = 0;
 			var today = DateToString(new Date());
 			$scope.mpsusers.forEach(function (u) {
-				if (u.INWORK && u.BIRTHDAY.substring(0, 4) === today.substring(0, 4)) {
+				if (u.INWORK && u.BIRTHDAY.substring(0, 5) === today.substring(0, 5)) {
 					$scope.haveBirthday = true;
 					$scope.birthdayID = u.ID;
 					$scope.birthdayYears = (new Date()).getFullYear() - u.BIRTHDAY.substring(6, 10);
