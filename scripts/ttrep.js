@@ -5,8 +5,7 @@
 		return true;
 	}
 	return false;
-}
-var _styleFiltered = { "background-color": "#dff0d8" };
+};
 $(function () {
 	//fix after resizable columns support:
 	$("table thead tr th").css("overflow", "visible");
@@ -126,6 +125,12 @@ $(function () {
 					$scope.DefectsFilter.endDateCreated = StringToDate($scope.DefectsFilter.endDateCreated);
 				}
 			}
+			if (!("startEstim" in $scope.DefectsFilter)) {
+				$scope.DefectsFilter.startEstim = "";
+			}
+			if (!("endEstim" in $scope.DefectsFilter)) {
+				$scope.DefectsFilter.endEstim = "";
+			}
 
 			var o = Object.assign({}, $scope.DefectsFilter);
 			o.startDateEnter = o.startDateEnter === "" ? "" : DateToString(o.startDateEnter);
@@ -179,15 +184,21 @@ $(function () {
 		$scope.referenceFiltered = function (id, refname) {
 			return $scope.DefectsFilter[refname].findIndex(function (x) { return x == id; }) > -1;
 		};
-		$scope.classFiltered = function (refname) {
-			var o = $scope.DefectsFilter[refname];
-			if (Array.isArray(o)) {
-				if (o.length > 0) {
-					return "filteredCol";
+		$scope.classFiltered = function (refname1, refname2) {
+			var arr = [refname1, refname2];
+			for (var i = 0; i < 2; i++) {
+				if (!arr[i]) {
+					continue;
 				}
-			} else {
-				if (o !== "") {
-					return "filteredCol";
+				var o = $scope.DefectsFilter[arr[i]];
+				if (Array.isArray(o)) {
+					if (o.length > 0) {
+						return "filteredCol";
+					}
+				} else {
+					if (o !== "") {
+						return "filteredCol";
+					}
 				}
 			}
 			return "";
@@ -237,6 +248,14 @@ $(function () {
 				$scope.DefectsFilter[dateparam] = "";
 			}
 		};
+		$scope.ChangeNum = function (numparam) {
+			$scope.changed = true;
+			if ($scope.DefectsFilter[numparam] === "") {
+				$scope.DefectsFilter[numparam] = 8;
+			} else {
+				$scope.DefectsFilter[numparam] = "";
+			}
+		};
 		$scope.changeReferenceFilter = function (id, refname) {
 			$scope.changed = true;
 			var index = $scope.DefectsFilter[refname].findIndex(function (x) { return x == id; });
@@ -263,4 +282,4 @@ $(function () {
 			}
 		}, true);
 	}]);
-})
+});

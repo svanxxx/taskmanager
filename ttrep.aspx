@@ -71,7 +71,25 @@
 					<th>
 						<input type="button" value="&#9745" ng-click="checkall()"></th>
 					<th>ID</th>
-					<th>Time</th>
+					<th class="{{classFiltered('startEstim', 'endEstim')}}">
+						<div class="dropdown middlecol">
+							<a href="#" data-toggle="dropdown" class="dropdown-toggle">Time<b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li class="usersshortlist">
+									<div class="checkbox">
+										<label>
+											<input ng-checked="{{DefectsFilter.startEstim !== ''}}" ng-click="ChangeNum('startEstim');" type="checkbox">From:<input ng-model="DefectsFilter.startEstim" type="number">
+										</label>
+									</div>
+									<div class="checkbox">
+										<label>
+											<input ng-checked="{{DefectsFilter.endEstim !== ''}}" ng-click="ChangeNum('endEstim');" type="checkbox">To:<input ng-model="DefectsFilter.endEstim" type="number">
+										</label>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</th>
 					<th class="{{classFiltered('users')}}">
 						<div class="dropdown middlecol">
 							<a href="#" data-toggle="dropdown" class="refmenu dropdown-toggle">User<b class="caret"></b></a>

@@ -437,6 +437,14 @@ public class DefectBase : IdBasedObject
 		{
 			lswhere.Add(string.Format(" AND  ({0} = '{1}')", _sMod, f.orderer));
 		}
+		if (!string.IsNullOrEmpty(f.startEstim))
+		{
+			lswhere.Add(string.Format(" AND  ({0} >= '{1}')", _Est, int.Parse(f.startEstim)));
+		}
+		if (!string.IsNullOrEmpty(f.endEstim))
+		{
+			lswhere.Add(string.Format(" AND  ({0} <= '{1}')", _Est, int.Parse(f.endEstim)));
+		}
 		if (!string.IsNullOrEmpty(f.text))
 		{
 			if (f.text.StartsWith("\"") && f.text.EndsWith("\""))
@@ -558,6 +566,9 @@ public class DefectsFilter
 
 	public string startDateModified;
 	public string endDateModified;
+
+	public string startEstim;
+	public string endEstim;
 }
 public partial class Defect : DefectBase
 {
