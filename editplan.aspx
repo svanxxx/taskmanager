@@ -12,6 +12,14 @@
 			<button type="button" class="btn btn-lg btn-info" ng-click="saveDefects()">Save</button>
 			<button type="button" class="btn btn-lg btn-danger" ng-click="discardDefects()">Discard</button>
 		</div>
+		<div class="informer alert alert-success">
+			<h6>To schedule the task: </h6>
+			<h6>click on radio button</h6>
+			<h6>for the task! Then holding </h6>
+			<h6>Ctrl key press move up or </h6>
+			<h6>down to move the task in </h6>
+			<h6>list correspondingly.</h6>
+		</div>
 		<ul class="nav nav-pills userslist">
 			<li class="{{currentuserid===u.TTUSERID?'active':''}}" ng-click="changeuser(u)" ng-repeat="u in filtered = (users | filter:{ INWORK: true })">
 				<a class="person" data-toggle="pill" href="#">
