@@ -10,7 +10,7 @@
 		if (getParameterByName("userid") != "") {
 			$scope.currentuserid = parseInt(getParameterByName("userid"));
 		}
-		
+
 		$scope.currentuser = {};
 		getDispos($scope, "dispos", $http);
 
@@ -117,7 +117,7 @@
 			if ($scope.currentuserid < 0) {
 				$scope.currentuserid = userID();
 			}
-			$scope.changeuser($scope.users.find(function (x) { return x.ID == $scope.currentuserid;}));
+			$scope.changeuser($scope.users.find(function (x) { return x.ID == $scope.currentuserid; }));
 		});
 		$scope.changed = false;
 	}]);
