@@ -131,3 +131,17 @@ function getProducts($scope, member, $http) {
 function getComps($scope, member, $http) {
 	loadReference($scope, member, $http, "comps", "gettaskcomps");
 }
+
+function enterTT() {
+	var ttid = parseInt(prompt("Please enter TT ID", getParameterByName("ttid")));
+	if (!isNaN(ttid)) {
+		window.open("showtask.aspx?ttid=" + ttid, '_blank');
+	}
+}
+$(function () {
+	$(document).bind("keydown", function (e) {
+		if (e.keyCode === 188 && event.ctrlKey) {
+			enterTT();
+		}
+	});
+});

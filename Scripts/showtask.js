@@ -1,12 +1,4 @@
-﻿function enterTT() {
-	var ttid = prompt("Please enter TT ID", getParameterByName("ttid"));
-	if (ttid != null) {
-		window.location = replaceUrlParam(location.href, "ttid", ttid);
-		return true;
-	}
-	return false;
-}
-$(function () {
+﻿$(function () {
 
 	$('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
 		localStorage.taskactivetab = $(e.target).attr("href")
@@ -16,17 +8,12 @@ $(function () {
 	}
 
 	var ttid = getParameterByName("ttid");
-	if (ttid == "") {
-		if (enterTT() == false) {
+	if (ttid === "") {
+		ttid = parseInt(prompt("Please enter TT ID", getParameterByName("ttid")));
+		if (isNaN(ttid)) {
 			window.location.href = GetSitePath();
 		}
 	}
-
-	$(document).bind('keydown', function (e) {
-		if (e.keyCode == 188 && event.ctrlKey) {
-			enterTT();
-		}
-	});
 
 	var app = angular.module('mpsapplication', []);
 	app.filter('getUserById', getUserById);
@@ -79,7 +66,7 @@ $(function () {
 
 		$scope.testTask = function () {
 			alert('Experiment: your task will be tested. ))');
-		}
+		};
 		$scope.addFile = function () {
 			var file = $('<input type="file" name="filefor" style="display: none;" />');
 			file.on('input', function (e) {
@@ -142,7 +129,7 @@ $(function () {
 				}
 			}
 
-			$http.post("trservice.asmx/settask", angular.toJson({ "d": copy }), )
+			$http.post("trservice.asmx/settask", angular.toJson({ "d": copy }))
 				.then(function (response) {
 					EndProgress(prgsaving); $scope.loaders--;
 					$scope.changed = false;
