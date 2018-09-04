@@ -1,12 +1,4 @@
-﻿function enterTT() {
-	var ttid = prompt("Please enter TT ID", getParameterByName("ttid"));
-	if (ttid != null) {
-		//window.location = replaceUrlParam(location.href, "ttid", ttid);
-		return true;
-	}
-	return false;
-};
-$(function () {
+﻿$(function () {
 	//fix after resizable columns support:
 	$("table thead tr th").css("overflow", "visible");
 
