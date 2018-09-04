@@ -173,6 +173,27 @@ public class TRService : System.Web.Services.WebService
 		return DefectAttach.GetAttachsByTask(Convert.ToInt32(ttid));
 	}
 	[WebMethod(EnableSession = true)]
+	public List<DefectBuild> getbuildsbytask(string ttid)
+	{
+		if (string.IsNullOrEmpty(ttid))
+			return null;
+		return DefectBuild.GetEventsByTask(Convert.ToInt32(ttid));
+	}
+	[WebMethod(EnableSession = true)]
+	public void addBuildByTask(string ttid, string notes)
+	{
+		if (string.IsNullOrEmpty(ttid))
+			return;
+		DefectBuild.AddRequestByTask(Convert.ToInt32(ttid), notes == null ? "" : notes);
+	}
+	[WebMethod(EnableSession = true)]
+	public void cancelBuildByTask(string ttid)
+	{
+		if (string.IsNullOrEmpty(ttid))
+			return;
+		DefectBuild.CancelRequestByTask(Convert.ToInt32(ttid));
+	}
+	[WebMethod(EnableSession = true)]
 	public List<DefectEvent> gettaskevents(string ttid)
 	{
 		if (string.IsNullOrEmpty(ttid))

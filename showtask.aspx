@@ -14,7 +14,7 @@
 		</div>
 		<label for="summary">TT{{defect.ID}} {{defect.SUMMARY}}</label>
 		<input type="text" class="form-control" id="summary" ng-disabled="!canChangeDefect()" ng-model="defect.SUMMARY">
-		<div class="row toolbar" style="{{getDispoColor()}}">
+		<div class="row toolbar" style="{{getdispocolor()}}">
 			<div class="col-sm-3">
 				<div class="row">
 					<div class="col-sm-3">
@@ -143,7 +143,7 @@
 			<li><a class="small" data-toggle="pill" href="#history">History</a></li>
 			<li><a class="small" data-toggle="pill" href="#attachments">Attachments</a></li>
 			<li><a class="small" data-toggle="pill" href="#lockinfo">Lock Info</a></li>
-			<li><a class="small" data-toggle="pill" href="#taskactions">Actions</a></li>
+			<li><a class="small" data-toggle="pill" href="#taskbuilds">Builds</a></li>
 		</ul>
 		<div class="tab-content">
 			<div id="specification" class="tab-pane fade in active">
@@ -193,16 +193,41 @@
 			<div id="attachments" class="tab-pane fade">
 				<button type="button" ng-disabled="!canChangeDefect()" ng-click="addFile()" id="button" class="btn btn-primary btn-xs">Add File...</button>
 				<ul>
-					<li ng-style="a.deleted ? {'text-decoration':'line-through'} : ''" ng-repeat="a in attachs"><a target="_blank" href="getattach.aspx?idrecord={{a.ID}}">{{a.FILENAME}}</a>&nbsp<button ng-click="deleteAttach(a.ID)" type="button" class="btn btn-danger btn-xs">Delete</button></li>
+					<li ng-style="a.deleted ? {'text-decoration':'line-through'} : ''" ng-repeat="a in attachs"><a target="_blank" href="getattach.aspx?idrecord={{a.ID}}">{{a.FILENAME}}</a>&nbsp
+						<button ng-click="deleteAttach(a.ID)" type="button" class="btn btn-danger btn-xs">Delete</button></li>
 				</ul>
 			</div>
 			<div id="lockinfo" class="tab-pane fade">
 				<span class="label label-info">{{getMPSUserName(lockedby)}}</span>
 				<img ng-src="{{'getUserImg.ashx?id=' + lockedby}}" alt="Smile" height="42" width="42">
 			</div>
-			<div id="taskactions" class="tab-pane fade">
-				<h5>Please commit your changes to git and push your branch named with TTxxxxxx where xxxxxx is the task number.</h5>
-				<button type="button" class="btn btn-lg btn-info" ng-click="testTask()">Test this task!</button>
+			<div id="taskbuilds" class="tab-pane fade">
+				<div class="alert alert-info">
+					<strong>Info!</strong> Please commit your changes to git and push your branch named with TTxxxxxx where xxxxxx is the task number.
+				</div>
+				<div class="row">
+					<div class="col-md-2">
+						<button type="button" class="btn btn-sm btn-success" ng-click="testTask()">Build Version For Test</button>
+					</div>
+					<div class="col-md-2">
+						<button type="button" class="btn btn-sm btn-danger" ng-click="abortTest()">Abort Building</button>
+					</div>
+				</div>
+				<ul>
+					<li ng-repeat="b in builds">
+						<div class="row">
+							<div class="col-sm-2">
+								<span>{{b.DATE}}</span>
+							</div>
+							<div class="col-sm-2">
+								<span>{{b.STATUS}}</span>
+							</div>
+							<div class="col-sm-8">
+								<span>{{b.NOTES}}</span>
+							</div>
+						</div>
+					</li>
+				</ul>
 			</div>
 		</div>
 	</div>

@@ -32,6 +32,15 @@
 					EndProgress(prgattach); $scope.loaders--;
 				});
 		};
+		$scope.loadBuilds = function () {
+			var prgattach = StartProgress("Loading build events..."); $scope.loaders++;
+			$scope.builds = [];
+			$http.post("trservice.asmx/getbuildsbytask", JSON.stringify({ "ttid": ttid }))
+				.then(function (result) {
+					$scope.builds = result.data.d;
+					EndProgress(prgattach); $scope.loaders--;
+				});
+		};
 
 		$scope.currentlock = guid();
 		$scope.globallock = "";
@@ -65,8 +74,34 @@
 		}
 
 		$scope.testTask = function () {
-			alert('Experiment: your task will be tested. ))');
+			for (var i = 0; i < $scope.builds.length; i++) {
+				if ($scope.builds[i].STATUS.indexOf("wait") > -1) {
+					alert("Already waiting for build!");
+					return;
+				}
+			}
+			var comments = prompt("Please enter comments:", "");
+			if (comments === null) {
+				return;
+			}
+			$http.post("trservice.asmx/addBuildByTask", JSON.stringify({ "ttid": ttid, "notes": comments }))
+				.then(function (result) {
+					$scope.loadBuilds();
+				});
 		};
+		$scope.abortTest = function () {
+			for (var i = 0; i < $scope.builds.length; i++) {
+				if ($scope.builds[i].STATUS.indexOf("wait") > -1) {
+					$http.post("trservice.asmx/cancelBuildByTask", JSON.stringify({ "ttid": ttid }))
+						.then(function (result) {
+							$scope.loadBuilds();
+						});
+					return;
+				}
+			}
+			alert("Threre are no waiting for build requests!");
+		};
+
 		$scope.addFile = function () {
 			var file = $('<input type="file" name="filefor" style="display: none;" />');
 			file.on('input', function (e) {
@@ -199,6 +234,7 @@
 			});
 
 		$scope.loadAttachments();
+		$scope.loadBuilds();
 
 		$scope.changed = false;
 		$scope.$watchCollection('defect', function (newval, oldval) {
@@ -207,4 +243,4 @@
 			}
 		});
 	}]);
-})
+});
