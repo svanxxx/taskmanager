@@ -138,10 +138,14 @@ function enterTT() {
 		window.open("showtask.aspx?ttid=" + ttid, '_blank');
 	}
 }
+function reActivateTooltips() {
+	setTimeout(function () { $('[data-toggle="tooltip"]').tooltip(); }, 2000);//when data loaded - activate tooltip.
+}
 $(function () {
 	$(document).bind("keydown", function (e) {
 		if (e.keyCode === 188 && event.ctrlKey) {
 			enterTT();
 		}
 	});
+	reActivateTooltips();
 });

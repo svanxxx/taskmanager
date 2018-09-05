@@ -9,9 +9,6 @@
 		}
 	});
 }
-function checkBoostrapTooltips() {
-	setTimeout(function () { $('[data-toggle="tooltip"]').tooltip(); }, 1000);//when data loaded - activate tooltip.
-}
 $(function () {
 	var app = angular.module('mpsapplication', []);
 	app.filter('getDispoColorById', getDispoColorById);
@@ -71,7 +68,7 @@ $(function () {
 						}
 					});
 					EndProgress(vacationprg); $scope["loaders"]--;
-					checkBoostrapTooltips();
+					reActivateTooltips();
 				});
 
 			var reportskprg = StartProgress("Loading reports..."); $scope["loaders"]++;
@@ -103,7 +100,7 @@ $(function () {
 						}
 					}
 					EndProgress(reportskprg); $scope["loaders"]--;
-					checkBoostrapTooltips();
+					reActivateTooltips();
 				});
 			$scope.mpsusers.forEach(function (user) {
 				user.CREATEDTASKS1 = [];
@@ -120,7 +117,7 @@ $(function () {
 						EndProgress(newuserprog); $scope["loaders"]--;
 					});
 			});
-			checkBoostrapTooltips();
+			reActivateTooltips();
 		};
 		$scope.planLoaded = function (id) {
 			for (var i = 0; i < $scope.mpsusers.length; i++) {

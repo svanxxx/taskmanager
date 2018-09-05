@@ -545,6 +545,7 @@ public class TRService : System.Web.Services.WebService
 	}
 	public class BuildRequest
 	{
+		public int ID { get; set; }
 		public int TTID { get; set; }
 		public string USER { get; set; }
 		public string COMM { get; set; }
@@ -558,6 +559,7 @@ public class TRService : System.Web.Services.WebService
 		{
 			DefectBase def = new DefectBase(Defect.GetTTbyID(b.DEFID));
 			DefectUser user = new DefectUser(int.Parse(def.AUSER));
+			r.ID = b.ID;
 			r.TTID = def.ID;
 			r.COMM = b.NOTES;
 			string em = user.EMAIL;

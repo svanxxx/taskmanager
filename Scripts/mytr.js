@@ -140,7 +140,7 @@ $(function () {
 		$http.post("trservice.asmx/getplanned", JSON.stringify({ "userid": "" }))
 			.then(function (response) {
 				$scope.defects = response.data.d;
-				setTimeout(function () { $('[data-toggle="tooltip"]').tooltip(); }, 1000);//when data loaded - activate tooltip.
+				reActivateTooltips();
 			});
 
 		$scope.unscheduled = [];

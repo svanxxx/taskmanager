@@ -1,5 +1,4 @@
 ﻿$(function () {
-
 	$('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
 		localStorage.taskactivetab = $(e.target).attr("href");
 	});
@@ -27,6 +26,13 @@
 
 		$window.onbeforeunload = function () {
 			$http.post("trservice.asmx/unlocktask", angular.toJson({ "ttid": ttid, "lockid": $scope.currentlock }));
+		};
+		$scope.cliplabl = function () {
+			var $temp = $("<input>");
+			$("body").append($temp);
+			$temp.val("TT" + $scope.defect.ID + " " + $scope.defect.SUMMARY).select();
+			document.execCommand("copy");
+			$temp.remove();
 		};
 		$scope.loadAttachments = function () {
 			var prgattach = StartProgress("Loading attachments..."); $scope.loaders++;

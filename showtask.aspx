@@ -13,6 +13,9 @@
 			<button type="button" class="btn btn-lg btn-danger" ng-click="discardDefect()">Discard</button>
 		</div>
 		<label for="summary">TT{{defect.ID}} {{defect.SUMMARY}}</label>
+		<button title="Copy task label to clipboard" data-toggle="tooltip" type="button" class="btn btn-default btn-sm" style="float:right" ng-click="cliplabl()">
+			<span class="glyphicon glyphicon-copy"></span>
+		</button>
 		<input type="text" class="form-control" id="summary" ng-disabled="!canChangeDefect()" ng-model="defect.SUMMARY">
 		<div class="row toolbar" style="{{getdispocolor()}}">
 			<div class="col-sm-3">
