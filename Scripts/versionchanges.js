@@ -5,7 +5,7 @@
 		$scope["loaders"] = 0;
 		$scope.GetFile = function (v, t) {
 			window.open('getinstall.ashx?type=' + t + '&version=' + v.version);
-		}
+		};
 
 		var taskprg = StartProgress("Loading data..."); $scope["loaders"]++;
 		$http.post("trservice.asmx/getVersionLog", JSON.stringify({}))
@@ -21,16 +21,16 @@
 						var summary = txt;
 						ttid = "00000";
 						var match = txt.match("TT\\d+");
-						if (match != null) {
+						if (match !== null) {
 							ttid = match[0];
 							ttid = ttid.substring(2);
-							summary = match.input;
+							summary = match.input.substring(2 + ttid.length, match.input.length);
 						}
-						$scope.versions[$scope.versions.length - 1].changes.push({ ttid: ttid, summary: summary })
+						$scope.versions[$scope.versions.length - 1].changes.push({ ttid: ttid, summary: summary });
 					}
 				}
 				$scope.versions.reverse();
 				EndProgress(taskprg); $scope["loaders"]--;
-			})
+			});
 	}]);
 })
