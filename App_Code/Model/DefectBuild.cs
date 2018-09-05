@@ -10,6 +10,7 @@ public class DefectBuild : IdBasedObject
 	protected static string _dateUp = "DateTimeUpdate";
 	protected static string _mach = "Machine";
 	protected static string _not = "Notes";
+	protected static string _gui = "UGuid";
 	protected static string _Tabl = "[TT_RES].[dbo].[DefectBuild]";
 	protected static string[] _allBasecols = new string[] { _pid, _par, _date, _stat, _dateUp, _mach, _not };
 
@@ -30,8 +31,8 @@ public class DefectBuild : IdBasedObject
 	}
 	public string MACHINE
 	{
-		get { return this[_pid].ToString(); }
-		set { this[_pid] = value; }
+		get { return this[_mach].ToString(); }
+		set { this[_mach] = value; }
 	}
 	public string DATEUP
 	{
@@ -45,6 +46,18 @@ public class DefectBuild : IdBasedObject
 		}
 		set { this[_dateUp] = value; }
 	}
+	public int DEFID
+	{
+		get { return Convert.ToInt32(this[_par]); }
+		set { this[_par] = value; }
+	}
+	enum BuildStatus
+	{
+		progress = 1,
+		finishedok = 2,
+		cancelled = 3,
+		failed = 4
+	}
 	public string STATUS
 	{
 		get
@@ -56,23 +69,27 @@ public class DefectBuild : IdBasedObject
 			}
 			else
 			{
-				switch (Convert.ToInt32(o))
+				switch ((BuildStatus)Convert.ToInt32(o))
 				{
-					case 1:
+					case BuildStatus.progress:
 						{
-							return "Building...";
+							return "Building in progress...";
 						}
-					case 2:
+					case BuildStatus.finishedok:
 						{
 							return "Finished. Status: OK!";
 						}
-					case 3:
+					case BuildStatus.cancelled:
 						{
 							return "Cancelled";
 						}
-					default:
+					case BuildStatus.failed:
 						{
 							return "Finished. Status: FAILED!";
+						}
+					default:
+						{
+							return "Unknown";
 						}
 				}
 			}
@@ -102,7 +119,20 @@ public class DefectBuild : IdBasedObject
 	}
 	public static void CancelRequestByTask(int ttid)
 	{
-		string sql = string.Format("UPDATE {0} SET {1} = {2} WHERE {3} = {4}", _Tabl, _stat, 3, _par, Defect.GetIDbyTT(ttid));
+		string sql = string.Format("UPDATE {0} SET {1} = {2} WHERE {3} = {4}", _Tabl, _stat, (int)BuildStatus.cancelled, _par, Defect.GetIDbyTT(ttid));
 		SQLExecute(sql);
+	}
+	public static DefectBuild GetTask2Build(string machine)
+	{
+		string g = Guid.NewGuid().ToString();
+
+		SQLExecute(string.Format("UPDATE {0} SET [{1}] = {2}, [{3}] = '{4}', [{5}] = '{6}' WHERE [{1}] is NULL", _Tabl, _stat, (int)BuildStatus.progress, _mach, machine, _gui, g));
+
+		var o = DBHelper.GetValue(string.Format("SELECT [{0}] FROM {1} WHERE [{2}] = '{3}'", _pid, _Tabl, _gui, g));
+		if (o == DBNull.Value || o == null)
+		{
+			return null;
+		}
+		return new DefectBuild(Convert.ToInt32(o));
 	}
 }

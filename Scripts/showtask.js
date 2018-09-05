@@ -1,10 +1,11 @@
 ﻿$(function () {
 
 	$('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
-		localStorage.taskactivetab = $(e.target).attr("href")
+		localStorage.taskactivetab = $(e.target).attr("href");
 	});
 	if (localStorage.taskactivetab) {
 		$('[href="' + localStorage.taskactivetab + '"]').tab('show');
+		setTimeout(function () { $('[href="' + localStorage.taskactivetab + '"]')[0].click(); }, 1000);
 	}
 
 	var ttid = getParameterByName("ttid");
@@ -19,13 +20,16 @@
 	app.filter('getUserById', getUserById);
 
 	app.controller('mpscontroller', ["$scope", "$http", "$interval", "$window", function ($scope, $http, $interval, $window) {
+		$scope.tab_builds = "Builds";
+		$scope.tab_attachs = "Attachments";
+		$scope.tab_history = "History";
+		$scope.tab_workflow = "Workflow";
 
 		$window.onbeforeunload = function () {
 			$http.post("trservice.asmx/unlocktask", angular.toJson({ "ttid": ttid, "lockid": $scope.currentlock }));
 		};
 		$scope.loadAttachments = function () {
 			var prgattach = StartProgress("Loading attachments..."); $scope.loaders++;
-			$scope.attachs = [];
 			$http.post("trservice.asmx/getattachsbytask", JSON.stringify({ "ttid": ttid }))
 				.then(function (result) {
 					$scope.attachs = result.data.d;
@@ -33,12 +37,14 @@
 				});
 		};
 		$scope.loadBuilds = function () {
-			var prgattach = StartProgress("Loading build events..."); $scope.loaders++;
-			$scope.builds = [];
+			if (!Array.isArray($scope.builds)) {
+				$scope.builds = [];
+			}
 			$http.post("trservice.asmx/getbuildsbytask", JSON.stringify({ "ttid": ttid }))
 				.then(function (result) {
-					$scope.builds = result.data.d;
-					EndProgress(prgattach); $scope.loaders--;
+					if (JSON.stringify($scope.builds) !== JSON.stringify(result.data.d)) {
+						$scope.builds = result.data.d;
+					}
 				});
 		};
 
@@ -71,7 +77,7 @@
 				$scope.attachs[index].deleted = true;
 				$scope.changed = true;
 			}
-		}
+		};
 
 		$scope.testTask = function () {
 			for (var i = 0; i < $scope.builds.length; i++) {
@@ -89,11 +95,17 @@
 					$scope.loadBuilds();
 				});
 		};
+		$interval(function () {
+			if ($("#buildstab").hasClass("active")) {
+				$scope.loadBuilds();
+			}
+		}, 10000);
+
 		$scope.abortTest = function () {
 			for (var i = 0; i < $scope.builds.length; i++) {
-				if ($scope.builds[i].STATUS.indexOf("wait") > -1) {
+				if ($scope.builds[i].STATUS.indexOf("wait") > -1 || $scope.builds[i].STATUS.indexOf("progress") > -1) {
 					$http.post("trservice.asmx/cancelBuildByTask", JSON.stringify({ "ttid": ttid }))
-						.then(function (result) {
+						.then(function () {
 							$scope.loadBuilds();
 						});
 					return;
@@ -111,7 +123,7 @@
 				$scope.$apply();
 			});
 			file.trigger('click');
-		}
+		};
 		$scope.discardDefect = function () {
 			window.location.reload();
 		}
@@ -130,55 +142,67 @@
 			var prgsaving = StartProgress("Saving task..."); $scope.loaders++;
 
 			$scope.attachsinprogress = 0;
-			for (var a = 0; a < $scope.attachs.length; a++) {
-				if ($scope.attachs[a].deleted) {
-					$http.post("trservice.asmx/delfileupload", angular.toJson({ "ttid": $scope.defect.ID, "id": $scope.attachs[a].ID })).then(function () {
-						$scope.attachsinprogress--;
-						if ($scope.attachsinprogress == 0) {
-							$scope.loadAttachments();
-						}
-					});
-					$scope.attachsinprogress++;
-					$scope.attachs.splice(a, 1);
-					a--;
-					reloadattachments = true;
-				}
-				else if ($scope.attachs[a].newfile) {
-					var r = new FileReader();
-					r.attfilename = $scope.attachs[a].newfile.name;
-					r.onloadend = function (e) {
-						var data = e.target.result;
-						var fileupload = StartProgress("Uploading file " + this.attfilename + "..."); $scope.loaders++;
-						$http.post("trservice.asmx/newfileupload", angular.toJson({ "ttid": ttid, "filename": this.attfilename, "data": data }))
-							.then(function (response) {
-								EndProgress(fileupload); $scope.loaders--;
-								$scope.attachsinprogress--;
-								if ($scope.attachsinprogress == 0) {
-									$scope.loadAttachments();
-								}
-							});
+			if ($scope.attachs) {
+				for (var a = 0; a < $scope.attachs.length; a++) {
+					if ($scope.attachs[a].deleted) {
+						$http.post("trservice.asmx/delfileupload", angular.toJson({ "ttid": $scope.defect.ID, "id": $scope.attachs[a].ID })).then(function () {
+							$scope.attachsinprogress--;
+							if ($scope.attachsinprogress == 0) {
+								$scope.loadAttachments();
+							}
+						});
 						$scope.attachsinprogress++;
+						$scope.attachs.splice(a, 1);
+						a--;
 					}
-					r.readAsDataURL($scope.attachs[a].newfile);
-					reloadattachments = true;
+					else if ($scope.attachs[a].newfile) {
+						var r = new FileReader();
+						r.attfilename = $scope.attachs[a].newfile.name;
+						r.onloadend = function (e) {
+							var data = e.target.result;
+							var fileupload = StartProgress("Uploading file " + this.attfilename + "..."); $scope.loaders++;
+							$http.post("trservice.asmx/newfileupload", angular.toJson({ "ttid": ttid, "filename": this.attfilename, "data": data }))
+								.then(function (response) {
+									EndProgress(fileupload); $scope.loaders--;
+									$scope.attachsinprogress--;
+									if ($scope.attachsinprogress == 0) {
+										$scope.loadAttachments();
+									}
+								});
+							$scope.attachsinprogress++;
+						};
+						r.readAsDataURL($scope.attachs[a].newfile);
+					}
 				}
 			}
-
 			$http.post("trservice.asmx/settask", angular.toJson({ "d": copy }))
 				.then(function (response) {
 					EndProgress(prgsaving); $scope.loaders--;
 					$scope.changed = false;
-					$http.post("trservice.asmx/gettaskhistory", JSON.stringify({ "ttid": ttid }))
-						.then(function (result) {
-							$scope.history = result.data.d;
-						});
-					$http.post("trservice.asmx/gettaskevents", JSON.stringify({ "ttid": ttid }))
-						.then(function (result) {
-							$scope.events = result.data.d;
-						});
+					$scope.history = null;
+					$scope.events = null;
+					$scope.loadHistory();
+					$scope.loadEvents();
 				});
-		}
-
+		};
+		$scope.changetab = function (event) {
+			var tab = event.target.innerText;
+			if (tab === $scope.tab_builds) {
+				$scope.loadBuilds();
+			} else if (tab === $scope.tab_attachs) {
+				if (!$scope.attachs) {
+					$scope.loadAttachments();
+				}
+			} else if (tab === $scope.tab_history) {
+				if (!$scope.history) {
+					$scope.loadHistory();
+				}
+			} else if (tab === $scope.tab_workflow) {
+				if (!$scope.history) {
+					$scope.loadEvents();
+				}
+			}
+		};
 		//references secion:
 		getMPSUsers($scope, "mpsusers", $http);
 		getUsers($scope, "users", $http);
@@ -217,24 +241,20 @@
 				EndProgress(taskprg); $scope.loaders--;
 			});
 
-		var prghistory = StartProgress("Loading history..."); $scope.loaders++;
-		$scope.history = [];
-		$http.post("trservice.asmx/gettaskhistory", JSON.stringify({ "ttid": ttid }))
-			.then(function (result) {
-				$scope.history = result.data.d;
-				EndProgress(prghistory); $scope.loaders--;
-			});
 
-		var prgevents = StartProgress("Loading events..."); $scope.loaders++;
-		$scope.events = [];
-		$http.post("trservice.asmx/gettaskevents", JSON.stringify({ "ttid": ttid }))
-			.then(function (result) {
-				$scope.events = result.data.d;
-				EndProgress(prgevents); $scope.loaders--;
-			});
+		$scope.loadHistory = function () {
+			$http.post("trservice.asmx/gettaskhistory", JSON.stringify({ "ttid": ttid }))
+				.then(function (result) {
+					$scope.history = result.data.d;
+				});
+		};
 
-		$scope.loadAttachments();
-		$scope.loadBuilds();
+		$scope.loadEvents = function () {
+			$http.post("trservice.asmx/gettaskevents", JSON.stringify({ "ttid": ttid }))
+				.then(function (result) {
+					$scope.events = result.data.d;
+				});
+		};
 
 		$scope.changed = false;
 		$scope.$watchCollection('defect', function (newval, oldval) {

@@ -7,7 +7,7 @@
 </asp:Content>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
-	<div ng-app="mpsapplication" ng-controller="mpscontroller">
+	<div ng-app="mpsapplication" ng-controller="mpscontroller" ng-cloak>
 		<div class="alert alert-danger savebutton btn-group-vertical" ng-cloak ng-show="changed">
 			<button type="button" class="btn btn-lg btn-info" ng-click="saveDefect()">Save</button>
 			<button type="button" class="btn btn-lg btn-danger" ng-click="discardDefect()">Discard</button>
@@ -139,11 +139,11 @@
 		<ul class="nav nav-pills">
 			<li class="small active"><a data-toggle="pill" href="#specification">Specification</a></li>
 			<li><a class="small" data-toggle="pill" href="#detail">Details</a></li>
-			<li><a class="small" data-toggle="pill" href="#workflow">Workflow</a></li>
-			<li><a class="small" data-toggle="pill" href="#history">History</a></li>
-			<li><a class="small" data-toggle="pill" href="#attachments">Attachments</a></li>
+			<li ng-click="changetab($event)"><a class="small" data-toggle="pill" href="#workflow">{{tab_workflow}}</a></li>
+			<li ng-click="changetab($event)"><a class="small" data-toggle="pill" href="#history">{{tab_history}}</a></li>
+			<li ng-click="changetab($event)"><a class="small" data-toggle="pill" href="#attachments">{{tab_attachs}}</a></li>
 			<li><a class="small" data-toggle="pill" href="#lockinfo">Lock Info</a></li>
-			<li><a class="small" data-toggle="pill" href="#taskbuilds">Builds</a></li>
+			<li ng-click="changetab($event)" id="buildstab"><a class="small" data-toggle="pill" href="#taskbuilds">{{tab_builds}}</a></li>
 		</ul>
 		<div class="tab-content">
 			<div id="specification" class="tab-pane fade in active">
@@ -153,6 +153,7 @@
 				<textarea class="form-control" id="Description" rows="30" ng-disabled="!canChangeDefect()" ng-model="defect.DESCR"></textarea>
 			</div>
 			<div id="workflow" class="tab-pane fade">
+				<label ng-show="!events">loading...</label>
 				<div class="list-group">
 					<a href="#" class="list-group-item" ng-repeat="h in events | orderBy : 'ORDER'">
 						<div class="col-sm-3">
@@ -174,6 +175,7 @@
 				</div>
 			</div>
 			<div id="history" class="tab-pane fade">
+				<label ng-show="!history">loading...</label>
 				<div class="list-group">
 					<a href="#" class="list-group-item" ng-repeat="h in history">
 						<div class="col-sm-3">
@@ -191,6 +193,7 @@
 				</div>
 			</div>
 			<div id="attachments" class="tab-pane fade">
+				<label ng-show="!attachs">loading...</label>
 				<button type="button" ng-disabled="!canChangeDefect()" ng-click="addFile()" id="button" class="btn btn-primary btn-xs">Add File...</button>
 				<ul>
 					<li ng-style="a.deleted ? {'text-decoration':'line-through'} : ''" ng-repeat="a in attachs"><a target="_blank" href="getattach.aspx?idrecord={{a.ID}}">{{a.FILENAME}}</a>&nbsp
@@ -202,32 +205,50 @@
 				<img ng-src="{{'getUserImg.ashx?id=' + lockedby}}" alt="Smile" height="42" width="42">
 			</div>
 			<div id="taskbuilds" class="tab-pane fade">
-				<div class="alert alert-info">
-					<strong>Info!</strong> Please commit your changes to git and push your branch named with TTxxxxxx where xxxxxx is the task number.
-				</div>
-				<div class="row">
-					<div class="col-md-2">
-						<button type="button" class="btn btn-sm btn-success" ng-click="testTask()">Build Version For Test</button>
-					</div>
-					<div class="col-md-2">
-						<button type="button" class="btn btn-sm btn-danger" ng-click="abortTest()">Abort Building</button>
-					</div>
-				</div>
-				<ul>
-					<li ng-repeat="b in builds">
+				<div class="panel panel-info">
+					<div class="panel-heading">
 						<div class="row">
-							<div class="col-sm-2">
-								<span>{{b.DATE}}</span>
+							<div class="col-md-1">
+								<button type="button" class="btn btn-sm btn-success" ng-click="testTask()">Build Version</button>
 							</div>
-							<div class="col-sm-2">
-								<span>{{b.STATUS}}</span>
-							</div>
-							<div class="col-sm-8">
-								<span>{{b.NOTES}}</span>
+							<div class="col-md-1">
+								<button type="button" class="btn btn-sm btn-danger" ng-click="abortTest()">Abort Building</button>
 							</div>
 						</div>
-					</li>
-				</ul>
+					</div>
+					<div class="panel-body">
+						<label ng-show="!builds">loading...</label>
+						<div class="list-group">
+							<a href="#" class="list-group-item" ng-repeat="b in builds">
+								<div class="row">
+									<div class="col-sm-3">
+										<span>{{b.DATE}}</span>
+									</div>
+									<div class="col-sm-3">
+										<div class="progress" ng-show="b.STATUS.includes('Building')==true">
+											<div class="progress-bar progress-bar-striped active" role="progressbar" style="width: 100%">
+												{{b.STATUS}}...
+											</div>
+										</div>
+										<div class="progress" ng-show="b.STATUS.includes('wait')==true">
+											<div class="progress-bar progress-bar-striped active progress-bar-warning" role="progressbar" style="width: 100%">
+												{{b.STATUS}}...
+											</div>
+										</div>
+										<span ng-show="b.STATUS.includes('Building')==false&&b.STATUS.includes('wait')==false">{{b.STATUS}}</span>
+									</div>
+									<div class="col-sm-3">
+										<span>{{b.NOTES}}</span>
+									</div>
+									<div class="col-sm-3">
+										<span>{{b.MACHINE}}</span>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+					<div class="panel-footer"><strong>Info!</strong> Please commit your changes to git and push your branch named with TTxxxxxx where xxxxxx is the task number.</div>
+				</div>
 			</div>
 		</div>
 	</div>

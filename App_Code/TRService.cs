@@ -543,4 +543,26 @@ public class TRService : System.Web.Services.WebService
 		}
 		return TRRec.EnumPersonal(personid, DateTime.ParseExact(start, defDateFormat, CultureInfo.InvariantCulture), days);
 	}
+	public class BuildRequest
+	{
+		public int TTID { get; set; }
+		public string USER { get; set; }
+		public string COMM { get; set; }
+	}
+	[WebMethod]
+	public BuildRequest getBuildRequest(string machine)
+	{
+		DefectBuild b = DefectBuild.GetTask2Build(machine);
+		BuildRequest r  = new BuildRequest();
+		if (b != null)
+		{
+			DefectBase def = new DefectBase(Defect.GetTTbyID(b.DEFID));
+			DefectUser user = new DefectUser(int.Parse(def.AUSER));
+			r.TTID = def.ID;
+			r.COMM = b.NOTES;
+			string em = user.EMAIL;
+			r.USER = em.Substring(0, em.IndexOf("@")).ToUpper();
+		}
+		return r;
+	}
 }
