@@ -9,11 +9,18 @@ public class DefectEventsHandler
 	}
 	public static void DefectChanged(DefectBase d)
 	{
-		int id = int.Parse(d.AUSER);
-		_infoMap[id] = DateTime.Now;
+		int id;
+		if (!int.TryParse(d.AUSER, out id))
+			return;
+		DefectUser u = new DefectUser(id);
+		_infoMap[u.TRID] = DateTime.Now;
 	}
 	public static DateTime GetUserUpdateTime(int id)
 	{
+		if (!_infoMap.ContainsKey(id))
+		{
+			_infoMap[id] = DateTime.Now;
+		}
 		return _infoMap[id];
 	}
 }

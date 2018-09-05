@@ -534,6 +534,7 @@ public partial class Defect : DefectBase
 			DefectHistory.AddHisotoryByTask(IDREC, _HistoryChanges);
 			_HistoryChanges = "";
 		}
+		base.PostStore();
 	}
 	protected override void OnChangeColumn(string col, string val)
 	{

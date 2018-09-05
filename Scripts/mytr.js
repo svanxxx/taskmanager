@@ -8,6 +8,12 @@ function TimeToString(dt) {
 	return pad(dt.getHours(), 2) + ":" + pad(dt.getMinutes(), 2) + ":" + pad(dt.getSeconds(), 2);
 }
 $(function () {
+	var source = new EventSource("defectNotify.ashx?userid=" + userID());
+	source.onmessage = function (event) {
+		var scope = angular.element(document.getElementById('controllerholder')).scope();
+		scope.loadTasks();
+	};
+
 	var app = angular.module('mpsapplication', []);
 
 	app.filter('getDispoById', getDispoById);
@@ -137,17 +143,18 @@ $(function () {
 		};
 
 		$scope.defects = [];
-		$http.post("trservice.asmx/getplanned", JSON.stringify({ "userid": "" }))
-			.then(function (response) {
-				$scope.defects = response.data.d;
-				reActivateTooltips();
-			});
-
 		$scope.unscheduled = [];
-		$http.post("trservice.asmx/getunplanned", JSON.stringify({ "userid": "" }))
-			.then(function (response) {
-				$scope.unscheduled = response.data.d;
-			});
+		$scope.loadTasks = function () {
+			$http.post("trservice.asmx/getplanned", JSON.stringify({ "userid": "" }))
+				.then(function (response) {
+					$scope.defects = response.data.d;
+					reActivateTooltips();
+				});
+			$http.post("trservice.asmx/getunplanned", JSON.stringify({ "userid": "" }))
+				.then(function (response) {
+					$scope.unscheduled = response.data.d;
+				});
+		};
 
 		$scope.changeDispo = function (d, disp) {
 			if ($scope.loaded()) {
@@ -171,7 +178,6 @@ $(function () {
 				});
 			}
 		};
-
 		$scope.workTaskUns = function (d) {
 			if ($scope.loaded()) {
 				var index = $scope.dispos.findIndex(function (x) { return x.WORKING == 1; });
@@ -186,7 +192,6 @@ $(function () {
 				}
 			}
 		};
-
 		$scope.workTask = function (d) {
 			if ($scope.loaded()) {
 				for (var i = 0; i < $scope.dispos.length; i++) {
@@ -197,7 +202,6 @@ $(function () {
 				}
 			}
 		};
-
 		$scope.changed = false;
 		$scope.$watchCollection('trrec', function (newval, oldval) {
 			if (newval && oldval) {
@@ -207,6 +211,7 @@ $(function () {
 			}
 		});
 
+		$scope.loadTasks();
 		$scope.loadData();
 
 		$scope.todayRec = function () {
