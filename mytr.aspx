@@ -94,6 +94,7 @@
 					<a href="showtask.aspx?ttid={{d.ID}}" target="_blank"><span class="badge">{{d.ID}}</span></a>
 					<span class="label label-danger">{{d.ESTIM}}</span>
 					<span data-toggle="tooltip" title="{{d.SUMMARY}}">{{d.SUMMARY | limitTo:135}}</span>
+					<img height="20" width="20" class="btn-workme" ng-src="{{'getUserImg.ashx?id=' + d.SMODTRID}}" title="{{d.SMODIFIER}}" />
 					<button ng-click="workTask(d)" data-toggle="tooltip" title="Start work on this task now!" type="button" class="btn btn-default btn-xs btn-workme"><span class="glyphicon glyphicon-circle-arrow-up"></span></button>
 					<div class="dropdown btn-workme">
 						<button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown">
