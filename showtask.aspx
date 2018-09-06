@@ -230,7 +230,7 @@
 									<div class="col-sm-3">
 										<div class="progress" ng-show="b.STATUS.includes('Building')==true">
 											<div class="progress-bar progress-bar-striped active" role="progressbar" style="width: 100%">
-												{{b.STATUS}}...
+												{{b.STATUSTXT?b.STATUSTXT:b.STATUS}}
 											</div>
 										</div>
 										<div class="progress" ng-show="b.STATUS.includes('wait')==true">

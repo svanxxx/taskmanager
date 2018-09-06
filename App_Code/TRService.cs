@@ -579,4 +579,13 @@ public class TRService : System.Web.Services.WebService
 	{
 		return Branch.EnumCommits(branch);
 	}
+	[WebMethod]
+	public void CommentBuild(int id, string comment)
+	{
+		DefectBuild b = new DefectBuild(id)
+		{
+			STATUSTXT = comment
+		};
+		b.Store();
+	}
 }

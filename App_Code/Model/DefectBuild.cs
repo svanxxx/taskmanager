@@ -11,8 +11,9 @@ public class DefectBuild : IdBasedObject
 	protected static string _mach = "Machine";
 	protected static string _not = "Notes";
 	protected static string _gui = "UGuid";
+	protected static string _stText = "StatusText";
 	protected static string _Tabl = "[TT_RES].[dbo].[DefectBuild]";
-	protected static string[] _allBasecols = new string[] { _pid, _par, _date, _stat, _dateUp, _mach, _not };
+	protected static string[] _allBasecols = new string[] { _pid, _par, _date, _stat, _dateUp, _mach, _not, _stText };
 
 	public int ID
 	{
@@ -50,6 +51,11 @@ public class DefectBuild : IdBasedObject
 	{
 		get { return Convert.ToInt32(this[_par]); }
 		set { this[_par] = value; }
+	}
+	public string STATUSTXT
+	{
+		get { return this[_stText].ToString(); }
+		set { this[_stText] = value; }
 	}
 	enum BuildStatus
 	{
