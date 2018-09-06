@@ -567,4 +567,14 @@ public class TRService : System.Web.Services.WebService
 		}
 		return r;
 	}
+	[WebMethod]
+	public List<Branch> enumbranches()
+	{
+		return Branch.Enum();
+	}
+	[WebMethod]
+	public List<Commit> EnumCommits(string branch)
+	{
+		return Branch.EnumCommits(branch);
+	}
 }

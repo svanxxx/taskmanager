@@ -46,10 +46,19 @@
 			if (!Array.isArray($scope.builds)) {
 				$scope.builds = [];
 			}
+			if (!Array.isArray($scope.commits)) {
+				$scope.commits = [];
+			}
 			$http.post("trservice.asmx/getbuildsbytask", JSON.stringify({ "ttid": ttid }))
 				.then(function (result) {
 					if (JSON.stringify($scope.builds) !== JSON.stringify(result.data.d)) {
 						$scope.builds = result.data.d;
+					}
+				});
+			$http.post("trservice.asmx/EnumCommits", JSON.stringify({ "branch": "TT" + ttid }))
+				.then(function (result) {
+					if (JSON.stringify($scope.commits) !== JSON.stringify(result.data.d)) {
+						$scope.commits = result.data.d;
 					}
 				});
 		};

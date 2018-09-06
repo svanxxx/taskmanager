@@ -13,7 +13,7 @@
 			<button type="button" class="btn btn-lg btn-danger" ng-click="discardDefect()">Discard</button>
 		</div>
 		<label for="summary">TT{{defect.ID}} {{defect.SUMMARY}}</label>
-		<button title="Copy task label to clipboard" data-toggle="tooltip" type="button" class="btn btn-default btn-sm" style="float:right" ng-click="cliplabl()">
+		<button title="Copy task label to clipboard" data-toggle="tooltip" type="button" class="btn btn-default btn-sm" style="float: right" ng-click="cliplabl()">
 			<span class="glyphicon glyphicon-copy"></span>
 		</button>
 		<input type="text" class="form-control" id="summary" ng-disabled="!canChangeDefect()" ng-model="defect.SUMMARY">
@@ -212,10 +212,10 @@
 					<div class="panel-heading">
 						<div class="row">
 							<div class="col-md-1">
-								<button type="button" class="btn btn-sm btn-success" ng-click="testTask()">Build Version</button>
+								<button type="button" class="btn btn-sm btn-success" ng-disabled="!commits||commits.length<1" ng-click="testTask()">Build Version</button>
 							</div>
 							<div class="col-md-1">
-								<button type="button" class="btn btn-sm btn-danger" ng-click="abortTest()">Abort Building</button>
+								<button type="button" class="btn btn-sm btn-danger" ng-disabled="!commits||commits.length<1" ng-click="abortTest()">Abort Building</button>
 							</div>
 						</div>
 					</div>
@@ -251,6 +251,30 @@
 						</div>
 					</div>
 					<div class="panel-footer"><strong>Info!</strong> Please commit your changes to git and push your branch named with TTxxxxxx where xxxxxx is the task number.</div>
+				</div>
+				<div class="panel panel-primary">
+					<div class="panel-heading">Git Information</div>
+					<div class="panel-body">
+						<label ng-show="!commits">loading...</label>
+						<div class="list-group">
+							<a href="#" class="list-group-item" ng-repeat="c in commits">
+								<div class="row">
+									<div class="col-sm-3">
+										<span>{{c.DATE}}</span>
+									</div>
+									<div class="col-sm-2">
+										<span>{{c.AUTHOR}}</span>
+									</div>
+									<div class="col-sm-4">
+										<span>{{c.COMMIT}}</span>
+									</div>
+									<div class="col-sm-3">
+										<span>{{c.NOTES}}</span>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
