@@ -1,3 +1,19 @@
 ﻿.fip-down {
 	float: right;
 }
+
+.btn-efieldpro {
+	background-color: aquamarine;
+}
+
+.btn-models {
+	background-color: antiquewhite;
+}
+
+.btn-onsite {
+	background-color: cyan;
+}
+
+h2 {
+	text-align: center;
+}

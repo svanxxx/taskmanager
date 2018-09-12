@@ -13,13 +13,13 @@
 			<div ng-repeat="v in versions" class="panel panel-primary">
 				<div class="panel-heading">
 					<span>{{v.version}}</span>
-					<button type="button" class="btn btn-default btn-xs fip-down" ng-click="GetFile(v, 'efip')">
-						<span class="glyphicon glyphicon-download"></span>FiP
+					<button type="button" class="btn-efieldpro btn btn-default btn-xs fip-down btn-efieldpro" ng-click="GetFile(v, 'efip')">
+						<span class="glyphicon glyphicon-download"></span>eFieldpro
 					</button>
-					<button type="button" class="btn btn-default btn-xs fip-down" ng-click="GetFile(v, 'cx')">
-						<span class="glyphicon glyphicon-download"></span>CX
+					<button type="button" class="btn btn-default btn-xs fip-down btn-models" ng-click="GetFile(v, 'cx')">
+						<span class="glyphicon glyphicon-download"></span>Models
 					</button>
-					<button type="button" class="btn btn-default btn-xs fip-down" ng-click="GetFile(v, 'onsite')">
+					<button type="button" class="btn btn-default btn-xs fip-down btn-onsite" ng-click="GetFile(v, 'onsite')">
 						<span class="glyphicon glyphicon-download"></span>Onsite
 					</button>
 				</div>
