@@ -570,6 +570,11 @@ public class TRService : System.Web.Services.WebService
 		return r;
 	}
 	[WebMethod]
+	public bool hasBuildRequest()
+	{
+		return DefectBuild.hasBuildRequest();
+	}
+	[WebMethod]
 	public List<Branch> enumbranches()
 	{
 		return Branch.Enum();
