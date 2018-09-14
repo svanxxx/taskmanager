@@ -222,7 +222,7 @@
 					$scope.loadHistory();
 				}
 			} else if (tab === $scope.tab_workflow) {
-				if (!$scope.history) {
+				if (!$scope.events) {
 					$scope.loadEvents();
 				}
 			}
