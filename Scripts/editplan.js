@@ -94,6 +94,7 @@
 		}
 		$scope.changeuser = function (u) {
 			$scope.defects = [];
+			$scope.unscheduled = [];
 			$scope.currentuserid = u.TTUSERID;
 			$scope.currentuser = u;
 			var prgtasks = StartProgress("Loading tasks...");
@@ -104,8 +105,6 @@
 					$scope.changed = false;
 					reActivateTooltips();
 				});
-
-			$scope.unscheduled = [];
 			$http.post("trservice.asmx/getunplanned", JSON.stringify({ "userid": $scope.currentuserid }))
 				.then(function (response) {
 					$scope.unscheduled = response.data.d;
