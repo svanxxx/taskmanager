@@ -8,3 +8,7 @@
 	margin-right: 0;
 	background-color: #d9edf7;
 }
+
+.btn-right-align {
+	float: right;
+}

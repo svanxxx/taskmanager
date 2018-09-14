@@ -129,6 +129,15 @@
 			alert("Threre are no waiting for build requests!");
 		};
 
+		$scope.deleteBranch = function () {
+			if (confirm("Are you sure you want to delete branch related to this task? The operation cannot be undone.")) {
+				$http.post("trservice.asmx/deleteBranch", JSON.stringify({ "branch": "TT" + ttid }))
+					.then(function () {
+						$scope.loadBuilds();
+					});
+			}
+		};
+
 		$scope.addFile = function () {
 			var file = $('<input type="file" name="filefor" style="display: none;" />');
 			file.on('input', function (e) {

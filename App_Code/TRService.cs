@@ -579,6 +579,13 @@ public class TRService : System.Web.Services.WebService
 	{
 		return Branch.Enum();
 	}
+	[WebMethod(EnableSession = true)]
+	public void deleteBranch(string branch)
+	{
+		if (string.IsNullOrEmpty(branch))
+			return;
+		Branch.Delete(branch);
+	}
 	[WebMethod]
 	public List<Commit> EnumCommits(string branch)
 	{

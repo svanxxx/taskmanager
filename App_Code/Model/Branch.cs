@@ -27,6 +27,18 @@ public class Branch
 		}
 		return ls;
 	}
+	public static void Delete(string branch)
+	{
+		using (PowerShell ps = PowerShell.Create())
+		{
+			ps.AddScript(@"cd \\192.168.0.1\git\v8");
+			ps.AddScript(string.Format("git branch -D {0}", branch));
+			foreach (var cm in ps.Invoke())
+			{
+					
+			}
+		}
+	}
 	public static List<Commit> EnumCommits(string branch)
 	{
 		List<Commit> ls = new List<Commit>();

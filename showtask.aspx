@@ -211,11 +211,12 @@
 				<div class="panel panel-info">
 					<div class="panel-heading">
 						<div class="row">
-							<div class="col-md-1">
-								<button type="button" class="btn btn-sm btn-success" ng-disabled="!commits||commits.length<1" ng-click="testTask()">Build Version</button>
+							<div class="col-md-9">
+								<label>Builds history</label>
 							</div>
-							<div class="col-md-1">
-								<button type="button" class="btn btn-sm btn-danger" ng-disabled="!commits||commits.length<1" ng-click="abortTest()">Abort Building</button>
+							<div class="col-md-3">
+								<button type="button" class="btn btn-sm btn-primary btn-right-align" ng-disabled="!commits||commits.length<1" ng-click="abortTest()">Abort Building</button>
+								<button type="button" class="btn btn-sm btn-success btn-right-align" ng-disabled="!commits||commits.length<1" ng-click="testTask()">Build Version</button>
 							</div>
 						</div>
 					</div>
@@ -256,7 +257,16 @@
 					<div class="panel-footer"><strong>Info!</strong> Please commit your changes to git and push your branch named with TTxxxxxx where xxxxxx is the task number.</div>
 				</div>
 				<div class="panel panel-primary">
-					<div class="panel-heading">Git Information</div>
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-md-2">
+								<label>Git Information</label>
+							</div>
+							<div class="col-md-10">
+								<button type="button" class="btn btn-sm btn-danger btn-right-align" ng-disabled="!commits||commits.length<1" ng-click="deleteBranch()">Delete Branch</button>
+							</div>
+						</div>
+					</div>
 					<div class="panel-body">
 						<label ng-show="!commits">loading...</label>
 						<div class="list-group">
