@@ -57,7 +57,7 @@ public class DefectBuild : IdBasedObject
 		get { return this[_stText].ToString(); }
 		set { this[_stText] = value; }
 	}
-	enum BuildStatus
+	public enum BuildStatus
 	{
 		progress = 1,
 		finishedok = 2,
@@ -100,7 +100,17 @@ public class DefectBuild : IdBasedObject
 				}
 			}
 		}
-		set { this[_dateUp] = int.Parse(value); }
+		set
+		{
+			int res;//for set from web interface and/or normal c# code
+			if (int.TryParse(value, out res))
+			{
+				this[_stat] = res;
+				return;
+			}
+			BuildStatus st = (BuildStatus)Enum.Parse(typeof(BuildStatus), value);
+			this[_stat] = (int)st;
+		}
 	}
 	public DefectBuild()
 	  : base(_Tabl, _allBasecols, 0.ToString(), _pid, false)

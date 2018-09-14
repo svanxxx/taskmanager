@@ -224,7 +224,7 @@
 						<div class="list-group">
 							<a href="#" class="list-group-item" ng-repeat="b in builds">
 								<div class="row">
-									<div class="col-sm-3">
+									<div class="col-sm-2">
 										<span>{{b.DATE}}</span>
 									</div>
 									<div class="col-sm-3">
@@ -240,11 +240,14 @@
 										</div>
 										<span ng-show="b.STATUS.includes('Building')==false&&b.STATUS.includes('wait')==false">{{b.STATUS}}</span>
 									</div>
-									<div class="col-sm-3">
+									<div class="col-sm-2">
 										<span>{{b.NOTES}}</span>
 									</div>
-									<div class="col-sm-3">
+									<div class="col-sm-2">
 										<span>{{b.MACHINE}}</span>
+									</div>
+									<div class="col-sm-3">
+										<span>{{b.DATEUP}}</span>
 									</div>
 								</div>
 							</a>

@@ -223,7 +223,7 @@ public class TRService : System.Web.Services.WebService
 	[WebMethod(EnableSession = true)]
 	public LockInfo locktask(string ttid, string lockid)
 	{
-		if (!CurrentContext.Valid)
+		if (!CurrentContext.Valid || string.IsNullOrEmpty(ttid))
 		{
 			return null;
 		}
@@ -590,6 +590,15 @@ public class TRService : System.Web.Services.WebService
 		DefectBuild b = new DefectBuild(id)
 		{
 			STATUSTXT = comment
+		};
+		b.Store();
+	}
+	[WebMethod]
+	public void FinishBuild(int id)
+	{
+		DefectBuild b = new DefectBuild(id)
+		{
+			STATUS = DefectBuild.BuildStatus.finishedok.ToString()
 		};
 		b.Store();
 	}
