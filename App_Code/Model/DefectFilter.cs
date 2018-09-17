@@ -110,14 +110,18 @@ public partial class DefectBase : IdBasedObject
 			if (f.text.StartsWith("\"") && f.text.EndsWith("\""))
 			{
 				f.text = f.text.Trim('"');
-				lswhere.Add(string.Format(" AND  ({0} like '%{1}%')", _Summ, f.text));
+				string s1 = string.Format(" {0} like '%{1}%' ", _Summ, f.text);
+				string s2 = string.Format(" EXISTS (SELECT TOP 1 R.{0} FROM {1} R WHERE R.DESCRPTN LIKE '%{2}%' AND R.IDDEFREC = {3}.{0}) ", _idRec, Defect._RepTable, f.text, _Tabl);
+				lswhere.Add(string.Format(" AND  ({0} OR {1})", s1, s2));
 			}
 			else
 			{
 				string[] words = f.text.Split(null);
 				foreach (var w in words)
 				{
-					lswhere.Add(string.Format(" AND  ({0} like '%{1}%')", _Summ, w));
+					string s1 = string.Format(" {0} like '%{1}%' ", _Summ, w);
+					string s2 = string.Format(" EXISTS (SELECT TOP 1 R.{0} FROM {1} R WHERE R.DESCRPTN LIKE '%{2}%' AND R.IDDEFREC = {3}.{0}) ", _idRec, Defect._RepTable, w, _Tabl);
+					lswhere.Add(string.Format(" AND  ({0} OR {1})", s1, s2));
 				}
 			}
 		}
