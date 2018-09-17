@@ -239,7 +239,7 @@ public partial class TRRec : TRRecSignal
 	{
 		List<TRRec> ls = new List<TRRec>();
 		DateTime end = (new DateTime(start.Year, start.Month, start.Day)).AddDays(days);
-		string where = string.Format(" WHERE [{0}] = '{1}' AND [{2}] >= '{3}' AND [{2}] <= '{4}'", _perid, id, _dat, start.ToString(DBHelper.SQLDateFormat), end.ToString(DBHelper.SQLDateFormat));
+		string where = string.Format(" WHERE [{0}] = '{1}' AND [{2}] >= '{3}' AND [{2}] <= '{4}' ORDER BY {2} DESC", _perid, id, _dat, start.ToString(DBHelper.SQLDateFormat), end.ToString(DBHelper.SQLDateFormat));
 		foreach (DataRow r in (new TRRec()).GetRecords(where))
 		{
 			TRRec rec = new TRRec();

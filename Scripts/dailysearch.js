@@ -46,7 +46,7 @@
 								continue;
 							}
 							var match = l.match("TT\\d+");
-							if (match != null) {
+							if (match !== null) {
 								var ttid = match[0];
 								ttid = ttid.substring(2);
 								var url = '<a href="showtask.aspx?ttid=' + ttid + '" target="_blank"><span class="badge">TT' + ttid + '</span></a>';
