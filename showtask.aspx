@@ -113,7 +113,7 @@
 			<div class="col-sm-3">
 				<div class="row">
 					<div class="col-sm-3">
-						<h6>Assigned:</h6>
+						<h6><a href="editplan.aspx?userid={{defect.AUSER | getUserTRIDById:this}}" target="_blank">Assigned:</a></h6>
 					</div>
 					<div class="col-sm-9">
 						<select class="form-control input-sm" id="auser" ng-disabled="!canChangeDefect()" ng-model="defect.AUSER">

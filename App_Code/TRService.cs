@@ -570,6 +570,11 @@ public class TRService : System.Web.Services.WebService
 		return r;
 	}
 	[WebMethod]
+	public List<DefectBuild> getBuildRequests()
+	{
+		return DefectBuild.EnumData();
+	}
+	[WebMethod]
 	public bool hasBuildRequest()
 	{
 		return DefectBuild.hasBuildRequest();

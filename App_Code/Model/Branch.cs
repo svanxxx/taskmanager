@@ -19,7 +19,7 @@ public class Branch
 		using (PowerShell ps = PowerShell.Create())
 		{
 			ps.AddScript(@"cd \\192.168.0.1\git\v8");
-			ps.AddScript(@"git branch");
+			ps.AddScript(@"git branch --sort=-committerdate");
 			foreach (var cm in ps.Invoke())
 			{
 				ls.Add(new Branch(cm.ToString().Trim()));

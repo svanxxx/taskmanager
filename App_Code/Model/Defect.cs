@@ -41,8 +41,8 @@ public class LockEvent
 }
 public partial class DefectBase : IdBasedObject
 {
-	protected static string _idRec = "idRecord";
-	protected static string _ID = "DefectNum";
+	public static string _idRec = "idRecord";
+	public static string _ID = "DefectNum";
 	protected static string _Summ = "Summary";
 	protected static string _Disp = "idDisposit";
 	protected static string _Est = "Estim";
@@ -64,7 +64,7 @@ public partial class DefectBase : IdBasedObject
 	protected static string _ModDate = "dateModify";
 	protected static string _ModBy = "idModifyBy";
 
-	protected static string _Tabl = "[TT_RES].[DBO].[DEFECTS]";
+	public static string _Tabl = "[TT_RES].[DBO].[DEFECTS]";
 
 	protected static string[] _allBaseCols = new string[] { _ID, _Summ, _idRec, _Disp, _Est, _Order, _AsUser, _Seve, _sMod, _BackOrder, _Comp, _Date, _Created, _CreaBy, _Type, _Prod, _Ref, _Prio, _OrderDate, _ModDate, _ModBy, _sModTRID};
 	protected static string[] _allBaseColsNames = new string[] { _ID, "Summary", _idRec, "Disposition", "Estimation", "Schedule Order", "Assigned User", "Severity", "", "Schedule Order", "Component", "Date Entered", "Date Created", "Created By", "Type", "Product", "Reference", "Priority", "Schedule Date", "", "", ""};

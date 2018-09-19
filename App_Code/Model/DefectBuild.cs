@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 
 public class DefectBuild : IdBasedObject
 {
@@ -12,8 +13,9 @@ public class DefectBuild : IdBasedObject
 	protected static string _not = "Notes";
 	protected static string _gui = "UGuid";
 	protected static string _stText = "StatusText";
+	protected static string _TTID = "TTID";
 	protected static string _Tabl = "[TT_RES].[dbo].[DefectBuild]";
-	protected static string[] _allBasecols = new string[] { _pid, _par, _date, _stat, _dateUp, _mach, _not, _stText };
+	protected static string[] _allBasecols = new string[] { _pid, _par, _date, _stat, _dateUp, _mach, _not, _stText, _TTID };
 
 	public int ID
 	{
@@ -51,6 +53,11 @@ public class DefectBuild : IdBasedObject
 	{
 		get { return Convert.ToInt32(this[_par]); }
 		set { this[_par] = value; }
+	}
+	public int TTID
+	{
+		get { return Convert.ToInt32(this[_TTID]); }
+		set { this[_TTID] = value; }
 	}
 	public string STATUSTXT
 	{
@@ -112,6 +119,7 @@ public class DefectBuild : IdBasedObject
 			this[_stat] = (int)st;
 		}
 	}
+
 	public DefectBuild()
 	  : base(_Tabl, _allBasecols, 0.ToString(), _pid, false)
 	{
@@ -120,12 +128,40 @@ public class DefectBuild : IdBasedObject
 	  : base(_Tabl, _allBasecols, id.ToString(), _pid)
 	{
 	}
+	protected override string OnTransformCol(string col)
+	{
+		if (col == _TTID)
+		{
+			return string.Format("(SELECT D.{0} FROM {1} D WHERE D.{2} = {3}) {4}", DefectBase._ID, DefectBase._Tabl, DefectBase._idRec, _par, _TTID);
+		}
+		return base.OnTransformCol(col);
+	}
+	protected override void OnProcessComplexColumn(string col, object val)
+	{
+		if (col == _TTID)
+		{
+			return;//nothing to do: readonly data
+		}
+		base.OnProcessComplexColumn(col, val);
+	}
 	public static List<DefectBuild> GetEventsByTask(int ttid)
 	{
 		List<DefectBuild> res = new List<DefectBuild>();
 		foreach (int i in EnumRecords(_Tabl, _pid, new string[] { _par }, new object[] { Defect.GetIDbyTT(ttid) }))
 		{
 			res.Add(new DefectBuild(i));
+		}
+		return res;
+	}
+	public static List<DefectBuild> EnumData()
+	{
+		List<DefectBuild> res = new List<DefectBuild>();
+		DefectBuild worker = new DefectBuild();
+		foreach (DataRow r in worker.GetRecords(String.Format("ORDER BY {0} desc", _date), 50))
+		{
+			DefectBuild d = new DefectBuild();
+			d.Load(r);
+			res.Add(d);
 		}
 		return res;
 	}

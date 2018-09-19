@@ -17,6 +17,7 @@
 
 	var app = angular.module('mpsapplication', []);
 	app.filter('getUserById', getUserById);
+	app.filter('getUserTRIDById', getUserTRIDById);
 
 	app.controller('mpscontroller', ["$scope", "$http", "$interval", "$window", function ($scope, $http, $interval, $window) {
 		$scope.tab_builds = "Builds";
