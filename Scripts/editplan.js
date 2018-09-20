@@ -67,6 +67,19 @@
 				$scope.changeuser($scope.currentuser);
 			});
 		}
+		$scope.tasktotop = function (d) {
+			for (var i = 0; i < $scope.defects.length; i++) {
+				if (d.ID == $scope.defects[i].ID && i > 0) {
+					$scope.defects[i].orderchanged = true;
+					for (var j = i; j > 0; j--) {
+						var tempo = $scope.defects[j - 1];
+						$scope.defects[j - 1] = $scope.defects[j];
+						$scope.defects[j] = tempo;
+					}
+					$scope.changed = true;
+				}
+			}
+		};
 		$scope.taskMove = function (d, $event) {
 			if (($event.keyCode == 38 || $event.keyCode == 40) && $event.ctrlKey == true) {
 				$event.preventDefault();
