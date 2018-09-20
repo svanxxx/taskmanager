@@ -14,17 +14,21 @@ public class DefectBuild : IdBasedObject
 	protected static string _gui = "UGuid";
 	protected static string _stText = "StatusText";
 	protected static string _TTID = "TTID";
+	protected static string _User = "UserID";
 	protected static string _Tabl = "[TT_RES].[dbo].[DefectBuild]";
-	protected static string[] _allBasecols = new string[] { _pid, _par, _date, _stat, _dateUp, _mach, _not, _stText, _TTID };
+	protected static string[] _allBasecols = new string[] { _pid, _par, _date, _stat, _dateUp, _mach, _not, _stText, _TTID, _User };
 
 	public int ID
 	{
-		get { return Convert.ToInt32(this[_pid]); }
+		get { return GetAsInt(_pid); }
 		set { this[_pid] = value; }
 	}
 	public string DATE
 	{
-		get { return Convert.ToDateTime(this[_date]).ToLocalTime().ToString(); }
+		get
+		{
+			return Convert.ToDateTime(this[_date]).ToString();
+		}
 		set { this[_date] = value; }
 	}
 	public string NOTES
@@ -45,19 +49,24 @@ public class DefectBuild : IdBasedObject
 			{
 				return "";
 			}
-			return Convert.ToDateTime(this[_dateUp]).ToLocalTime().ToString();
+			return Convert.ToDateTime(this[_dateUp]).ToString();
 		}
 		set { this[_dateUp] = value; }
 	}
 	public int DEFID
 	{
-		get { return Convert.ToInt32(this[_par]); }
+		get { return GetAsInt(_par); }
 		set { this[_par] = value; }
 	}
 	public int TTID
 	{
-		get { return Convert.ToInt32(this[_TTID]); }
+		get { return GetAsInt(_TTID); }
 		set { this[_TTID] = value; }
+	}
+	public int TTUSERID
+	{
+		get { return GetAsInt(_User); }
+		set { this[_User] = value; }
 	}
 	public string STATUSTXT
 	{
@@ -167,7 +176,7 @@ public class DefectBuild : IdBasedObject
 	}
 	public static void AddRequestByTask(int ttid, string notes)
 	{
-		AddObject(_Tabl, new string[] { _par, _not }, new object[] { Defect.GetIDbyTT(ttid), notes }, _pid);
+		AddObject(_Tabl, new string[] { _par, _not, _User }, new object[] { Defect.GetIDbyTT(ttid), notes, CurrentContext.User.TTUSERID }, _pid);
 	}
 	public static void CancelRequestByTask(int ttid)
 	{

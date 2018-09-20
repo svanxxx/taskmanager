@@ -359,6 +359,10 @@ public class IdBasedObject
 	{
 		return this[column] == DBNull.Value ? DBHelper.sdefaultDate : Convert.ToDateTime(this[column]).ToString(defDateFormat, CultureInfo.InvariantCulture);
 	}
+	protected int GetAsInt(string column)
+	{
+		return this[column] == DBNull.Value ? -1 : Convert.ToInt32(this[column]);
+	}
 	protected void SetAsDate(string column, string value)
 	{
 		var dt = Convert.ToDateTime(value, CultureInfo.InvariantCulture);

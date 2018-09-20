@@ -11,6 +11,7 @@
 		<table class="table table-hover table-bordered">
 			<thead>
 				<tr class="info">
+					<th>User</th>
 					<th>Requested Time</th>
 					<th>Notes</th>
 					<th>Machine</th>
@@ -22,6 +23,7 @@
 			</thead>
 			<tbody>
 				<tr ng-repeat="b in builds"">
+					<td><img class="rep-img" src="{{'getUserImg.ashx?ttid=' + b.TTUSERID}}" alt="Smile" height="20" width="20"></td>
 					<td>{{b.DATE}}</td>
 					<td>{{b.NOTES}}</td>
 					<td>{{b.MACHINE}}</td>
