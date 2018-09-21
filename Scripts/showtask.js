@@ -1,4 +1,7 @@
-﻿$(function () {
+﻿function deflist() {
+	return document.getElementById("deflist").value;
+}
+$(function () {
 	$('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
 		localStorage.taskactivetab = $(e.target).attr("href");
 	});
@@ -87,6 +90,15 @@
 			$scope.locktask();
 		}, 20000);
 
+		$scope.addresses = deflist();
+		$scope.sendEmail = function () {
+			var emailpr = StartProgress("Sending email...");
+			$http.post("trservice.asmx/alarmEmail", JSON.stringify({ "ttid": ttid, "addresses": $scope.addresses }))
+				.then(function (result) {
+					EndProgress(emailpr);
+					alert(result.data.d);
+				});
+		};
 		$scope.deleteAttach = function (id) {
 			var index = $scope.attachs.findIndex(function (x) { return x.ID == id; });
 			if (index > -1) {

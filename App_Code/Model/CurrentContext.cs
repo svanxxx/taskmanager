@@ -55,6 +55,10 @@ public static class CurrentContext
 		}
 		get
 		{
+			if (HttpContext.Current.Session == null)
+			{
+				return null;
+			}
 			object ous = HttpContext.Current.Session[_us];
 			if (ous == null)
 			{

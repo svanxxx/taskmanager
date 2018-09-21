@@ -7,6 +7,7 @@
 </asp:Content>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
+	<input type="hidden" id="deflist" value="<%=Settings.GetDefaultListeners()%>" />
 	<div ng-app="mpsapplication" ng-controller="mpscontroller" ng-cloak>
 		<div class="alert alert-danger savebutton btn-group-vertical" ng-cloak ng-show="changed">
 			<button type="button" class="btn btn-lg btn-info" ng-click="saveDefect()">Save</button>
@@ -147,6 +148,7 @@
 			<li ng-click="changetab($event)"><a class="small" data-toggle="pill" href="#attachments">{{tab_attachs}}</a></li>
 			<li><a class="small" data-toggle="pill" href="#lockinfo">Lock Info</a></li>
 			<li ng-click="changetab($event)" id="buildstab"><a class="small" data-toggle="pill" href="#taskbuilds">{{tab_builds}}</a></li>
+			<li><a class="small" data-toggle="pill" href="#alarm"><span class="glyphicon glyphicon-envelope"></span>&nbsp;Alarm</a></li>
 		</ul>
 		<div class="tab-content">
 			<div id="specification" class="tab-pane fade in active">
@@ -288,6 +290,15 @@
 							</a>
 						</div>
 					</div>
+				</div>
+			</div>
+			<div id="alarm" class="tab-pane fade">
+				<div class="jumbotron">
+					<h3>Email will alarm all the persons indicated below</h3>
+					<h4 class="{{changed ? 'blink_me' : ''}}">Please save the task indicating your questions in the top of details section</h4>
+					<label for="emailaddr">Addresses (comma separated):</label>
+					<input type="text" class="form-control" id="emailaddr" ng-model="addresses">
+					<button ng-click="sendEmail()" ng-disabled="changed" type="button" class="btn btn-primary">Send Alarm Email</button>
 				</div>
 			</div>
 		</div>

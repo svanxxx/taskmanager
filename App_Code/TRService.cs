@@ -9,6 +9,8 @@ using System.Globalization;
 using System.DirectoryServices;
 using System.Diagnostics;
 using System.Management;
+using System.Net;
+using System.Text.RegularExpressions;
 
 [WebService(Namespace = "http://tempuri.org/")]
 [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
@@ -613,5 +615,146 @@ public class TRService : System.Web.Services.WebService
 			STATUS = DefectBuild.BuildStatus.finishedok.ToString()
 		};
 		b.Store();
+	}
+
+	private static readonly Regex regex = new Regex("((http://|www\\.)([A-Z0-9.-:]{1,})\\.[0-9A-Z?;~&#=\\-_\\./]{2,})", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+	private static readonly string link = "<a href=\"{0}{1}\">{2}</a>";
+
+	public static string ResolveLinks(string body)
+	{
+		if (string.IsNullOrEmpty(body))
+			return body;
+
+		foreach (Match match in regex.Matches(body))
+		{
+			if (!match.Value.Contains("://"))
+			{
+				body = body.Replace(match.Value, string.Format(link, "http://", match.Value, ShortenUrl(match.Value, 50)));
+			}
+			else
+			{
+				body = body.Replace(match.Value, string.Format(link, string.Empty, match.Value, ShortenUrl(match.Value, 50)));
+			}
+		}
+
+		return body;
+	}
+	static string ttident = "SHOWTASK.ASPX?TTID=";
+	static string wikiident = "FIELDPROWIKI/INDEX.PHP?TITLE=";
+	private static string ShortenUrl(string url, int max)
+	{
+		string urlUp = url.ToUpper();
+		if (urlUp.Contains(ttident))
+		{
+			string ttid = urlUp.Substring(urlUp.IndexOf(ttident) + ttident.Length);
+			DefectBase d = new DefectBase(Convert.ToInt32(ttid));
+			return "TT" + ttid + " " + d.SUMMARY;
+		}
+		if (urlUp.Contains(wikiident))
+		{
+			string page = urlUp.Substring(urlUp.IndexOf(wikiident) + wikiident.Length);
+			return "WIKI: " + page.Replace("_", " ").Replace("#", " - ");
+		}
+
+		if (url.Length <= max)
+			return url;
+
+		// Remove the protocal
+		int startIndex = url.IndexOf("://");
+		if (startIndex > -1)
+			url = url.Substring(startIndex + 3);
+
+		if (url.Length <= max)
+			return url;
+
+		// Remove the folder structure
+		int firstIndex = url.IndexOf("/") + 1;
+		int lastIndex = url.LastIndexOf("/");
+		if (firstIndex < lastIndex)
+			url = url.Replace(url.Substring(firstIndex, lastIndex - firstIndex), "...");
+
+		if (url.Length <= max)
+			return url;
+
+		// Remove URL parameters
+		int queryIndex = url.IndexOf("?");
+		if (queryIndex > -1)
+			url = url.Substring(0, queryIndex);
+
+		if (url.Length <= max)
+			return url;
+
+		// Remove URL fragment
+		int fragmentIndex = url.IndexOf("#");
+		if (fragmentIndex > -1)
+			url = url.Substring(0, fragmentIndex);
+
+		if (url.Length <= max)
+			return url;
+
+		// Shorten page
+		firstIndex = url.LastIndexOf("/") + 1;
+		lastIndex = url.LastIndexOf(".");
+		if (lastIndex - firstIndex > 10)
+		{
+			string page = url.Substring(firstIndex, lastIndex - firstIndex);
+			int length = url.Length - max + 3;
+			url = url.Replace(page, "..." + page.Substring(length));
+		}
+
+		return url;
+	}
+	[WebMethod(EnableSession = true)]
+	public string alarmEmail(int ttid, string addresses)
+	{
+		if (!CurrentContext.Valid)
+			return "Please login";
+
+		Defect d = new Defect(ttid);
+		MailMessage mail = new MailMessage();
+
+		foreach(string addr in addresses.Split(','))
+		{
+			mail.To.Add(new MailAddress(addr.Trim()));
+		}
+		mail.From = new MailAddress(CurrentContext.User.EMAIL.Trim());
+		mail.Subject = string.Format("TT{0} {1}", d.ID, d.SUMMARY);
+		mail.IsBodyHtml = true;
+
+		string descr = d.DESCR.Replace(Environment.NewLine, "<br/>");
+		descr = descr.Replace("\n", "<br/>");
+
+		descr = ResolveLinks(descr);
+		descr = Regex.Replace(descr, "----+", "<hr>");
+
+		string body = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">";
+		body += "<HTML><HEAD><META http-equiv=Content-Type content=\"text/html; charset=iso-8859-1\">";
+		body += "</HEAD><BODY'>" + descr + " </BODY></HTML>";
+
+		System.Net.Mime.ContentType mimeType = new System.Net.Mime.ContentType("text/html");
+		AlternateView alternate = AlternateView.CreateAlternateViewFromString(body, mimeType);
+		mail.AlternateViews.Add(alternate);
+
+		SmtpClient smtp = new SmtpClient();
+		Settings sett = new Settings();
+		smtp.Host = sett.SMTPHOST;
+		smtp.Port = Convert.ToInt32(sett.SMTPPORT);
+		smtp.EnableSsl = Convert.ToBoolean(sett.SMTPENABLESSL); ;
+		smtp.Timeout = Convert.ToInt32(sett.SMTPTIMEOUT); ;
+		smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+		smtp.UseDefaultCredentials = false;
+		smtp.Credentials = new NetworkCredential(sett.CREDENTIALS1, sett.CREDENTIALS2);
+
+		string strError = "The email was sent!";
+		try
+		{
+			smtp.Send(mail);
+		}
+		catch (Exception e)
+		{
+			strError = e.Message;
+		}
+
+		return strError;
 	}
 }
