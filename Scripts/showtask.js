@@ -46,6 +46,9 @@ $(function () {
 					EndProgress(prgattach); $scope.loaders--;
 				});
 		};
+		$scope.getfileext = function (filename) {
+			return (/(?:\.([^.]+))?$/).exec(filename)[1];
+		};
 		$scope.loadBuilds = function () {
 			if (!Array.isArray($scope.builds)) {
 				$scope.builds = [];
