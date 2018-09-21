@@ -1,4 +1,13 @@
-﻿$(function () {
+﻿function isElementInViewport(el) {
+	var rect = el.getBoundingClientRect();
+	return (
+		rect.top >= 0 &&
+		rect.left >= 0 &&
+		rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && /*or $(window).height() */
+		rect.right <= (window.innerWidth || document.documentElement.clientWidth) /*or $(window).width() */
+	);
+};
+$(function () {
 	var app = angular.module('mpsapplication', []);
 
 	app.filter('getDispoColorById', getDispoColorById);
@@ -97,8 +106,14 @@
 						$scope.defects[i] = tempo;
 						$scope.defects[index].orderchanged = true;
 						$scope.changed = true;
+						setTimeout(function () {
+							if (!isElementInViewport($event.target)) {
+								$event.target.scrollIntoView();
+							}
+						}, 200);
 						break;
 					}
+					
 				}
 				$timeout(function () {
 					$("input.taskselector:checked").focus();
