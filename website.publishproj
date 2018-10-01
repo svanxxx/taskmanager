@@ -24,6 +24,8 @@ Copyright (C) Microsoft Corporation. All rights reserved.
     </SourceWebProject>
     <SourceWebMetabasePath>
     </SourceWebMetabasePath>
+	<ExcludeFilesFromDeployment>*.gitignore</ExcludeFilesFromDeployment>
+	<ExcludeFoldersFromDeployment>packages</ExcludeFoldersFromDeployment> 
   </PropertyGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

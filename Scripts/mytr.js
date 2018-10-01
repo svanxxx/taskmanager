@@ -1,21 +1,24 @@
-﻿function StringToTime(st) {
+﻿function stringToTime(st) {
 	var vals = st.split(':');
 	if (vals.length != 3)
 		return new Date();
 	return new Date(0, 0, 0, vals[0], vals[1], vals[2]);
 }
-function TimeToString(dt) {
+function timeToString(dt) {
 	return pad(dt.getHours(), 2) + ":" + pad(dt.getMinutes(), 2) + ":" + pad(dt.getSeconds(), 2);
 }
 $(function () {
-	var source = new EventSource("defectNotify.ashx?userid=" + userID());
-	source.onmessage = function (event) {
-		var scope = angular.element(document.getElementById('controllerholder')).scope();
-		scope.loadTasks();
+	var notifyHub = $.connection.notifyHub;
+	notifyHub.client.onPlanChanged = function (userid) {
+		if (userID() == userid) {
+			var scope = angular.element(document.getElementById('controllerholder')).scope();
+			scope.loadTasks();
+		}
 	};
+	$.connection.hub.start().done(function () {
+	});
 
 	var app = angular.module('mpsapplication', []);
-
 	app.filter('getDispoById', getDispoById);
 	app.filter('getDispoColorById', getDispoColorById);
 
@@ -51,9 +54,9 @@ $(function () {
 			}
 			var copy = Object.assign({}, $scope.trrec);
 			copy.DATE = DateToString(copy.DATE);
-			copy.IN = TimeToString(copy.IN);
-			copy.OUT = TimeToString(copy.OUT);
-			copy.BREAK = TimeToString(copy.BREAK);
+			copy.IN = timeToString(copy.IN);
+			copy.OUT = timeToString(copy.OUT);
+			copy.BREAK = timeToString(copy.BREAK);
 
 			var storeprg = StartProgress("Storing data...");
 			$scope.status = "Saving...";
@@ -131,9 +134,9 @@ $(function () {
 					$scope.trrec = response.data.d;
 					if ($scope.trrec) {
 						$scope.trrec.DATE = StringToDate($scope.trrec.DATE);
-						$scope.trrec.IN = StringToTime($scope.trrec.IN);
-						$scope.trrec.OUT = StringToTime($scope.trrec.OUT);
-						$scope.trrec.BREAK = StringToTime($scope.trrec.BREAK);
+						$scope.trrec.IN = stringToTime($scope.trrec.IN);
+						$scope.trrec.OUT = stringToTime($scope.trrec.OUT);
+						$scope.trrec.BREAK = stringToTime($scope.trrec.BREAK);
 						$scope.recalcPercent();
 					}
 					$scope.status = "Saved.";

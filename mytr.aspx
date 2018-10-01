@@ -4,6 +4,8 @@
 	<%=System.Web.Optimization.Styles.Render("~/bundles/mytr_css")%>
 	<%=System.Web.Optimization.Scripts.Render("~/bundles/mytr_js")%>
 	<script src="http://mps.resnet.com/cdn/angular/angular.min.js"></script>
+	<script src="scripts/jquery.signalR-2.3.0.min.js"></script>
+	<script src="signalr/hubs"></script>
 </asp:Content>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">

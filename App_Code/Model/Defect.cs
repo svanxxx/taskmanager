@@ -307,7 +307,7 @@ public partial class DefectBase : IdBasedObject
 	}
 	protected override void PostStore()
 	{
-		DefectEventsHandler.DefectChanged(this);
+		NotifyHub.NotifyPlanChange((new DefectUser(int.Parse(AUSER)).TRID));
 	}
 
 	public DefectBase()
