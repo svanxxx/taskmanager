@@ -16,67 +16,51 @@ public class Branch
 	public static List<Branch> Enum()
 	{
 		List<Branch> ls = new List<Branch>();
-		using (PowerShell ps = PowerShell.Create())
+		foreach (string line in GitHelper.RunCommand("branch --sort=-committerdate"))
 		{
-			ps.AddScript(@"cd \\192.168.0.1\git\v8");
-			ps.AddScript(@"git branch --sort=-committerdate");
-			foreach (var cm in ps.Invoke())
-			{
-				ls.Add(new Branch(cm.ToString().Trim()));
-			}
+			ls.Add(new Branch(line));
 		}
 		return ls;
 	}
 	public static void Delete(string branch)
 	{
-		using (PowerShell ps = PowerShell.Create())
-		{
-			ps.AddScript(@"cd \\192.168.0.1\git\v8");
-			ps.AddScript(string.Format("git branch -D {0}", branch));
-			foreach (var cm in ps.Invoke())
-			{
-					
-			}
-		}
+		GitHelper.RunCommand(string.Format("branch -D {0}", branch));
 	}
 	public static List<Commit> EnumCommits(string branch)
 	{
 		List<Commit> ls = new List<Commit>();
-		using (PowerShell ps = PowerShell.Create())
+		Commit com = null;
+		foreach (string line in GitHelper.RunCommand(string.Format(@"log master..{0}", branch)))
 		{
-			ps.AddScript(@"cd \\192.168.0.1\git\v8");
-			ps.AddScript(string.Format(@"git log master..{0}", branch));
-			Commit com = null;
-			foreach (var cm in ps.Invoke())
+			if (line.StartsWith("commit"))
 			{
-				string st = cm.ToString().Trim();
-				if (st.StartsWith("commit"))
+				if (com != null)
 				{
-					if (com != null)
-					{
-						ls.Add(com);
-					}
-					com = new Commit();
-					com.COMMIT = st.Remove(0, 7);
-					com.NOTES = "";
+					ls.Add(com);
 				}
-				else if (st.StartsWith("Author: "))
+				com = new Commit();
+				com.COMMIT = line.Remove(0, 7);
+				com.NOTES = "";
+			}
+			else if (line.StartsWith("Author: "))
+			{
+				if (com != null)
 				{
-					if (com != null)
-					{
-						com.AUTHOR = st.Remove(0, 8);
-					}
+					com.AUTHOR = line.Remove(0, 8);
 				}
-				else if (st.StartsWith("Date:   "))
+			}
+			else if (line.StartsWith("Date:   "))
+			{
+				if (com != null)
 				{
-					if (com != null)
-					{
-						com.DATE = st.Remove(0, 8);
-					}
+					com.DATE = line.Remove(0, 8);
 				}
-				else if (!string.IsNullOrEmpty(st))
+			}
+			else if (!string.IsNullOrEmpty(line))
+			{
+				if (com != null)
 				{
-					com.NOTES = string.IsNullOrEmpty(com.NOTES) ? st : (com.NOTES + Environment.NewLine + st);
+					com.NOTES = string.IsNullOrEmpty(com.NOTES) ? line : (com.NOTES + Environment.NewLine + line);
 				}
 			}
 			if (com != null)

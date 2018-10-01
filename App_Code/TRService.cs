@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Management;
 using System.Net;
 using System.Text.RegularExpressions;
+using System.Management.Automation;
 
 [WebService(Namespace = "http://tempuri.org/")]
 [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
@@ -522,7 +523,7 @@ public class TRService : System.Web.Services.WebService
 		{
 			return new List<string>();
 		}
-		return new List<string>(System.IO.File.ReadAllLines(@"\\builder\v8\Projects.32\ChangeLog.txt"));
+		return GitHelper.RunCommand(@"show HEAD:""Projects.32/ChangeLog.txt""");
 	}
 	[WebMethod(EnableSession = true)]
 	public List<Statistic> getStatistics(string start, string days)
