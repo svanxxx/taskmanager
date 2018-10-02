@@ -8,30 +8,36 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
 	<div ng-app="mpsapplication" ng-controller="mpscontroller">
-		<h2>Version changes</h2>
-		<div class="panel-group">
-			<div ng-repeat="v in versions" class="panel panel-primary">
-				<div class="panel-heading">
-					<span>{{v.version}}</span>
-					<button type="button" class="btn-efieldpro btn btn-default btn-xs fip-down btn-efieldpro" ng-click="GetFile(v, 'efip')">
-						<span class="glyphicon glyphicon-download"></span>eFieldpro
-					</button>
-					<button type="button" class="btn btn-default btn-xs fip-down btn-models" ng-click="GetFile(v, 'cx')">
-						<span class="glyphicon glyphicon-download"></span>Models
-					</button>
-					<button type="button" class="btn btn-default btn-xs fip-down btn-onsite" ng-click="GetFile(v, 'onsite')">
-						<span class="glyphicon glyphicon-download"></span>Onsite
-					</button>
-				</div>
-				<div class="panel-body">
-					<div ng-repeat="c in v.changes">
-						<a href="showtask.aspx?ttid={{c.ttid}}" target="_blank">
-							<span class="badge">{{c.ttid}}</span>
-						</a>
-						<span>{{c.summary}}</span>
+		<div class="row">
+			<div class="col-lg-2"></div>
+			<div class="col-lg-8">
+				<h2>Version changes</h2>
+				<div class="panel-group">
+					<div ng-repeat="v in versions" class="panel panel-primary">
+						<div class="panel-heading">
+							<span>{{v.version}}</span>
+							<button type="button" class="btn-efieldpro btn btn-default btn-xs fip-down btn-efieldpro" ng-click="GetFile(v, 'efip')">
+								<span class="glyphicon glyphicon-download"></span>eFieldpro
+							</button>
+							<button type="button" class="btn btn-default btn-xs fip-down btn-models" ng-click="GetFile(v, 'cx')">
+								<span class="glyphicon glyphicon-download"></span>Models
+							</button>
+							<button type="button" class="btn btn-default btn-xs fip-down btn-onsite" ng-click="GetFile(v, 'onsite')">
+								<span class="glyphicon glyphicon-download"></span>Onsite
+							</button>
+						</div>
+						<div class="panel-body">
+							<div ng-repeat="c in v.changes">
+								<a href="showtask.aspx?ttid={{c.ttid}}" target="_blank">
+									<span class="badge">{{c.ttid}}</span>
+								</a>
+								<span>{{c.summary}}</span>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
+			<div class="col-lg-2"></div>
 		</div>
 	</div>
 </asp:Content>
