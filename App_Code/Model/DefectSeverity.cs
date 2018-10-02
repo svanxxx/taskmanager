@@ -38,13 +38,20 @@ public class DefectSeverity : Reference
 		}
 		return res;
 	}
+	static List<int> _Planable = new List<int>();
+	static object _lock = new object();
 	public static List<int> EnumPlanable()
 	{
-		List<int> res = new List<int>();
-		foreach (int i in EnumRecords(_Tabl, _ID, new string[] { string.Format(" UPPER(LEFT({0}, 1)) ", _Desc) }, new object[] { "A" }))
+		lock(_lock)
 		{
-			res.Add(i);
+			if (_Planable.Count < 1)
+			{
+				foreach (int i in EnumRecords(_Tabl, _ID, new string[] { string.Format(" UPPER(LEFT({0}, 1)) ", _Desc) }, new object[] { "A" }))
+				{
+					_Planable.Add(i);
+				}
+			}
+			return new List<int>(_Planable);
 		}
-		return res;
 	}
 }
