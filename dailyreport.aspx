@@ -55,7 +55,7 @@
 							<td>
 								<div ng-repeat="v in vacations | filter: { AUSER : u.TTUSERID, DATE: yesterdaystring }">
 									<a data-toggle="tooltip" title="{{v.ID}}" href="showtask.aspx?ttid={{v.ID}}" target="_blank">
-										<h3 class="vacation-box"><span class="glyphicon glyphicon-plane"></span></h3>
+										<h3 class="vacation-box"><span style="color:{{v.SICK ? 'red' : ''}}" class="glyphicon glyphicon-plane"></span></h3>
 									</a>
 								</div>
 								<div ng-repeat="l in u.YESTERDAY track by $index">
@@ -75,7 +75,7 @@
 							<td>
 								<div ng-repeat="v in vacations | filter: { AUSER : u.TTUSERID, DATE: todaystring }">
 									<a data-toggle="tooltip" title="{{v.ID}}" href="showtask.aspx?ttid={{v.ID}}" target="_blank">
-										<h3 class="vacation-box"><span class="glyphicon glyphicon-plane"></span></h3>
+										<h3 class="vacation-box"><span style="color:{{v.SICK ? 'red' : ''}}" class="glyphicon glyphicon-plane"></span></h3>
 									</a>
 								</div>
 								<div ng-repeat="l in u.TODAY track by $index">
