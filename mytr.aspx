@@ -96,29 +96,40 @@
 				</ul>
 				<div class="tab-content panel panel-default">
 					<div id="plan" class="tab-pane fade in active">
-						<div ng-repeat="d in defects" ng-style="{{d.DISPO | getDispoColorById:this}}" class="task alert">
-							<a href="showtask.aspx?ttid={{d.ID}}" target="_blank"><span class="badge">{{d.ID}}</span></a>
-							<span class="label label-danger">{{d.ESTIM}}</span>
-							<span data-toggle="tooltip" title="{{d.SUMMARY}}">{{d.SUMMARY | limitTo:135}}</span>
-							<img height="20" width="20" class="btn-workme" ng-src="{{'getUserImg.ashx?id=' + d.SMODTRID}}" title="{{d.SMODIFIER}}" />
-							<button ng-click="workTask(d)" data-toggle="tooltip" title="Start work on this task now!" type="button" class="btn btn-default btn-xs btn-workme"><span class="glyphicon glyphicon-circle-arrow-up"></span></button>
-							<div class="dropdown btn-workme">
-								<button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown">
-									<span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu">
-									<li ng-repeat="disp in dispos" ng-click="changeDispo(d, disp)" style="background-color: {{disp.COLOR}}"><a href="#">{{disp.DESCR}}</a></li>
-								</ul>
-							</div>
-						</div>
+						<table style="width: 100%">
+							<tr class="task" ng-repeat="d in defects" ng-style="{{d.DISPO | getDispoColorById:this}}">
+								<td><a href="showtask.aspx?ttid={{d.ID}}" target="_blank"><span class="badge">{{d.ID}}</span></a></td>
+								<td><span class="label label-danger">{{d.ESTIM}}</span></td>
+								<td><span data-toggle="tooltip" title="{{d.SUMMARY}}">{{d.SUMMARY | limitTo:135}}</span></td>
+								<td>
+									<img height="20" width="20" class="btn-workme" ng-src="{{'getUserImg.ashx?id=' + d.SMODTRID}}" title="{{d.SMODIFIER}}" /></td>
+								<td>
+									<button ng-click="workTask(d)" data-toggle="tooltip" title="Start work on this task now!" type="button" class="btn btn-default btn-xs btn-workme"><span class="glyphicon glyphicon-circle-arrow-up"></span></button>
+								</td>
+								<td>
+									<div class="dropdown btn-workme">
+										<button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown">
+											<span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu">
+											<li ng-repeat="disp in dispos" ng-click="changeDispo(d, disp)" style="background-color: {{disp.COLOR}}"><a href="#">{{disp.DESCR}}</a></li>
+										</ul>
+									</div>
+								</td>
+							</tr>
+						</table>
 					</div>
 					<div id="unscheduled" class="tab-pane fade">
-						<div ng-repeat="d in unscheduled" ng-style="{{d.DISPO | getDispoColorById:this}}" class="task alert">
-							<a href="showtask.aspx?ttid={{d.ID}}" target="_blank"><span class="badge">{{d.ID}}</span></a>
-							<span class="label label-danger">{{d.ESTIM}}</span>
-							<span>{{d.SUMMARY}}</span>
-							<button ng-click="workTaskUns(d)" data-toggle="tooltip" title="Start work on this task now!" type="button" class="btn btn-default btn-xs btn-workme"><span class="glyphicon glyphicon-circle-arrow-up"></span></button>
-						</div>
+						<table style="width: 100%">
+							<tr class="task" ng-repeat="d in unscheduled" ng-style="{{d.DISPO | getDispoColorById:this}}">
+								<td><a href="showtask.aspx?ttid={{d.ID}}" target="_blank"><span class="badge">{{d.ID}}</span></a></td>
+								<td><span class="label label-danger">{{d.ESTIM}}</span></td>
+								<td><span data-toggle="tooltip" title="{{d.SUMMARY}}">{{d.SUMMARY | limitTo:135}}</span></td>
+								<td>
+									<button ng-click="workTaskUns(d)" data-toggle="tooltip" title="Start work on this task now!" type="button" class="btn btn-default btn-xs btn-workme"><span class="glyphicon glyphicon-circle-arrow-up"></span></button>
+								</td>
+							</tr>
+						</table>
 					</div>
 					<div id="activity" class="tab-pane fade">
 						<strong>Created tasks:</strong><a ng-repeat="t in trrec.CREATEDTASKS" href="showtask.aspx?ttid={{t}}" target="_blank"><span class="badge">{{t}}</span></a>

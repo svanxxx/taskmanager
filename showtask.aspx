@@ -14,14 +14,15 @@
 			<button type="button" class="btn btn-lg btn-danger" ng-click="discardDefect()">Discard</button>
 		</div>
 		<div class="row">
-			<div class="col-lg-2"></div>
-			<div class="col-lg-8">
+			<div class="col-lg-2 hidden-md">
+			</div>
+			<div class="col-lg-8 col-md-12">
 				<label for="summary">TT{{defect.ID}} {{defect.SUMMARY}}</label>
 				<button title="Copy task label to clipboard" data-toggle="tooltip" type="button" class="btn btn-default btn-sm" style="float: right" ng-click="cliplabl()">
 					<span class="glyphicon glyphicon-copy"></span>
 				</button>
 				<input type="text" class="form-control" id="summary" ng-disabled="!canChangeDefect()" ng-model="defect.SUMMARY">
-				<div class="row toolbar" style="{{getdispocolor()}}">
+				<div class="row toolbar" ng-style="defect.DISPO | getDispoColorById:this">
 					<div class="col-sm-3">
 						<div class="row">
 							<div class="col-sm-3">
@@ -144,13 +145,13 @@
 					</div>
 				</div>
 				<ul class="nav nav-pills">
-					<li class="small active"><a data-toggle="pill" href="#specification">Specification</a></li>
-					<li><a class="small" data-toggle="pill" href="#detail">Details</a></li>
-					<li ng-click="changetab($event)"><a class="small" data-toggle="pill" href="#workflow">{{tab_workflow}}</a></li>
-					<li ng-click="changetab($event)"><a class="small" data-toggle="pill" href="#history">{{tab_history}}</a></li>
-					<li ng-click="changetab($event)"><a class="small" data-toggle="pill" href="#attachments">{{tab_attachs}}</a></li>
-					<li><a class="small" data-toggle="pill" href="#lockinfo">Lock Info</a></li>
-					<li ng-click="changetab($event)" id="buildstab"><a class="small" data-toggle="pill" href="#taskbuilds">{{tab_builds}}</a></li>
+					<li class="small active"><a data-toggle="pill" href="#specification"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;Specification</a></li>
+					<li><a class="small" data-toggle="pill" href="#detail"><span class="glyphicon glyphicon-zoom-in"></span>&nbsp;Details</a></li>
+					<li ng-click="changetab($event)"><a class="small" data-toggle="pill" href="#workflow"><span class="glyphicon glyphicon-refresh"></span>{{tab_workflow}}</a></li>
+					<li ng-click="changetab($event)"><a class="small" data-toggle="pill" href="#history"><span class="glyphicon glyphicon-book"></span>{{tab_history}}</a></li>
+					<li ng-click="changetab($event)"><a class="small" data-toggle="pill" href="#attachments"><span class="glyphicon glyphicon-paperclip"></span>{{tab_attachs}}</a></li>
+					<li><a class="small" data-toggle="pill" href="#lockinfo"><span class="glyphicon glyphicon-lock"></span>&nbsp;Lock Info</a></li>
+					<li ng-click="changetab($event)" id="buildstab"><a class="small" data-toggle="pill" href="#taskbuilds"><span class="glyphicon glyphicon-wrench"></span>{{tab_builds}}</a></li>
 					<li><a class="small" data-toggle="pill" href="#alarm"><span class="glyphicon glyphicon-envelope"></span>&nbsp;Alarm</a></li>
 				</ul>
 				<div class="tab-content">
@@ -311,7 +312,14 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-lg-2"></div>
+			<div class="col-lg-2 hidden-md">
+				<div class="alert alert-info" style="text-align:center">
+					<img ng-src="{{'getUserImg.ashx?ttid=' + defect.AUSER}}" alt="Smile" height="60" width="60" />
+					<div>
+						<strong>{{defect.AUSER | getUserById:this}}</strong>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </asp:Content>

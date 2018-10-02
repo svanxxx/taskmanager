@@ -13,7 +13,7 @@
 			<button type="button" class="btn btn-lg btn-danger" ng-click="discardDefects()">Discard</button>
 		</div>
 		<div class="row">
-			<div class="col-lg-2 hidden-xs">
+			<div class="col-lg-2 col-md-2 hidden-sm hidden-xs">
 				<div class="alert alert-success">
 					<h5>To schedule the task: click on radio button for the task! Then holding <strong>Ctrl</strong> key press <strong>move up</strong> or <strong>move down</strong> to move the task in list correspondingly.</h5>
 					<h5>Click <span class="glyphicon glyphicon-arrow-up"></span>to move task the the top which will result in the task being done first of all</h5>
@@ -24,7 +24,7 @@
 					<button ng-click="copyurl()" type="button" class="btn btn-link"><span class="glyphicon glyphicon-copy"></span>Copy page link</button>
 				</div>
 			</div>
-			<div class="col-lg-8">
+			<div class="col-lg-9 col-md-10 col-sm-12 col-xs-12">
 				<ul class="nav nav-tabs nav-justified userslist">
 					<li class="{{currentuserid===u.ID?'active':''}}" ng-click="changeuser(u, true)" ng-repeat="u in filtered = (users | filter:{ INWORK: true })">
 						<a class="person" data-toggle="pill" href="#">
@@ -40,32 +40,32 @@
 					</ul>
 					<div class="tab-content panel panel-default">
 						<div id="plan" class="tab-pane fade in active">
-							<div ng-repeat="d in defects" ng-style="{{d.DISPO | getDispoColorById:this}}" class="task alert {{d.orderchanged?'data-changed':''}}">
-								<a href="showtask.aspx?ttid={{d.ID}}" target="_blank">
-									<span class="badge">{{d.ID}}</span>
-								</a>
-								<span class="label label-danger">{{d.ESTIM}}</span>
-								<span class="tt-label" data-toggle="tooltip" title="{{d.SUMMARY}}">{{d.SUMMARY | limitTo:135}}</span>
-								<button ng-click="unscheduletask(d)" data-toggle="tooltip" title="Remove from the schedule list" type="button" class="btn btn-default btn-xs taskselector"><span class="glyphicon glyphicon-arrow-right"></span></button>
-								<button ng-click="tasktotop(d)" data-toggle="tooltip" title="Move to top" type="button" class="btn btn-default btn-xs taskselector"><span class="glyphicon glyphicon-arrow-up"></span></button>
-								<img height="20" width="20" class="taskselector" ng-src="{{'getUserImg.ashx?id=' + d.SMODTRID}}" title="{{d.SMODIFIER}}" />
-								<input class="taskselector" type="radio" name="optradio" ng-keydown="taskMove(d, $event)">
-							</div>
+							<table style="width: 100%">
+								<tr class="task alert {{d.orderchanged?'data-changed':''}}" ng-repeat="d in defects" ng-style="{{d.DISPO | getDispoColorById:this}}">
+									<td><a href="showtask.aspx?ttid={{d.ID}}" target="_blank"><span class="badge">{{d.ID}}</span></a></td>
+									<td><span class="label label-danger">{{d.ESTIM}}</span></td>
+									<td><span data-toggle="tooltip" title="{{d.SUMMARY}}">{{d.SUMMARY | limitTo:135}}</span></td>
+									<td><input class="taskselector" type="radio" name="optradio" ng-keydown="taskMove(d, $event)"></td>
+									<td><img height="20" width="20" class="taskselector" ng-src="{{'getUserImg.ashx?id=' + d.SMODTRID}}" title="{{d.SMODIFIER}}" /></td>
+									<td><button ng-click="tasktotop(d)" data-toggle="tooltip" title="Move to top" type="button" class="btn btn-default btn-xs taskselector"><span class="glyphicon glyphicon-arrow-up"></span></button></td>
+									<td><button ng-click="unscheduletask(d)" data-toggle="tooltip" title="Remove from the schedule list" type="button" class="btn btn-default btn-xs taskselector"><span class="glyphicon glyphicon-arrow-right"></span></button></td>
+								</tr>
+							</table>
 						</div>
 						<div id="unscheduled" class="tab-pane fade">
-							<div ng-repeat="d in unscheduled" ng-style="{{d.DISPO | getDispoColorById:this}}" class="task alert {{d.orderchanged?'data-changed':''}}">
-								<a href="showtask.aspx?ttid={{d.ID}}" target="_blank">
-									<span class="badge">{{d.ID}}</span>
-								</a>
-								<span class="label label-danger">{{d.ESTIM}}</span>
-								<span class="tt-label" data-toggle="tooltip" title="{{d.SUMMARY}}">{{d.SUMMARY | limitTo:135}}</span>
-								<button ng-click="scheduletask(d)" data-toggle="tooltip" title="Add to schedule list" type="button" class="btn btn-default btn-xs taskselector"><span class="glyphicon glyphicon-arrow-left"></span></button>
-							</div>
+							<table style="width: 100%">
+								<tr class="task alert {{d.orderchanged?'data-changed':''}}" ng-repeat="d in unscheduled" ng-style="{{d.DISPO | getDispoColorById:this}}">
+									<td><a href="showtask.aspx?ttid={{d.ID}}" target="_blank"><span class="badge">{{d.ID}}</span></a></td>
+									<td><span class="label label-danger">{{d.ESTIM}}</span></td>
+									<td><span data-toggle="tooltip" title="{{d.SUMMARY}}">{{d.SUMMARY | limitTo:135}}</span></td>
+									<td><button ng-click="scheduletask(d)" data-toggle="tooltip" title="Add to schedule list" type="button" class="btn btn-default btn-xs taskselector"><span class="glyphicon glyphicon-arrow-left"></span></button></td>
+								</tr>
+							</table>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="col-lg-2 hidden-xs">
+			<div class="col-lg-1 hidden-md hidden-sm hidden-xs">
 			</div>
 		</div>
 	</div>

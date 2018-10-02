@@ -1,6 +1,9 @@
 .task {
 	margin: 1px;
 	padding: 2px;
+	border-bottom: 1px solid #eee;
+	border-top: 1px solid #eee;
+	border-collapse: collapse;
 }
 
 .person {
@@ -19,10 +22,3 @@
 .userssublist {
 	background-color: #cff7b2;
 }
-
-.tt-label {
-	width: 50%;
-	display: inline-block;
-	white-space: nowrap;
-}
-

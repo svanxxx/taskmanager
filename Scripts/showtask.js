@@ -21,6 +21,7 @@ $(function () {
 	var app = angular.module('mpsapplication', []);
 	app.filter('getUserById', getUserById);
 	app.filter('getUserTRIDById', getUserTRIDById);
+	app.filter('getDispoColorById', getDispoColorById);
 
 	app.controller('mpscontroller', ["$scope", "$http", "$interval", "$window", function ($scope, $http, $interval, $window) {
 		$scope.tab_builds = "Builds";
@@ -82,8 +83,7 @@ $(function () {
 
 		$scope.getDispoColor = function () {
 			if ($scope.defect && $scope.dispos) {
-				var col = $scope.dispos.filter(function (x) { return x.ID == $scope.defect.DISPO; })[0].COLOR;
-				return "background-color: " + col;
+				return "background-color:"+$scope.dispos.filter(function (x) { return x.ID == $scope.defect.DISPO; })[0].COLOR;
 			}
 			return "";
 		};
