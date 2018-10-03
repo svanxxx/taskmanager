@@ -444,6 +444,7 @@ public partial class Defect : DefectBase
 	static ConcurrentDictionary<string, LockEvent> locker = new ConcurrentDictionary<string, LockEvent>();
 	static Object thisLock = new Object();
 
+	static public string _DescInt = "DESCRPTN";
 	static protected string _Desc = "DESCR";
 	static protected string _Specs = "ReproSteps";
 
