@@ -8,16 +8,6 @@ function timeToString(dt) {
 	return pad(dt.getHours(), 2) + ":" + pad(dt.getMinutes(), 2) + ":" + pad(dt.getSeconds(), 2);
 }
 $(function () {
-	var notifyHub = $.connection.notifyHub;
-	notifyHub.client.onPlanChanged = function (userid) {
-		if (userID() == userid) {
-			var scope = angular.element(document.getElementById('controllerholder')).scope();
-			scope.loadTasks();
-		}
-	};
-	$.connection.hub.start().done(function () {
-	});
-
 	var app = angular.module('mpsapplication', []);
 	app.filter('getDispoById', getDispoById);
 	app.filter('getDispoColorById', getDispoColorById);
@@ -66,13 +56,11 @@ $(function () {
 			});
 			$scope.changed = false;
 		};
-
 		$interval(function () {
 			if ($scope.changed) {
 				$scope.storeData();
 			}
 		}, 2000);
-
 		$interval(function () {
 			if ("hidden" in document && document.hidden) {
 				return;
@@ -87,8 +75,7 @@ $(function () {
 				});
 
 		}, 60000);
-
-		$scope.percentdonestyle = "progress-bar-danger"
+		$scope.percentdonestyle = "progress-bar-danger";
 		$scope.recalcPercent = function () {
 			if ($scope.trrec) {
 				var diff = $scope.trrec.OUT.getTime() - $scope.trrec.IN.getTime();
@@ -112,12 +99,15 @@ $(function () {
 				$scope.percentdone = 0;
 			}
 		};
+		$scope.out = function () {
+			var d = new Date();
+			d = new Date(0, 0, 0, d.getHours(), d.getMinutes());
+			$scope.trrec.OUT = d;
+		};
 
 		$interval(function () {
 			if ($scope.autotime && $scope.isTodayRecord()) {
-				var d = new Date();
-				d = new Date(0, 0, 0, d.getHours(), d.getMinutes());
-				$scope.trrec.OUT = d;
+				$scope.out();
 			}
 		}, 30000);
 
@@ -125,7 +115,6 @@ $(function () {
 			$scope.storeData();
 			$scope.loadData();
 		};
-
 		$scope.loadData = function () {
 			var taskprg = StartProgress("Loading data...");
 			$scope.status = "Loading...";
@@ -144,7 +133,6 @@ $(function () {
 					EndProgress(taskprg);
 				});
 		};
-
 		$scope.defects = [];
 		$scope.unscheduled = [];
 		$scope.loadTasks = function () {
@@ -158,7 +146,6 @@ $(function () {
 					$scope.unscheduled = response.data.d;
 				});
 		};
-
 		$scope.changeDispo = function (d, disp) {
 			if ($scope.loaded()) {
 				$http.post("trservice.asmx/settaskdispo", JSON.stringify({ "ttid": d.ID, "disp": disp.ID })).then(function (response) {
@@ -228,8 +215,8 @@ $(function () {
 			});
 		};
 
-		$scope.autotime = $.cookie("autotime") == "true";
-		$scope.copylastday = $.cookie("copylastday") == "true";
+		$scope.autotime = $.cookie("autotime") === "true";
+		$scope.copylastday = $.cookie("copylastday") === "true";
 		$scope.oncopylastday = function () {
 			$.cookie("copylastday", $scope.copylastday, { expires: 365 });
 		};
@@ -242,7 +229,6 @@ $(function () {
 				return true;
 			return false;
 		};
-
 		$scope.deleteRec = function () {
 			if (confirm("Are you sure you want to delete current record?")) {
 				$http.post("trservice.asmx/deltrrec", JSON.stringify({ "id": $scope.trrec.ID })).then(function () {
@@ -250,7 +236,6 @@ $(function () {
 				});
 			}
 		};
-
 		$scope.addRec = function () {
 			$http.post("trservice.asmx/addrec", JSON.stringify({ "date": DateToString($scope.date), "lastday": 1 })).then(function () {
 				$scope.loadData();
@@ -267,5 +252,26 @@ $(function () {
 			.then(function (response) {
 				$scope.user = response.data.d;
 			});
+
+		var notifyHub = $.connection.notifyHub;
+		notifyHub.client.onPlanChanged = function (userid) {
+			if (userID() == userid) {
+				var scope = angular.element(document.getElementById('controllerholder')).scope();
+				scope.loadTasks();
+			}
+		};
+		notifyHub.client.onRoomChanged = function (users) {
+			var scope = angular.element(document.getElementById('controllerholder')).scope();
+			for (var i = 0; i < users.length; i++) {
+				for (var j = 0; j < $scope.mpsusers.length; j++) {
+					if ($scope.mpsusers[j].ID == users[i].ID) {
+						$scope.mpsusers[j].STATUS = users[i].STATUS;
+					}
+				}
+			}
+		};
+		$.connection.hub.start().done(function () {
+			notifyHub.server.requestRoomUsers();
+		});
 	}]);
-})
+});

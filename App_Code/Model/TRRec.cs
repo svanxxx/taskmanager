@@ -7,9 +7,9 @@ using System.Linq;
 public class TRRecSignal : IdBasedObject
 {
 	protected static string _pid = "REPORT_ID";
-	protected static string _dat = "REPORT_DATE";
-	protected static string _perid = "PERSON_ID";
-	protected static string _Tabl = "[TASKS].[dbo].[REPORTS]";
+	public static string _dat = "REPORT_DATE";
+	public static string _perid = "PERSON_ID";
+	public static string _Tabl = "[TASKS].[dbo].[REPORTS]";
 	protected static string[] _allBasecols = new string[] { _pid, _perid, _dat };
 
 	public int ID
@@ -191,6 +191,7 @@ public partial class TRRec : TRRecSignal
 	public static void DelRec(int id)
 	{
 		DeleteObject(_Tabl, id.ToString(), _pid);
+		NotifyHub.NotifyRoomChange();
 	}
 	public static void NewRec(DateTime d, int personid, bool lastday)
 	{
@@ -204,6 +205,7 @@ public partial class TRRec : TRRecSignal
 			", _Tabl, _done, _dat, _perid);
 			SQLExecute(update, new object[] { d, personid, d, personid });
 		}
+		NotifyHub.NotifyRoomChange();
 	}
 	public static List<TRRec> Enum(DateTime[] d)
 	{

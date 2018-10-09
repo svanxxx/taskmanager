@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.OleDb;
 using System.Globalization;
 using System.Web;
@@ -9,7 +10,7 @@ public class MPSUser : IdBasedObject
 	public const string _pid = "PERSON_ID";
 	const string _pname = "PERSON_NAME";
 	public const string _email = "WORK_EMAIL";
-	const string _work = "IN_WORK";
+	public const string _work = "IN_WORK";
 	const string _ttuser = "ttuserid";
 	const string _addr = "ADDRESS";
 	const string _login = "PERSON_LOGIN";
@@ -192,4 +193,43 @@ public class MPSUser : IdBasedObject
 		}
 		return null;
 	}
+}
+public class Roommate
+{
+	public enum userstatus
+	{
+		online = 1,
+		offline = 2,
+		sick = 3,
+		vacation = 4
+	}
+	public Roommate() { }
+	public Roommate(DataRow r)
+	{
+		ID = Convert.ToInt32(r[0]);
+		STATUS = r[1] == DBNull.Value ? (int)userstatus.offline : (int)userstatus.online;
+	}
+	public int ID { get; set; }
+	public int STATUS { get; set; }
+	static string _sql = string.Format(@"
+			SELECT
+			P.{0}
+			,R.{4}
+			FROM
+			{2} P
+			LEFT JOIN (SELECT RIN.{5}, RIN.{4} FROM {3} RIN WHERE RIN.{4} = CAST(GETDATE() AS DATE)) R ON R.{0} = P.{0}
+			WHERE
+			P.{1} = 1
+		", MPSUser._pid, MPSUser._work, MPSUser._Tabl, TRRecSignal._Tabl, TRRecSignal._dat, TRRecSignal._perid);
+	public static List<Roommate> Enum()
+	{
+		List<Roommate> ls = new List<Roommate>();
+		foreach (DataRow r in DBHelper.GetRows(_sql))
+		{
+			Roommate d = new Roommate(r);
+			ls.Add(d);
+		}
+		return ls;
+	}
+
 }

@@ -11,7 +11,7 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
 	<div id="controllerholder" ng-app="mpsapplication" ng-controller="mpscontroller">
 		<div class="row">
-			<div class="col-lg-2">
+			<div class="col-lg-2 hidden-sm hidden-xs">
 				<div class="alert alert-danger birthday" ng-cloak ng-show="haveBirthday">
 					<img ng-src="{{'getUserImg.ashx?id=' + birthdayID}}" alt="Smile" height="60" width="60">
 					<span>&hArr;&nbsp;{{birthdayYears}}*</span>
@@ -61,7 +61,7 @@
 								</div>
 								<div class="row row-timeline">
 									<div class="col-sm-3">
-										<label for="timeou">Out:</label>
+										<button type="button" ng-click="out()">Out:</button>
 									</div>
 									<div class="col-sm-7">
 										<input ng-disabled="!loaded()" id="timeou" required type="time" class="input-sm form-control" ng-model="trrec.OUT" />
@@ -140,7 +140,15 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-lg-2">
+			<div class="col-lg-2 hidden-sm hidden-xs">
+				<div class="col-lg-2"></div>
+				<div class="col-lg-9">
+					<div class="well well-sm" ng-repeat="u in mpsusers" style="margin-bottom:1px;background-color: {{u.STATUS == 1 ? '#0000ff3d' : '#ff000096'}}">
+						<img ng-src="getUserImg.ashx?id={{u.ID}}" alt="Smile" height="20" width="20">
+						{{u.LOGIN}}
+					</div>
+				</div>
+				<div class="col-lg-1"></div>
 			</div>
 		</div>
 	</div>

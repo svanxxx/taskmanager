@@ -7,8 +7,13 @@ public class NotifyHub : Hub
 		var context = GlobalHost.ConnectionManager.GetHubContext<NotifyHub>();
 		context.Clients.All.OnPlanChanged(userid);
 	}
-	public void OnPlanChanged(int userid)
+	public static void NotifyRoomChange()
 	{
-		Clients.All.PlanChanged(userid);
+		var context = GlobalHost.ConnectionManager.GetHubContext<NotifyHub>();
+		context.Clients.All.OnRoomChanged(Roommate.Enum());
+	}
+	public void RequestRoomUsers()
+	{
+		Clients.Caller.OnRoomChanged(Roommate.Enum());
 	}
 }
