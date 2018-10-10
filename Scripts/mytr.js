@@ -256,12 +256,11 @@ $(function () {
 		var notifyHub = $.connection.notifyHub;
 		notifyHub.client.onPlanChanged = function (userid) {
 			if (userID() == userid) {
-				var scope = angular.element(document.getElementById('controllerholder')).scope();
-				scope.loadTasks();
+				$scope.loadTasks();
+				$scope.$apply();
 			}
 		};
 		notifyHub.client.onRoomChanged = function (users) {
-			var scope = angular.element(document.getElementById('controllerholder')).scope();
 			for (var i = 0; i < users.length; i++) {
 				for (var j = 0; j < $scope.mpsusers.length; j++) {
 					if ($scope.mpsusers[j].ID == users[i].ID) {
@@ -269,9 +268,15 @@ $(function () {
 					}
 				}
 			}
+			$scope.$apply();
 		};
 		$.connection.hub.start().done(function () {
 			notifyHub.server.requestRoomUsers();
+		});
+		$.connection.hub.disconnected(function () {
+			setTimeout(function () {
+				$.connection.hub.start();
+			}, 5000); // Restart connection after 5 seconds.
 		});
 	}]);
 });
