@@ -99,7 +99,7 @@ $(function () {
 			}
 		};
 		$scope.specsStyle = function () {
-			return $scope.defect !== undefined && $scope.defect.SPECS.length > 0 ? 'blink_me' : '';
+			return $scope.defect !== undefined && $scope.defect.SPECS.trim().length > 0 ? 'blink_me' : '';
 		};
 
 		$scope.currentlock = guid();
