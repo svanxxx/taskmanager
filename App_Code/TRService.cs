@@ -637,6 +637,7 @@ public class TRService : System.Web.Services.WebService
 
 		descr = BodyProcessor.ResolveLinks(descr);
 		descr = Regex.Replace(descr, "----+", "<hr>");
+		descr = Regex.Replace(descr, "====+", "<hr>");
 
 		string body = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">";
 		body += "<HTML><HEAD><META http-equiv=Content-Type content=\"text/html; charset=iso-8859-1\">";
