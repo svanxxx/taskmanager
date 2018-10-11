@@ -70,9 +70,6 @@ $(function () {
 					}
 				});
 		};
-
-		$scope.currentlock = guid();
-		$scope.globallock = "";
 		$scope.locktask = function () {
 			$http.post("trservice.asmx/locktask", angular.toJson({ "ttid": ttid, "lockid": $scope.currentlock }))
 				.then(function (response) {
@@ -80,20 +77,12 @@ $(function () {
 					$scope.lockedby = response.data.d.lockedby;
 				});
 		};
-
 		$scope.getDispoColor = function () {
 			if ($scope.defect && $scope.dispos) {
-				return "background-color:"+$scope.dispos.filter(function (x) { return x.ID == $scope.defect.DISPO; })[0].COLOR;
+				return "background-color:" + $scope.dispos.filter(function (x) { return x.ID == $scope.defect.DISPO; })[0].COLOR;
 			}
 			return "";
 		};
-
-		$scope.locktask();
-		$interval(function () {
-			$scope.locktask();
-		}, 20000);
-
-		$scope.addresses = deflist();
 		$scope.sendEmail = function () {
 			var emailpr = StartProgress("Sending email...");
 			$http.post("trservice.asmx/alarmEmail", JSON.stringify({ "ttid": ttid, "addresses": $scope.addresses }))
@@ -109,6 +98,19 @@ $(function () {
 				$scope.changed = true;
 			}
 		};
+		$scope.specsStyle = function () {
+			return $scope.defect !== undefined && $scope.defect.SPECS.length > 0 ? 'blink_me' : '';
+		};
+
+		$scope.currentlock = guid();
+		$scope.globallock = "";
+
+		$scope.locktask();
+		$interval(function () {
+			$scope.locktask();
+		}, 20000);
+
+		$scope.addresses = deflist();
 
 		$scope.testTask = function () {
 			for (var i = 0; i < $scope.builds.length; i++) {
