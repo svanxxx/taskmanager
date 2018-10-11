@@ -71,58 +71,8 @@
 			if (localStorage.DefectsFilter) {
 				$scope.DefectsFilter = JSON.parse(localStorage.DefectsFilter);
 			}
-			if (!("dispositions" in $scope.DefectsFilter)) {
-				$scope.DefectsFilter.dispositions = [];
-			}
-			if (!("components" in $scope.DefectsFilter)) {
-				$scope.DefectsFilter.components = [];
-			}
-			if (!("severities" in $scope.DefectsFilter)) {
-				$scope.DefectsFilter.severities = [];
-			}
-			if (!("createdUsers" in $scope.DefectsFilter)) {
-				$scope.DefectsFilter.createdUsers = [];
-			}
-			if (!("users" in $scope.DefectsFilter)) {
-				$scope.DefectsFilter.users = [];
-			}
-			if (!("text" in $scope.DefectsFilter)) {
-				$scope.DefectsFilter.text = "";
-			}
-			if (!("startDateEnter" in $scope.DefectsFilter)) {
-				$scope.DefectsFilter.startDateEnter = "";
-			} else {
-				if ($scope.DefectsFilter.startDateEnter !== "") {
-					$scope.DefectsFilter.startDateEnter = StringToDate($scope.DefectsFilter.startDateEnter);
-				}
-			}
-			if (!("endDateEnter" in $scope.DefectsFilter)) {
-				$scope.DefectsFilter.endDateEnter = "";
-			} else {
-				if ($scope.DefectsFilter.endDateEnter !== "") {
-					$scope.DefectsFilter.endDateEnter = StringToDate($scope.DefectsFilter.endDateEnter);
-				}
-			}
-			if (!("startDateCreated" in $scope.DefectsFilter)) {
-				$scope.DefectsFilter.startDateCreated = "";
-			} else {
-				if ($scope.DefectsFilter.startDateCreated !== "") {
-					$scope.DefectsFilter.startDateCreated = StringToDate($scope.DefectsFilter.startDateCreated);
-				}
-			}
-			if (!("endDateCreated" in $scope.DefectsFilter)) {
-				$scope.DefectsFilter.endDateCreated = "";
-			} else {
-				if ($scope.DefectsFilter.endDateCreated !== "") {
-					$scope.DefectsFilter.endDateCreated = StringToDate($scope.DefectsFilter.endDateCreated);
-				}
-			}
-			if (!("startEstim" in $scope.DefectsFilter)) {
-				$scope.DefectsFilter.startEstim = "";
-			}
-			if (!("endEstim" in $scope.DefectsFilter)) {
-				$scope.DefectsFilter.endEstim = "";
-			}
+
+			createTasksFilter($scope.DefectsFilter);
 
 			var o = Object.assign({}, $scope.DefectsFilter);
 			o.startDateEnter = o.startDateEnter === "" ? "" : DateToString(o.startDateEnter);

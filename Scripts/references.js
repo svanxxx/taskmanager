@@ -8,6 +8,9 @@ function IsAdmin() {
 function userID() {
 	return parseInt(document.getElementById("userid").value);
 }
+function ttUserID() {
+	return parseInt(document.getElementById("ttuserid").value);
+}
 function loadReference($scope, member, $http, localmember, functionname, params, func) {
 	params = params || {};
 	var m = localmember + "_storageversion";
@@ -132,6 +135,62 @@ function getComps($scope, member, $http) {
 	loadReference($scope, member, $http, "comps", "gettaskcomps");
 }
 
+function createTasksFilter(filter)
+{
+	if (!("dispositions" in filter)) {
+		filter.dispositions = [];
+	}
+	if (!("components" in filter)) {
+		filter.components = [];
+	}
+	if (!("severities" in filter)) {
+		filter.severities = [];
+	}
+	if (!("createdUsers" in filter)) {
+		filter.createdUsers = [];
+	}
+	if (!("users" in filter)) {
+		filter.users = [];
+	}
+	if (!("text" in filter)) {
+		filter.text = "";
+	}
+	if (!("startDateEnter" in filter)) {
+		filter.startDateEnter = "";
+	} else {
+		if (filter.startDateEnter !== "") {
+			filter.startDateEnter = StringToDate(filter.startDateEnter);
+		}
+	}
+	if (!("endDateEnter" in filter)) {
+		filter.endDateEnter = "";
+	} else {
+		if (filter.endDateEnter !== "") {
+			filter.endDateEnter = StringToDate(filter.endDateEnter);
+		}
+	}
+	if (!("startDateCreated" in filter)) {
+		filter.startDateCreated = "";
+	} else {
+		if (filter.startDateCreated !== "") {
+			filter.startDateCreated = StringToDate(filter.startDateCreated);
+		}
+	}
+	if (!("endDateCreated" in filter)) {
+		filter.endDateCreated = "";
+	} else {
+		if (filter.endDateCreated !== "") {
+			filter.endDateCreated = StringToDate(filter.endDateCreated);
+		}
+	}
+	if (!("startEstim" in filter)) {
+		filter.startEstim = "";
+	}
+	if (!("endEstim" in filter)) {
+		filter.endEstim = "";
+	}
+
+}
 function enterTT() {
 	var ttid = parseInt(prompt("Please enter TT ID", getParameterByName("ttid")));
 	if (!isNaN(ttid)) {

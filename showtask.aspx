@@ -144,8 +144,8 @@
 						</div>
 					</div>
 				</div>
-				<ul class="nav nav-pills">
-					<li class="{{specsStyle()}} small active"><a data-toggle="pill" href="#specification"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;Specification</a></li>
+				<ul id="tasktabs" class="nav nav-pills">
+					<li class="{{specsStyle()}} small active"><a data-toggle="pill" href="#specification"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;{{tab_specs}}</a></li>
 					<li><a class="small" data-toggle="pill" href="#detail"><span class="glyphicon glyphicon-zoom-in"></span>&nbsp;Details</a></li>
 					<li ng-click="changetab($event)"><a class="small" data-toggle="pill" href="#workflow"><span class="glyphicon glyphicon-refresh"></span>{{tab_workflow}}</a></li>
 					<li ng-click="changetab($event)"><a class="small" data-toggle="pill" href="#history"><span class="glyphicon glyphicon-book"></span>{{tab_history}}</a></li>

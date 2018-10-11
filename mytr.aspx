@@ -11,12 +11,15 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
 	<div id="controllerholder" ng-app="mpsapplication" ng-controller="mpscontroller">
 		<div class="row">
-			<div class="col-lg-2 hidden-sm hidden-xs">
+			<div class="col-lg-2 hidden-sm hidden-xs text-center">
 				<div class="alert alert-danger birthday" ng-cloak ng-show="haveBirthday">
 					<img ng-src="{{'getUserImg.ashx?id=' + birthdayID}}" alt="Smile" height="60" width="60">
 					<span>&hArr;&nbsp;{{birthdayYears}}*</span>
 					<img src="images/cake.jpg" alt="Smile" height="60" width="60">
 					<span>=&#9786;</span>
+				</div>
+				<div class="btn-group-vertical">
+					<a id="mytasks" href="#" class="btn btn-info" role="button" target="_blank">List all my Tasks</a>
 				</div>
 			</div>
 			<div class="col-lg-8">
@@ -143,7 +146,7 @@
 			<div class="col-lg-2 hidden-sm hidden-xs">
 				<div class="col-lg-2"></div>
 				<div class="col-lg-9">
-					<div class="well well-sm" ng-repeat="u in mpsusers" style="margin-bottom:1px;background-color: {{u.STATUS == 1 ? '#0000ff3d' : '#ff000096'}}">
+					<div class="well well-sm" ng-repeat="u in mpsusers" style="margin-bottom: 1px; background-color: {{u.STATUS == 1 ? '#0000ff3d' : '#ff000096'}}">
 						<img ng-src="getUserImg.ashx?id={{u.ID}}" alt="Smile" height="20" width="20">
 						{{u.LOGIN}}
 					</div>

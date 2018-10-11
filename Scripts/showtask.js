@@ -28,6 +28,7 @@ $(function () {
 		$scope.tab_attachs = "Attachments";
 		$scope.tab_history = "History";
 		$scope.tab_workflow = "Workflow";
+		$scope.tab_specs = "Specification";
 
 		$window.onbeforeunload = function () {
 			$http.post("trservice.asmx/unlocktask", angular.toJson({ "ttid": ttid, "lockid": $scope.currentlock }));
@@ -99,7 +100,8 @@ $(function () {
 			}
 		};
 		$scope.specsStyle = function () {
-			return $scope.defect !== undefined && $scope.defect.SPECS.trim().length > 0 ? 'blink_me' : '';
+			var active = $("ul#tasktabs li.active")[0].innerText.trim() === $scope.tab_specs;
+			return !active && $scope.defect !== undefined && $scope.defect.SPECS.trim().length > 0 ? 'blink_me' : '';
 		};
 
 		$scope.currentlock = guid();

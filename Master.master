@@ -30,7 +30,7 @@
 <body>
 	<input type="hidden" id="referenceid" value="<%=ReferenceVersion.REFSVERSION()%>" />
 	<input type="hidden" id="isadmin" value="<%=CurrentContext.Admin.ToString()%>" />
-	<input type="hidden" id="userid" value="<%=CurrentContext.UserID.ToString()%>" />
+	<input type="hidden" id="ttuserid" value="<%=CurrentContext.TTUSERID.ToString()%>" />
 	<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<div class="navbar-header">
