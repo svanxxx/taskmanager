@@ -19,7 +19,8 @@
 					<span>=&#9786;</span>
 				</div>
 				<div class="btn-group-vertical">
-					<a id="mytasks" href="#" class="btn btn-info" role="button" target="_blank">List all my Tasks</a>
+					<a id="mytasks" href="#" class="btn btn-default" role="button" target="_blank"><span class="glyphicon glyphicon-resize-small"></span>&nbsp;List all tasks assigned to me</a>
+					<a id="metasks" href="#" class="btn btn-default" role="button" target="_blank"><span class="glyphicon glyphicon-resize-full"></span>&nbsp;List all tasks created by me</a>
 				</div>
 			</div>
 			<div class="col-lg-8">
@@ -143,15 +144,13 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-lg-2 hidden-sm hidden-xs">
-				<div class="col-lg-2"></div>
-				<div class="col-lg-9">
-					<div class="well well-sm" ng-repeat="u in mpsusers" style="margin-bottom: 1px; background-color: {{u.STATUS == 1 ? '#0000ff3d' : '#ff000096'}}">
-						<img ng-src="getUserImg.ashx?id={{u.ID}}" alt="Smile" height="20" width="20">
+			<div class="text-center col-lg-2 hidden-sm hidden-xs">
+				<div class="btn-group-vertical">
+					<a style="margin-bottom: 1px; background-color: {{u.STATUS == 1 ? '#0000ff3d' : '#ff000096'}}" href="editplan.aspx?userid={{u.ID}}" class="btn btn-default" role="button" target="_blank" ng-repeat="u in mpsusers">
+						<img style="float:left" ng-src="getUserImg.ashx?id={{u.ID}}" alt="Smile" height="20" width="20">
 						{{u.LOGIN}}
-					</div>
+					</a>
 				</div>
-				<div class="col-lg-1"></div>
 			</div>
 		</div>
 	</div>

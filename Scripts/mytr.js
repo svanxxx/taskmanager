@@ -11,10 +11,14 @@ $(function () {
 	var app = angular.module('mpsapplication', []);
 	app.filter('getDispoById', getDispoById);
 	app.filter('getDispoColorById', getDispoColorById);
+
 	var filter = {};
 	createTasksFilter(filter);
 	filter.users.push(ttUserID());
 	$("#mytasks").attr("href", replaceUrlParam("ttrep.aspx", "filter", JSON.stringify(filter)));
+	filter.users.splice(0);
+	filter.createdUsers.push(ttUserID());
+	$("#metasks").attr("href", replaceUrlParam("ttrep.aspx", "filter", JSON.stringify(filter)));
 
 	app.controller('mpscontroller', ["$scope", "$http", "$interval", function ($scope, $http, $interval) {
 
