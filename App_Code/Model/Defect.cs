@@ -447,9 +447,10 @@ public partial class Defect : DefectBase
 	static public string _DescInt = "DESCRPTN";
 	static protected string _Desc = "DESCR";
 	static protected string _Specs = "ReproSteps";
+	static protected string _workar = "Workaround";
 
-	static string[] _allcols = _allBaseCols.Concat(new string[] { _Specs, _Desc }).ToArray();
-	static string[] _allcolsNames = _allBaseColsNames.Concat(new string[] { "Specification", "Details" }).ToArray();
+	static string[] _allcols = _allBaseCols.Concat(new string[] { _Specs, _Desc, _workar }).ToArray();
+	static string[] _allcolsNames = _allBaseColsNames.Concat(new string[] { "Specification", "Details", "BST steps" }).ToArray();
 	public static string _RepTable = "[TT_RES].[DBO].[REPORTBY]";
 
 	public static void UnLocktask(string ttid, string lockid)
@@ -613,6 +614,11 @@ public partial class Defect : DefectBase
 	{
 		get { return this[_Specs].ToString(); }
 		set { this[_Specs] = value; }
+	}
+	public string BST
+	{
+		get { return this[_workar].ToString(); }
+		set { this[_workar] = value; }
 	}
 	protected override void OnBackOrderChanged()
 	{
