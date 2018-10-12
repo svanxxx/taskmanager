@@ -19,8 +19,8 @@
 					<span>=&#9786;</span>
 				</div>
 				<div class="btn-group-vertical">
-					<a id="mytasks" href="#" class="btn btn-default" role="button" target="_blank"><span class="glyphicon glyphicon-resize-small"></span>&nbsp;List all tasks assigned to me</a>
-					<a id="metasks" href="#" class="btn btn-default" role="button" target="_blank"><span class="glyphicon glyphicon-resize-full"></span>&nbsp;List all tasks created by me</a>
+					<a id="mytasks" href="#" class="btn btn-default" role="button" target="_blank"><span class="glyphicon glyphicon-resize-small"></span>&nbsp;Tasks assigned to me</a>
+					<a id="metasks" href="#" class="btn btn-default" role="button" target="_blank"><span class="glyphicon glyphicon-resize-full"></span>&nbsp;Tasks created by me</a>
 				</div>
 			</div>
 			<div class="col-lg-8">
