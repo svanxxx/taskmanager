@@ -220,6 +220,7 @@ $(function () {
 				$scope.date = d;
 				$scope.loadData();
 				$scope.checkBirthday();
+				$.connection.notifyHub.server.requestRoomUsers();
 			});
 		};
 
@@ -283,7 +284,9 @@ $(function () {
 		});
 		$.connection.hub.disconnected(function () {
 			setTimeout(function () {
-				$.connection.hub.start();
+				$.connection.hub.start().done(function () {
+					notifyHub.server.requestRoomUsers();
+				});
 			}, 5000); // Restart connection after 5 seconds.
 		});
 	}]);
