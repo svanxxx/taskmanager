@@ -107,30 +107,28 @@ public partial class DefectBase : IdBasedObject
 		}
 		if (!string.IsNullOrEmpty(f.text))
 		{
+			string[] words = null;
 			if (f.text.StartsWith("\"") && f.text.EndsWith("\""))
 			{
-				f.text = f.text.Trim('"');
-				string s1 = string.Format(" {0} like '%{1}%' ", _Summ, f.text);
-				string s2 = string.Format(" EXISTS (SELECT TOP 1 R.{0} FROM {1} R WHERE R.DESCRPTN LIKE '%{2}%' AND R.IDDEFREC = {3}.{0}) ", _idRec, Defect._RepTable, f.text, _Tabl);
-				lswhere.Add(string.Format(" AND  ({0} OR {1})", s1, s2));
+				words = new string[] { f.text.Trim('"') };
 			}
 			else
 			{
-				string[] words = f.text.Split(null);
-				string s1 = "";
-				string s2 = "";
-				foreach (var w in words)
-				{
-					s1 += (s1 == "") ? "(" : " AND "; 
-					s1 += string.Format(" {0} like '%{1}%' ", _Summ, w);
-
-					s2 += (s2 == "") ? string.Format("{0} IN (SELECT idDefRec FROM {1} WHERE CONTAINS ({2}, '", _idRec, Defect._RepTable, Defect._DescInt) : " AND ";
-					s2 += string.Format("\"{0}\"", w);
-				}
-				s1 += " )";
-				s2 += "'))";
-				lswhere.Add(string.Format(" AND  ({0} OR {1})", s1, s2));
+				words = f.text.Split(null);
 			}
+			string s1 = "";
+			string s2 = "";
+			foreach (var w in words)
+			{
+				s1 += (s1 == "") ? "(" : " AND ";
+				s1 += string.Format(" {0} like '%{1}%' ", _Summ, w);
+
+				s2 += (s2 == "") ? string.Format("{0} IN (SELECT idDefRec FROM {1} WHERE CONTAINS ({2}, '", _idRec, Defect._RepTable, Defect._DescInt) : " AND ";
+				s2 += string.Format("\"{0}\"", w);
+			}
+			s1 += " )";
+			s2 += "'))";
+			lswhere.Add(string.Format(" AND  ({0} OR {1})", s1, s2));
 		}
 		return string.Format(" WHERE (1=1 {0}) {1}", string.Join(string.Empty, lswhere), order ? string.Format("ORDER BY {0} DESC", _ID) : "");
 	}
