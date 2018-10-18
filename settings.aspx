@@ -1,8 +1,8 @@
-﻿<%@ Page Title="Types" Language="C#" MasterPageFile="~/Master.Master" AutoEventWireup="true" CodeFile="types.aspx.cs" Inherits="Types" %>
+﻿<%@ Page Title="Settings" Language="C#" MasterPageFile="~/Master.Master" AutoEventWireup="true" CodeFile="settings.aspx.cs" Inherits="settings" %>
 
 <asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
-	<%=System.Web.Optimization.Styles.Render("~/bundles/types_css")%>
-	<%=System.Web.Optimization.Scripts.Render("~/bundles/types_js")%>
+	<%=System.Web.Optimization.Styles.Render("~/bundles/settings_css")%>
+	<%=System.Web.Optimization.Scripts.Render("~/bundles/settings_js")%>
 	<script src="<%=Settings.CurrentSettings.ANGULARCDN.ToString()%>angular.min.js"></script>
 </asp:Content>
 
@@ -15,14 +15,14 @@
 		<table class="table table-hover table-bordered">
 			<thead>
 				<tr class="info">
-					<th>Type name</th>
-					<th>Order</th>
+					<th>Name</th>
+					<th>Value</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="r in refs" class="{{r.changed?'data-changed':''}}">
-					<td><input class="intable-data-input" type="text" ng-model="r.DESCR" ng-change="itemchanged(r)"></td>
-					<td><input class="intable-data-input" type="number" min="1" max="999" ng-model="r.FORDER" ng-change="itemchanged(r)"></td>
+				<tr ng-repeat="s in settings | orderBy : 's.NAME'" class="{{s.changed?'data-changed':''}}">
+					<td>{{s.NAME}}</td>
+					<td><input ng-disabled="readonly" class="intable-data-input" type="text" ng-model="s.VALUE" ng-change="itemchanged(s)"></td>
 				</tr>
 			</tbody>
 		</table>

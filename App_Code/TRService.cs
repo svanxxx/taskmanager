@@ -544,6 +544,20 @@ public class TRService : System.Web.Services.WebService
 		}
 		return TRRec.EnumPersonal(personid, DateTime.ParseExact(start, defDateFormat, CultureInfo.InvariantCulture), days);
 	}
+	[WebMethod(EnableSession = true)]
+	public Settings getSettings()
+	{
+		return Settings.CurrentSettings;
+	}
+	[WebMethod(EnableSession = true)]
+	public void setSettings(Settings s)
+	{
+		if (!CurrentContext.Valid || !CurrentContext.Admin)
+		{
+			return;
+		}
+		s.Store();
+	}
 	public class BuildRequest
 	{
 		public int ID { get; set; }
@@ -648,7 +662,7 @@ public class TRService : System.Web.Services.WebService
 		mail.AlternateViews.Add(alternate);
 
 		SmtpClient smtp = new SmtpClient();
-		Settings sett = new Settings();
+		Settings sett = new Settings(true);
 		smtp.Host = sett.SMTPHOST;
 		smtp.Port = Convert.ToInt32(sett.SMTPPORT);
 		smtp.EnableSsl = Convert.ToBoolean(sett.SMTPENABLESSL); ;

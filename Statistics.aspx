@@ -3,8 +3,8 @@
 <asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
 	<%=System.Web.Optimization.Styles.Render("~/bundles/statistics_css")%>
 	<%=System.Web.Optimization.Scripts.Render("~/bundles/statistics_js")%>
-	<script src="http://mps.resnet.com/cdn/angular/angular.min.js"></script>
-	<script src="http://mps.resnet.com/cdn/chart/Chart.bundle.min.js"></script>
+	<script src="<%=Settings.CurrentSettings.ANGULARCDN.ToString()%>angular.min.js"></script>
+	<script <%="src='" + Settings.CurrentSettings.CHARTSJSCDN.ToString() + "Chart.bundle.min.js'" %>></script>
 </asp:Content>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">

@@ -151,8 +151,11 @@ $(function () {
 
 		$scope.deleteBranch = function () {
 			if (confirm("Are you sure you want to delete branch related to this task? The operation cannot be undone.")) {
+				var delprg = StartProgress("Deleting branch...");
+				$scope.commits = null;
 				$http.post("trservice.asmx/deleteBranch", JSON.stringify({ "branch": "TT" + ttid }))
 					.then(function () {
+						EndProgress(delprg);
 						$scope.loadBuilds();
 					});
 			}

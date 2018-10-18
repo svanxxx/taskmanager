@@ -37,9 +37,6 @@ $(function () {
 				}
 			});
 		};
-		getMPSUsers($scope, "mpsusers", $http, function () {
-			$scope.checkBirthday();
-		});
 
 		var d = new Date();
 		d.setHours(0, 0, 0, 0);
@@ -279,15 +276,18 @@ $(function () {
 			}
 			$scope.$apply();
 		};
-		$.connection.hub.start().done(function () {
-			notifyHub.server.requestRoomUsers();
-		});
 		$.connection.hub.disconnected(function () {
 			setTimeout(function () {
 				$.connection.hub.start().done(function () {
 					notifyHub.server.requestRoomUsers();
 				});
 			}, 5000); // Restart connection after 5 seconds.
+		});
+		getMPSUsers($scope, "mpsusers", $http, function () {
+			$scope.checkBirthday();
+			$.connection.hub.start().done(function () {
+				notifyHub.server.requestRoomUsers();
+			});
 		});
 	}]);
 });

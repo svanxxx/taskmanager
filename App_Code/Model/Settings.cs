@@ -1,31 +1,72 @@
 ﻿using System.Collections.Generic;
 using System.Data;
+using System.Web;
 
 public class Settings
 {
+	static string settKey = "current_settings";
+	static object _lockobject = new object();
+	public static Settings CurrentSettings
+	{
+		set
+		{
+			lock (_lockobject)
+			{
+				if (value == null)
+				{
+					HttpContext.Current.Application.Remove(settKey);
+					return;
+				}
+				HttpContext.Current.Application[settKey] = value;
+			}
+		}
+		get
+		{
+			lock (_lockobject)
+			{
+				if (HttpContext.Current.Application == null)
+				{
+					return null;
+				}
+				object outs = HttpContext.Current.Application[settKey];
+				if (outs == null)
+				{
+					outs = new Settings(true);
+					HttpContext.Current.Application[settKey] = outs;
+				}
+				return new Settings(outs as Settings);
+			}
+		}
+	}
+
+	static readonly string _Tabl = "[tt_res].[dbo].[SETTINGS]";
+	string GetVal(string key)
+	{
+		return values.ContainsKey(key) ? values[key] : "";
+	}
 	public string SMTPHOST
 	{
-		get { return values["smtp.Host"]; }
+		get { return GetVal("smtp.Host"); }
 		set { values["smtp.Host"] = value; }
 	}
 	public string SMTPPORT
 	{
-		get { return values["smtp.Port"]; }
+		get { return GetVal("smtp.Port"); }
 		set { values["smtp.Port"] = value; }
 	}
 	public string SMTPENABLESSL
 	{
-		get { return values["smtp.EnableSsl"]; }
+		get { return GetVal("smtp.EnableSsl"); }
 		set { values["smtp.EnableSsl"] = value; }
 	}
 	public string SMTPTIMEOUT
 	{
-		get { return values["smtp.Timeout"]; }
+		get { return GetVal("smtp.Timeout"); }
 		set { values["smtp.Timeout"] = value; }
 	}
 	public string CREDENTIALS1
 	{
-		get { return values["Credentials1"]; }
+		get { return GetVal("Credentials1"); }
 		set { values["Credentials1"] = value; }
 	}
 	static string _deflist = "";
@@ -33,27 +74,111 @@ public class Settings
 	{
 		if (string.IsNullOrEmpty(_deflist))
 		{
-			Settings s = new Settings();
+			Settings s = new Settings(true);
 			_deflist = s.DEFLISTENERS;
 		}
 		return _deflist;
 	}
 	public string DEFLISTENERS
 	{
-		get { return values["defListeners"]; }
+		get { return GetVal("defListeners"); }
 		set { values["defListeners"] = value; }
 	}
 	public string CREDENTIALS2
 	{
-		get { return values["Credentials2"]; }
+		get { return GetVal("Credentials2"); }
 		set { values["Credentials2"] = value; }
 	}
-	Dictionary<string, string> values = new Dictionary<string, string>();
-	public Settings()
+	public string ANGULARCDN
 	{
-		foreach (DataRow dr in DBHelper.GetRows("SELECT * FROM [tt_res].[dbo].[SETTINGS]"))
+		get { return GetVal("ANGULARCDN"); }
+		set { values["ANGULARCDN"] = value; }
+	}
+	public string JQUERYCDN
+	{
+		get { return GetVal("JQUERYCDN"); }
+		set { values["JQUERYCDN"] = value; }
+	}
+	public string BOOTCSSCDN
+	{
+		get { return GetVal("BOOTCSSCDN"); }
+		set { values["BOOTCSSCDN"] = value; }
+	}
+	public string BOOTSTRAPCDN
+	{
+		get { return GetVal("BOOTSTRAPCDN"); }
+		set { values["BOOTSTRAPCDN"] = value; }
+	}
+	public string MPSCDN
+	{
+		get { return GetVal("MPSCDN"); }
+		set { values["MPSCDN"] = value; }
+	}
+	public string COLRESIZABLECDN
+	{
+		get { return GetVal("COLRESIZABLECDN"); }
+		set { values["COLRESIZABLECDN"] = value; }
+	}
+	public string CHARTSJSCDN
+	{
+		get { return GetVal("CHARTSJSCDN"); }
+		set { values["CHARTSJSCDN"] = value; }
+	}
+	public string BSTSITE
+	{
+		get { return GetVal("BSTSITE"); }
+		set { values["BSTSITE"] = value; }
+	}
+	public string WIKISITE
+	{
+		get { return GetVal("WIKISITE"); }
+		set { values["WIKISITE"] = value; }
+	}
+	public string METASITE
+	{
+		get { return GetVal("METASITE"); }
+		set { values["METASITE"] = value; }
+	}
+	public string COMPANYSITE
+	{
+		get { return GetVal("COMPANYSITE"); }
+		set { values["COMPANYSITE"] = value; }
+	}
+	public string COMPANYNAME
+	{
+		get { return GetVal("COMPANYNAME"); }
+		set { values["COMPANYNAME"] = value; }
+	}
+	Dictionary<string, string> values = new Dictionary<string, string>();
+	void LoadData()
+	{
+		foreach (DataRow dr in DBHelper.GetRows(string.Format("SELECT * FROM {0}", _Tabl)))
 		{
 			values[dr["NAME"].ToString()] = dr["VALUE"].ToString();
 		}
+	}
+	public Settings(bool loaddata)
+	{
+		if (loaddata)
+		{
+			LoadData();
+		}
+	}
+	public Settings()
+	{
+	}
+	public Settings (Settings o)
+	{
+		Settings s = new Settings();
+		values = new Dictionary<string, string>(o.values);
+	}
+	public void Store()
+	{
+		foreach (string key in values.Keys)
+		{
+			DBHelper.SQLExecute(string.Format("INSERT INTO {0} ([NAME], [VALUE]) SELECT '{1}', '{2}' WHERE NOT EXISTS (SELECT * FROM {0} WHERE NAME = '{1}')", _Tabl, key, values[key]));
+			DBHelper.SQLExecute(string.Format("UPDATE {0} SET [VALUE]='{2}' WHERE [NAME] = '{1}'", _Tabl, key, values[key]));
+		}
+		CurrentSettings = new Settings(this);
 	}
 }

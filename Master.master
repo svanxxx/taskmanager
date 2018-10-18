@@ -8,12 +8,12 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-	<link href="http://mps.resnet.com/cdn/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-	<link href="http://mps.resnet.com/cdn/mpshelper.css" rel="stylesheet" />
-	<script src="http://mps.resnet.com/cdn/jquery/jquery-3.2.1.min.js"></script>
-	<script src="http://mps.resnet.com/cdn/jquery/jquery.cookie.js"></script>
-	<script src="http://mps.resnet.com/cdn/bootstrap/js/bootstrap.min.js"></script>
-	<script src="http://mps.resnet.com/cdn/mpshelper.js"></script>
+	<link <%= "href='" + Settings.CurrentSettings.BOOTCSSCDN.ToString() + "bootstrap.min.css'"%> rel="stylesheet" />
+	<link <%= "href='" + Settings.CurrentSettings.MPSCDN.ToString() + "mpshelper.css'"%> rel="stylesheet" />
+	<script <%="src='" + Settings.CurrentSettings.JQUERYCDN.ToString() + "jquery-3.2.1.min.js'"%>></script>
+	<script <%="src='" + Settings.CurrentSettings.JQUERYCDN.ToString() + "jquery.cookie.js'"%>></script>
+	<script <%="src='" + Settings.CurrentSettings.BOOTSTRAPCDN.ToString() + "bootstrap.min.js'"%>></script>
+	<script <%="src='" + Settings.CurrentSettings.MPSCDN.ToString() + "mpshelper.js'" %>></script>
 	<asp:ContentPlaceHolder ID="HeaddContent" runat="server">
 	</asp:ContentPlaceHolder>
 	<script>
@@ -40,7 +40,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="http://mps.resnet.com">MPS</a>
+				<a class="navbar-brand" href="<%= Settings.CurrentSettings.COMPANYSITE.ToString()%>>"><%= Settings.CurrentSettings.COMPANYNAME.ToString()%></a>
 			</div>
 			<div class="collapse navbar-collapse" id="fullNavbar">
 				<ul class="nav navbar-nav">
@@ -60,9 +60,9 @@
 					<li><a href="vacations.aspx"><span class="glyphicon glyphicon-plane"></span>Vacations</a></li>
 					<li><a href="machines.aspx"><span class="glyphicon glyphicon-phone"></span>Machines</a></li>
 					<li><a href="versionchanges.aspx"><span class="glyphicon glyphicon-check"></span>Versions</a></li>
-					<li><a target="_blank" href="http://mps.resnet.com:2222/requests.aspx"><span class="glyphicon glyphicon-link"></span>BST</a></li>
-					<li><a target="_blank" href="http://efieldpro.com/FieldproWiki/index.php?title=Main_Page"><span class="glyphicon glyphicon-oil"></span>FiP Wiki</a></li>
-					<li><a target="_blank" href="http://mps.resnet.com/METADATA/METADATA/METADATAMODEL/"><span class="glyphicon glyphicon-oil"></span>Metadata</a></li>
+					<li><a target="_blank" href="<%= Settings.CurrentSettings.BSTSITE.ToString()%>"><span class="glyphicon glyphicon-link"></span>BST</a></li>
+					<li><a target="_blank" href="<%= Settings.CurrentSettings.WIKISITE.ToString()%>"><span class="glyphicon glyphicon-oil"></span>FiP Wiki</a></li>
+					<li><a target="_blank" href="<%= Settings.CurrentSettings.METASITE.ToString()%>"><span class="glyphicon glyphicon-oil"></span>Metadata</a></li>
 					<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">References<span class="caret"></span></a>
 						<ul class="dropdown-menu">
 							<li><a href="dispositions.aspx"><span class="glyphicon glyphicon-bookmark"></span>Dispositions</a></li>
@@ -72,6 +72,7 @@
 							<li><a href="types.aspx"><span class="glyphicon glyphicon-bookmark"></span>Types</a></li>
 							<li><a href="priorities.aspx"><span class="glyphicon glyphicon-bookmark"></span>Priorities</a></li>
 							<li><a href="users.aspx"><span class="glyphicon glyphicon-user"></span>Users</a></li>
+							<li><a href="settings.aspx"><span class="glyphicon glyphicon-cog"></span>Settings</a></li>
 						</ul>
 					</li>
 				</ul>

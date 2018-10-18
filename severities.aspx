@@ -3,7 +3,7 @@
 <asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
 	<%=System.Web.Optimization.Styles.Render("~/bundles/severities_css")%>
 	<%=System.Web.Optimization.Scripts.Render("~/bundles/severities_js")%>
-	<script src="http://mps.resnet.com/cdn/angular/angular.min.js"></script>
+	<script src="<%=Settings.CurrentSettings.ANGULARCDN.ToString()%>angular.min.js"></script>
 </asp:Content>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
