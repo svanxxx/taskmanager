@@ -3,21 +3,25 @@ using System.Collections.Generic;
 
 public class Branch
 {
+	public string DATE { get; set; }
 	public string NAME { get; set; }
+	public string AUTHOR { get; set; }
+	public string AUTHOREML { get; set; }
 
 	public Branch()
 	{
 	}
-	public Branch(string name)
-	{
-		NAME = name;
-	}
 	public static List<Branch> Enum()
 	{
 		List<Branch> ls = new List<Branch>();
-		foreach (string line in GitHelper.RunCommand("branch --sort=-committerdate"))
+		foreach (string line in GitHelper.RunCommand(@"for-each-ref --format=""%(committerdate) %09 %(authorname) %09 %(refname) %09 %(authoremail)"" --sort=-committerdate"))
 		{
-			ls.Add(new Branch(line));
+			string[] sep = new string[] { "\t" };
+			string[] pars = line.Split(sep, StringSplitOptions.RemoveEmptyEntries);
+			if (pars.Length == 4)
+			{
+				ls.Add(new Branch() { DATE = pars[0].Trim(), AUTHOR = pars[1].Trim(), NAME = pars[2].Trim().Split('/')[2], AUTHOREML = pars[3].Trim() });
+			}
 		}
 		return ls;
 	}
@@ -29,7 +33,8 @@ public class Branch
 	{
 		List<Commit> ls = new List<Commit>();
 		Commit com = null;
-		foreach (string line in GitHelper.RunCommand(string.Format(@"log master..{0}", branch)))
+		string command = branch == "master" ? "log -100" : string.Format(@"log master..{0}", branch);
+		foreach (string line in GitHelper.RunCommand(command + @" --date=format:""%Y.%m.%d %H:%M"""))
 		{
 			if (line.StartsWith("commit"))
 			{

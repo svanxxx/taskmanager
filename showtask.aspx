@@ -270,7 +270,7 @@
 									</a>
 								</div>
 							</div>
-							<div class="panel-footer"><strong>Info!</strong> Please commit your changes to git and push your branch named with TTxxxxxx where xxxxxx is the task number.</div>
+							<div ng-show="!commits||commits.length<1" class="panel-footer"><strong>Info!</strong> Please commit your changes to git and push your branch named with TTxxxxxx where xxxxxx is the task number.</div>
 						</div>
 						<div class="panel panel-primary">
 							<div class="panel-heading">
