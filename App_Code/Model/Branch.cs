@@ -63,10 +63,10 @@ public class Branch
 					com.NOTES = string.IsNullOrEmpty(com.NOTES) ? line : (com.NOTES + Environment.NewLine + line);
 				}
 			}
-			if (com != null)
-			{
-				ls.Add(com);
-			}
+		}
+		if (com != null)
+		{
+			ls.Add(com);
 		}
 		return ls;
 	}
