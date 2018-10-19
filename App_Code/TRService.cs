@@ -676,7 +676,7 @@ public class TRService : System.Web.Services.WebService
 		mail.AlternateViews.Add(alternate);
 
 		SmtpClient smtp = new SmtpClient();
-		Settings sett = new Settings(true);
+		Settings sett = Settings.CurrentSettings;
 		smtp.Host = sett.SMTPHOST;
 		smtp.Port = Convert.ToInt32(sett.SMTPPORT);
 		smtp.EnableSsl = Convert.ToBoolean(sett.SMTPENABLESSL); ;

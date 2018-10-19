@@ -70,15 +70,15 @@ public class Settings
 		get { return GetVal("Credentials1"); }
 		set { values["Credentials1"] = value; }
 	}
-	public string DEFLISTENERS
-	{
-		get { return GetVal("defListeners"); }
-		set { values["defListeners"] = value; }
-	}
 	public string CREDENTIALS2
 	{
 		get { return GetVal("Credentials2"); }
 		set { values["Credentials2"] = value; }
+	}
+	public string DEFLISTENERS
+	{
+		get { return GetVal("defListeners"); }
+		set { values["defListeners"] = value; }
 	}
 	public string ANGULARCDN
 	{
