@@ -228,6 +228,7 @@
 							<div class="panel-heading">
 								<div class="row">
 									<div class="col-md-9">
+										<span class="glyphicon glyphicon-time"></span>
 										<label>Builds history</label>
 									</div>
 									<div class="col-md-3">
@@ -242,7 +243,7 @@
 									<a href="getBuildLog.ashx?id={{b.ID}}" class="list-group-item" ng-repeat="b in builds" target="_blank">
 										<div class="row">
 											<div class="col-sm-2">
-												<span>{{b.DATE}}</span>
+												<span class="glyphicon glyphicon-time"></span><span>{{b.DATE}}</span>
 											</div>
 											<div class="col-sm-3">
 												<div class="progress" ng-show="b.STATUS.includes('Building')==true">
@@ -255,15 +256,19 @@
 														{{b.STATUS}}...
 													</div>
 												</div>
+												<span style="color:red" class="glyphicon glyphicon-remove-circle" ng-show="b.STATUS.includes('FAILED')==true"></span>
+												<span class="glyphicon glyphicon-pushpin" ng-show="b.STATUS.includes('Cancel')==true"></span>
+												<span style="color:green" class="glyphicon glyphicon-ok-circle" ng-show="b.STATUS.includes('OK')==true"></span>
 												<span ng-show="b.STATUS.includes('Building')==false&&b.STATUS.includes('wait')==false">{{b.STATUS}}</span>
 											</div>
 											<div class="col-sm-2">
-												<span>{{b.NOTES}}</span>
+												<span class="glyphicon glyphicon-comment"></span><span>{{b.NOTES}}</span>
 											</div>
 											<div class="col-sm-2">
-												<span>{{b.MACHINE}}</span>
+												<span class="glyphicon glyphicon-blackboard"></span><span>{{b.MACHINE}}</span>
 											</div>
 											<div class="col-sm-3">
+												<span class="glyphicon glyphicon-fire"></span>
 												<span>{{b.DATEUP}}</span>
 											</div>
 										</div>
