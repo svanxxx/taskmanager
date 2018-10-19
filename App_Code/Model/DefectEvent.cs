@@ -106,7 +106,7 @@ public class DefectEvent : IdBasedObject
 	}
 	public static void AddEventByTask(int id, Eventtype type, string notes, int estimation = -1, int assign = -1)
 	{
-		notes = notes.Replace("'", "\"");
+		notes = notes.Replace("'", "''");
 		string sql = string.Format(@"
 			INSERT INTO {0}
 			({1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, {12}, {13}, {14}, {15}, {16}, {17}, {18})

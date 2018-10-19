@@ -149,7 +149,7 @@ public class IdBasedObject
 			string v = "";
 			if (values[i] is string)
 			{
-				v = string.Format("'{0}'", values[i].ToString().Replace("'", "\""));
+				v = string.Format("'{0}'", values[i].ToString().Replace("'", "''"));
 			}
 			else if (values[i] is Expression)
 			{
@@ -253,7 +253,7 @@ public class IdBasedObject
 			{
 				if (t == typeof(string))
 				{
-					val = string.Format("'{0}'", o.ToString().Replace("'", "\""));
+					val = string.Format("'{0}'", o.ToString().Replace("'", "''"));
 				}
 				else if (t == typeof(bool))
 				{

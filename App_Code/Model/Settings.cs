@@ -44,6 +44,7 @@ public class Settings
 	{
 		return values.ContainsKey(key) ? values[key] : "";
 	}
+
 	public string SMTPHOST
 	{
 		get { return GetVal("smtp.Host"); }
@@ -68,16 +69,6 @@ public class Settings
 	{
 		get { return GetVal("Credentials1"); }
 		set { values["Credentials1"] = value; }
-	}
-	static string _deflist = "";
-	public static string GetDefaultListeners()
-	{
-		if (string.IsNullOrEmpty(_deflist))
-		{
-			Settings s = new Settings(true);
-			_deflist = s.DEFLISTENERS;
-		}
-		return _deflist;
 	}
 	public string DEFLISTENERS
 	{
@@ -149,6 +140,12 @@ public class Settings
 		get { return GetVal("COMPANYNAME"); }
 		set { values["COMPANYNAME"] = value; }
 	}
+	public string BUILDLOGSDIR
+	{
+		get { return GetVal("BUILDLOGSDIR"); }
+		set { values["BUILDLOGSDIR"] = value; }
+	}
+
 	Dictionary<string, string> values = new Dictionary<string, string>();
 	void LoadData()
 	{

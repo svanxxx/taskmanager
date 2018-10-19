@@ -629,6 +629,20 @@ public class TRService : System.Web.Services.WebService
 		};
 		b.Store();
 	}
+	[WebMethod]
+	public string geBuildLogDir()
+	{
+		return Settings.CurrentSettings.BUILDLOGSDIR;
+	}
+	[WebMethod]
+	public void FailBuild(int id)
+	{
+		DefectBuild b = new DefectBuild(id)
+		{
+			STATUS = DefectBuild.BuildStatus.failed.ToString()
+		};
+		b.Store();
+	}
 	[WebMethod(EnableSession = true)]
 	public string alarmEmail(int ttid, string addresses)
 	{

@@ -53,7 +53,7 @@ public class DefectHistory : IdBasedObject
 	}
 	public static void AddHisotoryByTask(int id, string notes)
 	{
-		notes = notes.Replace("'", "\"");
+		notes = notes.Replace("'", "''");
 		string sql = string.Format(@"
 		INSERT INTO {0}
 			({1}, {2}, {3}, {4}, {5}, {6})
