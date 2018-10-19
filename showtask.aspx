@@ -239,7 +239,7 @@
 							<div class="panel-body">
 								<label ng-show="!builds">loading...</label>
 								<div class="list-group">
-									<a href="#" class="list-group-item" ng-repeat="b in builds">
+									<a href="getBuildLog.ashx?id={{b.ID}}" class="list-group-item" ng-repeat="b in builds" target="_blank">
 										<div class="row">
 											<div class="col-sm-2">
 												<span>{{b.DATE}}</span>
