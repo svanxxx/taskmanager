@@ -200,4 +200,8 @@ public class DefectBuild : IdBasedObject
 	{
 		return Convert.ToInt32(GetValue(string.Format("SELECT COUNT(*) FROM {0} WHERE {1} IS NULL OR {1} = {2}", _Tabl, _stat, (int)BuildStatus.progress))) > 0;
 	}
+	protected override void PostStore()
+	{
+		NotifyHub.NotifyBuildChange(ID);
+	}
 }

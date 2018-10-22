@@ -4,6 +4,8 @@
 	<%=System.Web.Optimization.Styles.Render("~/bundles/showtask_css")%>
 	<%=System.Web.Optimization.Scripts.Render("~/bundles/showtask_js")%>
 	<script src="<%=Settings.CurrentSettings.ANGULARCDN.ToString()%>angular.min.js"></script>
+	<script src="scripts/jquery.signalR-2.3.0.min.js"></script>
+	<script src="signalr/hubs"></script>
 </asp:Content>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">

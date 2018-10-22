@@ -130,11 +130,6 @@ $(function () {
 					$scope.loadBuilds();
 				});
 		};
-		$interval(function () {
-			if ($("#buildstab").hasClass("active")) {
-				$scope.loadBuilds();
-			}
-		}, 10000);
 
 		$scope.abortTest = function () {
 			for (var i = 0; i < $scope.builds.length; i++) {
@@ -288,14 +283,12 @@ $(function () {
 				EndProgress(taskprg); $scope.loaders--;
 			});
 
-
 		$scope.loadHistory = function () {
 			$http.post("trservice.asmx/gettaskhistory", JSON.stringify({ "ttid": ttid }))
 				.then(function (result) {
 					$scope.history = result.data.d;
 				});
 		};
-
 		$scope.loadEvents = function () {
 			$http.post("trservice.asmx/gettaskevents", JSON.stringify({ "ttid": ttid }))
 				.then(function (result) {
@@ -309,5 +302,15 @@ $(function () {
 				$scope.changed = true;
 			}
 		});
+
+		var notifyHub = $.connection.notifyHub;
+		notifyHub.client.onBuildChanged = function (id) {
+			$scope.loadBuilds();
+			$scope.$apply();
+		};
+		$.connection.hub.disconnected(function () {
+			setTimeout(function () { $.connection.hub.start(); }, 5000); // Restart connection after 5 seconds.
+		});
+		$.connection.hub.start();
 	}]);
 });

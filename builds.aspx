@@ -4,6 +4,8 @@
 	<%=System.Web.Optimization.Styles.Render("~/bundles/builds_css")%>
 	<%=System.Web.Optimization.Scripts.Render("~/bundles/builds_js")%>
 	<script src="<%=Settings.CurrentSettings.ANGULARCDN.ToString()%>angular.min.js"></script>
+	<script src="scripts/jquery.signalR-2.3.0.min.js"></script>
+	<script src="signalr/hubs"></script>
 </asp:Content>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
@@ -22,8 +24,8 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="b in builds"">
-					<td><img class="rep-img" src="{{'getUserImg.ashx?ttid=' + b.TTUSERID}}" alt="Smile" height="20" width="20"></td>
+				<tr ng-repeat="b in builds" style="background-color:{{b.STATUS.includes('FAILED') ? '#ff00004d' : ''}}">
+					<td><img class="rep-img img-circle" src="{{'getUserImg.ashx?ttid=' + b.TTUSERID}}" alt="Smile" height="20" width="20"></td>
 					<td>{{b.DATE}}</td>
 					<td>{{b.NOTES}}</td>
 					<td>{{b.MACHINE}}</td>
@@ -33,7 +35,7 @@
 							<span class="badge">{{b.TTID}}</span>
 						</a>
 					</td>
-					<td>{{b.STATUSTXT}}</td>
+					<td><a href="getBuildLog.ashx?id={{b.ID}}">{{b.STATUSTXT}}</a></td>
 					<td>{{b.STATUS}}</td>
 				</tr>
 			</tbody>
