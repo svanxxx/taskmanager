@@ -171,7 +171,7 @@
 						<div class="list-group">
 							<a href="#" class="list-group-item" ng-repeat="h in events | orderBy : 'ORDER'">
 								<div class="col-sm-3">
-									<img ng-src="{{'getUserImg.ashx?ttid=' + h.IDUSER}}" alt="Smile" height="20" width="20">
+									<img class="img-circle" ng-src="{{'getUserImg.ashx?ttid=' + h.IDUSER}}" alt="Smile" height="20" width="20">
 									<b>{{h.IDUSER | getUserById:this}}</b>
 								</div>
 								<div class="col-sm-2">
@@ -181,7 +181,7 @@
 									{{h.EVENT}}
 								</div>
 								<div class="col-sm-3">
-									<img ng-show="h.ASSIGNUSERID > 0" ng-src="{{'getUserImg.ashx?ttid=' + h.ASSIGNUSERID}}" alt="Smile" height="20" width="20"></img>
+									<img class="img-circle" ng-show="h.ASSIGNUSERID > 0" ng-src="{{'getUserImg.ashx?ttid=' + h.ASSIGNUSERID}}" alt="Smile" height="20" width="20"></img>
 									<b>{{h.ASSIGNUSERID | getUserById:this}}</b> <span class="badge">{{h.TIME}}</span>
 								</div>
 								{{h.NOTES}}	&nbsp;
@@ -193,7 +193,7 @@
 						<div class="list-group">
 							<a href="#" class="list-group-item" ng-repeat="h in history">
 								<div class="col-sm-3">
-									<img ng-src="{{'getUserImg.ashx?ttid=' + h.IDUSER}}" alt="Smile" height="20" width="20">
+									<img class="img-circle" ng-src="{{'getUserImg.ashx?ttid=' + h.IDUSER}}" alt="Smile" height="20" width="20">
 									<b>{{h.IDUSER | getUserById:this}}</b>
 								</div>
 								<div class="col-sm-2">
@@ -213,7 +213,7 @@
 							<li ng-style="a.deleted ? {'text-decoration':'line-through'} : ''" ng-repeat="a in attachs">
 								<a target="_blank" href="getattach.aspx?idrecord={{a.ID+'&ext='+getfileext(a.FILENAME)}}">
 									<span>{{a.FILENAME}}</span>
-									<img src="getAttachImg.ashx?idrecord={{a.ID+'&ext='+getfileext(a.FILENAME)}}" />
+									<img class="img-circle" src="getAttachImg.ashx?idrecord={{a.ID+'&ext='+getfileext(a.FILENAME)}}" />
 								</a>&nbsp
 						<button ng-click="deleteAttach(a.ID)" type="button" class="btn btn-danger btn-xs">Delete</button>
 							</li>
@@ -221,7 +221,7 @@
 					</div>
 					<div id="lockinfo" class="tab-pane fade">
 						<span class="label label-info">{{getMPSUserName(lockedby)}}</span>
-						<img ng-src="{{'getUserImg.ashx?id=' + lockedby}}" alt="Smile" height="42" width="42">
+						<img class="img-circle" ng-src="{{'getUserImg.ashx?id=' + lockedby}}" alt="Smile" height="42" width="42">
 					</div>
 					<div id="taskbuilds" class="tab-pane fade">
 						<div class="panel panel-info">
@@ -324,7 +324,7 @@
 			</div>
 			<div class="col-lg-2 hidden-md">
 				<div class="alert alert-info" style="text-align:center">
-					<img ng-src="{{'getUserImg.ashx?ttid=' + defect.AUSER}}" alt="Smile" height="60" width="60" />
+					<img class="img-circle" ng-src="{{'getUserImg.ashx?ttid=' + defect.AUSER}}" alt="Smile" height="60" width="60" />
 					<div>
 						<strong>{{defect.AUSER | getUserById:this}}</strong>
 					</div>

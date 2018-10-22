@@ -16,7 +16,7 @@
 					<div class="panel-heading">
 						<div class="row row-eq-height">
 							<div class="col-lg-1">
-								<img ng-src="{{'getUserImg.ashx?id=' + selectedpersonID}}" alt="Smile" height="60" width="60">
+								<img class="img-circle" ng-src="{{'getUserImg.ashx?id=' + selectedpersonID}}" alt="Smile" height="60" width="60">
 							</div>
 							<div class="col-lg-4">
 								<label>Person:</label>
@@ -40,7 +40,7 @@
 								<div class="panel-heading">
 									<span class="glyphicon glyphicon-hourglass"></span>
 									<span>{{r.DATE}}</span>
-									<img class="rep-img" src="{{'getUserImg.ashx?id='+selectedpersonID}}" alt="Smile" height="20" width="20">
+									<img class="img-circle rep-img" src="{{'getUserImg.ashx?id='+selectedpersonID}}" alt="Smile" height="20" width="20">
 								</div>
 								<div class="panel-body">
 									<div ng-repeat="l in r.DONE">

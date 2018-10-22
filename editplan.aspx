@@ -28,7 +28,7 @@
 				<ul class="nav nav-tabs nav-justified userslist">
 					<li class="{{currentuserid===u.ID?'active':''}}" ng-click="changeuser(u, true)" ng-repeat="u in filtered = (users | filter:{ INWORK: true })">
 						<a class="person" data-toggle="pill" href="#">
-							<img ng-src="{{'getUserImg.ashx?id=' + u.ID}}" alt="Smile" height="30" width="30" />
+							<img class="img-circle" ng-src="{{'getUserImg.ashx?id=' + u.ID}}" alt="Smile" height="30" width="30" />
 							<h5><span class="label label-info">{{u.LOGIN}}</span></h5>
 						</a>
 					</li>
@@ -46,7 +46,7 @@
 									<td><span class="label label-danger">{{d.ESTIM}}</span></td>
 									<td><span data-toggle="tooltip" title="{{d.SUMMARY}}">{{d.SUMMARY | limitTo:135}}</span></td>
 									<td><input class="taskselector" type="radio" name="optradio" ng-keydown="taskMove(d, $event)"></td>
-									<td><img height="20" width="20" class="taskselector" ng-src="{{'getUserImg.ashx?id=' + d.SMODTRID}}" title="{{d.SMODIFIER}}" /></td>
+									<td><img height="20" width="20" class="img-circle taskselector" ng-src="{{'getUserImg.ashx?id=' + d.SMODTRID}}" title="{{d.SMODIFIER}}" /></td>
 									<td><button ng-click="tasktotop(d)" data-toggle="tooltip" title="Move to top" type="button" class="btn btn-default btn-xs taskselector"><span class="glyphicon glyphicon-arrow-up"></span></button></td>
 									<td><button ng-click="unscheduletask(d)" data-toggle="tooltip" title="Remove from the schedule list" type="button" class="btn btn-default btn-xs taskselector"><span class="glyphicon glyphicon-arrow-right"></span></button></td>
 								</tr>

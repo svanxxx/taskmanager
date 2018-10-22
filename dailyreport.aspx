@@ -43,7 +43,7 @@
 						<tr ng-repeat="u in mpsusers | orderBy : 'PERSON_NAME'">
 							<td>
 								<a data-toggle="tooltip" title="Click to see all user's activity." target="_blank" href="dailysearch.aspx?userid={{u.ID}}" class="btn btn-default btn-xs" role="button">
-									<img ng-src="{{'getUserImg.ashx?id=' + u.ID}}" alt="Smile" height="60" width="60">
+									<img class="img-circle" ng-src="{{'getUserImg.ashx?id=' + u.ID}}" alt="Smile" height="60" width="60">
 									<br />
 									<b><span>{{u.LOGIN}}</span></b>
 									<br />
