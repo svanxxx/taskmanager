@@ -43,6 +43,14 @@ public static class CurrentContext
 		}
 		return User.PERSON_NAME;
 	}
+	public static string UserLogin()
+	{
+		if (!Valid)
+		{
+			return "";
+		}
+		return User.LOGIN;
+	}
 	static object _lockobject = new object();
 	public static MPSUser User
 	{

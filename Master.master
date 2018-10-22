@@ -79,7 +79,8 @@
 				<ul class="nav navbar-nav navbar-right">
 					<li>
 						<a class="bstusername" id="logina" href="<%=SecurityPage.loginpage.ToString()%>">
-							<span style="padding-right: 5px" class="glyphicon glyphicon-log-in"></span><%=CurrentContext.UserName()%>
+							<span style="padding-right: 5px" class="glyphicon glyphicon-log-in"></span><%=CurrentContext.UserLogin()%>
+							<img src="getUserImg.ashx?id=<%=CurrentContext.UserID.ToString()%>" alt="Smile" height="20" width="20" class="img-circle"/>
 						</a>
 					</li>
 				</ul>

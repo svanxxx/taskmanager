@@ -13,7 +13,7 @@
 		<div class="row">
 			<div class="col-lg-2 hidden-sm hidden-xs text-center">
 				<div class="alert alert-danger birthday" ng-cloak ng-show="haveBirthday">
-					<img ng-src="{{'getUserImg.ashx?id=' + birthdayID}}" alt="Smile" height="60" width="60">
+					<img class="img-circle" ng-src="{{'getUserImg.ashx?id=' + birthdayID}}" alt="Smile" height="60" width="60">
 					<span>&hArr;&nbsp;{{birthdayYears}}*</span>
 					<img src="images/cake.jpg" alt="Smile" height="60" width="60">
 					<span>=&#9786;</span>
@@ -30,7 +30,7 @@
 							<div class="col-lg-2 col-xs-6 col-centered">
 								<div class="panel panel-primary person-box">
 									<div class="panel-heading person-img">
-										<img ng-src="{{'getUserImg.ashx?id=' + user.ID}}" alt="smile" width="80" height="80" />
+										<img class="img-circle" ng-src="{{'getUserImg.ashx?id=' + user.ID}}" alt="smile" width="80" height="80" />
 									</div>
 									<div class="panel-body person-lab">
 										<label>{{user.PERSON_NAME}}</label>
@@ -106,7 +106,7 @@
 								<td><span class="label label-danger">{{d.ESTIM}}</span></td>
 								<td><span data-toggle="tooltip" title="{{d.SUMMARY}}">{{d.SUMMARY | limitTo:135}}</span></td>
 								<td>
-									<img height="20" width="20" class="btn-workme" ng-src="{{'getUserImg.ashx?id=' + d.SMODTRID}}" title="{{d.SMODIFIER}}" /></td>
+									<img class="img-circle" height="20" width="20" class="btn-workme" ng-src="{{'getUserImg.ashx?id=' + d.SMODTRID}}" title="{{d.SMODIFIER}}" /></td>
 								<td>
 									<button ng-click="workTask(d)" data-toggle="tooltip" title="Start work on this task now!" type="button" class="btn btn-default btn-xs btn-workme"><span class="glyphicon glyphicon-circle-arrow-up"></span></button>
 								</td>
@@ -147,7 +147,7 @@
 			<div class="text-center col-lg-2 hidden-sm hidden-xs">
 				<div class="btn-group-vertical">
 					<a style="margin-bottom: 1px; background-color: {{u.STATUS == 1 ? '#0000ff3d' : '#ff000096'}}" href="editplan.aspx?userid={{u.ID}}" class="btn btn-default" role="button" target="_blank" ng-repeat="u in mpsusers">
-						<img style="float:left" ng-src="getUserImg.ashx?id={{u.ID}}" alt="Smile" height="20" width="20">
+						<img class="img-circle" style="float:left" ng-src="getUserImg.ashx?id={{u.ID}}" alt="Smile" height="20" width="20">
 						{{u.LOGIN}}
 					</a>
 				</div>
