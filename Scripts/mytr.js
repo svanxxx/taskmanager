@@ -276,6 +276,20 @@ $(function () {
 			}
 			$scope.$apply();
 		};
+		notifyHub.client.onBuildChanged = function (id, ttid, userid, message) {
+			if (userid == ttUserID()) {
+				if (Notification.permission !== "granted") {
+					Notification.requestPermission();
+				}
+				var notification = new Notification('Your build request TT' + ttid + ' has chagnged its status!', {
+					//icon: 'icon.png',
+					body: message
+				});
+				notification.onclick = function () {
+					window.open("showtask.aspx?ttid=" + ttid);
+				};
+			}
+		};
 		$.connection.hub.disconnected(function () {
 			setTimeout(function () {
 				$.connection.hub.start().done(function () {

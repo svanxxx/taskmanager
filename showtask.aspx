@@ -24,7 +24,7 @@
 					<span class="glyphicon glyphicon-copy"></span>
 				</button>
 				<input type="text" class="form-control" id="summary" ng-disabled="!canChangeDefect()" ng-model="defect.SUMMARY">
-				<div class="row toolbar" ng-style="defect.DISPO | getDispoColorById:this">
+				<div class="hidden-xs row toolbar" ng-style="defect.DISPO | getDispoColorById:this">
 					<div class="col-sm-3">
 						<div class="row">
 							<div class="col-sm-3">
@@ -215,7 +215,7 @@
 							<li ng-style="a.deleted ? {'text-decoration':'line-through'} : ''" ng-repeat="a in attachs">
 								<a target="_blank" href="getattach.aspx?idrecord={{a.ID+'&ext='+getfileext(a.FILENAME)}}">
 									<span>{{a.FILENAME}}</span>
-									<img class="img-circle" src="getAttachImg.ashx?idrecord={{a.ID+'&ext='+getfileext(a.FILENAME)}}" />
+									<img src="getAttachImg.ashx?idrecord={{a.ID+'&ext='+getfileext(a.FILENAME)}}" style="max-width:100%" />
 								</a>&nbsp
 						<button ng-click="deleteAttach(a.ID)" type="button" class="btn btn-danger btn-xs">Delete</button>
 							</li>

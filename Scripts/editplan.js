@@ -136,27 +136,32 @@ $(function () {
 				}, 10);
 			}
 		};
-		$scope.changeuser = function (u, state) {
-			$scope.defects = [];
-			$scope.unscheduled = [];
-			$scope.currentuserid = u.ID;
-			$scope.currentuser = u;
-			var prgtasks = StartProgress("Loading tasks...");
-			if (state) {
-				window.history.pushState({ userid: $scope.currentuserid }, "user: " + u.LOGIN, replaceUrlParam(location.href, "userid", u.ID));
-			}
-			$http.post("trservice.asmx/getplanned", JSON.stringify({ "userid": u.TTUSERID }))
+		$scope.reloadTasks = function (prgtasks) {
+			$http.post("trservice.asmx/getplanned", JSON.stringify({ "userid": $scope.currentuser.TTUSERID }))
 				.then(function (result) {
 					$scope.defects = result.data.d;
-					EndProgress(prgtasks);
+					if (prgtasks) {
+						EndProgress(prgtasks);
+					}
 					$scope.changed = false;
 					reActivateTooltips();
 				});
-			$http.post("trservice.asmx/getunplanned", JSON.stringify({ "userid": u.TTUSERID }))
+			$http.post("trservice.asmx/getunplanned", JSON.stringify({ "userid": $scope.currentuser.TTUSERID }))
 				.then(function (response) {
 					$scope.unscheduled = response.data.d;
 					reActivateTooltips();
 				});
+		};
+		$scope.changeuser = function (u, state) {
+			var prgtasks = StartProgress("Loading tasks...");
+			$scope.defects = [];
+			$scope.unscheduled = [];
+			$scope.currentuserid = u.ID;
+			$scope.currentuser = u;
+			if (state) {
+				window.history.pushState({ userid: $scope.currentuserid }, "user: " + u.LOGIN, replaceUrlParam(location.href, "userid", u.ID));
+			}
+			$scope.reloadTasks(prgtasks);
 		};
 
 		getMPSUsers($scope, "users", $http, function () {
@@ -166,5 +171,17 @@ $(function () {
 			$scope.changeuser($scope.users.find(function (x) { return x.ID == $scope.currentuserid; }), true);
 		});
 		$scope.changed = false;
+
+		var notifyHub = $.connection.notifyHub;
+		notifyHub.client.onPlanChanged = function (userid) {
+			if ($scope.currentuserid == userid) {
+				$scope.reloadTasks();
+				$scope.$apply();
+			}
+		};
+		$.connection.hub.disconnected(function () {
+			setTimeout(function () { $.connection.hub.start(); }, 5000); // Restart connection after 5 seconds.
+		});
+		$.connection.hub.start();
 	}]);
 });

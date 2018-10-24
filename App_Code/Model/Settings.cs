@@ -125,6 +125,11 @@ public class Settings
 		get { return GetVal("WIKISITE"); }
 		set { values["WIKISITE"] = value; }
 	}
+	public string MPSWIKISITE
+	{
+		get { return GetVal("MPSWIKISITE"); }
+		set { values["MPSWIKISITE"] = value; }
+	}
 	public string METASITE
 	{
 		get { return GetVal("METASITE"); }

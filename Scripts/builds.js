@@ -13,7 +13,7 @@
 		$scope.loadData();
 
 		var notifyHub = $.connection.notifyHub;
-		notifyHub.client.onBuildChanged = function (id) {
+		notifyHub.client.onBuildChanged = function () {
 			$scope.loadData();
 			$scope.$apply();
 		};

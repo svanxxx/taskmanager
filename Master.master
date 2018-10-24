@@ -62,6 +62,7 @@
 					<li><a href="versionchanges.aspx"><span class="glyphicon glyphicon-check"></span>Versions</a></li>
 					<li><a target="_blank" href="<%= Settings.CurrentSettings.BSTSITE.ToString()%>"><span class="glyphicon glyphicon-link"></span>BST</a></li>
 					<li><a target="_blank" href="<%= Settings.CurrentSettings.WIKISITE.ToString()%>"><span class="glyphicon glyphicon-oil"></span>FiP Wiki</a></li>
+					<li><a target="_blank" href="<%= Settings.CurrentSettings.MPSWIKISITE.ToString()%>"><span class="glyphicon glyphicon-oil"></span>MPS Wiki</a></li>
 					<li><a target="_blank" href="<%= Settings.CurrentSettings.METASITE.ToString()%>"><span class="glyphicon glyphicon-oil"></span>Metadata</a></li>
 					<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">References<span class="caret"></span></a>
 						<ul class="dropdown-menu">

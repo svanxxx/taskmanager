@@ -202,6 +202,7 @@ public class DefectBuild : IdBasedObject
 	}
 	protected override void PostStore()
 	{
-		NotifyHub.NotifyBuildChange(ID);
+		DefectBase db = new DefectBase(TTID);
+		NotifyHub.NotifyBuildChange(ID, TTID, int.Parse(db.AUSER), STATUSTXT);
 	}
 }
