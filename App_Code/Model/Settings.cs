@@ -42,7 +42,17 @@ public class Settings
 	static readonly string _Tabl = "[tt_res].[dbo].[SETTINGS]";
 	string GetVal(string key)
 	{
-		return values.ContainsKey(key) ? values[key] : "";
+		string val = values.ContainsKey(key) ? values[key] : "";
+		if (val.ToUpper().StartsWith("HTTPS://") && !HttpContext.Current.Request.IsSecureConnection)
+		{
+			return "http" + val.Substring(5);
+		}
+		return val;
+
+	}
+	string CheckSSLPath(string path)
+	{
+		return path;
 	}
 
 	public string SMTPHOST
