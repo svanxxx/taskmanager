@@ -17,6 +17,11 @@ public class NotifyHub : Hub
 		var context = GlobalHost.ConnectionManager.GetHubContext<NotifyHub>();
 		context.Clients.All.OnBuildChanged(id, ttid, userid, message);
 	}
+	public static void NotifyBuildStatusChange(int id, int ttid, int userid, string message)
+	{
+		var context = GlobalHost.ConnectionManager.GetHubContext<NotifyHub>();
+		context.Clients.All.OnBuildStatusChanged(id, ttid, userid, message);
+	}
 	public void RequestRoomUsers()
 	{
 		Clients.Caller.OnRoomChanged(Roommate.Enum());

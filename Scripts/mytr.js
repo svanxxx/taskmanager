@@ -276,13 +276,13 @@ $(function () {
 			}
 			$scope.$apply();
 		};
-		notifyHub.client.onBuildChanged = function (id, ttid, userid, message) {
+		notifyHub.client.OnBuildStatusChanged = function (id, ttid, userid, message) {
 			if (userid == ttUserID()) {
 				if (Notification.permission !== "granted") {
 					Notification.requestPermission();
 				}
 				var notification = new Notification('Your build request TT' + ttid + ' has chagnged its status!', {
-					//icon: 'icon.png',
+					icon: 'images/fist.png',
 					body: message
 				});
 				notification.onclick = function () {

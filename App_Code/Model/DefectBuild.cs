@@ -205,4 +205,12 @@ public class DefectBuild : IdBasedObject
 		DefectBase db = new DefectBase(TTID);
 		NotifyHub.NotifyBuildChange(ID, TTID, int.Parse(db.AUSER), STATUSTXT);
 	}
+	protected override void OnChangeColumn(string col, string val)
+	{
+		if (col == _stat)
+		{
+			DefectBase db = new DefectBase(TTID);
+			NotifyHub.NotifyBuildStatusChange(ID, TTID, int.Parse(db.AUSER), STATUSTXT);
+		}
+	}
 }

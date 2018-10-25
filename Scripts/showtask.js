@@ -304,7 +304,7 @@ $(function () {
 		});
 
 		var notifyHub = $.connection.notifyHub;
-		notifyHub.client.onBuildChanged = function () {
+		notifyHub.client.OnBuildChanged = function () {
 			$scope.loadBuilds();
 			$scope.$apply();
 		};
