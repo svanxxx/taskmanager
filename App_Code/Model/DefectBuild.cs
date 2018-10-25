@@ -80,6 +80,44 @@ public class DefectBuild : IdBasedObject
 		cancelled = 3,
 		failed = 4
 	}
+	public string COLOR
+	{
+		set { }
+		get
+		{
+			var o = this[_stat];
+			if (o == DBNull.Value)
+			{
+				return "blue";
+			}
+			else
+			{
+				switch ((BuildStatus)Convert.ToInt32(o))
+				{
+					case BuildStatus.progress:
+						{
+							return "yellow";
+						}
+					case BuildStatus.finishedok:
+						{
+							return "white";
+						}
+					case BuildStatus.cancelled:
+						{
+							return "#cccccc96";
+						}
+					case BuildStatus.failed:
+						{
+							return "#ff000038";
+						}
+					default:
+						{
+							return "purple";
+						}
+				}
+			}
+		}
+	}
 	public string STATUS
 	{
 		get
