@@ -630,6 +630,12 @@ public class TRService : System.Web.Services.WebService
 		b.Store();
 	}
 	[WebMethod]
+	public bool IsBuildCancelled(int id)
+	{
+		DefectBuild b = new DefectBuild(id);
+		return b.CANCELLED;
+	}
+	[WebMethod]
 	public string geBuildLogDir()
 	{
 		return Settings.CurrentSettings.BUILDLOGSDIR;

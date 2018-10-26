@@ -80,6 +80,15 @@ public class DefectBuild : IdBasedObject
 		cancelled = 3,
 		failed = 4
 	}
+	public bool CANCELLED
+	{
+		get
+		{
+			var o = this[_stat];
+			return o != DBNull.Value && (BuildStatus)Convert.ToInt32(o) == BuildStatus.cancelled;
+		}
+		set { }
+	}
 	public string COLOR
 	{
 		set { }
@@ -88,7 +97,7 @@ public class DefectBuild : IdBasedObject
 			var o = this[_stat];
 			if (o == DBNull.Value)
 			{
-				return "blue";
+				return "#0000ff3b";
 			}
 			else
 			{
