@@ -14,8 +14,8 @@
 			<div class="panel-heading"></div>
 			<div class="panel-body">
 				<div class="list-group">
-					<div class="list-group-item" ng-repeat="b in builds" target="_blank">
-						<div class="row" style="background-color: {{b.COLOR}}">
+					<div class="list-group-item" ng-repeat="b in builds" target="_blank" style="background-color: {{b.COLOR}}">
+						<div class="row">
 							<div class="col-sm-1">
 								<span class="glyphicon glyphicon-time"></span><span>{{b.DATE}}</span>
 							</div>

@@ -8,23 +8,30 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
 	<div ng-app="mpsapplication" ng-controller="mpscontroller">
-		<table class="table table-hover table-bordered">
-			<thead>
-				<tr class="info">
-					<th>Branch Name</th>
-					<th>Date</th>
-					<th>Author</th>
-					<th>Author Email</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="b in branches"">
-					<td><a href="commits.aspx?branch={{b.NAME}}">{{b.NAME}}</a></td>
-					<td><a href="commits.aspx?branch={{b.NAME}}">{{b.DATE}}</a></td>
-					<td><a href="commits.aspx?branch={{b.NAME}}">{{b.AUTHOR}}</a></td>
-					<td><a href="commits.aspx?branch={{b.NAME}}">{{b.AUTHOREML}}</a></td>
-				</tr>
-			</tbody>
-		</table>
+
+		<div class="panel panel-info" ng-cloak>
+			<div class="panel-heading" style="text-align:center">Branches</div>
+			<div class="panel-body">
+				<div class="list-group">
+					<div class="list-group-item" ng-repeat="b in branches" style="background-color:{{b.COLOR}}">
+						<div class="row">
+							<div class="col-sm-3">
+								<span ng-show="b.TTID < 0">{{b.NAME}}</span>
+								<a ng-show="b.TTID > 0" href="showtask.aspx?ttid={{b.TTID}}" target="_blank"><span class="badge ng-binding">{{b.TTID}}</span></a>
+							</div>
+							<div class="col-sm-3">
+								<td><a href="commits.aspx?branch={{b.NAME}}">{{b.DATE}}</a></td>
+							</div>
+							<div class="col-sm-3">
+								<td><a href="commits.aspx?branch={{b.NAME}}">{{b.AUTHOR}}</a></td>
+							</div>
+							<div class="col-sm-3">
+								<td><a href="commits.aspx?branch={{b.NAME}}">{{b.AUTHOREML}}</a></td>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </asp:Content>

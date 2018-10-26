@@ -7,7 +7,27 @@ public class Branch
 	public string NAME { get; set; }
 	public string AUTHOR { get; set; }
 	public string AUTHOREML { get; set; }
-
+	public string COLOR
+	{
+		set { }
+		get
+		{
+			return NAME == "master" ? "#ff00004a" : (NAME == "Release" ? "#0000ff3d" : "white");
+		}
+	}
+	public int TTID
+	{
+		set { }
+		get
+		{
+			int ttid;
+			if (NAME.StartsWith("TT") && int.TryParse(NAME.Substring(2), out ttid))
+			{
+				return ttid;
+			}
+			return -1;
+		}
+	}
 	public Branch()
 	{
 	}
