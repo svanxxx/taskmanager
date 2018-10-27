@@ -9,7 +9,14 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
 	<div ng-app="mpsapplication" ng-controller="mpscontroller">
 		<div class="row">
-			<div class="col-lg-2"></div>
+			<div class="col-lg-2">
+				<div class="alert alert-success">
+					<strong>FlexLM server</strong> installation - follow next link: <a href="getinstall.ashx?type=flex&version=0.0.0" target="_blank" class="alert-link">click here</a>.
+				</div>
+				<div class="alert alert-info">
+					<strong>Fieldpro Client</strong> installation - follow next link: <a href="getinstall.ashx?type=client&version=0.0.0" target="_blank" class="alert-link">click here</a>.
+				</div>
+			</div>
 			<div class="col-lg-8">
 				<h2>Change Log</h2>
 				<div class="panel-group">
@@ -27,9 +34,6 @@
 							</button>
 							<button type="button" class="btn btn-default btn-xs fip-down btn-demo" ng-click="GetFile(v, 'demo')">
 								<span class="glyphicon glyphicon-download"></span>Demo
-							</button>
-							<button type="button" class="btn btn-default btn-xs fip-down btn-client" ng-click="GetFile(v, 'client')">
-								<span class="glyphicon glyphicon-download"></span>Client
 							</button>
 						</div>
 						<div class="panel-body">

@@ -158,6 +158,11 @@ public class RawSettings
 		get { return GetVal("FIELDPROCLIENT"); }
 		set { values["FIELDPROCLIENT"] = value; }
 	}
+	public string FLEXLMSERVER
+	{
+		get { return GetVal("FLEXLMSERVER"); }
+		set { values["FLEXLMSERVER"] = value; }
+	}
 	public string WORKGITLOCATION
 	{
 		get { return GetVal("WORKGITLOCATION"); }
@@ -195,7 +200,6 @@ public class RawSettings
 		CurrentRawSettings = null;
 	}
 }
-
 public class Settings : RawSettings
 {
 	public Settings(bool loaddata) : base(loaddata)

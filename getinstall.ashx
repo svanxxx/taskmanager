@@ -33,12 +33,16 @@ public class getinstall : IHttpHandler
 		verfolder = verfolder.Remove(verfolder.Length - 1);
 
 		folder += verfolder + "\\";
-		if (t == "efip" || t == "cx" || t == "onsite" || t == "demo" || t == "client")
+		if (t == "efip" || t == "cx" || t == "onsite" || t == "demo" || t == "client" || t == "flex")
 		{
 			string download = "";
 			if (t == "client")
 			{
 				download = Settings.CurrentSettings.INSTALLSFOLDER + Settings.CurrentSettings.FIELDPROCLIENT;
+			}
+			else if (t == "flex")
+			{
+				download = Settings.CurrentSettings.INSTALLSFOLDER + Settings.CurrentSettings.FLEXLMSERVER;
 			}
 			else
 			{
