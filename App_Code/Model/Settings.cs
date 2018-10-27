@@ -2,59 +2,47 @@
 using System.Data;
 using System.Web;
 
-public class Settings
+public class RawSettings
 {
-	static string settKey = "current_settings";
 	static object _lockobject = new object();
+	static RawSettings _CurrentSettings = null;
 	public static Settings CurrentSettings
+	{
+		get { return new Settings(CurrentRawSettings); }
+		set { CurrentRawSettings = null; }
+	}
+	public static RawSettings CurrentRawSettings
 	{
 		set
 		{
 			lock (_lockobject)
 			{
-				if (value == null)
-				{
-					HttpContext.Current.Application.Remove(settKey);
-					return;
-				}
-				HttpContext.Current.Application[settKey] = value;
+				_CurrentSettings = value;
 			}
 		}
 		get
 		{
 			lock (_lockobject)
 			{
-				if (HttpContext.Current.Application == null)
+				if (_CurrentSettings == null)
 				{
-					return null;
+					_CurrentSettings = new RawSettings(true);
 				}
-				object outs = HttpContext.Current.Application[settKey];
-				if (outs == null)
-				{
-					outs = new Settings(true);
-					HttpContext.Current.Application[settKey] = outs;
-				}
-				return new Settings(outs as Settings);
+				return new RawSettings(_CurrentSettings);
 			}
 		}
 	}
 
 	static readonly string _Tabl = "[tt_res].[dbo].[SETTINGS]";
+	protected virtual string ProcessValue(string val)
+	{
+		return val;
+	}
 	string GetVal(string key)
 	{
 		string val = values.ContainsKey(key) ? values[key] : "";
-		if (val.ToUpper().StartsWith("HTTPS://") && !HttpContext.Current.Request.IsSecureConnection)
-		{
-			return "http" + val.Substring(5);
-		}
-		return val;
-
+		return ProcessValue(val);
 	}
-	string CheckSSLPath(string path)
-	{
-		return path;
-	}
-
 	public string SMTPHOST
 	{
 		get { return GetVal("smtp.Host"); }
@@ -160,7 +148,21 @@ public class Settings
 		get { return GetVal("BUILDLOGSDIR"); }
 		set { values["BUILDLOGSDIR"] = value; }
 	}
-
+	public string INSTALLSFOLDER
+	{
+		get { return GetVal("INSTALLSFOLDER"); }
+		set { values["INSTALLSFOLDER"] = value; }
+	}
+	public string FIELDPROCLIENT
+	{
+		get { return GetVal("FIELDPROCLIENT"); }
+		set { values["FIELDPROCLIENT"] = value; }
+	}
+	public string WORKGITLOCATION
+	{
+		get { return GetVal("WORKGITLOCATION"); }
+		set { values["WORKGITLOCATION"] = value; }
+	}
 	Dictionary<string, string> values = new Dictionary<string, string>();
 	void LoadData()
 	{
@@ -169,19 +171,18 @@ public class Settings
 			values[dr["NAME"].ToString()] = dr["VALUE"].ToString();
 		}
 	}
-	public Settings(bool loaddata)
+	public RawSettings(bool loaddata)
 	{
 		if (loaddata)
 		{
 			LoadData();
 		}
 	}
-	public Settings()
+	public RawSettings()
 	{
 	}
-	public Settings (Settings o)
+	public RawSettings(RawSettings o)
 	{
-		Settings s = new Settings();
 		values = new Dictionary<string, string>(o.values);
 	}
 	public void Store()
@@ -191,6 +192,27 @@ public class Settings
 			DBHelper.SQLExecute(string.Format("INSERT INTO {0} ([NAME], [VALUE]) SELECT '{1}', '{2}' WHERE NOT EXISTS (SELECT * FROM {0} WHERE NAME = '{1}')", _Tabl, key, values[key]));
 			DBHelper.SQLExecute(string.Format("UPDATE {0} SET [VALUE]='{2}' WHERE [NAME] = '{1}'", _Tabl, key, values[key]));
 		}
-		CurrentSettings = new Settings(this);
+		CurrentRawSettings = null;
+	}
+}
+
+public class Settings : RawSettings
+{
+	public Settings(bool loaddata) : base(loaddata)
+	{
+	}
+	public Settings() : base()
+	{
+	}
+	public Settings(RawSettings o) : base(o)
+	{
+	}
+	protected override string ProcessValue(string val)
+	{
+		if (val.ToUpper().StartsWith("HTTPS://") && !HttpContext.Current.Request.IsSecureConnection)
+		{
+			return "http" + val.Substring(5);
+		}
+		return val;
 	}
 }

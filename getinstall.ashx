@@ -18,7 +18,7 @@ public class getinstall : IHttpHandler
 			return;
 		}
 		string lett = Regex.Replace(v, @"[\d-]", string.Empty).Replace(".", string.Empty);
-		string folder = string.Format(@"\\192.168.0.1\FiP Installations\FIELDPRO_V8{0}\", lett);
+		string folder = string.Format(@"{0}FIELDPRO_V8{1}\", Settings.CurrentSettings.INSTALLSFOLDER, lett);
 
 		string ver = Regex.Replace(v, "[^0-9.]", string.Empty);
 		string[] numbers = ver.Split('.');
@@ -33,23 +33,43 @@ public class getinstall : IHttpHandler
 		verfolder = verfolder.Remove(verfolder.Length - 1);
 
 		folder += verfolder + "\\";
-		if (t == "efip" || t == "cx" || t == "onsite")
+		if (t == "efip" || t == "cx" || t == "onsite" || t == "demo" || t == "client")
 		{
-			string prefix = "";
-			if (t == "efip")
+			string download = "";
+			if (t == "client")
 			{
-				prefix = "eFIELDPRO_8";
+				download = Settings.CurrentSettings.INSTALLSFOLDER + Settings.CurrentSettings.FIELDPROCLIENT;
 			}
-			else if (t == "cx")
+			else
 			{
-				prefix = "FIELDPRO_MODELS_ONSITE_REAL_TIME_8";
+				string prefix = "";
+				string postfix = "ACT";
+				if (t == "efip")
+				{
+					prefix = "eFIELDPRO_8";
+				}
+				else if (t == "cx")
+				{
+					prefix = "FIELDPRO_MODELS_ONSITE_REAL_TIME_8";
+				}
+				else if (t == "onsite")
+				{
+					prefix = "FIELDPRO_ONSITE_8";
+				}
+				else if (t == "demo")
+				{
+					prefix = "FIELDPRO_DEMO_DB_MSSQL_8";
+					postfix = "BELACT";
+				}
+				download = string.Format("{0}{1}{2}_{3}_{4}_{5}_{6}.msi", folder, prefix, lett, nums[0], nums[1], nums[2], postfix);
 			}
-			else if (t == "onsite")
-			{
-				prefix = "FIELDPRO_ONSITE_8";
-			}
-			string download = string.Format("{0}{1}{2}_{3}_{4}_{5}_ACT.msi", folder, prefix, lett, nums[0], nums[1], nums[2]);;
 
+			if (!System.IO.File.Exists(download))
+			{
+				context.Response.ContentType = "text/plain";
+				context.Response.Write("File not found:" + download);
+				return;
+			}
 			context.Response.ContentType = "application/octet-stream";
 			context.Response.AddHeader("Content-Length", (new System.IO.FileInfo(download)).Length.ToString());
 			context.Response.AddHeader("Content-Disposition", "filename=" + '"' + System.IO.Path.GetFileName(download) + '"');

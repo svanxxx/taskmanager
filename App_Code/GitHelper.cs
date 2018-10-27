@@ -10,7 +10,7 @@ public class GitHelper
 	{
 		using (PowerShell ps = PowerShell.Create())
 		{
-			ps.AddScript(@"cd \\192.168.0.1\git\v8");
+			ps.AddScript("cd " + Settings.CurrentSettings.WORKGITLOCATION);
 			ps.AddScript(@"git " + command);
 			List<string> ls = new List<string>();
 			foreach (var line in ps.Invoke())

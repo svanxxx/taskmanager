@@ -545,12 +545,12 @@ public class TRService : System.Web.Services.WebService
 		return TRRec.EnumPersonal(personid, DateTime.ParseExact(start, defDateFormat, CultureInfo.InvariantCulture), days);
 	}
 	[WebMethod(EnableSession = true)]
-	public Settings getSettings()
+	public RawSettings getSettings()
 	{
-		return Settings.CurrentSettings;
+		return RawSettings.CurrentRawSettings;
 	}
 	[WebMethod(EnableSession = true)]
-	public void setSettings(Settings s)
+	public void setSettings(RawSettings s)
 	{
 		if (!CurrentContext.Valid || !CurrentContext.Admin)
 		{
