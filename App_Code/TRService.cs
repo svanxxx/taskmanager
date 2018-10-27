@@ -595,9 +595,9 @@ public class TRService : System.Web.Services.WebService
 		return DefectBuild.hasBuildRequest();
 	}
 	[WebMethod]
-	public List<Branch> enumbranches()
+	public List<Branch> enumbranches(int from, int to)
 	{
-		return Branch.Enum();
+		return Branch.Enum(from, to);
 	}
 	[WebMethod(EnableSession = true)]
 	public void deleteBranch(string branch)

@@ -31,19 +31,33 @@ public class Branch
 	public Branch()
 	{
 	}
+	static object _lock = new object();
+	static DateTime _loadtime = DateTime.Now;
+	static List<Branch> _branches = new List<Branch>();
 	public static List<Branch> Enum()
 	{
-		List<Branch> ls = new List<Branch>();
-		foreach (string line in GitHelper.RunCommand(@"for-each-ref --format=""%(committerdate) %09 %(authorname) %09 %(refname) %09 %(authoremail)"" --sort=-committerdate"))
+		lock (_lock)
 		{
-			string[] sep = new string[] { "\t" };
-			string[] pars = line.Split(sep, StringSplitOptions.RemoveEmptyEntries);
-			if (pars.Length == 4)
+			if (_branches.Count < 1 || (DateTime.Now - _loadtime).TotalSeconds > 20) //cached by 20 seconds span to reduce disk load and response time
 			{
-				ls.Add(new Branch() { DATE = pars[0].Trim(), AUTHOR = pars[1].Trim(), NAME = pars[2].Trim().Split('/')[2], AUTHOREML = pars[3].Trim() });
+				_branches.Clear();
+				_loadtime = DateTime.Now;
+				foreach (string line in GitHelper.RunCommand(@"for-each-ref --format=""%(committerdate) %09 %(authorname) %09 %(refname) %09 %(authoremail)"" --sort=-committerdate"))
+				{
+					string[] sep = new string[] { "\t" };
+					string[] pars = line.Split(sep, StringSplitOptions.RemoveEmptyEntries);
+					if (pars.Length == 4)
+					{
+						_branches.Add(new Branch() { DATE = pars[0].Trim(), AUTHOR = pars[1].Trim(), NAME = pars[2].Trim().Split('/')[2], AUTHOREML = pars[3].Trim() });
+					}
+				}
 			}
+			return new List<Branch>(_branches);
 		}
-		return ls;
+	}
+	public static List<Branch> Enum(int from, int to)
+	{
+		return Enum().GetRange(from - 1, to - from + 1);
 	}
 	public static void Delete(string branch)
 	{
