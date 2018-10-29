@@ -1,6 +1,14 @@
 ﻿$(function () {
 	var app = angular.module('mpsapplication', []);
 	app.controller('mpscontroller', ["$scope", "$http", function ($scope, $http) {
+		$scope.loadData = function () {
+			var prg = StartProgress("Loading data...");
+			$http.post("trservice.asmx/enumbranches", JSON.stringify({ from: $scope.showby * ($scope.page - 1) + 1, to: $scope.showby * $scope.page }))
+				.then(function (result) {
+					$scope.branches = result.data.d;
+					EndProgress(prg);
+				});
+		};
 
 		$scope.pushState = function () {
 			var url = replaceUrlParam(replaceUrlParam(location.href, "showby", $scope.showby), "page", $scope.page);
@@ -26,15 +34,6 @@
 			$scope.loadData();
 			$scope.pushState();
 		};
-		$scope.loadData = function () {
-			var prg = StartProgress("Loading data...");
-			$http.post("trservice.asmx/enumbranches", JSON.stringify({ from: $scope.showby * ($scope.page - 1) + 1, to: $scope.showby * $scope.page }))
-				.then(function (result) {
-					$scope.branches = result.data.d;
-					EndProgress(prg);
-				});
-		};
-
 		var page = getParameterByName("page");
 		var showby = getParameterByName("showby");
 		$scope.page = 1;
@@ -46,6 +45,7 @@
 		if (showby !== "") {
 			$scope.showby = "" + parseInt(showby);
 		}
+
 		$scope.loadData();
 	}]);
 });

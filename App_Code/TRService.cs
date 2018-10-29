@@ -585,9 +585,9 @@ public class TRService : System.Web.Services.WebService
 		return r;
 	}
 	[WebMethod]
-	public List<DefectBuild> getBuildRequests()
+	public List<DefectBuild> getBuildRequests(int from, int to)
 	{
-		return DefectBuild.EnumData();
+		return DefectBuild.EnumData(from, to);
 	}
 	[WebMethod]
 	public bool hasBuildRequest()
@@ -607,9 +607,9 @@ public class TRService : System.Web.Services.WebService
 		Branch.Delete(branch);
 	}
 	[WebMethod]
-	public List<Commit> EnumCommits(string branch)
+	public List<Commit> EnumCommits(string branch, int from, int to)
 	{
-		return Branch.EnumCommits(branch);
+		return Branch.EnumCommits(branch, from, to);
 	}
 	[WebMethod]
 	public void CommentBuild(int id, string comment)

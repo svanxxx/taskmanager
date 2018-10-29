@@ -19,12 +19,15 @@
 								<a ng-show="b.TTID > 0" href="showtask.aspx?ttid={{b.TTID}}" target="_blank"><span class="badge ng-binding">{{b.TTID}}</span></a>
 							</div>
 							<div class="col-sm-3">
+								<span class="glyphicon glyphicon-time"></span>
 								<td><a href="commits.aspx?branch={{b.NAME}}">{{b.DATE}}</a></td>
 							</div>
 							<div class="col-sm-3">
+								<span class="glyphicon glyphicon-user"></span>
 								<td><a href="commits.aspx?branch={{b.NAME}}">{{b.AUTHOR}}</a></td>
 							</div>
 							<div class="col-sm-3">
+								<span class="glyphicon glyphicon-envelope"></span>
 								<td><a href="commits.aspx?branch={{b.NAME}}">{{b.AUTHOREML}}</a></td>
 							</div>
 						</div>

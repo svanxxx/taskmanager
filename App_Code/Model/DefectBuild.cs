@@ -15,8 +15,9 @@ public class DefectBuild : IdBasedObject
 	protected static string _stText = "StatusText";
 	protected static string _TTID = "TTID";
 	protected static string _User = "UserID";
-	protected static string _Tabl = "[TT_RES].[dbo].[DefectBuild]";
-	protected static string[] _allBasecols = new string[] { _pid, _par, _date, _stat, _dateUp, _mach, _not, _stText, _TTID, _User };
+	protected static string _rown = "ROWN";
+	protected static string _Tabl = "[TT_RES].[dbo].[V_DefectBuild]";
+	protected static string[] _allBasecols = new string[] { _pid, _par, _date, _stat, _dateUp, _mach, _not, _stText, _TTID, _rown, _User };
 
 	public int ID
 	{
@@ -209,11 +210,11 @@ public class DefectBuild : IdBasedObject
 		}
 		return res;
 	}
-	public static List<DefectBuild> EnumData()
+	public static List<DefectBuild> EnumData(int from, int to)
 	{
 		List<DefectBuild> res = new List<DefectBuild>();
 		DefectBuild worker = new DefectBuild();
-		foreach (DataRow r in worker.GetRecords(String.Format("ORDER BY {0} desc", _date), 50))
+		foreach (DataRow r in worker.GetRecords(String.Format("WHERE {0} >= {1} AND {0} <= {2} ORDER BY {3} desc", _rown, from, to, _date)))
 		{
 			DefectBuild d = new DefectBuild();
 			d.Load(r);

@@ -8,26 +8,45 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
 	<div ng-app="mpsapplication" ng-controller="mpscontroller">
-		<div class="alert alert-success text-center">
-			Current Branch: {{branch}}
+		<div class="panel panel-info" ng-cloak>
+			<div class="panel-heading" style="text-align: center">Current Branch: {{branch}}</div>
+			<div class="panel-body">
+				<div class="list-group">
+					<div class="list-group-item" ng-repeat="c in commits">
+						<div class="row">
+							<div class="col-sm-2">
+								<span class="glyphicon glyphicon-time"></span>
+								<span>{{c.DATE}}</span>
+							</div>
+							<div class="col-sm-2">
+								<span class="glyphicon glyphicon-user"></span>
+								<span>{{c.AUTHOR}}</span>
+							</div>
+							<div class="col-sm-5">
+								<span class="	glyphicon glyphicon-comment"></span>
+								<span>{{c.NOTES}}</span>
+							</div>
+							<div class="col-sm-3">
+								<span class="glyphicon glyphicon-pushpin"></span>
+								<span>{{c.COMMIT}}</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
-		<table class="table table-hover table-bordered">
-			<thead>
-				<tr class="info">
-					<th>Date</th>
-					<th>Author</th>
-					<th>Commit</th>
-					<th>Notes</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="c in commits">
-					<td>{{c.DATE}}</td>
-					<td>{{c.AUTHOR}}</td>
-					<td>{{c.COMMIT}}</td>
-					<td>{{c.NOTES}}</td>
-				</tr>
-			</tbody>
-		</table>
+		<div class="row">
+			<div class="col-sm-11">
+				<ul class="pager">
+					<li><a style="cursor: pointer" ng-click="decPage()">Previous</a></li>
+					<span>{{page}}</span>
+					<li><a style="cursor: pointer" ng-click="incPage()">Next</a></li>
+				</ul>
+			</div>
+			<div class="col-sm-1">
+				show by:
+				<select class="form-control" ng-change="changeShowBy()" ng-model="showby" ng-options="x for x in showbys" />
+			</div>
+		</div>
 	</div>
 </asp:Content>

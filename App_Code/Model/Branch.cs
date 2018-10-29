@@ -57,13 +57,15 @@ public class Branch
 	}
 	public static List<Branch> Enum(int from, int to)
 	{
-		return Enum().GetRange(from - 1, to - from + 1);
+		List<Branch> ls = Enum();
+		int lsmaxind = ls.Count - 1;
+		return ls.GetRange(Math.Min(lsmaxind, from - 1), Math.Min(lsmaxind + 1, to - from + 1));
 	}
 	public static void Delete(string branch)
 	{
 		GitHelper.RunCommand(string.Format("branch -D {0}", branch));
 	}
-	public static List<Commit> EnumCommits(string branch)
+	public static List<Commit> EnumCommits(string branch, int from, int to)
 	{
 		List<Commit> ls = new List<Commit>();
 		Commit com = null;
@@ -106,6 +108,14 @@ public class Branch
 		{
 			ls.Add(com);
 		}
-		return ls;
+
+		if (from >  ls.Count)
+		{
+			return new List<Commit>();
+		}
+
+		int ifrom = Math.Min(ls.Count - 1, from - 1);
+		int ito = Math.Min(ls.Count - ifrom, to - from + 1);
+		return ls.GetRange(ifrom, ito);
 	}
 }
