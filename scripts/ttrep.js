@@ -178,9 +178,14 @@
 			}
 		};
 		$scope.resetReferenceFilter = function (refname, obj) {
-			$(obj.target).parent().find("input").prop("checked", false)
+			$(obj.target).parent().find("input").prop("checked", false);
 			$scope.changed = true;
-			$scope.DefectsFilter[refname] = [];
+			if (typeof $scope.DefectsFilter[refname] == "string") {
+				$scope.DefectsFilter[refname] = "";
+			}
+			else {
+				$scope.DefectsFilter[refname] = [];
+			}
 		};
 		$scope.ChangeDate = function (dateparam) {
 			$scope.changed = true;

@@ -281,7 +281,7 @@ $(function () {
 				if (Notification.permission !== "granted") {
 					Notification.requestPermission();
 				}
-				var notification = new Notification('Your build request TT' + ttid + ' has chagnged its status!', {
+				var notification = new Notification('Your build request TT' + ttid + ' has changed its status!', {
 					icon: 'images/fist.png',
 					body: message
 				});

@@ -140,6 +140,9 @@ function createTasksFilter(filter)
 	if (!("dispositions" in filter)) {
 		filter.dispositions = [];
 	}
+	if (!("ID" in filter)) {
+		filter.ID = "";
+	}
 	if (!("components" in filter)) {
 		filter.components = [];
 	}

@@ -69,13 +69,27 @@
 			<thead>
 				<tr>
 					<th>
-						<input type="button" value="&#9745" ng-click="checkall()"></th>
-					<th>ID</th>
+						<input type="button" value="&#9745" ng-click="checkall()">
+					</th>
+					<th class="{{classFiltered('ID')}}">
+						<div class="dropdown middlecol">
+							<a href="#" data-toggle="dropdown" class="dropdown-toggle">ID<b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li>
+									<button class="refclear" type="button" ng-click="resetReferenceFilter('ID', $event)">&#9746</button>
+									<span>IDs:</span><input ng-model="DefectsFilter.ID">
+								</li>
+								<br />
+								<span>Enter ids in form: xxx,yyy-zzz,aaa separating by comma, with ranges indicated by - symbol</span>
+								<br />
+							</ul>
+						</div>
+					</th>
 					<th class="{{classFiltered('startEstim', 'endEstim')}}">
 						<div class="dropdown middlecol">
 							<a href="#" data-toggle="dropdown" class="dropdown-toggle">Time<b class="caret"></b></a>
 							<ul class="dropdown-menu">
-								<li class="usersshortlist">
+								<li>
 									<div class="checkbox">
 										<label>
 											<input ng-checked="{{DefectsFilter.startEstim !== ''}}" ng-click="ChangeNum('startEstim');" type="checkbox">From:<input ng-model="DefectsFilter.startEstim" type="number">

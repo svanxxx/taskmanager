@@ -13,6 +13,7 @@ public class DefectsFilter
 	public List<int> components;
 	public List<int> severities;
 
+	public string ID; //ids in form xxx,yyy-zzz,aaa
 	public string text;
 	public string orderer;
 
@@ -37,6 +38,36 @@ public partial class DefectBase : IdBasedObject
 	string PrepareQueryForEnum(DefectsFilter f, bool order)
 	{
 		List<string> lswhere = new List<string>();
+		if (!string.IsNullOrEmpty(f.ID))
+		{
+			string swhere = "";
+			string[] ranges = f.ID.Trim().Split(',');
+			foreach (string range in ranges)
+			{
+				string[] numbers = range.Trim().Split('-');
+				int val1, val2;
+				if (numbers.Length == 1 && int.TryParse(numbers[0], out val1))
+				{
+					if (!string.IsNullOrEmpty(swhere))
+					{
+						swhere += " OR ";
+					}
+					swhere += string.Format("({0} = {1})", _ID, val1);
+				}
+				else if (numbers.Length == 2 && int.TryParse(numbers[0], out val1) && int.TryParse(numbers[1], out val2))
+				{
+					if (!string.IsNullOrEmpty(swhere))
+					{
+						swhere += " OR ";
+					}
+					swhere += string.Format("(({0} >= {1}) AND ({0} <= {2}))", _ID, Math.Min(val1, val2), Math.Max(val1, val2));
+				}
+			}
+			if (!string.IsNullOrEmpty(swhere))
+			{
+				lswhere.Add(string.Format(" AND ({0})", swhere));
+			}
+		}
 		if (f.dispositions != null && f.dispositions.Count > 0)
 		{
 			lswhere.Add(string.Format(" AND  ({0} in ({1}))", _Disp, string.Join(",", f.dispositions)));
