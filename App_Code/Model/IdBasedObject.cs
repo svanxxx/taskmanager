@@ -46,9 +46,11 @@ static class OleDbTypeMap
 public class IdBasedObject
 {
 	public static string defDateFormat = "MM-dd-yyyy";
+	public static string defDateTimeFormat = "MM-dd-yyyy HH:mm:ss";
 	protected string _fldid;
 	protected string _id;
 	string _table;
+	string _view;
 	protected List<string> _columns;
 	bool[] _modified;
 	DataRow _values;
@@ -183,8 +185,14 @@ public class IdBasedObject
 			svals);
 		return Convert.ToInt32(DBHelper.GetValue(sql, pars.ToArray()));
 	}
-	public IdBasedObject(string table, string[] columns, string id, string pcname = "ID", bool doload = true)
+	protected string ViewTable
 	{
+		get { return string.IsNullOrEmpty(_view) ? _table : _view; }
+		set { }
+	}
+	public IdBasedObject(string table, string[] columns, string id, string pcname = "ID", bool doload = true, string view = "")
+	{
+		_view = view;
 		_fldid = pcname;
 		_columns = new List<string>(columns);
 		_modified = new bool[_columns.Count];
@@ -217,7 +225,7 @@ public class IdBasedObject
 			sql += string.Format("{0}, ", OnTransformCol(col));
 		}
 		sql = sql.Remove(sql.Length - 2);
-		sql += string.Format(" FROM {0} ", _table);
+		sql += string.Format(" FROM {0} ", ViewTable);
 		return sql;
 	}
 	public void Load()
@@ -355,9 +363,13 @@ public class IdBasedObject
 			}
 		}
 	}
-	protected string GetAsDate(string column)
+	protected string GetAsDate(string column, string defDate = DBHelper.sdefaultDate)
 	{
-		return this[column] == DBNull.Value ? DBHelper.sdefaultDate : Convert.ToDateTime(this[column]).ToString(defDateFormat, CultureInfo.InvariantCulture);
+		return this[column] == DBNull.Value ? defDate : Convert.ToDateTime(this[column]).ToString(defDateFormat, CultureInfo.InvariantCulture);
+	}
+	protected string GetAsDateTime(string column, string defDate = DBHelper.sdefaultDate)
+	{
+		return this[column] == DBNull.Value ? defDate : Convert.ToDateTime(this[column]).ToString(defDateTimeFormat, CultureInfo.InvariantCulture);
 	}
 	protected int GetAsInt(string column)
 	{

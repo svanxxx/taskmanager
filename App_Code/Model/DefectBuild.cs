@@ -6,9 +6,10 @@ public class DefectBuild : IdBasedObject
 {
 	protected static string _pid = "idRecord";
 	protected static string _par = "ParentID";
-	protected static string _date = "DateTimeCreate";
 	protected static string _stat = "Status";
+	protected static string _date = "DateTimeCreate";
 	protected static string _dateUp = "DateTimeUpdate";
+	protected static string _dateB = "DateTimeBuild";
 	protected static string _mach = "Machine";
 	protected static string _not = "Notes";
 	protected static string _gui = "UGuid";
@@ -16,8 +17,9 @@ public class DefectBuild : IdBasedObject
 	protected static string _TTID = "TTID";
 	protected static string _User = "UserID";
 	protected static string _rown = "ROWN";
-	protected static string _Tabl = "[TT_RES].[dbo].[V_DefectBuild]";
-	protected static string[] _allBasecols = new string[] { _pid, _par, _date, _stat, _dateUp, _mach, _not, _stText, _TTID, _rown, _User };
+	protected static string _Tabl = "[TT_RES].[dbo].[DefectBuild]";
+	protected static string _View = "[TT_RES].[dbo].[V_DefectBuild]";
+	protected static string[] _allBasecols = new string[] { _pid, _par, _date, _stat, _dateUp, _mach, _not, _stText, _TTID, _rown, _User, _dateB };
 
 	public int ID
 	{
@@ -28,7 +30,7 @@ public class DefectBuild : IdBasedObject
 	{
 		get
 		{
-			return Convert.ToDateTime(this[_date]).ToString();
+			return GetAsDateTime(_date, "");
 		}
 		set { this[_date] = value; }
 	}
@@ -41,18 +43,36 @@ public class DefectBuild : IdBasedObject
 	{
 		get { return this[_mach].ToString(); }
 		set { this[_mach] = value; }
+	}	
+	public int DURATION
+	{
+		get
+		{
+			if (this[_dateB] == DBNull.Value)
+				return 0;
+			if (this[_dateUp] == DBNull.Value)
+				return 0;
+			DateTime d1 = Convert.ToDateTime(this[_dateB]);
+			DateTime d2 = Convert.ToDateTime(this[_dateUp]);
+			return (int)(d2 - d1).TotalMinutes;
+		}
+		set { }
 	}
 	public string DATEUP
 	{
 		get
 		{
-			if (this[_dateUp] == DBNull.Value)
-			{
-				return "";
-			}
-			return Convert.ToDateTime(this[_dateUp]).ToString();
+			return GetAsDateTime(_dateUp, "");
 		}
 		set { this[_dateUp] = value; }
+	}
+	public string DATEBUILD
+	{
+		get
+		{
+			return GetAsDateTime(_dateB, "");
+		}
+		set { }
 	}
 	public int DEFID
 	{
@@ -90,6 +110,15 @@ public class DefectBuild : IdBasedObject
 		}
 		set { }
 	}
+	public bool STARTED
+	{
+		get
+		{
+			var o = this[_stat];
+			return o != DBNull.Value && (BuildStatus)Convert.ToInt32(o) == BuildStatus.progress;
+		}
+		set { }
+	}
 	public string COLOR
 	{
 		set { }
@@ -110,7 +139,7 @@ public class DefectBuild : IdBasedObject
 						}
 					case BuildStatus.finishedok:
 						{
-							return "white";
+							return "#8bc34a3d";
 						}
 					case BuildStatus.cancelled:
 						{
@@ -178,11 +207,11 @@ public class DefectBuild : IdBasedObject
 	}
 
 	public DefectBuild()
-	  : base(_Tabl, _allBasecols, 0.ToString(), _pid, false)
+	  : base(_Tabl, _allBasecols, 0.ToString(), _pid, false, _View)
 	{
 	}
 	public DefectBuild(int id)
-	  : base(_Tabl, _allBasecols, id.ToString(), _pid)
+	  : base(_Tabl, _allBasecols, id.ToString(), _pid, true, _View)
 	{
 	}
 	protected override string OnTransformCol(string col)
@@ -224,7 +253,7 @@ public class DefectBuild : IdBasedObject
 	}
 	public static void AddRequestByTask(int ttid, string notes)
 	{
-		AddObject(_Tabl, new string[] { _par, _not, _User }, new object[] { Defect.GetIDbyTT(ttid), notes, CurrentContext.User.TTUSERID }, _pid);
+		AddObject(_Tabl, new string[] { _par, _not, _User, _dateB }, new object[] { Defect.GetIDbyTT(ttid), notes, CurrentContext.User.TTUSERID, DateTime.Now }, _pid);
 	}
 	public static void CancelRequestByTask(int ttid)
 	{

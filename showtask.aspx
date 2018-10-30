@@ -242,14 +242,14 @@
 							<div class="panel-body">
 								<label ng-show="!builds">loading...</label>
 								<div class="list-group">
-									<a href="getBuildLog.ashx?id={{b.ID}}" class="list-group-item" ng-repeat="b in builds" target="_blank">
+									<a href="getBuildLog.ashx?id={{b.ID}}" class="list-group-item" ng-repeat="b in builds" target="_blank" style="background-color: {{b.COLOR}}">
 										<div class="row">
 											<div class="col-sm-2">
 												<span class="glyphicon glyphicon-time"></span><span>{{b.DATE}}</span>
 											</div>
 											<div class="col-sm-3">
 												<div class="progress" ng-show="b.STATUS.includes('Building')==true">
-													<div class="progress-bar progress-bar-striped active" role="progressbar" style="width: 100%">
+													<div class="progress-bar progress-bar-striped active" role="progressbar" style="width: {{b.PERCENT}}%">
 														{{b.STATUSTXT?b.STATUSTXT:b.STATUS}}
 													</div>
 												</div>
@@ -267,7 +267,7 @@
 												<span class="glyphicon glyphicon-comment"></span><span>{{b.NOTES}}</span>
 											</div>
 											<div class="col-sm-2">
-												<span class="glyphicon glyphicon-blackboard"></span><span>{{b.MACHINE}}</span>
+												<span class="glyphicon glyphicon-blackboard"></span><span>{{b.MACHINE}}&nbsp({{b.DURATION}} mins)</span>
 											</div>
 											<div class="col-sm-3">
 												<span class="glyphicon glyphicon-fire"></span>

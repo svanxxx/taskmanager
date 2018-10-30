@@ -51,7 +51,30 @@ $(function () {
 		$scope.getfileext = function (filename) {
 			return (/(?:\.([^.]+))?$/).exec(filename)[1];
 		};
+		$scope.updatePercent = function () {
+			for (var i = 0; i < $scope.builds.length; i++) {
+				$scope.builds[i].PERCENT = 100;
+				if ($scope.builds[i].DATEBUILD !== "") {
+					var time = $scope.builds[i].DATEBUILD.split(" ")[1];
+					var d = StringToTime(time);
+					var now = new Date();
+					d.setFullYear(now.getFullYear());
+					d.setMonth(now.getMonth());
+					d.setDate(now.getDate());
+					var timeDiff = Math.abs(now.getTime() - d.getTime());
+					var diffMins = Math.ceil(timeDiff / (1000 * 60));
+					$scope.builds[i].PERCENT = diffMins / 30.0 * 100.0;
+					if ($scope.builds[i].STARTED) {
+						$scope.builds[i].DURATION = diffMins;
+					}
+				}
+			}
+		};
 		$scope.loadBuilds = function () {
+			$interval(function () {
+				$scope.updatePercent();
+			}, 5000);
+
 			if (!Array.isArray($scope.builds)) {
 				$scope.builds = [];
 			}
@@ -62,9 +85,10 @@ $(function () {
 				.then(function (result) {
 					if (JSON.stringify($scope.builds) !== JSON.stringify(result.data.d)) {
 						$scope.builds = result.data.d;
+						$scope.updatePercent();
 					}
 				});
-			$http.post("trservice.asmx/EnumCommits", JSON.stringify({ "branch": "TT" + ttid }))
+			$http.post("trservice.asmx/EnumCommits", JSON.stringify({ "branch": "TT" + ttid, from: 1, to: 20 }))
 				.then(function (result) {
 					if (JSON.stringify($scope.commits) !== JSON.stringify(result.data.d)) {
 						$scope.commits = result.data.d;
