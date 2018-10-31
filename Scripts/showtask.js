@@ -327,9 +327,12 @@ $(function () {
 				$scope.changed = true;
 			}
 		});
+		$scope.releaseRequest = function () {
+			$scope.notifyHub.server.sendMessage(userID(), $scope.lockedby, "Please release TT" + $scope.defect.ID + "!!!");
+		};
 
-		var notifyHub = $.connection.notifyHub;
-		notifyHub.client.OnBuildChanged = function () {
+		$scope.notifyHub = $.connection.notifyHub;
+		$scope.notifyHub.client.OnBuildChanged = function () {
 			$scope.loadBuilds();
 			$scope.$apply();
 		};

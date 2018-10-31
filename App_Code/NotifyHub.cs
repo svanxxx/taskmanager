@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.SignalR;
+using System.Collections.Concurrent;
 
 public class NotifyHub : Hub
 {
@@ -25,5 +26,22 @@ public class NotifyHub : Hub
 	public void RequestRoomUsers()
 	{
 		Clients.Caller.OnRoomChanged(Roommate.Enum());
+	}
+	static ConcurrentDictionary<string, string> _registry = new ConcurrentDictionary<string, string>();
+	public void RegisterMessenger(string userid)
+	{
+		_registry[userid] = Context.ConnectionId;
+	}
+	public void SendMessage(int fromID, int toID, string message)
+	{
+		if (!_registry.ContainsKey(toID.ToString()))
+		{
+			return;
+		}
+		string id = _registry[toID.ToString()];
+		if (Clients.Client(id) != null)
+		{
+			Clients.Client(id).OnMessage(fromID, message);
+		}
 	}
 }

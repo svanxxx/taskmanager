@@ -168,7 +168,7 @@
 					<div id="bst" class="tab-pane fade">
 						<textarea class="form-control" rows="30" ng-disabled="!canChangeDefect()" ng-model="defect.BST"></textarea>
 					</div>
-					
+
 					<div id="workflow" class="tab-pane fade">
 						<label ng-show="!events">loading...</label>
 						<div class="list-group">
@@ -216,15 +216,20 @@
 							<li ng-style="a.deleted ? {'text-decoration':'line-through'} : ''" ng-repeat="a in attachs">
 								<a target="_blank" href="getattach.aspx?idrecord={{a.ID+'&ext='+getfileext(a.FILENAME)}}">
 									<span>{{a.FILENAME}}</span>
-									<img src="getAttachImg.ashx?idrecord={{a.ID+'&ext='+getfileext(a.FILENAME)}}" style="max-width:100%" />
+									<img src="getAttachImg.ashx?idrecord={{a.ID+'&ext='+getfileext(a.FILENAME)}}" style="max-width: 100%" />
 								</a>&nbsp
 						<button ng-click="deleteAttach(a.ID)" type="button" class="btn btn-danger btn-xs">Delete</button>
 							</li>
 						</ul>
 					</div>
 					<div id="lockinfo" class="tab-pane fade">
-						<span class="label label-info">{{getMPSUserName(lockedby)}}</span>
-						<img class="img-circle" ng-src="{{'getUserImg.ashx?id=' + lockedby}}" alt="Smile" height="42" width="42">
+						<div class="row">
+							<span class="label label-info">{{getMPSUserName(lockedby)}}</span>
+							<img class="img-circle" ng-src="{{'getUserImg.ashx?id=' + lockedby}}" alt="Smile" height="42" width="42">
+						</div>
+						<div class="row">
+							<button type="button" ng-click="releaseRequest()" class="btn btn-primary btn-xs">Request to release!</button>
+						</div>
 					</div>
 					<div id="taskbuilds" class="tab-pane fade">
 						<div class="panel panel-info">
@@ -259,9 +264,9 @@
 														{{b.STATUS}}...
 													</div>
 												</div>
-												<span style="color:red" class="glyphicon glyphicon-remove-circle" ng-show="b.STATUS.includes('FAILED')==true"></span>
+												<span style="color: red" class="glyphicon glyphicon-remove-circle" ng-show="b.STATUS.includes('FAILED')==true"></span>
 												<span class="glyphicon glyphicon-pushpin" ng-show="b.STATUS.includes('Cancel')==true"></span>
-												<span style="color:green" class="glyphicon glyphicon-ok-circle" ng-show="b.STATUS.includes('OK')==true"></span>
+												<span style="color: green" class="glyphicon glyphicon-ok-circle" ng-show="b.STATUS.includes('OK')==true"></span>
 												<span ng-show="b.STATUS.includes('Building')==false&&b.STATUS.includes('wait')==false">{{b.STATUS}}</span>
 											</div>
 											<div class="col-sm-2">
@@ -326,7 +331,7 @@
 				</div>
 			</div>
 			<div class="col-lg-2 hidden-md">
-				<div class="alert alert-info" style="text-align:center">
+				<div class="alert alert-info" style="text-align: center">
 					<img class="img-circle" ng-src="{{'getUserImg.ashx?ttid=' + defect.AUSER}}" alt="Smile" height="60" width="60" />
 					<div>
 						<strong>{{defect.AUSER | getUserById:this}}</strong>

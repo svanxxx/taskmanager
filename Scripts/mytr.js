@@ -276,7 +276,7 @@ $(function () {
 			}
 			$scope.$apply();
 		};
-		notifyHub.client.OnBuildStatusChanged = function (id, ttid, userid, message) {
+		notifyHub.client.onBuildStatusChanged = function (id, ttid, userid, message) {
 			if (userid == ttUserID()) {
 				if (Notification.permission !== "granted") {
 					Notification.requestPermission();
@@ -290,17 +290,30 @@ $(function () {
 				};
 			}
 		};
+		notifyHub.client.onMessage = function (fromID, message) {
+			if (Notification.permission !== "granted") {
+				Notification.requestPermission();
+			}
+			var notification = new Notification('message', {
+				icon: 'getUserImg.ashx?id=' + fromID,
+				body: message
+			});
+		};
+
 		$.connection.hub.disconnected(function () {
 			setTimeout(function () {
 				$.connection.hub.start().done(function () {
 					notifyHub.server.requestRoomUsers();
+					notifyHub.server.registerMessenger(userID());
 				});
 			}, 5000); // Restart connection after 5 seconds.
 		});
+
 		getMPSUsers($scope, "mpsusers", $http, function () {
 			$scope.checkBirthday();
 			$.connection.hub.start().done(function () {
 				notifyHub.server.requestRoomUsers();
+				notifyHub.server.registerMessenger(userID());
 			});
 		});
 	}]);
