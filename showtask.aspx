@@ -10,6 +10,7 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
 	<input type="hidden" id="deflist" value="<%=Settings.CurrentSettings.DEFLISTENERS.ToString()%>" />
+	<input type="hidden" id="buildtime" value="<%=Settings.CurrentSettings.BUILDTIME.ToString()%>" />
 	<div ng-app="mpsapplication" ng-controller="mpscontroller" ng-cloak>
 		<div class="alert alert-danger savebutton btn-group-vertical" ng-cloak ng-show="changed">
 			<button type="button" class="btn btn-lg btn-info" ng-click="saveDefect()">Save</button>

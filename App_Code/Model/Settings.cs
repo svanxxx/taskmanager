@@ -163,6 +163,11 @@ public class RawSettings
 		get { return GetVal("FLEXLMSERVER"); }
 		set { values["FLEXLMSERVER"] = value; }
 	}
+	public string BUILDTIME
+	{
+		get { return GetVal("BUILDTIME"); }
+		set { values["BUILDTIME"] = value; }
+	}
 	public string WORKGITLOCATION
 	{
 		get { return GetVal("WORKGITLOCATION"); }

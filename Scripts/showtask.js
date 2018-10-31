@@ -24,6 +24,7 @@ $(function () {
 	app.filter('getDispoColorById', getDispoColorById);
 
 	app.controller('mpscontroller', ["$scope", "$http", "$interval", "$window", function ($scope, $http, $interval, $window) {
+		$scope.buildtime = parseInt(document.getElementById("buildtime").value);
 		$scope.tab_builds = "Builds";
 		$scope.tab_attachs = "Attachments";
 		$scope.tab_history = "History";
@@ -63,7 +64,7 @@ $(function () {
 					d.setDate(now.getDate());
 					var timeDiff = Math.abs(now.getTime() - d.getTime());
 					var diffMins = Math.ceil(timeDiff / (1000 * 60));
-					$scope.builds[i].PERCENT = diffMins / 30.0 * 100.0;
+					$scope.builds[i].PERCENT = diffMins / $scope.buildtime * 100.0;
 					if ($scope.builds[i].STARTED) {
 						$scope.builds[i].DURATION = diffMins;
 					}

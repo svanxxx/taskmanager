@@ -9,6 +9,7 @@
 </asp:Content>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
+	<input type="hidden" id="buildtime" value="<%=Settings.CurrentSettings.BUILDTIME.ToString()%>" />
 	<div ng-app="mpsapplication" ng-controller="mpscontroller">
 		<div class="panel panel-info" ng-cloak>
 			<div class="panel-heading" style="text-align: center">Builds History</div>
