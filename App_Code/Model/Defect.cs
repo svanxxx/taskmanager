@@ -378,7 +378,10 @@ public partial class DefectBase : IdBasedObject
 		}
 		return ls;
 	}
-
+	public static string GetTaskDispName(int ttid)
+	{
+		return DBHelper.GetValue(string.Format("SELECT 'TT{3} ' + {0} FROM {1} WHERE {2} = {3}", _Summ, _Tabl, _idRec, ttid)).ToString();
+	}
 	static DefectsFilter UnusedVacations()
 	{
 		DefectsFilter f = new DefectsFilter();

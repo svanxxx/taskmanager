@@ -19,15 +19,13 @@
 					<div class="list-group-item" ng-repeat="b in builds" target="_blank" style="background-color: {{b.COLOR}}">
 						<div class="row">
 							<div class="col-sm-1">
-								<span class="glyphicon glyphicon-time"></span><span>{{b.DATE}}</span>
+								<h6><span class="glyphicon glyphicon-time"></span>{{b.DATE}}</h6>
 							</div>
-							<div class="col-sm-1">
-								<div class="col-sm-1">
-									<a href="showtask.aspx?ttid={{b.TTID}}" target="_blank">
-										<span class="badge">{{b.TTID}}</span>
-										<span>{{b.STATUS}}</span>
-									</a>
-								</div>
+							<div class="col-sm-2">
+								<a href="showtask.aspx?ttid={{b.TTID}}" target="_blank">
+									<span class="badge">{{b.TTID}}</span>
+								</a>
+								<span>{{b.STATUS}}</span>
 							</div>
 							<div class="col-sm-2">
 								<img class="rep-img img-circle" src="{{'getUserImg.ashx?ttid=' + b.TTUSERID}}" alt="Smile" height="20" width="20">
@@ -47,10 +45,9 @@
 								</div>
 							</div>
 							<div class="col-sm-1">
-								<span class="glyphicon glyphicon-fire"></span>
-								<span>{{b.DATEUP}}</span>
+								<h6><span class="glyphicon glyphicon-fire"></span>{{b.DATEUP}}</h6>
 							</div>
-							<div class="col-sm-4">
+							<div class="col-sm-3">
 								<a href="getBuildLog.ashx?id={{b.ID}}">{{b.STATUSTXT}}
 								</a>
 							</div>
