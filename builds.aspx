@@ -2,6 +2,7 @@
 
 <asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
 	<%=System.Web.Optimization.Styles.Render("~/bundles/builds_css")%>
+	<%=System.Web.Optimization.Scripts.Render("~/bundles/buildshelper_js")%>
 	<%=System.Web.Optimization.Scripts.Render("~/bundles/builds_js")%>
 	<script src="<%=Settings.CurrentSettings.ANGULARCDN.ToString()%>angular.min.js"></script>
 	<script src="scripts/jquery.signalR-2.3.0.min.js"></script>
@@ -33,7 +34,7 @@
 								<span class="glyphicon glyphicon-comment"></span><span>{{b.NOTES}}</span>
 							</div>
 							<div class="col-sm-2">
-								<span class="glyphicon glyphicon-blackboard"></span><span>{{b.MACHINE}}&nbsp({{b.DURATION}} mins)</span>
+								<span class="glyphicon glyphicon-blackboard"></span><span>{{b.MACHINE}}&nbsp({{b.DURATION}} min)</span>
 								<div class="progress" ng-show="b.STATUS.includes('wait')==true">
 									<div class="progress-bar progress-bar-striped active progress-bar-warning" role="progressbar" style="width: 100%">
 										{{b.STATUS}}...

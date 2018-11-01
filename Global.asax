@@ -19,6 +19,13 @@
 				, string.Format("~/css/{0}.css", file)
 				));
 		}
+		string[] customscripts = new string[] { "buildshelper"};
+		foreach (string file in customscripts)
+		{
+			System.Web.Optimization.BundleTable.Bundles.Add(new System.Web.Optimization.ScriptBundle(string.Format("~/bundles/{0}_js", file)).Include(
+			string.Format("~/scripts/{0}.js", file)	
+			));
+		}
 	}
 	void Application_End(object sender, EventArgs e)
 	{
