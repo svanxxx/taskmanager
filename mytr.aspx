@@ -12,13 +12,14 @@
 	<div id="controllerholder" ng-app="mpsapplication" ng-controller="mpscontroller">
 		<div class="row">
 			<div class="col-lg-2 hidden-sm hidden-xs text-center">
-				<div class="alert alert-danger birthday" ng-cloak ng-show="haveBirthday">
-					<img class="img-circle" ng-src="{{'getUserImg.ashx?id=' + birthdayID}}" alt="Smile" height="60" width="60">
-					<span>&hArr;&nbsp;{{birthdayYears}}*</span>
-					<img src="images/cake.jpg" alt="Smile" height="60" width="60">
-					<span>=&#9786;</span>
-				</div>
 				<div class="btn-group-vertical">
+					<button type="button" class="btn btn-danger" ng-cloak ng-show="haveBirthday" ng-click="congratulate()">
+						<img class="img-circle" ng-src="{{'getUserImg.ashx?id=' + birthdayID}}" alt="Smile" height="60" width="60">
+						<span>&hArr;&nbsp;{{birthdayYears}}*</span>
+						<img src="images/cake.jpg" alt="Smile" height="60" width="60">
+						<span>=</span>
+						<span class="glyphicon glyphicon-thumbs-up"></span>
+					</button>
 					<a id="mytasks" href="#" class="btn btn-default" role="button" target="_blank"><span class="glyphicon glyphicon-resize-small"></span>&nbsp;Tasks assigned to me</a>
 					<a id="metasks" href="#" class="btn btn-default" role="button" target="_blank"><span class="glyphicon glyphicon-resize-full"></span>&nbsp;Tasks created by me</a>
 					<a href="<%=Settings.CurrentSettings.BSTSITE.ToString()%>?showall=1&PROGABB=<%=CurrentContext.UserLogin()%>" class="btn btn-default" role="button" target="_blank"><span class="glyphicon glyphicon-link"></span>&nbsp;My BST requests</a>
@@ -148,7 +149,7 @@
 			<div class="text-center col-lg-2 hidden-sm hidden-xs">
 				<div class="btn-group-vertical">
 					<a style="margin-bottom: 1px; background-color: {{u.STATUS == 1 ? '#0000ff3d' : '#ff000096'}}" href="editplan.aspx?userid={{u.ID}}" class="btn btn-default" role="button" target="_blank" ng-repeat="u in mpsusers">
-						<img class="img-circle" style="float:left" ng-src="getUserImg.ashx?id={{u.ID}}" alt="Smile" height="20" width="20">
+						<img class="img-circle" style="float: left" ng-src="getUserImg.ashx?id={{u.ID}}" alt="Smile" height="20" width="20">
 						{{u.LOGIN}}
 					</a>
 				</div>

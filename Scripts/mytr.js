@@ -309,6 +309,11 @@ $(function () {
 			}, 5000); // Restart connection after 5 seconds.
 		});
 
+		$scope.notifyHub = notifyHub;
+		$scope.congratulate = function () {
+			$scope.notifyHub.server.sendMessage(userID(), $scope.birthdayID, "Congratulations!!!");
+		};
+
 		getMPSUsers($scope, "mpsusers", $http, function () {
 			$scope.checkBirthday();
 			$.connection.hub.start().done(function () {
