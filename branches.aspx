@@ -23,12 +23,12 @@
 								<td><a href="commits.aspx?branch={{b.NAME}}">{{b.DATE}}</a></td>
 							</div>
 							<div class="col-sm-3">
-								<span class="glyphicon glyphicon-user"></span>
+								<img class="rep-img img-circle" src="{{'getUserImg.ashx?eml=' + b.AUTHOREML}}" alt="Smile" height="20" width="20">
 								<td><a href="commits.aspx?branch={{b.NAME}}">{{b.AUTHOR}}</a></td>
 							</div>
 							<div class="col-sm-3">
 								<span class="glyphicon glyphicon-envelope"></span>
-								<td><a href="commits.aspx?branch={{b.NAME}}">{{b.AUTHOREML}}</a></td>
+								<td><a href="mailto:{{b.AUTHOREML}}">{{b.AUTHOREML}}</a></td>
 							</div>
 						</div>
 					</div>

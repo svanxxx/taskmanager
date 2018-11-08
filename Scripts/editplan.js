@@ -55,15 +55,6 @@ $(function () {
 				}
 			}
 		};
-		$scope.copyurl = function () {
-			var $temp = $("<input>");
-			$("body").append($temp);
-			$temp.val(window.location.href).select();
-			document.execCommand("copy");
-			$temp.remove();
-			var p = StartProgress("The link has been copied.");
-			setTimeout(function () { EndProgress(p); }, 2000);
-		};
 		$scope.saveDefects = function () {
 			var recs = [];
 			for (var i = $scope.defects.length - 1; i >= 0; i--) {

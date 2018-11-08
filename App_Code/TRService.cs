@@ -228,7 +228,7 @@ public class TRService : System.Web.Services.WebService
 		{
 			return null;
 		}
-		return Defect.Locktask(ttid, lockid);
+		return Defect.Locktask(ttid, lockid, CurrentContext.UserID.ToString());
 	}
 	[WebMethod(EnableSession = true)]
 	public void unlocktask(string ttid, string lockid)
@@ -610,6 +610,11 @@ public class TRService : System.Web.Services.WebService
 	public List<Commit> EnumCommits(string branch, int from, int to)
 	{
 		return Branch.EnumCommits(branch, from, to);
+	}
+	[WebMethod]
+	public List<ChangedFile> EnumFiles(string branch)
+	{
+		return Branch.EnumFiles(branch);
 	}
 	[WebMethod]
 	public void CommentBuild(int id, string comment)

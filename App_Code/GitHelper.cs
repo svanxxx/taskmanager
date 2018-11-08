@@ -11,7 +11,7 @@ public class GitHelper
 		using (PowerShell ps = PowerShell.Create())
 		{
 			ps.AddScript("cd " + Settings.CurrentSettings.WORKGITLOCATION);
-			ps.AddScript(@"git " + command);
+			ps.AddScript(@"git.exe " + command);
 			List<string> ls = new List<string>();
 			foreach (var line in ps.Invoke())
 			{

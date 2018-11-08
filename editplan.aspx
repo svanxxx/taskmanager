@@ -23,7 +23,7 @@
 					<h5>In unscheduled section click <span class="glyphicon glyphicon-arrow-left"></span>to move task into the schedlue being on the top of list</h5>
 				</div>
 				<div class="alert alert-success">
-					<button ng-click="copyurl()" type="button" class="btn btn-link"><span class="glyphicon glyphicon-copy"></span>Copy page link</button>
+					<button onclick="copyurl()" type="button" class="btn btn-link"><span class="glyphicon glyphicon-copy"></span>Copy page link</button>
 				</div>
 			</div>
 			<div class="col-lg-9 col-md-10 col-sm-12 col-xs-12">

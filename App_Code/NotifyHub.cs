@@ -44,4 +44,13 @@ public class NotifyHub : Hub
 			Clients.Client(id).OnMessage(fromID, message);
 		}
 	}
+	public void LockTask(int ttid, string currentlock, int userid)
+	{
+		LockInfo li = Defect.Locktask(ttid.ToString(), currentlock, userid.ToString());
+		Clients.Caller.OnLockTask(li);
+	}
+	public void UnLockTask(int ttid, string currentlock)
+	{
+		Defect.UnLocktask(ttid.ToString(), currentlock);
+	}
 }

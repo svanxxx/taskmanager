@@ -203,6 +203,15 @@ function enterTT() {
 function reActivateTooltips() {
 	setTimeout(function () { $('[data-toggle="tooltip"]').tooltip(); }, 2000);//when data loaded - activate tooltip.
 }
+function copyurl() {
+	var $temp = $("<input>");
+	$("body").append($temp);
+	$temp.val(window.location.href).select();
+	document.execCommand("copy");
+	$temp.remove();
+	var p = StartProgress("The link has been copied.");
+	setTimeout(function () { EndProgress(p); }, 2000);
+}
 $(function () {
 	$(document).bind("keydown", function (e) {
 		if (e.keyCode === 188 && event.ctrlKey) {

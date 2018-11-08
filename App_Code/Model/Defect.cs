@@ -18,11 +18,11 @@ public class LockInfo
 }
 public class LockEvent
 {
-	public LockEvent(string id)
+	public LockEvent(string id, string userid)
 	{
 		Prolongate();
 		lockid = id;
-		usr = CurrentContext.User.ID.ToString();
+		usr = userid;
 	}
 	public void Prolongate()
 	{
@@ -32,7 +32,7 @@ public class LockEvent
 	{
 		get
 		{
-			return DateTime.Now.Subtract(locktime).TotalSeconds > 30;
+			return DateTime.Now.Subtract(locktime).TotalSeconds > 10;
 		}
 	}
 	DateTime locktime { get; set; }
@@ -478,7 +478,7 @@ public partial class Defect : DefectBase
 		LockEvent ev = locker[ttid];
 		return !ev.Obsolete;
 	}
-	public static LockInfo Locktask(string ttid, string lockid)
+	public static LockInfo Locktask(string ttid, string lockid, string userid)
 	{
 		lock (thisLock)
 		{
@@ -487,7 +487,7 @@ public partial class Defect : DefectBase
 				LockEvent ev = locker[ttid];
 				if (ev.Obsolete)
 				{
-					LockEvent newev = new LockEvent(lockid);
+					LockEvent newev = new LockEvent(lockid, userid);
 					locker[ttid] = newev;
 					return new LockInfo(newev.usr, newev.lockid);
 				}
@@ -503,7 +503,7 @@ public partial class Defect : DefectBase
 			}
 			else
 			{
-				LockEvent ev = new LockEvent(lockid);
+				LockEvent ev = new LockEvent(lockid, userid);
 				locker[ttid] = ev;
 				return new LockInfo(ev.usr, ev.lockid);
 			}

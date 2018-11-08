@@ -24,15 +24,8 @@ $(function () {
 	app.filter('getDispoColorById', getDispoColorById);
 
 	app.controller('mpscontroller', ["$scope", "$http", "$interval", "$window", function ($scope, $http, $interval, $window) {
-		$scope.buildtime = parseInt(document.getElementById("buildtime").value);
-		$scope.tab_builds = "Builds";
-		$scope.tab_attachs = "Attachments";
-		$scope.tab_history = "History";
-		$scope.tab_workflow = "Workflow";
-		$scope.tab_specs = "Specification";
-
 		$window.onbeforeunload = function () {
-			$http.post("trservice.asmx/unlocktask", angular.toJson({ "ttid": ttid, "lockid": $scope.currentlock }));
+			$scope.notifyHub.server.unLockTask(ttid, $scope.currentlock, userID());
 		};
 		$scope.cliplabl = function () {
 			var $temp = $("<input>");
@@ -42,11 +35,11 @@ $(function () {
 			$temp.remove();
 		};
 		$scope.loadAttachments = function () {
-			var prgattach = StartProgress("Loading attachments..."); $scope.loaders++;
+			var prgattach = StartProgress("Loading attachments...");
 			$http.post("trservice.asmx/getattachsbytask", JSON.stringify({ "ttid": ttid }))
 				.then(function (result) {
 					$scope.attachs = result.data.d;
-					EndProgress(prgattach); $scope.loaders--;
+					EndProgress(prgattach);
 				});
 		};
 		$scope.getfileext = function (filename) {
@@ -80,13 +73,6 @@ $(function () {
 					}
 				});
 		};
-		$scope.locktask = function () {
-			$http.post("trservice.asmx/locktask", angular.toJson({ "ttid": ttid, "lockid": $scope.currentlock }))
-				.then(function (response) {
-					$scope.globallock = response.data.d.globallock;
-					$scope.lockedby = response.data.d.lockedby;
-				});
-		};
 		$scope.getDispoColor = function () {
 			if ($scope.defect && $scope.dispos) {
 				return "background-color:" + $scope.dispos.filter(function (x) { return x.ID == $scope.defect.DISPO; })[0].COLOR;
@@ -112,17 +98,9 @@ $(function () {
 			var active = $("ul#tasktabs li.active")[0].innerText.trim() === $scope.tab_specs;
 			return !active && $scope.defect !== undefined && $scope.defect.SPECS.trim().length > 0 ? 'blink_me' : '';
 		};
-
-		$scope.currentlock = guid();
-		$scope.globallock = "";
-
-		$scope.locktask();
 		$interval(function () {
 			$scope.locktask();
-		}, 20000);
-
-		$scope.addresses = deflist();
-
+		}, 5000);
 		$scope.testTask = function () {
 			for (var i = 0; i < $scope.builds.length; i++) {
 				if ($scope.builds[i].STATUS.indexOf("wait") > -1) {
@@ -139,7 +117,6 @@ $(function () {
 					$scope.loadBuilds();
 				});
 		};
-
 		$scope.abortTest = function () {
 			for (var i = 0; i < $scope.builds.length; i++) {
 				if ($scope.builds[i].STATUS.indexOf("wait") > -1 || $scope.builds[i].STATUS.indexOf("progress") > -1) {
@@ -152,7 +129,6 @@ $(function () {
 			}
 			alert("Threre are no waiting for build requests!");
 		};
-
 		$scope.deleteBranch = function () {
 			if (confirm("Are you sure you want to delete branch related to this task? The operation cannot be undone.")) {
 				var delprg = StartProgress("Deleting branch...");
@@ -164,7 +140,6 @@ $(function () {
 					});
 			}
 		};
-
 		$scope.addFile = function () {
 			var file = $('<input type="file" name="filefor" style="display: none;" />');
 			file.on('input', function (e) {
@@ -179,9 +154,8 @@ $(function () {
 			window.location.reload();
 		}
 		$scope.canChangeDefect = function () {
-			return ($scope.defect != null) && ($scope.loaders == 0) && ($scope.currentlock == $scope.globallock);
-		}
-		$scope.loaders = 0;
+			return ($scope.defect != null) && (!inProgress()) && ($scope.currentlock == $scope.globallock);
+		};
 		$scope.saveDefect = function () {
 			//updating object to convert date
 			var copy = Object.assign({}, $scope.defect);
@@ -190,7 +164,7 @@ $(function () {
 				copy.ORDER = -1;
 			}
 
-			var prgsaving = StartProgress("Saving task..."); $scope.loaders++;
+			var prgsaving = StartProgress("Saving task...");
 
 			$scope.attachsinprogress = 0;
 			if ($scope.attachs) {
@@ -211,10 +185,10 @@ $(function () {
 						r.attfilename = $scope.attachs[a].newfile.name;
 						r.onloadend = function (e) {
 							var data = e.target.result;
-							var fileupload = StartProgress("Uploading file " + this.attfilename + "..."); $scope.loaders++;
+							var fileupload = StartProgress("Uploading file " + this.attfilename + "...");
 							$http.post("trservice.asmx/newfileupload", angular.toJson({ "ttid": ttid, "filename": this.attfilename, "data": data }))
 								.then(function (response) {
-									EndProgress(fileupload); $scope.loaders--;
+									EndProgress(fileupload);
 									$scope.attachsinprogress--;
 									if ($scope.attachsinprogress == 0) {
 										$scope.loadAttachments();
@@ -228,7 +202,7 @@ $(function () {
 			}
 			$http.post("trservice.asmx/settask", angular.toJson({ "d": copy }))
 				.then(function (response) {
-					EndProgress(prgsaving); $scope.loaders--;
+					EndProgress(prgsaving);
 					$scope.changed = false;
 					$scope.history = null;
 					$scope.events = null;
@@ -277,7 +251,7 @@ $(function () {
 			return "ghost";
 		}
 		//data section
-		var taskprg = StartProgress("Loading task..."); $scope.loaders++;
+		var taskprg = StartProgress("Loading task...");
 		$http.post("trservice.asmx/gettask", JSON.stringify({ "ttid": ttid }))
 			.then(function (response) {
 				$scope.defect = response.data.d;
@@ -289,7 +263,7 @@ $(function () {
 					}
 				}
 				document.title = "Task: #" + ttid;
-				EndProgress(taskprg); $scope.loaders--;
+				EndProgress(taskprg);
 			});
 
 		$scope.loadHistory = function () {
@@ -304,8 +278,6 @@ $(function () {
 					$scope.events = result.data.d;
 				});
 		};
-
-		$scope.changed = false;
 		$scope.$watchCollection('defect', function (newval, oldval) {
 			if (newval && oldval) {
 				$scope.changed = true;
@@ -314,15 +286,37 @@ $(function () {
 		$scope.releaseRequest = function () {
 			$scope.notifyHub.server.sendMessage(userID(), $scope.lockedby, "Please release TT" + $scope.defect.ID + "!!!");
 		};
+		$scope.locktask = function () {
+			$scope.notifyHub.server.lockTask(ttid, $scope.currentlock, userID());
+		};
 
+		//start
+		$scope.buildtime = parseInt(document.getElementById("buildtime").value);
+		$scope.tab_builds = "Builds";
+		$scope.tab_attachs = "Attachments";
+		$scope.tab_history = "History";
+		$scope.tab_workflow = "Workflow";
+		$scope.tab_specs = "Specification";
+		$scope.currentlock = guid();
+		$scope.globallock = "";
+		$scope.changed = false;
+		$.connection.hub.start().done(function () {
+			$scope.locktask();
+		});
+		$.connection.hub.disconnected(function () {
+			setTimeout(function () { $.connection.hub.start(); }, 5000); // Restart connection after 5 seconds.
+		});
 		$scope.notifyHub = $.connection.notifyHub;
+		$scope.notifyHub.client.onLockTask = function (li) {
+			$scope.globallock = li.globallock;
+			$scope.lockedby = li.lockedby;
+			$scope.$apply();
+		};
 		$scope.notifyHub.client.OnBuildChanged = function () {
 			$scope.loadBuilds();
 			$scope.$apply();
 		};
-		$.connection.hub.disconnected(function () {
-			setTimeout(function () { $.connection.hub.start(); }, 5000); // Restart connection after 5 seconds.
-		});
-		$.connection.hub.start();
+		
+		$scope.addresses = deflist();
 	}]);
 });

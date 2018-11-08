@@ -48,7 +48,7 @@ public class Branch
 					string[] pars = line.Split(sep, StringSplitOptions.RemoveEmptyEntries);
 					if (pars.Length == 4)
 					{
-						_branches.Add(new Branch() { DATE = pars[0].Trim(), AUTHOR = pars[1].Trim(), NAME = pars[2].Trim().Split('/')[2], AUTHOREML = pars[3].Trim() });
+						_branches.Add(new Branch() { DATE = pars[0].Trim(), AUTHOR = pars[1].Trim(), NAME = pars[2].Trim().Split('/')[2], AUTHOREML = pars[3].Trim('>', '<', ' ', '\t') });
 					}
 				}
 			}
@@ -58,6 +58,10 @@ public class Branch
 	public static List<Branch> Enum(int from, int to)
 	{
 		List<Branch> ls = Enum();
+		if (ls.Count < 1)
+		{
+			return ls;
+		}
 		int lsmaxind = ls.Count - 1;
 		return ls.GetRange(Math.Min(lsmaxind, from - 1), Math.Min(lsmaxind + 1, to - from + 1));
 	}
@@ -109,7 +113,7 @@ public class Branch
 			ls.Add(com);
 		}
 
-		if (from >  ls.Count)
+		if (from > ls.Count)
 		{
 			return new List<Commit>();
 		}
@@ -117,5 +121,15 @@ public class Branch
 		int ifrom = Math.Min(ls.Count - 1, from - 1);
 		int ito = Math.Min(ls.Count - ifrom, to - from + 1);
 		return ls.GetRange(ifrom, ito);
+	}
+	public static List<ChangedFile> EnumFiles(string branch)
+	{
+		List<ChangedFile> ls = new List<ChangedFile>();
+		string command = "diff --name-status {0} master";
+		foreach (string line in GitHelper.RunCommand(command))
+		{
+			ls.Add(new ChangedFile(line.Trim()));
+		}
+		return ls;
 	}
 }
