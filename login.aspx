@@ -4,7 +4,7 @@
 	<meta property="og:title" content="<%=SecurityPage.GetPageOgTitle()%>">
 	<meta property="og:description" content="Click to see more details">
 	<meta property="og:image" content="<%=SecurityPage.GetPageOgImage()%>">
-	<meta property="og:site_name" content="Task Manager">
+	<meta property="og:site_name" content="<%=SecurityPage.GetPageOgName()%>">
 	<meta property="og:type" content="website">
 </asp:Content>
 

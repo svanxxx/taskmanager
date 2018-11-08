@@ -34,6 +34,16 @@ public class SecurityPage : System.Web.UI.Page
 		CheckRetired();
 		return;
 	}
+
+	public static string GetPageOgName()
+	{
+		string ttid = GetPageTTID();
+		if (!string.IsNullOrEmpty(ttid))
+		{
+			return "TT" + ttid;
+		}
+		return "";
+	}
 	public static string GetPageOgImage()
 	{
 		return
@@ -43,30 +53,33 @@ public class SecurityPage : System.Web.UI.Page
 			HttpContext.Current.Request.ApplicationPath +
 			"/images/task.png";
 	}
-	public static string GetPageOgTitle()
+	static string GetPageTTID()
 	{
 		if (HttpContext.Current == null || HttpContext.Current.Request == null)
 		{
 			return "";
 		}
-		object o = HttpContext.Current.Request.QueryString["ttid"];
+		object o = HttpContext.Current.Request.QueryString[SecurityPage.returl];
 		if (o == null)
 		{
-			o = HttpContext.Current.Request.QueryString[SecurityPage.returl];
-			if (o == null)
-			{
-				return "";
-			}
-			string findstr = "ttid=";
-			string s = o.ToString();
-			int ind = s.IndexOf(findstr);
-			if (ind < 0)
-			{
-				return "";
-			}
-			o = s.Substring(ind + findstr.Length);
+			return "";
 		}
-		int id = int.Parse(o.ToString());
-		return DefectBase.GetTaskDispName(id);
+		string findstr = "ttid=";
+		string s = o.ToString();
+		int ind = s.IndexOf(findstr);
+		if (ind < 0)
+		{
+			return "";
+		}
+		return s.Substring(ind + findstr.Length);
+	}
+	public static string GetPageOgTitle()
+	{
+		string ttid = GetPageTTID();
+		if (!string.IsNullOrEmpty(ttid))
+		{
+			return DefectBase.GetTaskDispName(int.Parse(ttid));
+		}
+		return "";
 	}
 }
