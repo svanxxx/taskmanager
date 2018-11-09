@@ -9,7 +9,9 @@ using System.Diagnostics;
 using System.Management;
 using System.Net;
 using System.Text.RegularExpressions;
-using System.Management.Automation;
+using System.Collections.Specialized;
+using System.Xml.Serialization;
+using System.IO;
 
 [WebService(Namespace = "http://tempuri.org/")]
 [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
@@ -716,5 +718,15 @@ public class TRService : System.Web.Services.WebService
 			}
 		}
 		return strError;
+	}
+	[WebMethod(EnableSession = true)]
+	public List<string> getBSTBatches()
+	{
+		Uri _uri = new Uri(Settings.CurrentSettings.BSTSITESERVICE + "/EnumBatches");
+		WebClient wcClient = new WebClient();
+		string res = wcClient.UploadString(_uri, "POST", "");
+		XmlSerializer ser = new XmlSerializer(typeof(string[]), new XmlRootAttribute("ArrayOfString") { Namespace = "http://tempuri.org/" });
+		string[] arrres = (string[])ser.Deserialize(new StringReader(res));
+		return new List<string>(arrres);
 	}
 }

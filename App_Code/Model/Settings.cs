@@ -118,6 +118,11 @@ public class RawSettings
 		get { return GetVal("BSTSITE"); }
 		set { values["BSTSITE"] = value; }
 	}
+	public string BSTSITESERVICE
+	{
+		get { return GetVal("BSTSITESERVICE"); }
+		set { values["BSTSITESERVICE"] = value; }
+	}
 	public string WIKISITE
 	{
 		get { return GetVal("WIKISITE"); }

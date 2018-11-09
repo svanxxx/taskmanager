@@ -222,11 +222,22 @@ $(function () {
 				if (!$scope.history) {
 					$scope.loadHistory();
 				}
+			} else if (tab === $scope.tab_bst) {
+				if (!$scope.batches) {
+					$scope.loadBatches();
+				}
 			} else if (tab === $scope.tab_workflow) {
 				if (!$scope.events) {
 					$scope.loadEvents();
 				}
 			}
+		};
+		$scope.add2Bst = function (batch) {
+			if (!$scope.canChangeDefect()) {
+				return;
+			}
+			var pre = $scope.defect.BST === "" ? "" : "\n";
+			$scope.defect.BST += pre + batch;
 		};
 		//references secion:
 		getMPSUsers($scope, "mpsusers", $http);
@@ -272,6 +283,23 @@ $(function () {
 					$scope.history = result.data.d;
 				});
 		};
+		$scope.loadBatches = function () {
+			$http.post("trservice.asmx/getBSTBatches", JSON.stringify({ }))
+				.then(function (result) {
+					$scope.batches = result.data.d;
+					var slotcap = 14;
+					$scope.batchesslots = [];
+					for (var i = 0; i < $scope.batches.length; i++) {
+						if ($scope.batchesslots.length === 0) {
+							$scope.batchesslots.push([]);
+						}
+						if ($scope.batchesslots[$scope.batchesslots.length - 1].length === slotcap) {
+							$scope.batchesslots.push([]);
+						}
+						$scope.batchesslots[$scope.batchesslots.length - 1].push($scope.batches[i]);
+					}
+				});
+		};
 		$scope.loadEvents = function () {
 			$http.post("trservice.asmx/gettaskevents", JSON.stringify({ "ttid": ttid }))
 				.then(function (result) {
@@ -295,10 +323,13 @@ $(function () {
 		$scope.tab_builds = "Builds";
 		$scope.tab_attachs = "Attachments";
 		$scope.tab_history = "History";
+		$scope.tab_bst = "BST";
 		$scope.tab_workflow = "Workflow";
 		$scope.tab_specs = "Specification";
 		$scope.currentlock = guid();
 		$scope.globallock = "";
+		$scope.batches = null;
+		$scope.batchesslots = [];
 		$scope.changed = false;
 		$.connection.hub.start().done(function () {
 			$scope.locktask();

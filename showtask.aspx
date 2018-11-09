@@ -149,9 +149,9 @@
 					</div>
 				</div>
 				<ul id="tasktabs" class="nav nav-pills">
-					<li class="{{specsStyle()}} small active"><a data-toggle="pill" href="#specification"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;{{tab_specs}}</a></li>
+					<li class="{{specsStyle()}} small active"><a data-toggle="pill" href="#specification"><span class="glyphicon glyphicon-list-alt"></span>{{tab_specs}}</a></li>
 					<li><a class="small" data-toggle="pill" href="#detail"><span class="glyphicon glyphicon-zoom-in"></span>&nbsp;Details</a></li>
-					<li><a class="small" data-toggle="pill" href="#bst"><span class="glyphicon glyphicon-link"></span>&nbsp;BST</a></li>
+					<li ng-click="changetab($event)"><a class="small" data-toggle="pill" href="#bst"><span class="glyphicon glyphicon-link"></span>{{tab_bst}}</a></li>
 					<li ng-click="changetab($event)"><a class="small" data-toggle="pill" href="#workflow"><span class="glyphicon glyphicon-refresh"></span>{{tab_workflow}}</a></li>
 					<li ng-click="changetab($event)"><a class="small" data-toggle="pill" href="#history"><span class="glyphicon glyphicon-book"></span>{{tab_history}}</a></li>
 					<li ng-click="changetab($event)"><a class="small" data-toggle="pill" href="#attachments"><span class="glyphicon glyphicon-paperclip"></span>{{tab_attachs}}</a></li>
@@ -167,9 +167,24 @@
 						<textarea class="form-control" id="Description" rows="30" ng-disabled="!canChangeDefect()" ng-model="defect.DESCR"></textarea>
 					</div>
 					<div id="bst" class="tab-pane fade">
-						<textarea class="form-control" rows="30" ng-disabled="!canChangeDefect()" ng-model="defect.BST"></textarea>
+						<div class="row">
+							<div class="col-md-3">
+								<ul class="nav nav-pills nav-justified">
+									<li class="{{$index==0?'active':''}}" ng-repeat="s in batchesslots"><a data-toggle="tab" href="#batches{{$index}}">{{$index+1}}</a></li>
+								</ul>
+								<div class="tab-content">
+									<div id="batches{{$index}}" class="tab-pane fade {{$index==0?'in active':''}}" ng-repeat="s in batchesslots">
+										<div class="list-group">
+											<a href="#" ng-click="add2Bst(batch)"class="list-group-item" ng-repeat="batch in s">{{batch}}</a>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-9">
+								<textarea class="form-control" rows="30" ng-disabled="!canChangeDefect()" ng-model="defect.BST"></textarea>
+							</div>
+						</div>
 					</div>
-
 					<div id="workflow" class="tab-pane fade">
 						<label ng-show="!events">loading...</label>
 						<div class="list-group">

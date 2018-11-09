@@ -620,8 +620,8 @@ public partial class Defect : DefectBase
 	}
 	public string BST
 	{
-		get { return this[_workar].ToString(); }
-		set { this[_workar] = value; }
+		get { return this[_workar].ToString().Trim(); }
+		set { this[_workar] = value.Trim(); }
 	}
 	protected override void OnBackOrderChanged()
 	{
