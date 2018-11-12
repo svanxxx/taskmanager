@@ -34,7 +34,7 @@ public class Branch
 	static object _lock = new object();
 	static DateTime _loadtime = DateTime.Now;
 	static List<Branch> _branches = new List<Branch>();
-	public static List<Branch> Enum()
+	public static List<Branch> Enum(string user)
 	{
 		lock (_lock)
 		{
@@ -52,18 +52,23 @@ public class Branch
 					}
 				}
 			}
-			return new List<Branch>(_branches);
+			if (string.IsNullOrEmpty(user))
+			{
+				return new List<Branch>(_branches);
+			}
+			return new List<Branch>(_branches.FindAll(s => s.AUTHOR == user));
 		}
 	}
-	public static List<Branch> Enum(int from, int to)
+	public static List<Branch> Enum(int from, int to, string user)
 	{
-		List<Branch> ls = Enum();
-		if (ls.Count < 1)
+		List<Branch> ls = Enum(user);
+		int count = to - from + 1;
+		if (ls.Count < 1 || from < 1 || from > ls.Count || count < 1)
 		{
-			return ls;
+			return new List<Branch>();
 		}
-		int lsmaxind = ls.Count - 1;
-		return ls.GetRange(Math.Min(lsmaxind, from - 1), Math.Min(lsmaxind + 1, to - from + 1));
+		count = Math.Min(count, ls.Count - from + 1);
+		return ls.GetRange(from - 1, count);
 	}
 	public static void Delete(string branch)
 	{

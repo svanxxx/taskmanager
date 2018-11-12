@@ -181,7 +181,7 @@
 								</div>
 							</div>
 							<div class="col-md-9">
-								<textarea class="form-control" rows="30" ng-disabled="!canChangeDefect()" ng-model="defect.BST"></textarea>
+								<textarea class="form-control" rows="15" ng-disabled="!canChangeDefect()" ng-model="defect.BST"></textarea>
 							</div>
 						</div>
 					</div>
