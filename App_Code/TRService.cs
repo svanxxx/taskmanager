@@ -584,6 +584,7 @@ public class TRService : System.Web.Services.WebService
 			string em = user.EMAIL;
 			r.USER = em.Substring(0, em.IndexOf("@")).ToUpper();
 			r.SUMMARY = def.SUMMARY;
+			r.BRANCH = def.BRANCH;
 		}
 		return r;
 	}

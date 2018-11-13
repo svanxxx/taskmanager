@@ -102,7 +102,7 @@ $(function () {
 			$scope.locktask();
 		}, 5000);
 		$scope.canBuild = function () {
-			return ($scope.defect && $scope.defect.BRANCH.toUpperCase() === 'RELEASE') || ($scope.commits && commits.length > 0);
+			return ($scope.defect && $scope.defect.BRANCH.toUpperCase() === 'RELEASE') || ($scope.commits && $scope.commits.length > 0);
 		};
 		$scope.testTask = function () {
 			for (var i = 0; i < $scope.builds.length; i++) {
