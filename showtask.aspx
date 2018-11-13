@@ -175,13 +175,16 @@
 								<div class="tab-content">
 									<div id="batches{{$index}}" class="tab-pane fade {{$index==0?'in active':''}}" ng-repeat="s in batchesslots">
 										<div class="list-group">
-											<a href="#" ng-click="add2Bst(batch)"class="list-group-item" ng-repeat="batch in s">{{batch}}</a>
+											<a href="#" ng-click="add2Bst(batch)" class="list-group-item" ng-repeat="batch in s">{{batch}}</a>
 										</div>
 									</div>
 								</div>
 							</div>
 							<div class="col-md-9">
+								<div class="well well-sm">Test batches:</div>
 								<textarea class="form-control" rows="15" ng-disabled="!canChangeDefect()" ng-model="defect.BST"></textarea>
+								<div class="well well-sm">Tests:</div>
+								<a ng-repeat="b in builds" href="#" class="btn btn-block btn-primary">{{b.DATEUP}}</a>
 							</div>
 						</div>
 					</div>
@@ -256,8 +259,8 @@
 										<label>Builds history</label>
 									</div>
 									<div class="col-md-3">
-										<button type="button" class="btn btn-sm btn-primary btn-right-align" ng-disabled="!commits||commits.length<1" ng-click="abortTest()">Abort Building</button>
-										<button type="button" class="btn btn-sm btn-success btn-right-align" ng-disabled="!commits||commits.length<1" ng-click="testTask()">Build Version</button>
+										<button type="button" class="btn btn-sm btn-primary btn-right-align" ng-disabled="!canBuild()" ng-click="abortTest()">Abort Building</button>
+										<button type="button" class="btn btn-sm btn-success btn-right-align" ng-disabled="!canBuild()" ng-click="testTask()">Build Version</button>
 									</div>
 								</div>
 							</div>
@@ -304,10 +307,13 @@
 						<div class="panel panel-primary">
 							<div class="panel-heading">
 								<div class="row">
-									<div class="col-md-2">
-										<label>Git Information</label>
+									<div class="col-md-3">
+										<label>Git branch (default is TT ID):</label>
 									</div>
-									<div class="col-md-10">
+									<div class="col-md-2">
+										<input type="text" class="form-control" ng-disabled="!canChangeDefect()" ng-model="defect.BRANCH">
+									</div>
+									<div class="col-md-7">
 										<button type="button" class="btn btn-sm btn-danger btn-right-align" ng-disabled="!commits||commits.length<1" ng-click="deleteBranch()">Delete Branch</button>
 									</div>
 								</div>
@@ -340,13 +346,22 @@
 							<h3>Email will alarm all the persons indicated below</h3>
 							<h4 class="{{changed ? 'blink_me' : ''}}">Please save the task indicating your questions in the top of details section</h4>
 							<label for="emailaddr">Addresses (comma separated):</label>
-							<input type="text" class="form-control" id="emailaddr" ng-model="addresses">
+							
 							<button ng-click="sendEmail()" ng-disabled="changed" type="button" class="btn btn-primary">Send Alarm Email</button>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="col-lg-2 hidden-md">
+				<div class="alert alert-warning" style="text-align: center">
+					<img class="img-circle" ng-src="{{'getUserImg.ashx?ttid=' + defect.CREATEDBY}}" alt="Smile" height="60" width="60" />
+					<div>
+						<strong>{{defect.CREATEDBY | getUserById:this}}</strong>
+					</div>
+					<div>
+						<span class="glyphicon glyphicon-arrow-down"></span>
+					</div>
+				</div>
 				<div class="alert alert-info" style="text-align: center">
 					<img class="img-circle" ng-src="{{'getUserImg.ashx?ttid=' + defect.AUSER}}" alt="Smile" height="60" width="60" />
 					<div>

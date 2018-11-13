@@ -63,11 +63,12 @@ public partial class DefectBase : IdBasedObject
 	protected static string _OrderDate = "IOrderDate";
 	protected static string _ModDate = "dateModify";
 	protected static string _ModBy = "idModifyBy";
+	protected static string _branch = "branch";
 
 	public static string _Tabl = "[TT_RES].[DBO].[DEFECTS]";
 
-	protected static string[] _allBaseCols = new string[] { _ID, _Summ, _idRec, _Disp, _Est, _Order, _AsUser, _Seve, _sMod, _BackOrder, _Comp, _Date, _Created, _CreaBy, _Type, _Prod, _Ref, _Prio, _OrderDate, _ModDate, _ModBy, _sModTRID};
-	protected static string[] _allBaseColsNames = new string[] { _ID, "Summary", _idRec, "Disposition", "Estimation", "Schedule Order", "Assigned User", "Severity", "", "Schedule Order", "Component", "Date Entered", "Date Created", "Created By", "Type", "Product", "Reference", "Priority", "Schedule Date", "", "", ""};
+	protected static string[] _allBaseCols = new string[] { _ID, _Summ, _idRec, _Disp, _Est, _Order, _AsUser, _Seve, _sMod, _BackOrder, _Comp, _Date, _Created, _CreaBy, _Type, _Prod, _Ref, _Prio, _OrderDate, _ModDate, _ModBy, _sModTRID, _branch };
+	protected static string[] _allBaseColsNames = new string[] { _ID, "Summary", _idRec, "Disposition", "Estimation", "Schedule Order", "Assigned User", "Severity", "", "Schedule Order", "Component", "Date Entered", "Date Created", "Created By", "Type", "Product", "Reference", "Priority", "Schedule Date", "", "", "", "Branch"};
 
 	public string SEVE
 	{
@@ -228,7 +229,15 @@ public partial class DefectBase : IdBasedObject
 		get { return this[_Prod].ToString(); }
 		set { this[_Prod] = Convert.ToInt32(value); }
 	}
-
+	public string BRANCH
+	{
+		get
+		{
+			string val = this[_branch].ToString().Trim();
+			return (string.IsNullOrEmpty(val)) ? "TT" + ID.ToString(): val;
+		}
+		set { this[_branch] = value; }
+	}
 	protected override void OnProcessComplexColumn(string col, object val)
 	{
 		if (col == _sModTRID)

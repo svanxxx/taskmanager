@@ -66,7 +66,7 @@ $(function () {
 						$scope.updatePercent();
 					}
 				});
-			$http.post("trservice.asmx/EnumCommits", JSON.stringify({ "branch": "TT" + ttid, from: 1, to: 20 }))
+			$http.post("trservice.asmx/EnumCommits", JSON.stringify({ "branch": $scope.defect.BRANCH, from: 1, to: 20 }))
 				.then(function (result) {
 					if (JSON.stringify($scope.commits) !== JSON.stringify(result.data.d)) {
 						$scope.commits = result.data.d;
@@ -101,6 +101,9 @@ $(function () {
 		$interval(function () {
 			$scope.locktask();
 		}, 5000);
+		$scope.canBuild = function () {
+			return ($scope.defect && $scope.defect.BRANCH.toUpperCase() === 'RELEASE') || ($scope.commits && commits.length > 0);
+		};
 		$scope.testTask = function () {
 			for (var i = 0; i < $scope.builds.length; i++) {
 				if ($scope.builds[i].STATUS.indexOf("wait") > -1) {
@@ -225,6 +228,9 @@ $(function () {
 			} else if (tab === $scope.tab_bst) {
 				if (!$scope.batches) {
 					$scope.loadBatches();
+				}
+				if (!$scope.builds) {
+					$scope.loadBuilds();
 				}
 			} else if (tab === $scope.tab_workflow) {
 				if (!$scope.events) {

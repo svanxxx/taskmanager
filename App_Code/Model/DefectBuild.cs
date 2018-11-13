@@ -16,10 +16,11 @@ public class DefectBuild : IdBasedObject
 	protected static string _stText = "StatusText";
 	protected static string _TTID = "TTID";
 	protected static string _User = "UserID";
+	protected static string _tguid = "TestGUID";
 	protected static string _rown = "ROWN";
 	protected static string _Tabl = "[TT_RES].[dbo].[DefectBuild]";
 	protected static string _View = "[TT_RES].[dbo].[V_DefectBuild]";
-	protected static string[] _allBasecols = new string[] { _pid, _par, _date, _stat, _dateUp, _mach, _not, _stText, _TTID, _rown, _User, _dateB };
+	protected static string[] _allBasecols = new string[] { _pid, _par, _date, _stat, _dateUp, _mach, _not, _stText, _TTID, _rown, _User, _dateB, _tguid };
 
 	public int ID
 	{
@@ -34,6 +35,11 @@ public class DefectBuild : IdBasedObject
 		}
 		set { this[_date] = value; }
 	}
+	public string TESTGUID
+	{
+		get { return this[_tguid].ToString(); }
+		set { this[_tguid] = value; }
+	}
 	public string NOTES
 	{
 		get { return this[_not].ToString(); }
@@ -43,7 +49,7 @@ public class DefectBuild : IdBasedObject
 	{
 		get { return this[_mach].ToString(); }
 		set { this[_mach] = value; }
-	}	
+	}
 	public int DURATION
 	{
 		get

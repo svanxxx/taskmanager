@@ -567,6 +567,7 @@ public class TRService : System.Web.Services.WebService
 		public string SUMMARY { get; set; }
 		public string USER { get; set; }
 		public string COMM { get; set; }
+		public string BRANCH { get; set; }
 	}
 	[WebMethod]
 	public BuildRequest getBuildRequest(string machine)
@@ -628,13 +629,28 @@ public class TRService : System.Web.Services.WebService
 		b.Store();
 	}
 	[WebMethod]
-	public void FinishBuild(int id)
+	public void FinishBuild(int id, string requestguid)
 	{
 		DefectBuild b = new DefectBuild(id)
 		{
 			STATUS = DefectBuild.BuildStatus.finishedok.ToString()
+			,
+			TESTGUID = requestguid
 		};
 		b.Store();
+
+		Defect d = new Defect(b.TTID);
+		if (!string.IsNullOrEmpty(d.BST.Trim()))
+		{
+			string batches = string.Join(",", d.BST.Trim().Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries));
+			using (var wcClient = new WebClient())
+			{
+				var reqparm = new NameValueCollection();
+				reqparm.Add("guid", requestguid);
+				reqparm.Add("commaseparatedbatches", batches);
+				wcClient.UploadValues(Settings.CurrentSettings.BSTSITESERVICE + "/StartTest", reqparm);
+			}
+		}
 	}
 	[WebMethod]
 	public bool IsBuildCancelled(int id)
