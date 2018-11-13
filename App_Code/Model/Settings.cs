@@ -173,6 +173,11 @@ public class RawSettings
 		get { return GetVal("BUILDTIME"); }
 		set { values["BUILDTIME"] = value; }
 	}
+	public string RELEASETTID
+	{
+		get { return GetVal("RELEASETTID"); }
+		set { values["RELEASETTID"] = value; }
+	}
 	public string WORKGITLOCATION
 	{
 		get { return GetVal("WORKGITLOCATION"); }

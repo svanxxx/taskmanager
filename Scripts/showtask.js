@@ -111,7 +111,8 @@ $(function () {
 					return;
 				}
 			}
-			var comments = prompt("Please enter comments:", "");
+			var deftext = $scope.builds.length > 0 ? $scope.builds[$scope.builds.length - 1].NOTES : "";
+			var comments = prompt("Please enter comments:", deftext);
 			if (comments === null) {
 				return;
 			}
