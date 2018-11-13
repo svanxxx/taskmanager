@@ -581,8 +581,15 @@ public class TRService : System.Web.Services.WebService
 			r.ID = b.ID;
 			r.TTID = def.ID;
 			r.COMM = b.NOTES;
-			string em = user.EMAIL;
-			r.USER = em.Substring(0, em.IndexOf("@")).ToUpper();
+			string em = user.EMAIL.Trim();
+			if (string.IsNullOrEmpty(em))
+			{
+				r.USER = "ADMIN";
+			}
+			else
+			{
+				r.USER = em.Substring(0, em.IndexOf("@")).ToUpper();
+			}
 			r.SUMMARY = def.SUMMARY;
 			r.BRANCH = def.BRANCH;
 		}
