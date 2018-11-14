@@ -387,4 +387,8 @@ public class IdBasedObject
 			this[column] = dt;
 		}
 	}
+	protected bool GetAsBool(string column, bool defVal = false)
+	{
+		return this[column] == DBNull.Value ? defVal : Convert.ToBoolean(this[column]);
+	}
 }

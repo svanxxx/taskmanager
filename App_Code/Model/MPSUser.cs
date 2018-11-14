@@ -37,13 +37,7 @@ public class MPSUser : IdBasedObject
 	}
 	public bool RETIRED
 	{
-		get
-		{
-			if (this[_ret] == DBNull.Value)
-				return false;
-
-			return Convert.ToBoolean(this[_ret]);
-		}
+		get { return GetAsBool(_ret); }
 		set { this[_ret] = value; }
 	}
 	public string LOGIN
