@@ -59,7 +59,7 @@ $(function () {
 			if (!Array.isArray($scope.commits)) {
 				$scope.commits = [];
 			}
-			$http.post("trservice.asmx/getbuildsbytask", JSON.stringify({ "ttid": ttid }))
+			$http.post("trservice.asmx/getBuildsByTask", JSON.stringify({ "ttid": ttid }))
 				.then(function (result) {
 					if (JSON.stringify($scope.builds) !== JSON.stringify(result.data.d)) {
 						$scope.builds = result.data.d;
@@ -246,6 +246,14 @@ $(function () {
 			var pre = $scope.defect.BST === "" ? "" : "\n";
 			$scope.defect.BST += pre + batch;
 		};
+		$scope.showTests = function (guid) {
+			var pr = StartProgress("Redirecting...");
+			$http.post("trservice.asmx/getTestID", JSON.stringify({ requestGUID: guid }))
+				.then(function (response) {
+					window.open($scope.testlink + response.data.d);
+					EndProgress(pr);
+				});
+		};
 		//references secion:
 		getMPSUsers($scope, "mpsusers", $http);
 		getUsers($scope, "users", $http);
@@ -291,7 +299,7 @@ $(function () {
 				});
 		};
 		$scope.loadBatches = function () {
-			$http.post("trservice.asmx/getBSTBatches", JSON.stringify({ }))
+			$http.post("trservice.asmx/getBSTBatches", JSON.stringify({}))
 				.then(function (result) {
 					$scope.batches = result.data.d;
 					var slotcap = 14;
@@ -327,6 +335,7 @@ $(function () {
 
 		//start
 		$scope.buildtime = parseInt(document.getElementById("buildtime").value);
+		$scope.testlink = document.getElementById("testlink").value;
 		$scope.tab_builds = "Builds";
 		$scope.tab_attachs = "Attachments";
 		$scope.tab_history = "History";
@@ -354,7 +363,7 @@ $(function () {
 			$scope.loadBuilds();
 			$scope.$apply();
 		};
-		
+
 		$scope.addresses = deflist();
 	}]);
 });

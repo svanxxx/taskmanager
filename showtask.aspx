@@ -12,6 +12,8 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
 	<input type="hidden" id="deflist" value="<%=Settings.CurrentSettings.DEFLISTENERS.ToString()%>" />
 	<input type="hidden" id="buildtime" value="<%=Settings.CurrentSettings.BUILDTIME.ToString()%>" />
+	<input type="hidden" id="testlink" value="<%=Settings.CurrentSettings.TESTREQUESTLINK.ToString()%>" />
+
 	<div ng-app="mpsapplication" ng-controller="mpscontroller" ng-cloak>
 		<div class="alert alert-danger savebutton btn-group-vertical" ng-cloak ng-show="changed">
 			<button type="button" class="btn btn-lg btn-info" ng-click="saveDefect()">Save</button>
@@ -170,7 +172,7 @@
 						<div class="row">
 							<div class="col-md-3">
 								<ul class="nav nav-pills nav-justified">
-									<li class="{{$index==0?'active':''}}" ng-repeat="s in batchesslots"><a data-toggle="tab" href="#batches{{$index}}">{{$index+1}}</a></li>
+									<li class="{{$index==0?'active':''}}" ng-repeat="s in batchesslots"><a class="tab-small" data-toggle="tab" href="#batches{{$index}}">{{$index+1}}</a></li>
 								</ul>
 								<div class="tab-content">
 									<div id="batches{{$index}}" class="tab-pane fade {{$index==0?'in active':''}}" ng-repeat="s in batchesslots">
@@ -181,10 +183,10 @@
 								</div>
 							</div>
 							<div class="col-md-9">
-								<div class="well well-sm">Test batches:</div>
-								<textarea class="form-control" rows="15" ng-disabled="!canChangeDefect()" ng-model="defect.BST"></textarea>
-								<div class="well well-sm">Tests:</div>
-								<a ng-repeat="b in builds" href="#" class="btn btn-block btn-primary">{{b.DATEUP}}</a>
+								<label>Test batches:</label>
+								<textarea class="form-control" rows="10" ng-disabled="!canChangeDefect()" ng-model="defect.BST"></textarea>
+								<label>Last Built Tests (click to see results):</label>
+								<a ng-repeat="b in builds" href ng-click="showTests(b.TESTGUID)" class="btn btn-block btn-primary">{{b.DATEUP}}</a>
 							</div>
 						</div>
 					</div>
@@ -197,7 +199,7 @@
 									<b>{{h.IDUSER | getUserById:this}}</b>
 								</div>
 								<div class="col-sm-2">
-									{{h.DATE}}
+									<span class="label label-info">{{h.DATE}}</span>
 								</div>
 								<div class="col-sm-1">
 									{{h.EVENT}}
@@ -219,7 +221,7 @@
 									<b>{{h.IDUSER | getUserById:this}}</b>
 								</div>
 								<div class="col-sm-2">
-									<span>{{h.DATE}}</span>
+									<span class="label label-info">{{h.DATE}}</span>
 								</div>
 								<div class="col-sm-6">
 									<span>{{h.NOTES}}</span>
@@ -254,13 +256,15 @@
 						<div class="panel panel-info">
 							<div class="panel-heading">
 								<div class="row">
-									<div class="col-md-9">
+									<div class="col-md-8">
 										<span class="glyphicon glyphicon-time"></span>
-										<label>Builds history</label>
+										<label>Builds history (last 5 builds)</label>
 									</div>
-									<div class="col-md-3">
-										<button type="button" class="btn btn-sm btn-primary btn-right-align" ng-disabled="!canBuild()" ng-click="abortTest()">Abort Building</button>
+									<div class="col-md-2">
 										<button type="button" class="btn btn-sm btn-success btn-right-align" ng-disabled="!canBuild()" ng-click="testTask()">Build Version</button>
+									</div>
+									<div class="col-md-2">
+										<button type="button" class="btn btn-sm btn-danger btn-right-align" ng-disabled="!canBuild()" ng-click="abortTest()">Abort Building</button>
 									</div>
 								</div>
 							</div>
@@ -307,13 +311,13 @@
 						<div class="panel panel-primary">
 							<div class="panel-heading">
 								<div class="row">
-									<div class="col-md-3">
+									<div class="col-md-4">
 										<label>Git branch (default is TT ID):</label>
 									</div>
 									<div class="col-md-2">
 										<input type="text" class="form-control" ng-disabled="!canChangeDefect()" ng-model="defect.BRANCH">
 									</div>
-									<div class="col-md-7">
+									<div class="col-md-6">
 										<button type="button" class="btn btn-sm btn-danger btn-right-align" ng-disabled="!commits||commits.length<1" ng-click="deleteBranch()">Delete Branch</button>
 									</div>
 								</div>
@@ -346,7 +350,7 @@
 							<h3>Email will alarm all the persons indicated below</h3>
 							<h4 class="{{changed ? 'blink_me' : ''}}">Please save the task indicating your questions in the top of details section</h4>
 							<label for="emailaddr">Addresses (comma separated):</label>
-							
+							<input type="text" class="form-control" id="emailaddr" ng-model="addresses">
 							<button ng-click="sendEmail()" ng-disabled="changed" type="button" class="btn btn-primary">Send Alarm Email</button>
 						</div>
 					</div>

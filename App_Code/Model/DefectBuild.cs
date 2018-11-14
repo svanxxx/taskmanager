@@ -236,12 +236,17 @@ public class DefectBuild : IdBasedObject
 		}
 		base.OnProcessComplexColumn(col, val);
 	}
+
 	public static List<DefectBuild> GetEventsByTask(int ttid)
 	{
 		List<DefectBuild> res = new List<DefectBuild>();
-		foreach (int i in EnumRecords(_Tabl, _pid, new string[] { _par }, new object[] { Defect.GetIDbyTT(ttid) }))
+		DefectBuild worker = new DefectBuild();
+		string where = string.Format(" WHERE {0} = {1} ORDER BY {2} DESC ", _par, Defect.GetIDbyTT(ttid), _pid);
+		foreach (DataRow dr in worker.GetRecords(where, 5))
 		{
-			res.Add(new DefectBuild(i));
+			DefectBuild b = new DefectBuild();
+			b.Load(dr);
+			res.Add(b);
 		}
 		return res;
 	}

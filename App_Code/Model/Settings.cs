@@ -183,6 +183,11 @@ public class RawSettings
 		get { return GetVal("WORKGITLOCATION"); }
 		set { values["WORKGITLOCATION"] = value; }
 	}
+	public string TESTREQUESTLINK
+	{
+		get { return GetVal("TESTREQUESTLINK"); }
+		set { values["TESTREQUESTLINK"] = value; }
+	}
 	Dictionary<string, string> values = new Dictionary<string, string>();
 	void LoadData()
 	{

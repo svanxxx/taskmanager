@@ -12,6 +12,7 @@ using System.Text.RegularExpressions;
 using System.Collections.Specialized;
 using System.Xml.Serialization;
 using System.IO;
+using System.Text;
 
 [WebService(Namespace = "http://tempuri.org/")]
 [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
@@ -176,11 +177,11 @@ public class TRService : System.Web.Services.WebService
 		return DefectAttach.GetAttachsByTask(Convert.ToInt32(ttid));
 	}
 	[WebMethod(EnableSession = true)]
-	public List<DefectBuild> getbuildsbytask(string ttid)
+	public List<DefectBuild> getBuildsByTask(string ttid)
 	{
 		if (string.IsNullOrEmpty(ttid))
-			return null;
-		return DefectBuild.GetEventsByTask(Convert.ToInt32(ttid));
+			return new List<DefectBuild>();
+		return DefectBuild.GetEventsByTask(int.Parse(ttid));
 	}
 	[WebMethod(EnableSession = true)]
 	public void addBuildByTask(string ttid, string notes)
@@ -752,5 +753,18 @@ public class TRService : System.Web.Services.WebService
 		XmlSerializer ser = new XmlSerializer(typeof(string[]), new XmlRootAttribute("ArrayOfString") { Namespace = "http://tempuri.org/" });
 		string[] arrres = (string[])ser.Deserialize(new StringReader(res));
 		return new List<string>(arrres);
+	}
+	[WebMethod(EnableSession = true)]
+	public int getTestID(string requestGUID)
+	{
+		using (var wcClient = new WebClient())
+		{
+			var reqparm = new NameValueCollection();
+			reqparm.Add("guid", requestGUID);
+			byte[] result = wcClient.UploadValues(Settings.CurrentSettings.BSTSITESERVICE + "/GetTestID", reqparm);
+			string sres = Encoding.ASCII.GetString(result);
+			XmlSerializer ser = new XmlSerializer(typeof(int), new XmlRootAttribute("int") { Namespace = "http://tempuri.org/" });
+			return (int)ser.Deserialize(new StringReader(sres));
+		}
 	}
 }
