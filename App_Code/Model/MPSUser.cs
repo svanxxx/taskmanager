@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
-using System.Globalization;
-using System.Web;
+using System.DirectoryServices.AccountManagement;
 
 public class MPSUser : IdBasedObject
 {
@@ -19,10 +18,11 @@ public class MPSUser : IdBasedObject
 	const string _phone = "PERSON_PHONE";
 	const string _ret = "RETIRED";
 	const string _img = "IMAGE";
+	const string _lvl = "LEVEL_ID";
 	const string _imgTransfer = "IMAGETRANSFER";
 	const string _birth = "PERSON_BIRTHDAY";
 
-	static string[] _allcols = new string[] { _pid, _pname, _email, _ttuser, _addr, _login, _pass, _isAdm, _phone, _work, _ret, _imgTransfer, _birth };
+	static string[] _allcols = new string[] { _pid, _pname, _email, _ttuser, _addr, _login, _pass, _isAdm, _phone, _work, _ret, _imgTransfer, _birth, _lvl };
 	public static string _Tabl = "[PERSONS]";
 
 	public string PHONE
@@ -173,6 +173,36 @@ public class MPSUser : IdBasedObject
 	}
 	public static MPSUser FindUser(string name, string pass)
 	{
+		bool domain = name.Contains("@");
+		if (domain)
+		{
+			bool valid = false;
+			string dispUserName = name;
+			using (PrincipalContext context = new PrincipalContext(ContextType.Domain, "mps"))
+			{
+				valid = context.ValidateCredentials(name, pass);
+				if (valid)
+				{
+					var usr = UserPrincipal.FindByIdentity(context, name);
+					if (usr != null)
+						dispUserName = usr.GivenName + " " + usr.Surname;
+				}
+			}
+			if (!valid)
+			{
+				return null;
+			}
+			foreach (int i in EnumRecords(_Tabl, _pid, new string[] { _login }, new object[] { name }))
+			{
+				return new MPSUser(i);
+			}
+			AddObject(_Tabl, new string[] { _login, _pname, _pass, _isAdm, _ret, _birth, _lvl }, new object[] { name, dispUserName, "", 0, 0, DateTime.Now, 3 }, "");
+			foreach (int i in EnumRecords(_Tabl, _pid, new string[] { _login }, new object[] { name }))
+			{
+				return new MPSUser(i);
+			}
+			return null;
+		}
 		foreach (int i in EnumRecords(_Tabl, _pid, new string[] { _login, _pass }, new object[] { name, pass }))
 		{
 			return new MPSUser(i);
