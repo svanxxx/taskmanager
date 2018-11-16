@@ -1,3 +1,3 @@
 ﻿$(function () {
 	prepareRefEditor("getSevers", "setsevers");
-})
+});

@@ -108,7 +108,7 @@
 					return;
 				}
 			}
-			var deftext = $scope.builds.length > 0 ? $scope.builds[$scope.builds.length - 1].NOTES : "";
+			var deftext = $scope.builds.length > 0 ? $scope.builds[0].NOTES : "";
 			var comments = prompt("Please enter comments:", deftext);
 			if (comments === null) {
 				return;
