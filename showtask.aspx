@@ -256,9 +256,17 @@
 						<div class="panel panel-info">
 							<div class="panel-heading">
 								<div class="row">
-									<div class="col-md-8">
+									<div class="col-md-4">
 										<span class="glyphicon glyphicon-time"></span>
 										<label>Builds history (last 5 builds)</label>
+									</div>
+									<div class="col-md-4">
+										<label class="col-sm-6 control-label text-right">Test Priority:</label>
+										<div class="col-sm-6">
+											<select class="form-control input-sm" ng-disabled="!canChangeDefect()" ng-model="defect.TESTPRIORITY">
+												<option value="{{t.ID}}" ng-repeat="t in buildpriorities">{{t.DESCR}}</option>
+											</select>
+										</div>
 									</div>
 									<div class="col-md-2">
 										<button type="button" class="btn btn-sm btn-success btn-right-align" ng-disabled="!canBuild()" ng-click="testTask()">Build Version</button>

@@ -1,7 +1,4 @@
-﻿function deflist() {
-	return document.getElementById("deflist").value;
-}
-$(function () {
+﻿$(function () {
 	$('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
 		localStorage.taskactivetab = $(e.target).attr("href");
 	});
@@ -336,17 +333,21 @@ $(function () {
 		//start
 		$scope.buildtime = parseInt(document.getElementById("buildtime").value);
 		$scope.testlink = document.getElementById("testlink").value;
+		$scope.addresses = document.getElementById("deflist").value;
+
 		$scope.tab_builds = "Builds";
 		$scope.tab_attachs = "Attachments";
 		$scope.tab_history = "History";
 		$scope.tab_bst = "BST";
 		$scope.tab_workflow = "Workflow";
 		$scope.tab_specs = "Specification";
+		$scope.buildpriorities = [{ ID: 1, DESCR: "1 (Low)" }, { ID: 2, DESCR: "2 (Programmer big release)" }, { ID: 3, DESCR: "3 (Release)" }, { ID: 4, DESCR: "4 (Programmer)" }, { ID: 5, DESCR: "5 (High)" }];
 		$scope.currentlock = guid();
 		$scope.globallock = "";
 		$scope.batches = null;
 		$scope.batchesslots = [];
 		$scope.changed = false;
+
 		$.connection.hub.start().done(function () {
 			$scope.locktask();
 		});
@@ -363,7 +364,5 @@ $(function () {
 			$scope.loadBuilds();
 			$scope.$apply();
 		};
-
-		$scope.addresses = deflist();
 	}]);
 });

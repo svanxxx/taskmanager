@@ -657,6 +657,7 @@ public class TRService : System.Web.Services.WebService
 				var reqparm = new NameValueCollection();
 				reqparm.Add("guid", requestguid);
 				reqparm.Add("commaseparatedbatches", batches);
+				reqparm.Add("priority", d.TESTPRIORITY);
 				wcClient.UploadValues(Settings.CurrentSettings.BSTSITESERVICE + "/StartTest", reqparm);
 			}
 		}
