@@ -152,7 +152,7 @@ public partial class DefectBase : IdBasedObject
 			foreach (var w in words)
 			{
 				s1 += (s1 == "") ? "(" : " AND ";
-				s1 += string.Format(" {0} like '%{1}%' ", _Summ, w);
+				s1 += string.Format(" CONTAINS({0}, '\"{1}\"')", _Summ, w);
 
 				s2 += (s2 == "") ? string.Format("{0} IN (SELECT idDefRec FROM {1} WHERE CONTAINS ({2}, '", _idRec, Defect._RepTable, Defect._DescInt) : " AND ";
 				s2 += string.Format("\"{0}\"", w);
