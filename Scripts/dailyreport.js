@@ -136,7 +136,7 @@ $(function () {
 			window.history.pushState("date" + $scope.today, "date" + $scope.today, replaceUrlParam(location.href, "date", DateToString($scope.today)));
 			$scope.loadData();
 		};
-
+		$scope.createDSFilter = createDSFilter;
 		$scope.loadData();
 
 		var pageisloading = $interval(function () {

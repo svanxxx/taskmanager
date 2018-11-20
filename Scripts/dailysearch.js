@@ -7,39 +7,29 @@
 	}]);
 	app.controller('mpscontroller', ["$scope", "$http", function ($scope, $http) {
 		window.addEventListener("popstate", function (event) {
-			$scope.selectedpersonID = event.state;
-			if (!$scope.selectedpersonID) {
-				$scope.selectedpersonID = userID();
-			}
-			$scope.loadData(true);
+			$scope.state = event.state;
+			$scope.$apply();
 		});
-
-		$scope.mpsusers = [];
-
-		$scope.startdate = new Date();
-		$scope.startdate.setDate(1);
-		$scope.startdate.setHours(0, 0, 0, 0);
-		$scope.enddate = new Date($scope.startdate.getFullYear(), $scope.startdate.getMonth() + 1, 0);
-		$scope.selectedpersonID = userID();
-		$scope.addHistory = function () {
-			window.history.pushState($scope.selectedpersonID, "userid:" + $scope.selectedpersonID, replaceUrlParam(location.href, "userid", $scope.selectedpersonID));
+		$scope.pushState = function () {
+			var url = replaceUrlParam(location.href, "filter", JSON.stringify($scope.state.filter));
+			window.history.pushState(JSON.parse(JSON.stringify($scope.state)), "", url);
 		};
-
 		$scope.loadData = function (pop) {
 			if (!pop) {
-				$scope.addHistory();
+				$scope.pushState();
 			}
 
-			$scope.reports = [];
-			var d1 = DateToString($scope.startdate);
-			var diff = ($scope.enddate - $scope.startdate) / (24 * 3600 * 1000);
+			$scope.state.reports = [];
+			var d1 = DateToString($scope.state.filter.startdate);
+			var diff = (Math.floor($scope.state.filter.enddate) - Math.floor($scope.state.filter.startdate)) / (24 * 3600 * 1000);
 			var repsprg = StartProgress("Loading reports...");
-			$http.post("trservice.asmx/getreports4Person", JSON.stringify({ 'personid': $scope.selectedpersonID, start: d1, days: diff }))
+			$http.post("trservice.asmx/getreports4Person", JSON.stringify({ 'personid': $scope.state.filter.userid, start: d1, days: diff }))
 				.then(function (result) {
-					$scope.reports = result.data.d;
-					for (var i = 0; i < $scope.reports.length; i++) {
-						var lines = $scope.reports[i].DONE.split(/\r?\n/);
-						$scope.reports[i].DONE = [];
+					$scope.state.reports = result.data.d;
+					var reps = $scope.state.reports;
+					for (var i = 0; i < reps.length; i++) {
+						var lines = reps[i].DONE.split(/\r?\n/);
+						reps[i].DONE = [];
 						for (var j = 0; j < lines.length; j++) {
 							var l = lines[j];
 							if (!l) {
@@ -50,22 +40,29 @@
 								var ttid = match[0];
 								ttid = ttid.substring(2);
 								var url = '<a href="showtask.aspx?ttid=' + ttid + '" target="_blank"><span class="badge">TT' + ttid + '</span></a>';
-								$scope.reports[i].DONE.push(l.replace(match[0], url));
+								reps[i].DONE.push(l.replace(match[0], url));
 								continue;
 							}
-							$scope.reports[i].DONE.push(l);
+							reps[i].DONE.push(l);
 						}
 					}
 					EndProgress(repsprg);
 				});
 		};
 
+		$scope.mpsusers = [];
 		getMPSUsers($scope, "mpsusers", $http, function () {
-			$scope.selectedpersonID = getParameterByName("userid");
-			if ($scope.selectedpersonID === "") {
-				$scope.selectedpersonID = "" + $scope.mpsusers[0].ID;
+			$scope.state = {};
+			$scope.state.reports = [];
+			$scope.state.filter = createDSFilter(userID());
+			var fltr = getParameterByName("filter");
+			if (fltr !== "") {
+				$scope.state.filter = JSON.parse(fltr);
+				$scope.state.filter.startdate = new Date($scope.state.filter.startdate);
+				$scope.state.filter.enddate = new Date($scope.state.filter.enddate);
+				$scope.state.filter.userid = "" + $scope.state.filter.userid;
 			}
 			$scope.loadData(false);
 		});
 	}]);
-})
+});
