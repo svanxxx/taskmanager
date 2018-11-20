@@ -36,7 +36,7 @@
 					</div>
 					<div class="panel-body">
 						<div class="panel-group">
-							<div ng-repeat="r in state.reports" class="panel panel-info">
+							<div ng-repeat="r in state.reports" class="panel panel-info report-day">
 								<div class="panel-heading">
 									<span class="glyphicon glyphicon-hourglass"></span>
 									<span>{{r.DATE}}</span>

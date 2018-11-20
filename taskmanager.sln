@@ -24,13 +24,22 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TR_SOURCE", ".", "{51DFAC55
 		SlnRelativePath = "..\taskmanager\"
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UTest", "UTest\UTest.csproj", "{AC553573-D016-402B-AD9C-9124B85E667A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{51DFAC55-2616-46F2-B38B-974397E8A4A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{51DFAC55-2616-46F2-B38B-974397E8A4A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51DFAC55-2616-46F2-B38B-974397E8A4A5}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{51DFAC55-2616-46F2-B38B-974397E8A4A5}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{AC553573-D016-402B-AD9C-9124B85E667A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC553573-D016-402B-AD9C-9124B85E667A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC553573-D016-402B-AD9C-9124B85E667A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC553573-D016-402B-AD9C-9124B85E667A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
