@@ -177,14 +177,14 @@
 								<div class="tab-content">
 									<div id="batches{{$index}}" class="tab-pane fade {{$index==0?'in active':''}}" ng-repeat="s in batchesslots">
 										<div class="list-group">
-											<a href="#" ng-click="add2Bst(batch)" class="list-group-item" ng-repeat="batch in s">{{batch}}</a>
+											<a href="#" ng-click="add2Bst(batch)" class="batch-item list-group-item" ng-repeat="batch in s">{{batch}}</a>
 										</div>
 									</div>
 								</div>
 							</div>
 							<div class="col-md-9">
 								<label>Test batches:</label>
-								<textarea class="form-control" rows="10" ng-disabled="!canChangeDefect()" ng-model="defect.BST"></textarea>
+								<textarea id="bstbatches" class="form-control" rows="10" ng-disabled="!canChangeDefect()" ng-model="defect.BST"></textarea>
 								<label>Last Built Tests (click to see results):</label>
 								<a ng-repeat="b in builds" href ng-click="showTests(b.TESTGUID)" class="btn btn-block btn-primary">{{b.DATEUP}}</a>
 							</div>

@@ -12,7 +12,7 @@
 			<div class="panel-heading" style="text-align: center"><a href ng-click="filterby('')">Branches</a></div>
 			<div class="panel-body">
 				<div class="list-group">
-					<div class="list-group-item" ng-repeat="b in state.branches" style="background-color: {{b.COLOR}}">
+					<div class="item-branch list-group-item" ng-repeat="b in state.branches" style="background-color: {{b.COLOR}}">
 						<div class="row">
 							<div class="col-sm-3">
 								<span ng-show="b.TTID < 0">{{b.NAME}}</span>
