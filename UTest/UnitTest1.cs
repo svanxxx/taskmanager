@@ -13,6 +13,7 @@ namespace UTest
 		public void Cleanup()
 		{
 			_driver.Dispose();
+			_driver = null;
 		}
 		[TestInitialize]
 		public void Initialize()
@@ -107,8 +108,13 @@ namespace UTest
 			TestTextValue("#Description", "#dataloaded");
 
 			Click("a[href='#bst']");
-			TestTextValue("#bstbatches", "#batchloaded");
 			TestElements("#batches0>div>a", 14);
+
+			Click("a[href='#batches']");
+			TestTextValue("#bstbatches", "#batchloaded");
+
+			Click("a[href='#commands']");
+			TestTextValue("#bstcommands", "#commandloaded");
 		}
 	}
 }
