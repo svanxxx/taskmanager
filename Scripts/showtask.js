@@ -240,8 +240,22 @@
 			if (!$scope.canChangeDefect()) {
 				return;
 			}
-			var pre = $scope.defect.BST === "" ? "" : "\n";
-			$scope.defect.BST += pre + batch;
+			if (document.querySelector("#bsttabs li.active").id === $scope.bsttab_bat) {
+				var preb = $scope.defect.BSTBATCHES === "" ? "" : "\n";
+				$scope.defect.BSTBATCHES += preb + batch;
+			} else if (document.querySelector("#bsttabs li.active").id === $scope.bsttab_com) {
+				var bcom = StartProgress("Loading commands...");
+				$http.post("trservice.asmx/getBSTBatchData", JSON.stringify({ batch: batch }))
+					.then(function (response) {
+						EndProgress(bcom);
+						for (var i = 0; i < response.data.d.length; i++) {
+							var prec = $scope.defect.BSTCOMMANDS === "" ? "" : "\n";
+							$scope.defect.BSTCOMMANDS += prec + response.data.d[i];
+						}
+					});
+			} else {
+				alert("Please select correct tab");
+			}
 		};
 		$scope.showTests = function (guid) {
 			var pr = StartProgress("Redirecting...");
@@ -335,6 +349,9 @@
 		$scope.testlink = document.getElementById("testlink").value;
 		$scope.addresses = document.getElementById("deflist").value;
 
+		$scope.bsttab_bat = "bsttabs-batches";
+		$scope.bsttab_com = "bsttabs-command";
+		$scope.bsttab_his = "bsttabs-history";
 		$scope.tab_builds = "Builds";
 		$scope.tab_attachs = "Attachments";
 		$scope.tab_history = "History";

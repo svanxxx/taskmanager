@@ -649,14 +649,18 @@ public class TRService : System.Web.Services.WebService
 		b.Store();
 
 		Defect d = new Defect(b.TTID);
-		if (!string.IsNullOrEmpty(d.BST.Trim()))
+		string bst_b = d.BSTBATCHES.Trim();
+		string bst_c = d.BSTCOMMANDS.Trim();
+		if (!string.IsNullOrEmpty(bst_b) || !string.IsNullOrEmpty(bst_c))
 		{
-			string batches = string.Join(",", d.BST.Trim().Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries));
+			string batches = string.Join(",", bst_b.Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries));
+			string commands = string.Join(",", bst_c.Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries));
 			using (var wcClient = new WebClient())
 			{
 				var reqparm = new NameValueCollection();
 				reqparm.Add("guid", requestguid);
 				reqparm.Add("commaseparatedbatches", batches);
+				reqparm.Add("commaseparatedcommands", commands);
 				reqparm.Add("priority", d.TESTPRIORITY);
 				wcClient.UploadValues(Settings.CurrentSettings.BSTSITESERVICE + "/StartTest", reqparm);
 			}
@@ -749,11 +753,27 @@ public class TRService : System.Web.Services.WebService
 	public List<string> getBSTBatches()
 	{
 		Uri _uri = new Uri(Settings.CurrentSettings.BSTSITESERVICE + "/EnumBatches");
-		WebClient wcClient = new WebClient();
-		string res = wcClient.UploadString(_uri, "POST", "");
-		XmlSerializer ser = new XmlSerializer(typeof(string[]), new XmlRootAttribute("ArrayOfString") { Namespace = "http://tempuri.org/" });
-		string[] arrres = (string[])ser.Deserialize(new StringReader(res));
-		return new List<string>(arrres);
+		using (var wcClient = new WebClient())
+		{
+			string res = wcClient.UploadString(_uri, "POST", "");
+			XmlSerializer ser = new XmlSerializer(typeof(string[]), new XmlRootAttribute("ArrayOfString") { Namespace = "http://tempuri.org/" });
+			string[] arrres = (string[])ser.Deserialize(new StringReader(res));
+			return new List<string>(arrres);
+		}
+	}
+	[WebMethod(EnableSession = true)]
+	public List<string> getBSTBatchData(string batch)
+	{
+		using (var wcClient = new WebClient())
+		{
+			var reqparm = new NameValueCollection();
+			reqparm.Add("name", batch);
+			byte[] result = wcClient.UploadValues(Settings.CurrentSettings.BSTSITESERVICE + "/getBatchData", reqparm);
+			string res = Encoding.ASCII.GetString(result);
+			XmlSerializer ser = new XmlSerializer(typeof(string[]), new XmlRootAttribute("ArrayOfString") { Namespace = "http://tempuri.org/" });
+			string[] arrres = (string[])ser.Deserialize(new StringReader(res));
+			return new List<string>(arrres);
+		}
 	}
 	[WebMethod(EnableSession = true)]
 	public int getTestID(string requestGUID)

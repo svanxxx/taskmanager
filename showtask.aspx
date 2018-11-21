@@ -183,10 +183,22 @@
 								</div>
 							</div>
 							<div class="col-md-9">
-								<label>Test batches:</label>
-								<textarea id="bstbatches" class="form-control" rows="10" ng-disabled="!canChangeDefect()" ng-model="defect.BST"></textarea>
-								<label>Last Built Tests (click to see results):</label>
-								<a ng-repeat="b in builds" href ng-click="showTests(b.TESTGUID)" class="btn btn-block btn-primary">{{b.DATEUP}}</a>
+								<ul id="bsttabs" class="nav nav-pills">
+									<li id="{{bsttab_bat}}" class="active"><a class="tab-small" data-toggle="tab" href="#batches">Batches</a></li>
+									<li id="{{bsttab_com}}"><a class="tab-small" data-toggle="tab" href="#commands">Commands</a></li>
+									<li id="{{bsttab_his}}"><a class="tab-small" data-toggle="tab" href="#bsthistory">History</a></li>
+								</ul>
+								<div class="tab-content">
+									<div id="batches" class="tab-pane fade in active">
+										<textarea id="bstbatches" class="form-control" rows="28" ng-disabled="!canChangeDefect()" ng-model="defect.BSTBATCHES"></textarea>
+									</div>
+									<div id="commands" class="tab-pane fade">
+										<textarea id="bstcommands" class="form-control" rows="28" ng-disabled="!canChangeDefect()" ng-model="defect.BSTCOMMANDS"></textarea>
+									</div>
+									<div id="bsthistory" class="tab-pane fade">
+										<a ng-repeat="b in builds" href ng-click="showTests(b.TESTGUID)" class="btn btn-block btn-primary">{{b.DATEUP}}</a>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>

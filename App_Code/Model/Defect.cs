@@ -462,6 +462,7 @@ public partial class Defect : DefectBase
 	static ConcurrentDictionary<string, LockEvent> locker = new ConcurrentDictionary<string, LockEvent>();
 	static Object thisLock = new Object();
 
+	static protected string _bstsep = "====bst_data_separator====";
 	static public string _DescInt = "DESCRPTN";
 	static protected string _Desc = "DESCR";
 	static protected string _Specs = "ReproSteps";
@@ -633,10 +634,55 @@ public partial class Defect : DefectBase
 		get { return this[_Specs].ToString(); }
 		set { this[_Specs] = value; }
 	}
-	public string BST
+	public string BSTBATCHES
 	{
-		get { return this[_workar].ToString().Trim(); }
-		set { this[_workar] = value.Trim(); }
+		get
+		{
+			string[] vals = this[_workar].ToString().Split(new string[] { _bstsep }, StringSplitOptions.None);
+			if (vals.Length > 0)
+			{
+				return vals[0].Trim();
+			}
+			return "";
+		}
+		set
+		{
+			List<string> vals = new List<string>(this[_workar].ToString().Split(new string[] { _bstsep }, StringSplitOptions.None));
+			if (vals.Count > 0)
+			{
+				vals[0] = value.Trim();
+			}
+			else
+			{
+				vals.Add(value.Trim());
+			}
+			this[_workar] = string.Join(_bstsep, vals.ToArray());
+		}
+	}
+	public string BSTCOMMANDS
+	{
+		get
+		{
+			string[] vals = this[_workar].ToString().Split(new string[] { _bstsep }, StringSplitOptions.None);
+			if (vals.Length > 1)
+			{
+				return vals[1].Trim();
+			}
+			return "";
+		}
+		set
+		{
+			List<string> vals = new List<string>(this[_workar].ToString().Split(new string[] { _bstsep }, StringSplitOptions.None));
+			if (vals.Count > 1)
+			{
+				vals[1] = value.Trim();
+			}
+			else
+			{
+				vals.Add(value.Trim());
+			}
+			this[_workar] = string.Join(_bstsep, vals.ToArray());
+		}
 	}
 	protected override void OnBackOrderChanged()
 	{

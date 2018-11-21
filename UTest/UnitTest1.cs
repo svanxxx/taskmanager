@@ -39,7 +39,7 @@ namespace UTest
 			while (true)
 			{
 				totalwaits++;
-				Thread.Sleep(1000);
+				Thread.Sleep(500);
 				if (_driver.FindElements(By.CssSelector(".loadingprogress")).Count == 0)
 				{
 					break;

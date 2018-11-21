@@ -19,7 +19,7 @@
 					<div class="list-group-item" ng-repeat="b in builds" target="_blank" style="background-color: {{b.COLOR}}">
 						<div class="row">
 							<div class="col-sm-1">
-								<h6><span class="glyphicon glyphicon-time"></span>{{b.DATE}}</h6>
+								<span class="label label-info ng-binding"><span class="glyphicon glyphicon-time"></span>{{b.DATE}}</span>
 							</div>
 							<div class="col-sm-2">
 								<a href="showtask.aspx?ttid={{b.TTID}}" target="_blank">
@@ -45,7 +45,7 @@
 								</div>
 							</div>
 							<div class="col-sm-1">
-								<h6><span class="glyphicon glyphicon-fire"></span>{{b.DATEUP}}</h6>
+								<span class="label label-info ng-binding"><span class="glyphicon glyphicon-time"></span>{{b.DATEUP}}</span>
 							</div>
 							<div class="col-sm-3">
 								<a href="getBuildLog.ashx?id={{b.ID}}">{{b.STATUSTXT}}
