@@ -1,6 +1,3 @@
 /.vs/TR_SOURCE/v15/*
 /.vs/taskmanager/v15
-/UTest/bin/Debug/UTest.dll
-/UTest/bin/Debug/UTest.pdb
-/UTest/obj/Debug/UTest.dll
-/UTest/obj/Debug/UTest.pdb
+/UTest/bin/Debug/*
