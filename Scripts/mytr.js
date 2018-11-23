@@ -8,6 +8,13 @@ function timeToString(dt) {
 	return pad(dt.getHours(), 2) + ":" + pad(dt.getMinutes(), 2) + ":" + pad(dt.getSeconds(), 2);
 }
 $(function () {
+	//var worker = new SharedWorker("scripts/events.js");
+	//worker.port.addEventListener("message", function (e) {
+	//	alert(e.data);
+	//}, false);
+	//worker.port.start();
+	//var s = new WebSocket(((window.location.protocol === "https:") ? "wss://" : "ws://") + window.location.host + "/ws");
+
 	var app = angular.module('mpsapplication', []);
 	app.filter('getDispoById', getDispoById);
 	app.filter('getDispoColorById', getDispoColorById);

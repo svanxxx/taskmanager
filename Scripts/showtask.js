@@ -303,6 +303,27 @@
 				EndProgress(taskprg);
 			});
 
+		$scope.generateSlots = function () {
+			var slotcap = 13;
+			$scope.batchesslots = [];
+			var arr = [];
+			var bts = $scope.batches;
+			var src = $scope.batchsearch.toUpperCase();
+			for (var i = 0; i < bts.length; i++) {
+				if (bts[i].toUpperCase().includes(src)) {
+					arr.push(bts[i]);
+				}
+			}
+			for (i = 0; i < arr.length; i++) {
+				if ($scope.batchesslots.length === 0) {
+					$scope.batchesslots.push([]);
+				}
+				if ($scope.batchesslots[$scope.batchesslots.length - 1].length === slotcap) {
+					$scope.batchesslots.push([]);
+				}
+				$scope.batchesslots[$scope.batchesslots.length - 1].push(arr[i]);
+			}
+		};
 		$scope.loadHistory = function () {
 			$http.post("trservice.asmx/gettaskhistory", JSON.stringify({ "ttid": ttid }))
 				.then(function (result) {
@@ -313,17 +334,7 @@
 			$http.post("trservice.asmx/getBSTBatches", JSON.stringify({}))
 				.then(function (result) {
 					$scope.batches = result.data.d;
-					var slotcap = 14;
-					$scope.batchesslots = [];
-					for (var i = 0; i < $scope.batches.length; i++) {
-						if ($scope.batchesslots.length === 0) {
-							$scope.batchesslots.push([]);
-						}
-						if ($scope.batchesslots[$scope.batchesslots.length - 1].length === slotcap) {
-							$scope.batchesslots.push([]);
-						}
-						$scope.batchesslots[$scope.batchesslots.length - 1].push($scope.batches[i]);
-					}
+					$scope.generateSlots();
 				});
 		};
 		$scope.loadEvents = function () {
@@ -336,6 +347,9 @@
 			if (newval && oldval) {
 				$scope.changed = true;
 			}
+		});
+		$scope.$watchCollection('batchsearch', function (newval, oldval) {
+			$scope.generateSlots();
 		});
 		$scope.releaseRequest = function () {
 			$scope.notifyHub.server.sendMessage(userID(), $scope.lockedby, "Please release TT" + $scope.defect.ID + "!!!");
@@ -364,6 +378,7 @@
 		$scope.batches = null;
 		$scope.batchesslots = [];
 		$scope.changed = false;
+		$scope.batchsearch = "";
 
 		$.connection.hub.start().done(function () {
 			$scope.locktask();

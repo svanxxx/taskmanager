@@ -171,6 +171,7 @@
 					<div id="bst" class="tab-pane fade">
 						<div class="row">
 							<div class="col-md-3">
+								<input class="form-control" ng-model="batchsearch" type="text"/>
 								<ul class="nav nav-pills nav-justified">
 									<li class="{{$index==0?'active':''}}" ng-repeat="s in batchesslots"><a class="tab-small" data-toggle="tab" href="#batches{{$index}}">{{$index+1}}</a></li>
 								</ul>

@@ -188,6 +188,12 @@ public class RawSettings
 		get { return GetVal("TESTREQUESTLINK"); }
 		set { values["TESTREQUESTLINK"] = value; }
 	}
+	public string TEMPGIT
+	{
+		get { return GetVal("TEMPGIT"); }
+		set { values["TEMPGIT"] = value; }
+	}
+
 	Dictionary<string, string> values = new Dictionary<string, string>();
 	void LoadData()
 	{
