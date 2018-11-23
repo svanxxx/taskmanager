@@ -349,7 +349,9 @@
 			}
 		});
 		$scope.$watchCollection('batchsearch', function (newval, oldval) {
-			$scope.generateSlots();
+			if (newval !== oldval) {
+				$scope.generateSlots();
+			}
 		});
 		$scope.releaseRequest = function () {
 			$scope.notifyHub.server.sendMessage(userID(), $scope.lockedby, "Please release TT" + $scope.defect.ID + "!!!");
