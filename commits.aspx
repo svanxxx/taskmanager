@@ -14,21 +14,21 @@
 				<div class="list-group">
 					<div class="list-group-item" ng-repeat="c in commits">
 						<div class="row">
-							<div class="col-sm-2">
-								<span class="glyphicon glyphicon-time"></span>
-								<span>{{c.DATE}}</span>
+							<div class="col-sm-1">
+								<span class="label label-info ng-binding"><span class="glyphicon glyphicon-time"></span>{{c.DATE}}</span>
 							</div>
 							<div class="col-sm-2">
-								<span class="glyphicon glyphicon-user"></span>
-								<span>{{c.AUTHOR}}</span>
+								<img class="rep-img img-circle" src="{{'getUserImg.ashx?eml=' + c.AUTHOREML}}" alt="Smile" height="20" width="20">
+								<span>{{c.AUTHORNAME}}</span>
 							</div>
-							<div class="col-sm-5">
-								<span class="	glyphicon glyphicon-comment"></span>
-								<span>{{c.NOTES}}</span>
+							<div class="col-sm-7">
+								<a href="showtask.aspx?ttid={{c.TTID}}" target="_blank">
+									<span class="badge">{{c.TTID}}</span>
+								</a>
+								<span>{{c.NOTESFXD}}</span>
 							</div>
-							<div class="col-sm-3">
-								<span class="glyphicon glyphicon-pushpin"></span>
-								<span>{{c.COMMIT}}</span>
+							<div class="col-sm-2">
+								<span class="label label-warning ng-binding"><span class="glyphicon glyphicon-pushpin"></span>{{c.COMMIT}}</span>
 							</div>
 						</div>
 					</div>

@@ -15,7 +15,7 @@
 					<div class="item-branch list-group-item" ng-repeat="b in state.branches" style="background-color: {{b.COLOR}}">
 						<div class="row">
 							<div class="col-sm-3">
-								<span ng-show="b.TTID < 0">{{b.NAME}}</span>
+								<span class="label label-warning" ng-show="b.TTID < 0">{{b.NAME}}</span>
 								<a ng-show="b.TTID > 0" href="showtask.aspx?ttid={{b.TTID}}" target="_blank"><span class="badge ng-binding">{{b.TTID}}</span></a>
 							</div>
 							<div class="col-sm-3">
