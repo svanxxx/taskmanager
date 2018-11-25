@@ -108,7 +108,7 @@ namespace UTest
 			TestTextValue("#Description", "#dataloaded");
 
 			Click("a[href='#bst']");
-			TestElements("#batches0>div>a", 14);
+			TestElements("#batches0>div>a", 13);
 
 			Click("a[href='#batches']");
 			TestTextValue("#bstbatches", "#batchloaded");
