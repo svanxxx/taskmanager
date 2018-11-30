@@ -8,15 +8,17 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
 	<div ng-app="mpsapplication" ng-controller="mpscontroller">
-		<div class="row">
-			<div class="col-lg-2"></div>
+		<div class="row" ng-cloak>
+			<div class="col-lg-2">
+				<button ng-show="changed" ng-click="loadData()" type="button" class="btn btn-block btn-success">Load</button>
+			</div>
 			<div class="col-lg-8">
 				<div class="row">
 					<div class="col-sm-6">
 						<h4>Vacations report for: </h4>
 					</div>
 					<div class="col-sm-6">
-						<input class="form-control" ng-change="loadData()" ng-model="daterep" type="month" />
+						<input ng-disabled="loaders > 0" class="form-control" ng-change="loadReady()" ng-model="daterep" type="month" />
 					</div>
 				</div>
 				<table id="headertable" class="table table-bordered table-dataheader">
@@ -46,13 +48,15 @@
 							</td>
 							<td week="{{d.getDay()}}" style="background-color: {{getColor(null, d)}}">{{d.getDate()}}</td>
 							<td style="background-color: {{getColor(u, d)}}" ng-repeat="u in users | orderBy : 'PERSON_NAME'">
-								<a ng-show="hasVacation(u, d)" href="showtask.aspx?ttid={{getVacation(u, d)}}" target="_blank" class="vac">
-									<span class="glyphicon glyphicon-plane"></span>
-								</a>
+								<div ng-show="hasVacation(u, d) > 0">
+									<a ng-repeat="vac in getVacation(u, d)" href="showtask.aspx?ttid={{vac}}" target="_blank" class="vac">
+										<span class="glyphicon glyphicon-plane"></span>
+									</a>
+								</div>
 								<a ng-show="hasWorkRec(u, d)" href="#" class="wrec">
 									<span class="glyphicon glyphicon-wrench"></span>
 								</a>
-								<button type="button" ng-show="!hasWorkRec(u, d) && !hasVacation(u, d)" class="addvac" ng-click="scheduleVacation(u, d)">+</button>
+								<button type="button" ng-show="!hasWorkRec(u, d) && hasVacation(u, d) < 1" class="addvac" ng-click="scheduleVacation(u, d)">+</button>
 							</td>
 						</tr>
 					</tbody>

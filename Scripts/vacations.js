@@ -29,20 +29,22 @@ $(function () {
 			return new Date(d.getFullYear(), d.getMonth(), 0).getDate();
 		};
 		$scope.getVacation = function (u, d) {
+			var arr = [];
 			for (var i = 0; i < u.scheduled.length; i++) {
 				if (u.scheduled[i].DATE == DateToString(d)) {
-					return u.scheduled[i].ID;
+					arr.push(u.scheduled[i].ID);
 				}
 			}
-			return "";
+			return arr;
 		};
 		$scope.hasVacation = function (u, d) {
+			var res = 0;
 			for (var i = 0; i < u.scheduled.length; i++) {
 				if (u.scheduled[i].DATE == DateToString(d)) {
-					return true;
+					res++;
 				}
 			}
-			return false;
+			return res;
 		};
 		$scope.hasVacationSick = function (u, d) {
 			for (var i = 0; i < u.scheduled.length; i++) {
@@ -86,23 +88,29 @@ $(function () {
 			if (u) {
 				if ($scope.hasWorkRec(u, d))
 					return "#0000ff26";
-				if ($scope.hasVacation(u, d)) {
+				var vacs = $scope.hasVacation(u, d);
+				if (vacs > 0) {
 					if ($scope.hasVacationSick(u, d)) {
 						return "green";
 					}
-					return "#ffa50045";
+					return vacs == 1 ? "#ffa50045" : "red";
 				}
 			}
-			if (d.valueOf() == $scope.today.valueOf())
+			if (d.valueOf() === $scope.today.valueOf())
 				return "yellow";
-			if (d.getDay() == 6 || d.getDay() == 0)
+			if (d.getDay() === 6 || d.getDay() === 0)
 				return "DodgerBlue";
 		};
 
 		var d = new Date();
 		$scope.daterep = new Date(d.getFullYear(), d.getMonth(), 1);
+		$scope.changed = false;
+		$scope.loadReady = function () {
+			$scope.changed = true;
+		};
 
 		$scope.loadData = function () {
+			$scope.changed = false;
 			$scope["loaders"]++;
 
 			$scope.today = new Date();
@@ -114,14 +122,15 @@ $(function () {
 
 			$scope.daterepend = new Date();
 			$scope.daterepend.setDate($scope.daterep.getDate() + 366);
+			$scope.users = [];
 
 			getMPSUsers($scope, "users", $http, function () {
+				$scope.cleanUsers();
 				$scope.days = [];
 				var stopday = new Date($scope.daterep.getFullYear() + 1, $scope.daterep.getMonth(), $scope.daterep.getDate());
 				for (var d = new Date($scope.daterep.getFullYear(), $scope.daterep.getMonth(), 1); d < stopday; d.setDate(d.getDate() + 1)) {
 					$scope.days.push(new Date(d));
 				}
-				$scope.cleanUsers();
 				var vacationprg = StartProgress("Loading vacations..."); $scope["loaders"]++;
 				$http.post("trservice.asmx/enumCloseVacations", JSON.stringify({ "start": DateToString($scope.daterep), "days": 366 }))
 					.then(function (result) {

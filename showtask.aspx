@@ -185,9 +185,9 @@
 							</div>
 							<div class="col-md-9">
 								<ul id="bsttabs" class="nav nav-pills">
-									<li id="{{bsttab_bat}}" class="active"><a class="tab-small" data-toggle="tab" href="#batches">Batches</a></li>
-									<li id="{{bsttab_com}}"><a class="tab-small" data-toggle="tab" href="#commands">Commands</a></li>
-									<li id="{{bsttab_his}}"><a class="tab-small" data-toggle="tab" href="#bsthistory">History</a></li>
+									<li id="{{bsttab_bat}}" class="active"><a class="tab-small" data-toggle="tab" href="#batches">Batches<span ng-show="defect.BSTBATCHES !== ''" class="badge">{{defect.BSTBATCHES.split("\n").length}}</span></a></li>
+									<li id="{{bsttab_com}}"><a class="tab-small" data-toggle="tab" href="#commands">Commands<span ng-show="defect.BSTCOMMANDS !== ''" class="badge">{{defect.BSTCOMMANDS.split("\n").length}}</span></a></li>
+									<li id="{{bsttab_his}}"><a class="tab-small" data-toggle="tab" href="#bsthistory">History<span ng-show="builds.length > 0" class="badge">{{builds.length}}</span></a></li>
 								</ul>
 								<div class="tab-content">
 									<div id="batches" class="tab-pane fade in active">
@@ -197,7 +197,7 @@
 										<textarea id="bstcommands" class="form-control" rows="28" ng-disabled="!canChangeDefect()" ng-model="defect.BSTCOMMANDS"></textarea>
 									</div>
 									<div id="bsthistory" class="tab-pane fade">
-										<a ng-repeat="b in builds" href ng-click="showTests(b.TESTGUID)" class="btn btn-block btn-primary">{{b.DATEUP}}</a>
+										<a ng-repeat="b in builds" href ng-click="showTests(b.TESTGUID)" class="btn btn-block btn-info">{{b.DATEUP}}</a>
 									</div>
 								</div>
 							</div>
