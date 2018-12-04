@@ -526,7 +526,7 @@ public class TRService : System.Web.Services.WebService
 		{
 			return new List<string>();
 		}
-		return GitHelper.RunCommand(@"show HEAD:""Projects.32/ChangeLog.txt""");
+		return (new GitHelper()).RunCommand(@"show HEAD:""Projects.32/ChangeLog.txt""");
 	}
 	[WebMethod(EnableSession = true)]
 	public List<Statistic> getStatistics(string start, string days)
@@ -647,6 +647,7 @@ public class TRService : System.Web.Services.WebService
 			TESTGUID = requestguid
 		};
 		b.Store();
+		VersionBuilder.SendAlarm("New local release build has been finished. Testing is starting...");
 
 		Defect d = new Defect(b.TTID);
 		string bst_b = d.BSTBATCHES.Trim();
@@ -787,5 +788,46 @@ public class TRService : System.Web.Services.WebService
 			XmlSerializer ser = new XmlSerializer(typeof(int), new XmlRootAttribute("int") { Namespace = "http://tempuri.org/" });
 			return (int)ser.Deserialize(new StringReader(sres));
 		}
+	}
+	[WebMethod(EnableSession = true)]
+	public string getUpdateWorkGit()
+	{
+		if (!CurrentContext.Valid)
+		{
+			return "FAILED";
+		}
+		if (!CurrentContext.Admin)
+		{
+			return "FAILED - not admin.";
+		}
+		return VersionBuilder.PrepareGit();
+	}
+	[WebMethod(EnableSession = true)]
+	public string versionIncrement()
+	{
+		if (!CurrentContext.Valid)
+		{
+			return "FAILED";
+		}
+		if (!CurrentContext.Admin)
+		{
+			return "FAILED - not admin.";
+		}
+		return VersionBuilder.VersionIncrement();
+	}
+	[WebMethod(EnableSession = true)]
+	public string push2Master()
+	{
+		if (!CurrentContext.Valid)
+		{
+			return "FAILED";
+		}
+		if (!CurrentContext.Admin)
+		{
+			return "FAILED - not admin.";
+		}
+		string res = VersionBuilder.PushRelease();
+		VersionBuilder.SendAlarm("New version label has been set up. The build will be started as soon as possible.");
+		return res + "<br/>Finished!";
 	}
 }

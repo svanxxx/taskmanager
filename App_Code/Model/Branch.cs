@@ -42,7 +42,7 @@ public class Branch
 			{
 				_branches.Clear();
 				_loadtime = DateTime.Now;
-				foreach (string line in GitHelper.RunCommand(@"for-each-ref --format=""%(committerdate) %09 %(authorname) %09 %(refname) %09 %(authoremail)"" --sort=-committerdate"))
+				foreach (string line in (new GitHelper()).RunCommand(@"for-each-ref --format=""%(committerdate) %09 %(authorname) %09 %(refname) %09 %(authoremail)"" --sort=-committerdate"))
 				{
 					string[] sep = new string[] { "\t" };
 					string[] pars = line.Split(sep, StringSplitOptions.RemoveEmptyEntries);
@@ -72,14 +72,14 @@ public class Branch
 	}
 	public static void Delete(string branch)
 	{
-		GitHelper.RunCommand(string.Format("branch -D {0}", branch));
+		(new GitHelper()).RunCommand(string.Format("branch -D {0}", branch));
 	}
 	public static List<Commit> EnumCommits(string branch, int from, int to)
 	{
 		List<Commit> ls = new List<Commit>();
 		Commit com = null;
 		string command = branch == "master" ? "log -100" : string.Format(@"log master..{0}", branch);
-		foreach (string line in GitHelper.RunCommand(command + @" --date=format:""%Y.%m.%d %H:%M"""))
+		foreach (string line in (new GitHelper()).RunCommand(command + @" --date=format:""%Y.%m.%d %H:%M"""))
 		{
 			if (line.StartsWith("commit"))
 			{
@@ -131,7 +131,7 @@ public class Branch
 	{
 		List<ChangedFile> ls = new List<ChangedFile>();
 		string command = "diff --name-status {0} master";
-		foreach (string line in GitHelper.RunCommand(command))
+		foreach (string line in (new GitHelper()).RunCommand(command))
 		{
 			ls.Add(new ChangedFile(line.Trim()));
 		}

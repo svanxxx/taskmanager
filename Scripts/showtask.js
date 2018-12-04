@@ -380,6 +380,9 @@
 		$scope.batches = null;
 		$scope.batchesslots = [];
 		$scope.changed = false;
+		$scope.isrelease = function () {
+			return $scope.defect !== undefined && document.getElementById("releasettid").value == $scope.defect.ID;
+		};
 		$scope.batchsearch = "";
 
 		$.connection.hub.start().done(function () {

@@ -45,7 +45,7 @@
 		var page = getParameterByName("page");
 		var showby = getParameterByName("showby");
 		$scope.page = 1;
-		$scope.showby = "10";
+		$scope.showby = "15";
 		$scope.showbys = ["5", "10", "15", "30", "60", "120"];
 		if (page !== "") {
 			$scope.page = parseInt(page);

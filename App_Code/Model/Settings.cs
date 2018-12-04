@@ -193,7 +193,21 @@ public class RawSettings
 		get { return GetVal("TEMPGIT"); }
 		set { values["TEMPGIT"] = value; }
 	}
-
+	public string TELEGRAMBUILDTOKEN
+	{
+		get { return GetVal("TELEGRAMBUILDTOKEN"); }
+		set { values["TELEGRAMBUILDTOKEN"] = value; }
+	}
+	public string TELEGRAMBUILDCHANNEL
+	{
+		get { return GetVal("TELEGRAMBUILDCHANNEL"); }
+		set { values["TELEGRAMBUILDCHANNEL"] = value; }
+	}
+	public string TESTSGIT
+	{
+		get { return GetVal("TESTSGIT"); }
+		set { values["TESTSGIT"] = value; }
+	}
 	Dictionary<string, string> values = new Dictionary<string, string>();
 	void LoadData()
 	{

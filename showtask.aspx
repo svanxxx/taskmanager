@@ -13,6 +13,7 @@
 	<input type="hidden" id="deflist" value="<%=Settings.CurrentSettings.DEFLISTENERS.ToString()%>" />
 	<input type="hidden" id="buildtime" value="<%=Settings.CurrentSettings.BUILDTIME.ToString()%>" />
 	<input type="hidden" id="testlink" value="<%=Settings.CurrentSettings.TESTREQUESTLINK.ToString()%>" />
+	<input type="hidden" id="releasettid" value="<%=Settings.CurrentSettings.RELEASETTID.ToString()%>" />
 
 	<div ng-app="mpsapplication" ng-controller="mpscontroller" ng-cloak>
 		<div class="alert alert-danger savebutton btn-group-vertical" ng-cloak ng-show="changed">
@@ -332,13 +333,16 @@
 						<div class="panel panel-primary">
 							<div class="panel-heading">
 								<div class="row">
-									<div class="col-md-4">
+									<div class="col-md-3">
 										<label>Git branch (default is TT ID):</label>
 									</div>
 									<div class="col-md-2">
 										<input type="text" class="form-control" ng-disabled="!canChangeDefect()" ng-model="defect.BRANCH">
 									</div>
-									<div class="col-md-6">
+									<div class="col-md-3">
+										<a href="builder.aspx" ng-show="isrelease()" class="btn btn-info" role="button">Release Marker</a>
+									</div>
+									<div class="col-md-3">
 										<button type="button" class="btn btn-sm btn-danger btn-right-align" ng-disabled="!commits||commits.length<1" ng-click="deleteBranch()">Delete Branch</button>
 									</div>
 								</div>
