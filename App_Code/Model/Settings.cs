@@ -193,6 +193,16 @@ public class RawSettings
 		get { return GetVal("TEMPGIT"); }
 		set { values["TEMPGIT"] = value; }
 	}
+	public string TELEGRAMTESTTOKEN
+	{
+		get { return GetVal("TELEGRAMTESTTOKEN"); }
+		set { values["TELEGRAMTESTTOKEN"] = value; }
+	}
+	public string TELEGRAMTESTCHANNEL
+	{
+		get { return GetVal("TELEGRAMTESTCHANNEL"); }
+		set { values["TELEGRAMTESTCHANNEL"] = value; }
+	}
 	public string TELEGRAMBUILDTOKEN
 	{
 		get { return GetVal("TELEGRAMBUILDTOKEN"); }

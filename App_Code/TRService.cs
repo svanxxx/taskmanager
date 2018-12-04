@@ -13,6 +13,7 @@ using System.Collections.Specialized;
 using System.Xml.Serialization;
 using System.IO;
 using System.Text;
+using Telegram.Bot;
 
 [WebService(Namespace = "http://tempuri.org/")]
 [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
@@ -647,7 +648,18 @@ public class TRService : System.Web.Services.WebService
 			TESTGUID = requestguid
 		};
 		b.Store();
-		VersionBuilder.SendAlarm("New local release build has been finished. Testing is starting...");
+		if (Settings.CurrentSettings.RELEASETTID == b.TTID.ToString())
+		{
+			VersionBuilder.SendAlarm("New local release build has been finished. Testing is starting...");
+		}
+		else
+		{
+			TelegramBotClient client = new TelegramBotClient(Settings.CurrentSettings.TELEGRAMTESTTOKEN);
+			client.GetMeAsync().Wait();
+			DefectUser u = new DefectUser(b.TTUSERID);
+			string mess = string.Format("New TT{0} build from {1} is ready for tests!", b.TTID, u.FULLNAME) ;
+			client.SendTextMessageAsync(Settings.CurrentSettings.TELEGRAMTESTCHANNEL, mess).Wait();
+		}
 
 		Defect d = new Defect(b.TTID);
 		string bst_b = d.BSTBATCHES.Trim();

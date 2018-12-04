@@ -87,6 +87,6 @@ public class VersionBuilder
 	{
 		TelegramBotClient client = new TelegramBotClient(Settings.CurrentSettings.TELEGRAMBUILDTOKEN);
 		client.GetMeAsync().Wait();
-		client.SendTextMessageAsync("@" + Settings.CurrentSettings.TELEGRAMBUILDCHANNEL, message).Wait();
+		client.SendTextMessageAsync(Settings.CurrentSettings.TELEGRAMBUILDCHANNEL, message).Wait();
 	}
 }
