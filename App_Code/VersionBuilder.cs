@@ -19,6 +19,8 @@ public class VersionBuilder
 		}
 		GitHelper git = new GitHelper(path);
 		List<string> res = new List<string>();
+
+		git.SetCredentials(CurrentContext.User.PERSON_NAME, CurrentContext.User.EMAIL);
 		git.ResetHard();
 		res.AddRange(git.Checkout("master"));
 		res.AddRange(git.ResetHard("origin/master"));
@@ -56,43 +58,8 @@ public class VersionBuilder
 				}
 			}
 			GitHelper git = new GitHelper(path);
-			res.AddRange(git.Diff());
-			List<string> processed = new List<string>();
-			for(int i = 0; i < res.Count; i++)
-			{
-				string s = res[i];
-				string color = "white";
-				string pre = "";
-				string pos = "";
-				if (s.StartsWith("+"))
-				{
-					color = "#00800047";
-				}
-				else if (s.StartsWith("-"))
-				{
-					color = "#ff000036";
-				}
-				else if (s.StartsWith("fatal"))
-				{
-					color = "red";
-				}
-				else if (s.StartsWith("+++ b"))
-				{
-					continue;
-				}
-				else if (s.StartsWith("--- a"))
-				{
-					continue;
-				}
-				else if (s.StartsWith("diff --git a"))
-				{
-					s = "<hr>" + s.Replace("diff --git a", "").Split(new string[] { "b/" }, StringSplitOptions.RemoveEmptyEntries)[0];
-					pre = "<b>";
-					pos = "</b>";
-				}
-				processed.Add(string.Format("<div style='background-color:{0};'>{2}{1}{3}</div>", color, s, pre, pos));
-			}
-			return string.Join("", processed.ToArray());
+			res.AddRange(git.DiffFriendOutput());
+			return string.Join("", res.ToArray());
 		}
 	}
 	static public string PushRelease()
