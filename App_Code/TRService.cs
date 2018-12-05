@@ -698,6 +698,10 @@ public class TRService : System.Web.Services.WebService
 			STATUS = DefectBuild.BuildStatus.failed.ToString()
 		};
 		b.Store();
+		if (Settings.CurrentSettings.RELEASETTID == b.TTID.ToString())
+		{
+			VersionBuilder.SendAlarm("Failed to build version. Please check the logs!!!");
+		}
 	}
 	[WebMethod(EnableSession = true)]
 	public string alarmEmail(int ttid, string addresses)

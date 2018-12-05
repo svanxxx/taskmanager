@@ -218,6 +218,11 @@ public class RawSettings
 		get { return GetVal("TESTSGIT"); }
 		set { values["TESTSGIT"] = value; }
 	}
+	public string BACKGROUNDIMG
+	{
+		get { return GetVal("BACKGROUNDIMG"); }
+		set { values["BACKGROUNDIMG"] = value; }
+	}
 	Dictionary<string, string> values = new Dictionary<string, string>();
 	void LoadData()
 	{

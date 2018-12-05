@@ -77,7 +77,7 @@ public class VersionBuilder
 
 		List<string> res = new List<string>();
 		res.AddRange(git.PushOrigin());
-		res.AddRange(git.Checkout("release"));
+		res.AddRange(git.Checkout("Release"));
 		res.AddRange(git.Rebase("master"));
 		res.AddRange(git.PushOrigin());
 		res.AddRange(git.PushTags());

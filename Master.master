@@ -27,7 +27,7 @@
 		});
 	</script>
 </head>
-<body>
+<body style="background-image: url('<%=Settings.CurrentSettings.BACKGROUNDIMG.ToString()%>');">
 	<input type="hidden" id="referenceid" value="<%=ReferenceVersion.REFSVERSION()%>" />
 	<input type="hidden" id="isadmin" value="<%=CurrentContext.Admin.ToString()%>" />
 	<input type="hidden" id="userid" value="<%=CurrentContext.UserID.ToString()%>" />
