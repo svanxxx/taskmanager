@@ -237,11 +237,22 @@ public partial class TRRec : TRRecSignal
 		}
 		return ls;
 	}
-	public static List<TRRec> EnumPersonal(int id, DateTime start, int days)
+	public static List<TRRec> EnumPersonal(int id, DateTime start, int days, string text)
 	{
 		List<TRRec> ls = new List<TRRec>();
 		DateTime end = (new DateTime(start.Year, start.Month, start.Day)).AddDays(days);
-		string where = string.Format(" WHERE [{0}] = '{1}' AND [{2}] >= '{3}' AND [{2}] <= '{4}' ORDER BY {2} DESC", _perid, id, _dat, start.ToString(DBHelper.SQLDateFormat), end.ToString(DBHelper.SQLDateFormat));
+		string textflt = "";
+		if (!string.IsNullOrEmpty(text))
+		{
+			textflt = string.Format(" AND CONTAINS({0}, '{1}')", _done, text);
+		}
+		string where = string.Format(" WHERE [{0}] = '{1}' AND [{2}] >= '{3}' AND [{2}] <= '{4}' {5} ORDER BY {2} DESC", 
+			_perid, 
+			id, 
+			_dat, 
+			start.ToString(DBHelper.SQLDateFormat), 
+			end.ToString(DBHelper.SQLDateFormat),
+			textflt);
 		foreach (DataRow r in (new TRRec()).GetRecords(where))
 		{
 			TRRec rec = new TRRec();

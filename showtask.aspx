@@ -172,7 +172,7 @@
 					<div id="bst" class="tab-pane fade">
 						<div class="row">
 							<div class="col-md-3">
-								<input class="form-control" ng-model="batchsearch" type="text"/>
+								<input class="form-control" ng-model="batchsearch" type="text" />
 								<ul class="nav nav-pills nav-justified">
 									<li class="{{$index==0?'active':''}}" ng-repeat="s in batchesslots"><a class="tab-small" data-toggle="tab" href="#batches{{$index}}">{{$index+1}}</a></li>
 								</ul>
@@ -383,19 +383,20 @@
 			</div>
 			<div class="col-lg-2 hidden-md">
 				<div class="alert alert-warning" style="text-align: center">
-					<img class="img-circle" ng-src="{{'getUserImg.ashx?ttid=' + defect.CREATEDBY}}" alt="Smile" height="60" width="60" />
-					<div>
-						<strong>{{defect.CREATEDBY | getUserById:this}}</strong>
-					</div>
-					<div>
-						<span class="glyphicon glyphicon-arrow-down"></span>
-					</div>
+					<a data-toggle="tooltip" title="Click to see full plan for the person" target="_blank" href="editplan.aspx?userid={{defect.CREATEDBY | getUserTRIDById:this}}">
+						<img class="img-circle" ng-src="{{'getUserImg.ashx?ttid=' + defect.CREATEDBY}}" alt="Smile" height="60" width="60" />
+						<div>
+							<strong>{{defect.CREATEDBY | getUserById:this}}</strong>
+						</div>
+					</a>
 				</div>
 				<div class="alert alert-info" style="text-align: center">
-					<img class="img-circle" ng-src="{{'getUserImg.ashx?ttid=' + defect.AUSER}}" alt="Smile" height="60" width="60" />
-					<div>
-						<strong>{{defect.AUSER | getUserById:this}}</strong>
-					</div>
+					<a data-toggle="tooltip" title="Click to see full plan for the person" target="_blank" href="editplan.aspx?userid={{defect.AUSER | getUserTRIDById:this}}">
+						<img class="img-circle" ng-src="{{'getUserImg.ashx?ttid=' + defect.AUSER}}" alt="Smile" height="60" width="60" />
+						<div>
+							<strong>{{defect.AUSER | getUserById:this}}</strong>
+						</div>
+					</a>
 				</div>
 			</div>
 		</div>

@@ -9,7 +9,9 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
 	<div ng-app="mpsapplication" ng-controller="mpscontroller">
 		<div class="row" ng-cloak>
-			<div class="col-lg-2"></div>
+			<div class="col-lg-2">
+				<button type="button" class="btn btn-block btn-primary" ng-click="loadData(false)">Load</button>
+			</div>
 			<div class="col-lg-8">
 				<h2 class="rep-cap">Daily Reports Search</h2>
 				<div class="panel panel-primary">
@@ -18,19 +20,23 @@
 							<div class="col-lg-1">
 								<img class="img-circle" ng-src="{{'getUserImg.ashx?id=' + state.filter.userid}}" alt="Smile" height="60" width="60">
 							</div>
-							<div class="col-lg-4">
+							<div class="col-lg-3">
 								<label>Person:</label>
-								<select ng-change="loadData(false)" ng-model="state.filter.userid" class="form-control">
+								<select ng-model="state.filter.userid" class="form-control">
 									<option ng-repeat="u in mpsusers" value="{{u.ID}}">{{u.PERSON_NAME}}</option>
 								</select>
 							</div>
-							<div class="col-lg-3">
+							<div class="col-lg-2">
 								<label>From:</label>
-								<input required ng-model="state.filter.startdate" ng-change="loadData(false)" class="form-control" type="date" />
+								<input required ng-model="state.filter.startdate" class="form-control" type="date" />
 							</div>
-							<div class="col-lg-3">
+							<div class="col-lg-2">
 								<label>Through:</label>
-								<input required ng-model="state.filter.enddate" ng-change="loadData(false)" class="form-control" type="date" />
+								<input required ng-model="state.filter.enddate" class="form-control" type="date" />
+							</div>
+							<div class="col-lg-4">
+								<label>Text</label>
+								<input required ng-model="state.filter.text" class="form-control" type="text" />
 							</div>
 						</div>
 					</div>

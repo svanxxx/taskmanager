@@ -23,7 +23,7 @@
 			var d1 = DateToString($scope.state.filter.startdate);
 			var diff = (Math.floor($scope.state.filter.enddate) - Math.floor($scope.state.filter.startdate)) / (24 * 3600 * 1000);
 			var repsprg = StartProgress("Loading reports...");
-			$http.post("trservice.asmx/getreports4Person", JSON.stringify({ 'personid': $scope.state.filter.userid, start: d1, days: diff }))
+			$http.post("trservice.asmx/getreports4Person", JSON.stringify({ 'personid': $scope.state.filter.userid, start: d1, days: diff, text: $scope.state.filter.text}))
 				.then(function (result) {
 					$scope.state.reports = result.data.d;
 					var reps = $scope.state.reports;

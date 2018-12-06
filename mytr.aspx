@@ -23,6 +23,7 @@
 					<a id="mytasks" href="#" class="btn btn-default" role="button" target="_blank"><span class="glyphicon glyphicon-resize-small"></span>&nbsp;Tasks assigned to me</a>
 					<a id="metasks" href="#" class="btn btn-default" role="button" target="_blank"><span class="glyphicon glyphicon-resize-full"></span>&nbsp;Tasks created by me</a>
 					<a href="<%=Settings.CurrentSettings.BSTSITE.ToString()%>?showall=1&PROGABB=<%=CurrentContext.UserLogin()%>" class="btn btn-default" role="button" target="_blank"><span class="glyphicon glyphicon-link"></span>&nbsp;My BST requests</a>
+					<a href="dailysearch.aspx" class="btn btn-default" role="button" target="_blank"><span class="glyphicon glyphicon-sort-by-attributes-alt"></span>&nbsp;My Records</a>
 				</div>
 			</div>
 			<div class="col-lg-8">

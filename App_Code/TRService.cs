@@ -540,13 +540,13 @@ public class TRService : System.Web.Services.WebService
 		return TRRec.EnumTRStatistics(DateTime.ParseExact(start, defDateFormat, CultureInfo.InvariantCulture), Convert.ToInt32(days));
 	}
 	[WebMethod(EnableSession = true)]
-	public List<TRRec> getreports4Person(int personid, string start, int days)
+	public List<TRRec> getreports4Person(int personid, string start, int days, string text)
 	{
 		if (!CurrentContext.Valid)
 		{
 			return new List<TRRec>();
 		}
-		return TRRec.EnumPersonal(personid, DateTime.ParseExact(start, defDateFormat, CultureInfo.InvariantCulture), days);
+		return TRRec.EnumPersonal(personid, DateTime.ParseExact(start, defDateFormat, CultureInfo.InvariantCulture), days, text);
 	}
 	[WebMethod(EnableSession = true)]
 	public RawSettings getSettings()

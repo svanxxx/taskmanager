@@ -197,6 +197,7 @@ function createTasksFilter(filter)
 function createDSFilter(userid) {
 	var filter = {};
 	var d = new Date(); d.setDate(1); d.setHours(0, 0, 0, 0);
+	filter.text = "";
 	filter.startdate = d;
 	filter.enddate = new Date(d.getFullYear(), d.getMonth() + 1, 0);
 	filter.userid = "" + userid;
