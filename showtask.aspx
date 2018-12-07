@@ -389,6 +389,7 @@
 							<strong>{{defect.CREATEDBY | getUserById:this}}</strong>
 						</div>
 					</a>
+					<span class="glyphicon glyphicon-arrow-down"></span>
 				</div>
 				<div class="alert alert-info" style="text-align: center">
 					<a data-toggle="tooltip" title="Click to see full plan for the person" target="_blank" href="editplan.aspx?userid={{defect.AUSER | getUserTRIDById:this}}">
