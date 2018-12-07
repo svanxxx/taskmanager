@@ -86,7 +86,7 @@ namespace UTest
 		[TestMethod]
 		public void TestDailySearch()
 		{
-			GoToUrl("dailysearch.aspx?filter={%22startdate%22:%222017-12-31T21:00:00.000Z%22,%22enddate%22:%222018-01-04T21:00:00.000Z%22,%22userid%22:%221%22}");
+			GoToUrl("dailysearch.aspx?filter={%22text%22:%22%22,%22startdate%22:%222017-12-31T21:00:00.000Z%22,%22enddate%22:%222018-01-04T21:00:00.000Z%22,%22userid%22:%221%22}");
 			TestElements(".report-day", 3);
 		}
 		[TestMethod]
@@ -115,6 +115,9 @@ namespace UTest
 
 			Click("a[href='#commands']");
 			TestTextValue("#bstcommands", "#commandloaded");
+
+			Click("a[href='#bsthistory']");
+			TestElements("#bsthistory>a", 1);
 		}
 	}
 }
