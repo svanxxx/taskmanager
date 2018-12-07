@@ -363,6 +363,7 @@ public class IdBasedObject
 			}
 		}
 	}
+
 	protected string GetAsDate(string column, string defDate = DBHelper.sdefaultDate)
 	{
 		return this[column] == DBNull.Value ? defDate : Convert.ToDateTime(this[column]).ToString(defDateFormat, CultureInfo.InvariantCulture);
@@ -374,6 +375,10 @@ public class IdBasedObject
 	protected int GetAsInt(string column, int defVal = -1)
 	{
 		return this[column] == DBNull.Value ? defVal : Convert.ToInt32(this[column]);
+	}
+	protected string GetAsString(string column, string defVal = "")
+	{
+		return this[column] == DBNull.Value ? defVal : this[column].ToString();
 	}
 	protected void SetAsDate(string column, string value)
 	{

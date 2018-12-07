@@ -60,9 +60,35 @@ public class DefectDefaults
 		}
 		return v;
 	}
+
 	public int PRODUCT
 	{
 		get { return _ivalues["PROD"]; }
 		set { _ivalues["PROD"] = value; }
+	}
+	public int TYPE
+	{
+		get { return _ivalues["TYPE"]; }
+		set { _ivalues["TYPE"] = value; }
+	}
+	public int DISP
+	{
+		get { return _ivalues["DISP"]; }
+		set { _ivalues["DISP"] = value; }
+	}
+	public int PRIO
+	{
+		get { return _ivalues["PRIO"]; }
+		set { _ivalues["PRIO"] = value; }
+	}
+	public int COMP
+	{
+		get { return _ivalues["COMP"]; }
+		set { _ivalues["COMP"] = value; }
+	}
+	public int SEVR
+	{
+		get { return _ivalues["SEVR"]; }
+		set { _ivalues["SEVR"] = value; }
 	}
 }

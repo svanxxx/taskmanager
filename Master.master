@@ -78,6 +78,7 @@
 							<li><a href="types.aspx"><span class="glyphicon glyphicon-bookmark"></span>Types</a></li>
 							<li><a href="priorities.aspx"><span class="glyphicon glyphicon-bookmark"></span>Priorities</a></li>
 							<li><a href="users.aspx"><span class="glyphicon glyphicon-user"></span>Users</a></li>
+							<li><a href="defaults.aspx"><span class="glyphicon glyphicon-check"></span>Defaults</a></li>
 							<li><a href="settings.aspx"><span class="glyphicon glyphicon-cog"></span>Settings</a></li>
 						</ul>
 					</li>

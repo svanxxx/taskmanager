@@ -562,6 +562,20 @@ public class TRService : System.Web.Services.WebService
 		}
 		s.Store();
 	}
+	[WebMethod(EnableSession = true)]
+	public DefectDefaults getDefaults()
+	{
+		return DefectDefaults.CurrentDefaults;
+	}
+	[WebMethod(EnableSession = true)]
+	public void setDefaults(DefectDefaults d)
+	{
+		if (!CurrentContext.Valid || !CurrentContext.Admin)
+		{
+			return;
+		}
+		DefectDefaults.CurrentDefaults = d;
+	}
 	public class BuildRequest
 	{
 		public int ID { get; set; }
