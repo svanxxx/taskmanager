@@ -10,10 +10,12 @@
 	<div ng-app="mpsapplication" ng-controller="mpscontroller">
 		<div class="row">
 			<div class="col-lg-2">
-				<div class="alert alert-success">
+				<div class="alert alert-info">
+					<span class="glyphicon glyphicon-globe"></span>
 					<strong>FlexLM server</strong> installation - follow next link: <a href="getinstall.ashx?type=flex&version=0.0.0" target="_blank" class="alert-link">click here</a>.
 				</div>
 				<div class="alert alert-info">
+					<span class="glyphicon glyphicon-globe"></span>
 					<strong>Fieldpro Client</strong> installation - follow next link: <a href="getinstall.ashx?type=client&version=0.0.0" target="_blank" class="alert-link">click here</a>.
 				</div>
 			</div>
@@ -22,19 +24,13 @@
 				<div class="panel-group">
 					<div ng-repeat="v in versions" class="panel panel-primary">
 						<div class="panel-heading">
-							<span>{{v.version}}</span>
-							<button type="button" class="btn-efieldpro btn btn-default btn-xs fip-down btn-efieldpro" ng-click="GetFile(v, 'efip')">
-								<span class="glyphicon glyphicon-download"></span>eFieldpro
-							</button>
-							<button type="button" class="btn btn-default btn-xs fip-down btn-models" ng-click="GetFile(v, 'cx')">
-								<span class="glyphicon glyphicon-download"></span>Models
-							</button>
-							<button type="button" class="btn btn-default btn-xs fip-down btn-onsite" ng-click="GetFile(v, 'onsite')">
-								<span class="glyphicon glyphicon-download"></span>Onsite
-							</button>
-							<button type="button" class="btn btn-default btn-xs fip-down btn-demo" ng-click="GetFile(v, 'demo')">
-								<span class="glyphicon glyphicon-download"></span>Demo
-							</button>
+							<div class="btn-group">
+								<span class="btn btn-info">{{v.version}}</span>
+								<button ng-click="GetFile(v, 'efip')" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-download"></span>&nbsp;eFieldpro</button>
+								<button ng-click="GetFile(v, 'cx')" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-download"></span>&nbsp;Models</button>
+								<button ng-click="GetFile(v, 'onsite')" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-download"></span>&nbsp;Onsite</button>
+								<button ng-click="GetFile(v, 'demo')" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-download"></span>&nbsp;Demo</button>
+							</div>
 						</div>
 						<div class="panel-body">
 							<div ng-repeat="c in v.changes">
