@@ -14,6 +14,7 @@ using System.Xml.Serialization;
 using System.IO;
 using System.Text;
 using Telegram.Bot;
+using GitHelper;
 
 [WebService(Namespace = "http://tempuri.org/")]
 [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
@@ -527,7 +528,8 @@ public class TRService : System.Web.Services.WebService
 		{
 			return new List<string>();
 		}
-		return (new GitHelper()).RunCommand(@"show HEAD:""Projects.32/ChangeLog.txt""");
+		Git git = new Git(Settings.CurrentSettings.WORKGITLOCATION);
+		return git.RunCommand(@"show HEAD:""Projects.32/ChangeLog.txt""");
 	}
 	[WebMethod(EnableSession = true)]
 	public List<Statistic> getStatistics(string start, string days)
@@ -624,24 +626,28 @@ public class TRService : System.Web.Services.WebService
 	[WebMethod]
 	public List<Branch> enumbranches(int from, int to, string user)
 	{
-		return Branch.Enum(from, to, user);
+		Git git = new Git(Settings.CurrentSettings.WORKGITLOCATION);
+		return git.EnumBranches(from, to, user);
 	}
 	[WebMethod(EnableSession = true)]
 	public void deleteBranch(string branch)
 	{
 		if (string.IsNullOrEmpty(branch))
 			return;
-		Branch.Delete(branch);
+		Git git = new Git(Settings.CurrentSettings.WORKGITLOCATION);
+		git.DeleteBranch(branch);
 	}
 	[WebMethod]
 	public List<Commit> EnumCommits(string branch, int from, int to)
 	{
-		return Branch.EnumCommits(branch, from, to);
+		Git git = new Git(Settings.CurrentSettings.WORKGITLOCATION);
+		return git.GetBranch(branch).EnumCommits(from, to);
 	}
 	[WebMethod]
 	public List<ChangedFile> EnumFiles(string branch)
 	{
-		return Branch.EnumFiles(branch);
+		Git git = new Git(Settings.CurrentSettings.WORKGITLOCATION);
+		return git.GetBranch(branch).EnumFiles();
 	}
 	[WebMethod]
 	public void CommentBuild(int id, string comment)
@@ -671,7 +677,7 @@ public class TRService : System.Web.Services.WebService
 			TelegramBotClient client = new TelegramBotClient(Settings.CurrentSettings.TELEGRAMTESTTOKEN);
 			client.GetMeAsync().Wait();
 			DefectUser u = new DefectUser(b.TTUSERID);
-			string mess = string.Format("New TT{0} build from {1} is ready for tests!", b.TTID, u.FULLNAME) ;
+			string mess = string.Format("New TT{0} build from {1} is ready for tests!", b.TTID, u.FULLNAME);
 			client.SendTextMessageAsync(Settings.CurrentSettings.TELEGRAMTESTCHANNEL, mess).Wait();
 		}
 

@@ -10,7 +10,7 @@
 			labels: [
 				"Created",
 				"Finished"
-			],
+			]
 		},
 		options: {
 			responsive: true,
@@ -89,7 +89,7 @@ function CreateSickChart() {
 		options: {
 			responsive: true,
 			legend: {
-				position: "top",
+				position: "top"
 			},
 			title: {
 				display: true,
@@ -152,7 +152,7 @@ function DrawHoursCharts(users) {
 	d.datasets[0].data = [createdH, finishedH];
 	window.hourspermonth.update();
 
-	var d = window.hourspermonthP.data;
+	d = window.hourspermonthP.data;
 	d.labels.pop();
 	d.datasets[0].data.pop();
 	d.datasets[1].data.pop();

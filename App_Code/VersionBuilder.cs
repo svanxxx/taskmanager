@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Management.Automation;
-using System.Threading.Tasks;
 using Telegram.Bot;
+using GitHelper;
 
 public class VersionBuilder
 {
@@ -17,7 +17,7 @@ public class VersionBuilder
 		{
 			throw new Exception("Path to git is not specified!");
 		}
-		GitHelper git = new GitHelper(path);
+		Git git = new Git(path);
 		List<string> res = new List<string>();
 
 		git.SetCredentials(CurrentContext.User.PERSON_NAME, CurrentContext.User.EMAIL);
@@ -57,7 +57,7 @@ public class VersionBuilder
 					res.Add(e.ToString());
 				}
 			}
-			GitHelper git = new GitHelper(path);
+			Git git = new Git(path);
 			res.AddRange(git.DiffFriendOutput());
 			return string.Join("", res.ToArray());
 		}
@@ -73,7 +73,7 @@ public class VersionBuilder
 		{
 			throw new Exception("Path to git is not specified!");
 		}
-		GitHelper git = new GitHelper(path);
+		Git git = new Git(path);
 
 		List<string> res = new List<string>();
 		res.AddRange(git.PushOrigin());

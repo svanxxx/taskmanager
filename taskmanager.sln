@@ -3,9 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2027
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TR_SOURCE", ".", "{51DFAC55-2616-46F2-B38B-974397E8A4A5}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "taskman", ".", "{51DFAC55-2616-46F2-B38B-974397E8A4A5}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5"
+		ProjectReferences = "{5a8e054c-b61b-498e-968f-e0bb62b4b4ec}|GitHelper.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/localhost_8311"
 		Debug.AspNetCompiler.PhysicalPath = "..\taskmanager\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_8311\"
@@ -26,6 +27,8 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TR_SOURCE", ".", "{51DFAC55
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UTest", "UTest\UTest.csproj", "{AC553573-D016-402B-AD9C-9124B85E667A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitHelper", "GitHelper\GitHelper.csproj", "{5A8E054C-B61B-498E-968F-E0BB62B4B4EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +43,10 @@ Global
 		{AC553573-D016-402B-AD9C-9124B85E667A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC553573-D016-402B-AD9C-9124B85E667A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC553573-D016-402B-AD9C-9124B85E667A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A8E054C-B61B-498E-968F-E0BB62B4B4EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A8E054C-B61B-498E-968F-E0BB62B4B4EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A8E054C-B61B-498E-968F-E0BB62B4B4EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A8E054C-B61B-498E-968F-E0BB62B4B4EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

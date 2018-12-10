@@ -16,7 +16,7 @@ $(function () {
 	app.controller('mpscontroller', ["$scope", "$http", "$interval", function ($scope, $http, $interval) {
 		$scope["loaders"] = 0;
 		$scope.today = new Date();
-		if (getParameterByName("date") != "") {
+		if (getParameterByName("date") !== "") {
 			$scope.today = StringToDate(getParameterByName("date"));
 		}
 		$scope.mpsusers = [];
@@ -39,7 +39,7 @@ $(function () {
 					if (d > $scope.today) {
 						var currd = d - $scope.today;
 						//looking for nearest vacation
-						difference = (difference == 0) ? currd : Math.min(currd, difference);
+						difference = difference === 0 ? currd : Math.min(currd, difference);
 					}
 				}
 			}
