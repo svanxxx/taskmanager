@@ -2,3 +2,5 @@
 /.vs/taskmanager/v15
 /UTest/bin/Debug/*
 /UTest/obj/Debug/*
+/bin/GitHelper.dll
+/bin/GitHelper.pdb
