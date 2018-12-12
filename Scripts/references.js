@@ -115,8 +115,8 @@ function getTypes($scope, member, $http) {
 function getDispos($scope, member, $http) {
 	loadReference($scope, member, $http, "dispos", "gettaskdispos");
 }
-function getUsers($scope, member, $http) {
-	loadReference($scope, member, $http, "users", "gettaskusers");
+function getUsers($scope, member, $http, func) {
+	loadReference($scope, member, $http, "users", "gettaskusers", null, func);
 }
 function getMPSUsers($scope, member, $http, func) {
 	$scope[member] = [];

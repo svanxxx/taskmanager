@@ -56,7 +56,6 @@
 
 		//references section
 		getDispos($scope, "dispos", $http);
-		getUsers($scope, "users", $http);
 		getTypes($scope, "types", $http);
 		getPriorities($scope, "priorities", $http);
 		getSevers($scope, "severs", $http);
@@ -89,7 +88,8 @@
 					EndProgress(taskprg);
 				});
 		};
-		$scope.loadData();
+		
+		getUsers($scope, "users", $http, $scope.loadData);
 
 		$scope.apply = {};
 		$scope.apply.disposition = { "use": false, "value": -1 };
