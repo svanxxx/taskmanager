@@ -223,6 +223,11 @@ public class RawSettings
 		get { return GetVal("BACKGROUNDIMG"); }
 		set { values["BACKGROUNDIMG"] = value; }
 	}
+	public string INSTALLGUIDE
+	{
+		get { return GetVal("INSTALLGUIDE"); }
+		set { values["INSTALLGUIDE"] = value; }
+	}
 	Dictionary<string, string> values = new Dictionary<string, string>();
 	void LoadData()
 	{

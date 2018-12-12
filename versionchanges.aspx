@@ -23,23 +23,30 @@
 					<span class="glyphicon glyphicon-globe"></span>
 					<strong>Fieldpro Client</strong> installation - follow next link: <span class="label label-info"><a href="getinstall.ashx?type=client&version=0.0.0" target="_blank" class="alert-link">click here</a></span>.
 				</div>
+				<div class="alert alert-info">
+					<span class="glyphicon glyphicon-book"></span>
+					<strong>Fieldpro Server Installation Guide</strong> follow next link: 
+					<span class="label label-info">
+						<a href="<%=Settings.CurrentSettings.INSTALLGUIDE.ToString()%>" target="_blank" class="alert-link">click here</a>
+					</span>.
+				</div>
 			</div>
 			<div class="col-lg-8">
 				<div class="panel-group">
-					<div ng-repeat="v in versions" class="panel panel-primary">
+					<div ng-repeat="v in versions" class="panel panel-info">
 						<div class="panel-heading">
 							<div class="btn-group">
 								<span class="btn btn-info"><span class="glyphicon glyphicon-tag"></span>&nbsp;{{v.version}}</span>
-								<button ng-click="GetFile(v, 'efip')" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-cloud-download"></span>&nbsp;eFieldpro</button>
-								<button ng-click="GetFile(v, 'cx')" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-cloud-download"></span>&nbsp;Models</button>
-								<button ng-click="GetFile(v, 'onsite')" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-cloud-download"></span>&nbsp;Onsite</button>
-								<button ng-click="GetFile(v, 'demo')" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-cloud-download"></span>&nbsp;Demo</button>
+								<button ng-click="GetFile(v, 'efip')" type="button" class="btn btn-default"><span class="glyphicon glyphicon-cloud-download"></span>&nbsp;eFieldpro</button>
+								<button ng-click="GetFile(v, 'cx')" type="button" class="btn btn-default"><span class="glyphicon glyphicon-cloud-download"></span>&nbsp;Models</button>
+								<button ng-click="GetFile(v, 'onsite')" type="button" class="btn btn-default"><span class="glyphicon glyphicon-cloud-download"></span>&nbsp;Onsite</button>
+								<button ng-click="GetFile(v, 'demo')" type="button" class="btn btn-default"><span class="glyphicon glyphicon-cloud-download"></span>&nbsp;Demo</button>
 							</div>
 						</div>
 						<div class="panel-body">
 							<div ng-repeat="c in v.changes">
 								<a href="showtask.aspx?ttid={{c.ttid}}" target="_blank">
-									<span class="badge">{{c.ttid}}</span>
+									<span class="badge alert-info">{{c.ttid}}</span>
 								</a>
 								<span>{{c.summary}}</span>
 							</div>
