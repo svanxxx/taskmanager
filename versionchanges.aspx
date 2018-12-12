@@ -16,11 +16,11 @@
 		<div class="row">
 			<div class="col-lg-2">
 				<div class="alert alert-info">
-					<span class="glyphicon glyphicon-globe"></span>
+					<span class="glyphicon glyphicon-cloud-download"></span>
 					<strong>FlexLM server</strong> installation - follow next link: <span class="label label-info"><a href="getinstall.ashx?type=flex&version=0.0.0" target="_blank" class="alert-link">click here</a></span>.
 				</div>
 				<div class="alert alert-info">
-					<span class="glyphicon glyphicon-globe"></span>
+					<span class="glyphicon glyphicon-cloud-download"></span>
 					<strong>Fieldpro Client</strong> installation - follow next link: <span class="label label-info"><a href="getinstall.ashx?type=client&version=0.0.0" target="_blank" class="alert-link">click here</a></span>.
 				</div>
 				<div class="alert alert-info">
@@ -30,6 +30,15 @@
 						<a href="<%=Settings.CurrentSettings.INSTALLGUIDE.ToString()%>" target="_blank" class="alert-link">click here</a>
 					</span>.
 				</div>
+				<div class="alert alert-info">
+					<span class="glyphicon glyphicon-tasks"></span>
+					<strong>MS SQL server </strong> follow next link: 
+					<span class="label label-info">
+						<a href="https://www.microsoft.com/en-us/sql-server/sql-server-downloads" target="_blank" class="alert-link">click here</a>
+					</span>.
+				</div>
+
+				
 			</div>
 			<div class="col-lg-8">
 				<div class="panel-group">
