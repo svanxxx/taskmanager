@@ -37,8 +37,6 @@
 						<a href="https://www.microsoft.com/en-us/sql-server/sql-server-downloads" target="_blank" class="alert-link">click here</a>
 					</span>.
 				</div>
-
-				
 			</div>
 			<div class="col-lg-8">
 				<div class="panel-group">

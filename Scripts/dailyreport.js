@@ -61,10 +61,28 @@ $(function () {
 			var vacationprg = StartProgress("Loading vacations..."); $scope["loaders"]++;
 			$http.post("trservice.asmx/enumCloseVacations", JSON.stringify({ "start": DateToString($scope.yesterday), "days": 15 }))
 				.then(function (result) {
+					var today = new Date();
 					$scope.vacations = result.data.d;
 					$scope.vacations.forEach(function (vac) {
-						if (vac.DATE == $scope.todaystring) {
+						vac.nextin = [];
+						if (vac.DATE === $scope.todaystring) {
 							$scope.personsVacation++;
+						}
+						var vacdate = StringToDate(vac.DATE);
+						vac.order = Math.round((vacdate.getTime() - today.getTime()) / 1000 / 60 / 60 / 24) - 1;
+						var closevac = 999;
+						for (var i = 0; i < $scope.vacations.length; i++) {
+							var curr = $scope.vacations[i];
+							if (curr !== vac && curr.AUSER === vac.AUSER) {
+								var currdate = StringToDate(curr.DATE);
+								var diff = Math.round((currdate.getTime() - vacdate.getTime()) / 1000 / 60 / 60 / 24);
+								if (diff > 0) {
+									closevac = Math.min(closevac, diff);
+								}
+							}
+						}
+						if (closevac < 999) {
+							vac.nextin = new Array(closevac - 1);
 						}
 					});
 					EndProgress(vacationprg); $scope["loaders"]--;
