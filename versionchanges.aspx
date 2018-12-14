@@ -1,4 +1,5 @@
-﻿<%@ Page Title="Change Log" Language="C#" MasterPageFile="~/Master.Master" AutoEventWireup="true" CodeFile="versionchanges.aspx.cs" Inherits="VersionChanges" %>
+﻿
+<%@ Page Title="Change Log" Language="C#" MasterPageFile="~/Master.Master" AutoEventWireup="true" CodeFile="versionchanges.aspx.cs" Inherits="VersionChanges" %>
 
 <asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
 	<%=System.Web.Optimization.Styles.Render("~/bundles/versionchanges_css")%>
@@ -43,7 +44,7 @@
 					<div ng-repeat="v in versions" class="panel panel-info">
 						<div class="panel-heading">
 							<div class="btn-group">
-								<span class="btn btn-info"><span class="glyphicon glyphicon-tag"></span>&nbsp;{{v.version}}</span>
+								<span onclick="copyurl(this.textContent);" class="btn btn-info"><span class="glyphicon glyphicon-tag"></span>&nbsp;{{v.version}}</span>
 								<button ng-click="GetFile(v, 'efip')" type="button" class="btn btn-default"><span class="glyphicon glyphicon-cloud-download"></span>&nbsp;eFieldpro</button>
 								<button ng-click="GetFile(v, 'cx')" type="button" class="btn btn-default"><span class="glyphicon glyphicon-cloud-download"></span>&nbsp;Models</button>
 								<button ng-click="GetFile(v, 'onsite')" type="button" class="btn btn-default"><span class="glyphicon glyphicon-cloud-download"></span>&nbsp;Onsite</button>

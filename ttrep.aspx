@@ -63,6 +63,7 @@
 				<button type="button" class="btn btn-success" ng-click="changeDefects()">Apply</button>
 			</div>
 		</div>
+		<a data-toggle="tooltip" title="Copy link to this report to clipboard" href onclick="copyurl()" class="btn btn-info"><span class="glyphicon glyphicon-copy" ></span></a>
 		<label for="searchtxt">Enter phrase in double quotes or a set of words to be found:</label>
 		<input class="form-control" id="searchtxt" type="text" ng-model="DefectsFilter.text" ng-change="changed=true" ng-keypress="onGo($event)" autofocus />
 		<table class="table table-bordered table-colresizable">

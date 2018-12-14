@@ -212,13 +212,17 @@ function enterTT() {
 function reActivateTooltips() {
 	setTimeout(function () { $('[data-toggle="tooltip"]').tooltip(); }, 2000);//when data loaded - activate tooltip.
 }
-function copyurl() {
+function copyurl(txt) {
 	var $temp = $("<input>");
 	$("body").append($temp);
-	$temp.val(window.location.href).select();
+	if (txt === undefined) {
+		$temp.val(window.location.href).select();
+	} else {
+		$temp.val(txt).select();
+	}
 	document.execCommand("copy");
 	$temp.remove();
-	var p = StartProgress("The link has been copied.");
+	var p = StartProgress("The link has been copied to clipboard.");
 	setTimeout(function () { EndProgress(p); }, 2000);
 }
 $(function () {
