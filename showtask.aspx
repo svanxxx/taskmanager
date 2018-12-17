@@ -154,12 +154,15 @@
 				<ul id="tasktabs" class="nav nav-pills">
 					<li class="{{specsStyle()}} small active"><a data-toggle="pill" href="#specification"><span class="glyphicon glyphicon-list-alt"></span>{{tab_specs}}</a></li>
 					<li><a class="small" data-toggle="pill" href="#detail"><span class="glyphicon glyphicon-zoom-in"></span>&nbsp;Details</a></li>
-					<li ng-click="changetab($event)"><a class="small" data-toggle="pill" href="#bst"><span class="glyphicon glyphicon-link"></span>{{tab_bst}}</a></li>
 					<li ng-click="changetab($event)"><a class="small" data-toggle="pill" href="#workflow"><span class="glyphicon glyphicon-refresh"></span>{{tab_workflow}}</a></li>
 					<li ng-click="changetab($event)"><a class="small" data-toggle="pill" href="#history"><span class="glyphicon glyphicon-book"></span>{{tab_history}}</a></li>
 					<li ng-click="changetab($event)"><a class="small" data-toggle="pill" href="#attachments"><span class="glyphicon glyphicon-paperclip"></span>{{tab_attachs}}</a></li>
-					<li><a class="small" data-toggle="pill" href="#lockinfo"><span class="glyphicon glyphicon-lock"></span>&nbsp;Lock Info</a></li>
+					<li ng-click="changetab($event)" id="gittab"><a class="small" data-toggle="pill" href="#taskgit">
+						<img src="images/git.png" style="width: 20px; height: 20px" />{{tab_git}}</a>
+					</li>
 					<li ng-click="changetab($event)" id="buildstab"><a class="small" data-toggle="pill" href="#taskbuilds"><span class="glyphicon glyphicon-wrench"></span>{{tab_builds}}</a></li>
+					<li ng-click="changetab($event)"><a class="small" data-toggle="pill" href="#bst"><span class="glyphicon glyphicon-link"></span>{{tab_bst}}</a></li>
+					<li><a class="small" data-toggle="pill" href="#lockinfo"><span class="glyphicon glyphicon-lock"></span>&nbsp;Lock Info</a></li>
 					<li><a class="small" data-toggle="pill" href="#alarm"><span class="glyphicon glyphicon-envelope"></span>&nbsp;Alarm</a></li>
 				</ul>
 				<div class="tab-content">
@@ -266,6 +269,50 @@
 							<button type="button" ng-click="releaseRequest()" class="btn btn-primary btn-xs">Request to release!</button>
 						</div>
 					</div>
+					<div id="taskgit" class="tab-pane fade">
+						<div class="panel panel-info">
+							<div class="panel-heading">
+								<div class="row">
+									<div class="col-md-3">
+										<label>Git branch (default is TT ID):</label>
+									</div>
+									<div class="col-md-3">
+										<input type="text" class="form-control" ng-disabled="!canChangeDefect()" ng-model="defect.BRANCH">
+									</div>
+									<div class="col-md-3">
+										<a href="builder.aspx" ng-show="isrelease()" class="btn btn-info btn-right-align" role="button">Release Marker</a>
+									</div>
+									<div class="col-md-3">
+										<button type="button" class="btn btn-sm btn-danger btn-right-align" ng-disabled="!commits||commits.length<1" ng-click="deleteBranch()">Delete Branch</button>
+										<button type="button" class="btn btn-sm btn-info btn-right-align" ng-click="loadCommits()">Scan Branch</button>
+									</div>
+								</div>
+							</div>
+							<div class="panel-body">
+								<label ng-show="!commits">loading...</label>
+								<div class="list-group">
+									<div class="list-group-item commit-item" ng-repeat="c in commits">
+										<div class="row" ng-click="c.DIFF.length < 1 ? getDiff(c.COMMIT) : c.DIFF = '';">
+											<div class="col-sm-3">
+												<span>{{c.DATE}}</span>
+											</div>
+											<div class="col-sm-2">
+												<span>{{c.AUTHOR}}</span>
+											</div>
+											<div class="col-sm-4">
+												<span>{{c.COMMIT}}</span>
+											</div>
+											<div class="col-sm-3">
+												<span>{{c.NOTES}}</span>
+											</div>
+										</div>
+										<div class="row" ng-bind-html="c.DIFF | rawHtml">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 					<div id="taskbuilds" class="tab-pane fade">
 						<div class="panel panel-info">
 							<div class="panel-heading">
@@ -329,45 +376,6 @@
 								</div>
 							</div>
 							<div ng-show="!commits||commits.length<1" class="panel-footer"><strong>Info!</strong> Please commit your changes to git and push your branch named with TTxxxxxx where xxxxxx is the task number.</div>
-						</div>
-						<div class="panel panel-primary">
-							<div class="panel-heading">
-								<div class="row">
-									<div class="col-md-3">
-										<label>Git branch (default is TT ID):</label>
-									</div>
-									<div class="col-md-2">
-										<input type="text" class="form-control" ng-disabled="!canChangeDefect()" ng-model="defect.BRANCH">
-									</div>
-									<div class="col-md-3">
-										<a href="builder.aspx" ng-show="isrelease()" class="btn btn-info" role="button">Release Marker</a>
-									</div>
-									<div class="col-md-3">
-										<button type="button" class="btn btn-sm btn-danger btn-right-align" ng-disabled="!commits||commits.length<1" ng-click="deleteBranch()">Delete Branch</button>
-									</div>
-								</div>
-							</div>
-							<div class="panel-body">
-								<label ng-show="!commits">loading...</label>
-								<div class="list-group">
-									<a href="#" class="list-group-item" ng-repeat="c in commits">
-										<div class="row">
-											<div class="col-sm-3">
-												<span>{{c.DATE}}</span>
-											</div>
-											<div class="col-sm-2">
-												<span>{{c.AUTHOR}}</span>
-											</div>
-											<div class="col-sm-4">
-												<span>{{c.COMMIT}}</span>
-											</div>
-											<div class="col-sm-3">
-												<span>{{c.NOTES}}</span>
-											</div>
-										</div>
-									</a>
-								</div>
-							</div>
 						</div>
 					</div>
 					<div id="alarm" class="tab-pane fade">

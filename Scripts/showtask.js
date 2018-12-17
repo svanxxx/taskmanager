@@ -19,6 +19,11 @@
 	app.filter('getUserById', getUserById);
 	app.filter('getUserTRIDById', getUserTRIDById);
 	app.filter('getDispoColorById', getDispoColorById);
+	app.filter('rawHtml', ['$sce', function ($sce) {
+		return function (val) {
+			return $sce.trustAsHtml(val);
+		};
+	}]);
 
 	app.controller('mpscontroller', ["$scope", "$http", "$interval", "$window", function ($scope, $http, $interval, $window) {
 		$window.onbeforeunload = function () {
@@ -45,28 +50,27 @@
 		$scope.updatePercent = function () {
 			upadteBuildProgress($scope.builds, $scope.buildtime);
 		};
+		$scope.loadCommits = function () {
+			$scope.commits = [];
+			$http.post("trservice.asmx/EnumCommits", JSON.stringify({ "branch": $scope.defect.BRANCH, from: 1, to: 20 }))
+				.then(function (result) {
+					if (JSON.stringify($scope.commits) !== JSON.stringify(result.data.d)) {
+						$scope.commits = result.data.d;
+					}
+				});
+		};
 		$scope.loadBuilds = function () {
 			$interval(function () {
 				$scope.updatePercent();
 			}, 5000);
-
 			if (!Array.isArray($scope.builds)) {
 				$scope.builds = [];
-			}
-			if (!Array.isArray($scope.commits)) {
-				$scope.commits = [];
 			}
 			$http.post("trservice.asmx/getBuildsByTask", JSON.stringify({ "ttid": ttid }))
 				.then(function (result) {
 					if (JSON.stringify($scope.builds) !== JSON.stringify(result.data.d)) {
 						$scope.builds = result.data.d;
 						$scope.updatePercent();
-					}
-				});
-			$http.post("trservice.asmx/EnumCommits", JSON.stringify({ "branch": $scope.defect.BRANCH, from: 1, to: 20 }))
-				.then(function (result) {
-					if (JSON.stringify($scope.commits) !== JSON.stringify(result.data.d)) {
-						$scope.commits = result.data.d;
 					}
 				});
 		};
@@ -118,6 +122,16 @@
 					$scope.loadBuilds();
 				});
 		};
+		$scope.getDiff = function (commit) {
+			$http.post("trservice.asmx/getCommitDiff", JSON.stringify({ "commit": commit }))
+				.then(function (result) {
+					$scope.commits.forEach(function (c) {
+						if (c.COMMIT === commit) {
+							c.DIFF = result.data.d.join("");
+						}
+					});
+				});
+		};
 		$scope.abortTest = function () {
 			for (var i = 0; i < $scope.builds.length; i++) {
 				if ($scope.builds[i].STATUS.indexOf("wait") > -1 || $scope.builds[i].STATUS.indexOf("progress") > -1) {
@@ -134,10 +148,10 @@
 			if (confirm("Are you sure you want to delete branch related to this task? The operation cannot be undone.")) {
 				var delprg = StartProgress("Deleting branch...");
 				$scope.commits = null;
-				$http.post("trservice.asmx/deleteBranch", JSON.stringify({ "branch": "TT" + ttid }))
+				$http.post("trservice.asmx/deleteBranch", JSON.stringify({ "branch": $scope.defect.BRANCH }))
 					.then(function () {
 						EndProgress(delprg);
-						$scope.loadBuilds();
+						$scope.loadCommits();
 					});
 			}
 		};
@@ -214,7 +228,12 @@
 		$scope.changetab = function (event) {
 			var tab = event.target.innerText;
 			if (tab === $scope.tab_builds) {
-				$scope.loadBuilds();
+				if (!$scope.commits) {
+					$scope.loadCommits();
+				}
+				if (!$scope.builds) {
+					$scope.loadBuilds();
+				}
 			} else if (tab === $scope.tab_attachs) {
 				if (!$scope.attachs) {
 					$scope.loadAttachments();
@@ -222,6 +241,10 @@
 			} else if (tab === $scope.tab_history) {
 				if (!$scope.history) {
 					$scope.loadHistory();
+				}
+			} else if (tab === $scope.tab_git) {
+				if (!$scope.commits) {
+					$scope.loadCommits();
 				}
 			} else if (tab === $scope.tab_bst) {
 				if (!$scope.batches) {
@@ -369,6 +392,7 @@
 		$scope.bsttab_com = "bsttabs-command";
 		$scope.bsttab_his = "bsttabs-history";
 		$scope.tab_builds = "Builds";
+		$scope.tab_git = "Git";
 		$scope.tab_attachs = "Attachments";
 		$scope.tab_history = "History";
 		$scope.tab_bst = "BST";

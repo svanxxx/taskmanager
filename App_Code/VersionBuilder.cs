@@ -58,7 +58,7 @@ public class VersionBuilder
 				}
 			}
 			Git git = new Git(path);
-			res.AddRange(git.DiffFriendOutput());
+			res.AddRange(Git.DiffFriendOutput(git.Diff()));
 			return string.Join("", res.ToArray());
 		}
 	}

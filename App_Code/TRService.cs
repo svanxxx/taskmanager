@@ -644,6 +644,14 @@ public class TRService : System.Web.Services.WebService
 		return git.GetBranch(branch).EnumCommits(from, to);
 	}
 	[WebMethod]
+	public List<string> getCommitDiff(string commit)
+	{
+		Git git = new Git(Settings.CurrentSettings.WORKGITLOCATION);
+		Commit c = new Commit(git);
+		c.COMMIT = commit;
+		return Git.DiffFriendOutput(c.Diff());
+	}
+	[WebMethod]
 	public List<ChangedFile> EnumFiles(string branch)
 	{
 		Git git = new Git(Settings.CurrentSettings.WORKGITLOCATION);
