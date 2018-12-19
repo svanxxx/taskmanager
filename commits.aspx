@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="Branches" Language="C#" MasterPageFile="~/Master.Master" AutoEventWireup="true" CodeFile="branches.aspx.cs" Inherits="Branches" %>
+<%@ Register src="~/CommitsControl.ascx" tagname="commits" tagprefix="uc" %>
 
 <asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
 	<%=System.Web.Optimization.Styles.Render("~/bundles/commits_css")%>
@@ -11,28 +12,7 @@
 		<div class="panel panel-info" ng-cloak>
 			<div class="panel-heading" style="text-align: center">Current Branch: {{branch}}</div>
 			<div class="panel-body">
-				<div class="list-group">
-					<div class="list-group-item" ng-repeat="c in commits">
-						<div class="row">
-							<div class="col-sm-1">
-								<span class="label label-info ng-binding"><span class="glyphicon glyphicon-time"></span>{{c.DATE}}</span>
-							</div>
-							<div class="col-sm-2">
-								<img class="rep-img img-circle" src="{{'getUserImg.ashx?eml=' + c.AUTHOREML}}" alt="Smile" height="20" width="20">
-								<span>{{c.AUTHORNAME}}</span>
-							</div>
-							<div class="col-sm-7">
-								<a href="showtask.aspx?ttid={{c.TTID}}" target="_blank">
-									<span class="badge">{{c.TTID}}</span>
-								</a>
-								<span>{{c.NOTESFXD}}</span>
-							</div>
-							<div class="col-sm-2">
-								<span class="label label-warning ng-binding"><span class="glyphicon glyphicon-pushpin"></span>{{c.COMMIT}}</span>
-							</div>
-						</div>
-					</div>
-				</div>
+				<uc:commits runat="server"/>
 			</div>
 		</div>
 		<div class="row">

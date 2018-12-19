@@ -1,5 +1,7 @@
 ﻿$(function () {
 	var app = angular.module('mpsapplication', []);
+	app.filter('rawHtml', ['$sce', rawHtml]);
+
 	app.controller('mpscontroller', ["$scope", "$http", function ($scope, $http) {
 		$scope.loadData = function () {
 			var prg = StartProgress("Loading data...");
@@ -10,7 +12,7 @@
 					EndProgress(prg);
 				});
 		};
-
+		$scope.loadCommit = function (c) { loadCommit(c, $scope, $http); };
 		$scope.pushState = function () {
 			var url = replaceUrlParam(replaceUrlParam(location.href, "showby", $scope.showby), "page", $scope.page);
 			window.history.pushState({ showby: $scope.showby, page: $scope.page }, "page " + $scope.page + ", showby " + $scope.showby, url);

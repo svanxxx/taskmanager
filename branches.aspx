@@ -15,15 +15,20 @@
 					<div class="item-branch list-group-item" ng-repeat="b in state.branches" style="background-color: {{b.COLOR}}">
 						<div class="row">
 							<div class="col-sm-3">
-								<span class="label label-warning" ng-show="b.TTID < 0">{{b.NAME}}</span>
-								<a ng-show="b.TTID > 0" href="showtask.aspx?ttid={{b.TTID}}" target="_blank"><span class="badge ng-binding">{{b.TTID}}</span></a>
+								<div ng-show="b.TTID < 0">
+									<span class="glyphicon glyphicon-tag"></span><span class="label label-warning">{{b.NAME}}</span>
+								</div>
+								<div ng-show="b.TTID > 0">
+									<span class="glyphicon glyphicon-user"></span>
+									<a href="showtask.aspx?ttid={{b.TTID}}" target="_blank"><span class="badge ng-binding">{{b.TTID}}</span></a>
+								</div>
 							</div>
 							<div class="col-sm-3">
 								<span class="glyphicon glyphicon-time"></span>
 								<td><a href="commits.aspx?branch={{b.NAME}}">{{b.DATE}}</a></td>
 							</div>
 							<div class="col-sm-3">
-								<img class="rep-img img-circle" src="{{'getUserImg.ashx?eml=' + b.AUTHOREML}}" alt="Smile" height="20" width="20">
+								<img class="rep-img img-circle" ng-src="{{'getUserImg.ashx?eml=' + b.AUTHOREML}}" alt="Smile" height="20" width="20">
 								<td><a ng-click="filterby(b.AUTHOR)" href>{{b.AUTHOR}}</a></td>
 							</div>
 							<div class="col-sm-3">

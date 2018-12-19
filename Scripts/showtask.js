@@ -19,11 +19,7 @@
 	app.filter('getUserById', getUserById);
 	app.filter('getUserTRIDById', getUserTRIDById);
 	app.filter('getDispoColorById', getDispoColorById);
-	app.filter('rawHtml', ['$sce', function ($sce) {
-		return function (val) {
-			return $sce.trustAsHtml(val);
-		};
-	}]);
+	app.filter('rawHtml', ['$sce', rawHtml]);
 
 	app.controller('mpscontroller', ["$scope", "$http", "$interval", "$window", function ($scope, $http, $interval, $window) {
 		$window.onbeforeunload = function () {
@@ -56,6 +52,7 @@
 				.then(function (result) {
 					if (JSON.stringify($scope.commits) !== JSON.stringify(result.data.d)) {
 						$scope.commits = result.data.d;
+						reActivateTooltips();
 					}
 				});
 		};
@@ -122,16 +119,7 @@
 					$scope.loadBuilds();
 				});
 		};
-		$scope.getDiff = function (commit) {
-			$http.post("trservice.asmx/getCommitDiff", JSON.stringify({ "commit": commit }))
-				.then(function (result) {
-					$scope.commits.forEach(function (c) {
-						if (c.COMMIT === commit) {
-							c.DIFF = result.data.d.join("");
-						}
-					});
-				});
-		};
+		$scope.loadCommit = function (c) { loadCommit(c, $scope, $http); };
 		$scope.abortTest = function () {
 			for (var i = 0; i < $scope.builds.length; i++) {
 				if ($scope.builds[i].STATUS.indexOf("wait") > -1 || $scope.builds[i].STATUS.indexOf("progress") > -1) {

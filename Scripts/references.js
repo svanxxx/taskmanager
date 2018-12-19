@@ -51,6 +51,11 @@ function getDispoColorById() {
 		return { "background-color": res[0].COLOR };
 	};
 }
+function rawHtml($sce) {
+	return function (val) {
+		return $sce.trustAsHtml(val);
+	};
+}
 function getDispoById() {
 	return function (id, $scope) {
 		if ($scope.dispos.length < 1) {
@@ -134,9 +139,23 @@ function getProducts($scope, member, $http) {
 function getComps($scope, member, $http) {
 	loadReference($scope, member, $http, "comps", "gettaskcomps");
 }
-
-function createTasksFilter(filter)
-{
+function loadCommit(c, $scope, $http) {
+	if (c.DIFF) {
+		c.DIFF = null;
+	} else {
+		var commdiff = StartProgress("Loading commit details...");
+		$http.post("trservice.asmx/getCommitDiff", JSON.stringify({ "commit": c.COMMIT }))
+			.then(function (result) {
+				EndProgress(commdiff);
+				$scope.commits.forEach(function (co) {
+					if (co.COMMIT === c.COMMIT) {
+						co.DIFF = result.data.d.join("");
+					}
+				});
+			});
+	}
+}
+function createTasksFilter(filter) {
 	if (!("dispositions" in filter)) {
 		filter.dispositions = [];
 	}
@@ -210,7 +229,7 @@ function enterTT() {
 	}
 }
 function reActivateTooltips() {
-	setTimeout(function () { $('[data-toggle="tooltip"]').tooltip(); }, 2000);//when data loaded - activate tooltip.
+	setTimeout(function () { $('[data-toggle="tooltip"]').tooltip(); }, 1000);//when data loaded - activate tooltip.
 }
 function copyurl(txt) {
 	var $temp = $("<input>");

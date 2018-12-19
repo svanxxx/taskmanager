@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="Task" Language="C#" MasterPageFile="~/Master.Master" AutoEventWireup="true" CodeFile="showtask.aspx.cs" Inherits="Showtask" %>
+<%@ Register src="~/CommitsControl.ascx" tagname="commits" tagprefix="uc" %>
 
 <asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
 	<%=System.Web.Optimization.Styles.Render("~/bundles/showtask_css")%>
@@ -117,7 +118,7 @@
 							</div>
 							<div class="col-sm-9">
 								<select class="form-control input-sm" id="created" ng-disabled="!canChangeDefect()" ng-model="defect.CREATEDBY">
-									<option ng-repeat="u in users" ng-show="u.ACTIVE" value="{{u.ID}}">{{u.FULLNAME}}</option>
+									<option ng-repeat="u in users | orderBy:'FULLNAME'" ng-show="u.ACTIVE" value="{{u.ID}}">{{u.FULLNAME}}</option>
 								</select>
 							</div>
 						</div>
@@ -129,7 +130,7 @@
 							</div>
 							<div class="col-sm-9">
 								<select class="form-control input-sm" id="auser" ng-disabled="!canChangeDefect()" ng-model="defect.AUSER">
-									<option ng-repeat="u in users" ng-show="u.ACTIVE" value="{{u.ID}}">{{u.FULLNAME}}</option>
+									<option ng-repeat="u in users | orderBy:'FULLNAME'" ng-show="u.ACTIVE" value="{{u.ID}}">{{u.FULLNAME}}</option>
 								</select>
 							</div>
 						</div>
@@ -289,27 +290,7 @@
 								</div>
 							</div>
 							<div class="panel-body">
-								<label ng-show="!commits">loading...</label>
-								<div class="list-group">
-									<div class="list-group-item commit-item" ng-repeat="c in commits">
-										<div class="row" ng-click="c.DIFF.length < 1 ? getDiff(c.COMMIT) : c.DIFF = '';">
-											<div class="col-sm-3">
-												<span>{{c.DATE}}</span>
-											</div>
-											<div class="col-sm-2">
-												<span>{{c.AUTHOR}}</span>
-											</div>
-											<div class="col-sm-4">
-												<span>{{c.COMMIT}}</span>
-											</div>
-											<div class="col-sm-3">
-												<span>{{c.NOTES}}</span>
-											</div>
-										</div>
-										<div class="row" ng-bind-html="c.DIFF | rawHtml">
-										</div>
-									</div>
-								</div>
+								<uc:commits runat="server"/>
 							</div>
 						</div>
 					</div>
