@@ -84,6 +84,11 @@ $(function () {
 						if (closevac < 999) {
 							vac.nextin = new Array(closevac - 1);
 						}
+						for (i = 0; i < vac.nextin.length; i++) {
+							var cd = new Date();
+							cd.setDate(vacdate.getDate() + i + 1);
+							vac.nextin[i] = cd.getDay() === 0 || cd.getDay() === 6;
+						}
 					});
 					EndProgress(vacationprg); $scope["loaders"]--;
 					reActivateTooltips();

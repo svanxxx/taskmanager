@@ -100,7 +100,7 @@
 									</a>
 									<a data-toggle="tooltip" title="{{v.ID}}" href="showtask.aspx?ttid={{v.ID}}" target="_blank" ng-repeat="v in vacations | orderBy : 'order' | filter: { AUSER : u.TTUSERID } | filter: {DATE: '!' + todaystring} | filter: {DATE: '!' + yesterdaystring}">
 										<h3 class="vacation-box"><span class="glyphicon glyphicon-plane"></span></h3>
-										<span ng-repeat="n in v.nextin track by $index" class="glyphicon glyphicon-wrench">{{n}}</span>
+										<span ng-repeat="n in v.nextin track by $index" class="glyphicon glyphicon-wrench" ng-style="n ? {'color':'red'} : {'color':'blue'}"></span>
 									</a>
 								</div>
 								<div ng-repeat="d in u.PLAN track by $index" ng-style="{{d.DISPO | getDispoColorById:this}}" class="task {{$index < 10 ? 'task-first' : 'task-last'}}">
