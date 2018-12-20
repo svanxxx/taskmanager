@@ -89,4 +89,33 @@ public class VersionBuilder
 		client.GetMeAsync().Wait();
 		client.SendTextMessageAsync(Settings.CurrentSettings.TELEGRAMBUILDCHANNEL, message).Wait();
 	}
+	public static void SendVersionAlarm()
+	{
+		string details = "";
+		string version = "";
+		Git git = new Git(Settings.CurrentSettings.TEMPGIT);
+		foreach (var f in git.GetTopCommit().EnumFiles())
+		{
+			if (f.Name.ToLower().Contains("changelog.txt"))
+			{
+				foreach (var d in f.Diff)
+				{
+					if (d.StartsWith("+"))
+					{
+						string line = d.Substring(1).Trim();
+						if (line.StartsWith("=="))
+						{
+							version = line.Replace("=", "").Trim();
+						}
+						else
+						{
+							details += line + Environment.NewLine;
+						}
+					}
+				}
+			}
+		}
+		details = details.Trim();
+		SendAlarm(string.Format("{0} has been setup.{1}List of changes:{1}{2}{1}The build will be started as soon as possible.", version, Environment.NewLine, details));
+	}
 }

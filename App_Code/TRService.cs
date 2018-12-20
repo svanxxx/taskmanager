@@ -871,7 +871,7 @@ public class TRService : System.Web.Services.WebService
 			return "FAILED - not admin.";
 		}
 		string res = VersionBuilder.PushRelease();
-		VersionBuilder.SendAlarm("New version label has been set up. The build will be started as soon as possible.");
+		VersionBuilder.SendVersionAlarm();
 		return res + "<br/>Finished!";
 	}
 }
