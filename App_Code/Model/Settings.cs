@@ -233,6 +233,11 @@ public class RawSettings
 		get { return GetVal("INSTALLGUIDE"); }
 		set { values["INSTALLGUIDE"] = value; }
 	}
+	public string GLOBALSITEURL
+	{
+		get { return GetVal("GLOBALSITEURL"); }
+		set { values["GLOBALSITEURL"] = value; }
+	}
 	Dictionary<string, string> values = new Dictionary<string, string>();
 	void LoadData()
 	{

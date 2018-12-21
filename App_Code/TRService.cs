@@ -685,8 +685,8 @@ public class TRService : System.Web.Services.WebService
 			TelegramBotClient client = new TelegramBotClient(Settings.CurrentSettings.TELEGRAMTESTTOKEN);
 			client.GetMeAsync().Wait();
 			DefectUser u = new DefectUser(b.TTUSERID);
-			string mess = string.Format("New TT{0} build from {1} is ready for tests!", b.TTID, u.FULLNAME);
-			client.SendTextMessageAsync(Settings.CurrentSettings.TELEGRAMTESTCHANNEL, mess).Wait();
+			string mess = string.Format("New task from {3} is ready for tests!<a href='{0}{1}{2}'>&#8205;</a>", Settings.CurrentSettings.GLOBALSITEURL, StaticSettings.DefectUrl, b.TTID, u.FULLNAME);
+			client.SendTextMessageAsync(Settings.CurrentSettings.TELEGRAMTESTCHANNEL, mess, Telegram.Bot.Types.Enums.ParseMode.Html).Wait();
 		}
 
 		Defect d = new Defect(b.TTID);
