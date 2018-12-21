@@ -117,7 +117,7 @@ public class DefectAttach : IdBasedObject
 		byte[] bytes = (byte[])GetRecdata(_FileTabl, "filedata", _File, string.Format("'{0}'", ARCHIVE));
 		if (bytes == null) //stored not id db - go to folder
 		{
-			bytes = System.IO.File.ReadAllBytes(string.Format(@"C:\Program Files (x86)\Seapine\TestTrack\TTServDb\TTDbs\ResDb\Attach\{0}", ARCHIVE));
+			bytes = System.IO.File.ReadAllBytes(string.Format(@"{0}{0}", Settings.CurrentSettings.DEFECTATTACHDIR, ARCHIVE));
 		}
 		return bytes;
 	}

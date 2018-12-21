@@ -83,6 +83,11 @@ public class RawSettings
 		get { return GetVal("ANGULARCDN"); }
 		set { values["ANGULARCDN"] = value; }
 	}
+	public string DEFECTATTACHDIR
+	{
+		get { return GetVal("DEFECTATTACHDIR"); }
+		set { values["DEFECTATTACHDIR"] = value; }
+	}
 	public string JQUERYCDN
 	{
 		get { return GetVal("JQUERYCDN"); }
@@ -278,5 +283,15 @@ public class Settings : RawSettings
 			return "http" + val.Substring(5);
 		}
 		return val;
+	}
+}
+public class StaticSettings
+{
+	public static string DefectUrl
+	{
+		get
+		{
+			return "showtask.aspx?ttid=";
+		}
 	}
 }
