@@ -11,3 +11,17 @@
 	width: 20px;
 	float: right;
 }
+
+.flex-container {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.button-server {
+	margin: 10px;
+}
+
+.label-server {
+	float:right;
+	width: 9em;
+}
