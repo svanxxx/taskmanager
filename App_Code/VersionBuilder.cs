@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Management.Automation;
 using Telegram.Bot;
 using GitHelper;
+using System.Text.RegularExpressions;
 
 public class VersionBuilder
 {
@@ -85,9 +86,9 @@ public class VersionBuilder
 	}
 	public static void SendAlarm(string message)
 	{
-		TelegramBotClient client = new TelegramBotClient(Settings.CurrentSettings.TELEGRAMBUILDTOKEN);
+		TelegramBotClient client = new TelegramBotClient("753601277:AAG0NNAgWgjW5SCFSPW5Z5evfANnVMfpZmo");
 		client.GetMeAsync().Wait();
-		client.SendTextMessageAsync(Settings.CurrentSettings.TELEGRAMBUILDCHANNEL, message).Wait();
+		client.SendTextMessageAsync("-336823832", message, Telegram.Bot.Types.Enums.ParseMode.Html, true).Wait();
 	}
 	public static void SendVersionAlarm()
 	{
@@ -109,6 +110,11 @@ public class VersionBuilder
 						}
 						else
 						{
+							if (line.StartsWith("TT"))
+							{
+								string ttid = Regex.Match(line, "TT[0-9]+").Value.Replace("TT", "");
+								line = string.Format("<a href='{0}{1}{2}'>{3}</a>", Settings.CurrentSettings.GLOBALSITEURL, StaticSettings.DefectUrl, ttid, line.Substring(0, 60));
+							}
 							details += line + Environment.NewLine;
 						}
 					}
@@ -116,6 +122,6 @@ public class VersionBuilder
 			}
 		}
 		details = details.Trim();
-		SendAlarm(string.Format("{0} has been setup.{1}List of changes:{1}{2}{1}The build will be started as soon as possible.", version, Environment.NewLine, details));
+		SendAlarm(string.Format("<a href='{3}versionchanges.aspx'>{0}</a> has been setup.{1}List of changes:{1}{2}{1}The build will be started as soon as possible.", version, Environment.NewLine, details, Settings.CurrentSettings.GLOBALSITEURL));
 	}
 }
