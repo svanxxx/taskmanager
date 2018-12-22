@@ -82,4 +82,14 @@ public class SecurityPage : System.Web.UI.Page
 		}
 		return "";
 	}
+	public static string GetPageOgDesc()
+	{
+		string ttid = GetPageTTID();
+		if (!string.IsNullOrEmpty(ttid))
+		{
+			int id = int.Parse(ttid);
+			return "Estimated: " + DefectBase.GetTaskEstim(id) + ", Assigned: " + DefectBase.GetTaskUserName(id);
+		}
+		return "Click to see details.";
+	}
 }

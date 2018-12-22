@@ -2,7 +2,7 @@
 
 <asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
 	<meta property="og:title" content="<%=SecurityPage.GetPageOgTitle()%>">
-	<meta property="og:description" content="Click to see more details">
+	<meta property="og:description" content="<%=SecurityPage.GetPageOgDesc()%>">
 	<meta property="og:image" content="<%=SecurityPage.GetPageOgImage()%>">
 	<meta property="og:site_name" content="<%=SecurityPage.GetPageOgName()%>">
 	<meta property="og:type" content="website">

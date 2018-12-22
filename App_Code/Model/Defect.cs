@@ -397,6 +397,21 @@ public partial class DefectBase : IdBasedObject
 	{
 		return DBHelper.GetValue(string.Format("SELECT {0} FROM {1} WHERE {2} = {3}", _Summ, _Tabl, _ID, ttid)).ToString();
 	}
+	public static string GetTaskEstim(int ttid)
+	{
+		return DBHelper.GetValue(string.Format("SELECT {0} FROM {1} WHERE {2} = {3}", _Est, _Tabl, _ID, ttid)).ToString();
+	}
+	public static string GetTaskUserName(int ttid)
+	{
+		var o = DBHelper.GetValue(string.Format("SELECT {0} FROM {1} WHERE {2} = {3}", _AsUser, _Tabl, _ID, ttid));
+		if (o == DBNull.Value)
+		{
+			return "Unassigned";
+		}
+		int id = Convert.ToInt32(o);
+		DefectUser u = new DefectUser(id);
+		return u.FULLNAME;
+	}
 	static DefectsFilter UnusedVacations()
 	{
 		DefectsFilter f = new DefectsFilter();
