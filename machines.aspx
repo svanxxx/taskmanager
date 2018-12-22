@@ -14,7 +14,7 @@
 				<div ng-show="!searchMachine && !hasMachine()">
 					<h1 class="label-center">Select machine to process</h1>
 					<div class="flex-container">
-						<div ng-style="m | mcol:this" ng-click="setMachine(m.NAME)" class="btn btn-info button-server" ng-repeat="m in machines | orderBy : 'NAME'">
+						<div title="{{m.DETAILS}}" data-toggle="tooltip" ng-style="m | mcol:this" ng-click="setMachine(m.NAME)" class="btn btn-info button-server" ng-repeat="m in machines | orderBy : 'NAME'">
 							<span ng-show="m.ping" class="glyphicon glyphicon-ok"></span>
 							<span ng-show="!m.ping" class="glyphicon glyphicon-off"></span>
 							<img src="images/server.png"></img>

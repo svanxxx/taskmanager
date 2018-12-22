@@ -7,9 +7,10 @@ public class Machine : IdBasedObject
 	static string _ID = "ID";
 	static string _Name = "PCNAME";
 	static string _Mac = "MAC";
-	
+	static string _Det = "DETAILS";
+
 	static string _Tabl = "[TASKS].[dbo].[PCS]";
-	static string[] _allCols = new string[] { _ID, _Name, _Mac };
+	static string[] _allCols = new string[] { _ID, _Name, _Mac, _Det };
 
 	public int ID
 	{
@@ -25,6 +26,11 @@ public class Machine : IdBasedObject
 	{
 		get { return this[_Mac].ToString(); }
 		set { this[_Mac] = value; }
+	}
+	public string DETAILS
+	{
+		get { return this[_Det].ToString(); }
+		set { this[_Det] = value; }
 	}
 
 	public Machine()

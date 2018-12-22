@@ -229,7 +229,7 @@ function enterTT() {
 	}
 }
 function reActivateTooltips() {
-	setTimeout(function () { $('[data-toggle="tooltip"]').tooltip(); }, 1000);//when data loaded - activate tooltip.
+	setTimeout(function () { $('[data-toggle="tooltip"]').tooltip({html: true}); }, 1000);//when data loaded - activate tooltip.
 }
 function copyurl(txt) {
 	var $temp = $("<input>");

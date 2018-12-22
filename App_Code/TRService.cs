@@ -15,6 +15,7 @@ using System.IO;
 using System.Text;
 using Telegram.Bot;
 using GitHelper;
+using System.Linq;
 
 [WebService(Namespace = "http://tempuri.org/")]
 [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
@@ -497,8 +498,12 @@ public class TRService : System.Web.Services.WebService
 				else
 					newmac += " " + o.ToString().Replace(":", "");
 			}
+			var cpu = new ManagementObjectSearcher(scope, "select * from Win32_Processor").Get().Cast<ManagementObject>().First();
+			var wmi = new ManagementObjectSearcher(scope, "select * from Win32_OperatingSystem").Get().Cast<ManagementObject>().First();
 			if (!string.IsNullOrEmpty(newmac))
 			{
+				int memory = Convert.ToInt32(wmi["TotalVisibleMemorySize"]) / 1024;
+				ma.DETAILS = wmi["Caption"].ToString() + "<br/>" + cpu["Name"].ToString() + "<br/>" + memory.ToString() + "Mb";
 				ma.MAC = newmac;
 				ma.Store();
 			}
