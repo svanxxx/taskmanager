@@ -51,7 +51,7 @@ public class SecurityPage : System.Web.UI.Page
 			"://" +
 			HttpContext.Current.Request.Url.Host +
 			HttpContext.Current.Request.ApplicationPath +
-			"/images/task.png";
+			"/images/taskicon.png";
 	}
 	static string GetPageTTID()
 	{

@@ -18,6 +18,8 @@
 				<span data-toggle="tooltip" title="{{c.COMMIT}}" class="label label-warning ng-binding"><span class="glyphicon glyphicon-pushpin"></span>{{c.COMMIT.substr(0, 7)}}</span>
 			</div>
 		</div>
-		<div class="row" ng-bind-html="c.DIFF | rawHtml"></div>
+		<div class="row">
+			<pre ng-show="c.DIFF"><code ng-bind-html="c.DIFF | rawHtml"></code></pre>
+		</div>
 	</div>
 </div>

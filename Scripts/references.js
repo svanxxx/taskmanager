@@ -149,7 +149,7 @@ function loadCommit(c, $scope, $http) {
 				EndProgress(commdiff);
 				$scope.commits.forEach(function (co) {
 					if (co.COMMIT === c.COMMIT) {
-						co.DIFF = result.data.d.join("");
+						co.DIFF = result.data.d.join("<br/>");
 					}
 				});
 			});

@@ -8,12 +8,14 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
 	<div ng-app="mpsapplication" ng-controller="mpscontroller">
+		<div class="row">
+			<h2 class="rep-cap">Daily Reports Search</h2>
+		</div>
 		<div class="row" ng-cloak>
 			<div class="col-lg-2">
-				<button type="button" class="btn btn-block btn-primary" ng-click="loadData(false)">Load</button>
+				<button id="searchbtn" type="button" class="btn btn-block btn-primary" ng-click="loadData(false)">Load</button>
 			</div>
 			<div class="col-lg-8">
-				<h2 class="rep-cap">Daily Reports Search</h2>
 				<div class="panel panel-primary">
 					<div class="panel-heading">
 						<div class="row row-eq-height">
@@ -36,7 +38,8 @@
 							</div>
 							<div class="col-lg-4">
 								<label>Text</label>
-								<input required ng-model="state.filter.text" class="form-control" type="text" />
+								<input type="text" style="display: none;" />
+								<input required ng-model="state.filter.text" class="form-control" type="text" onkeydown="if (event.keyCode == 13) document.getElementById('searchbtn').click()" />
 							</div>
 						</div>
 					</div>
@@ -49,7 +52,7 @@
 									<img class="img-circle rep-img" ng-src="{{'getUserImg.ashx?id='+state.filter.userid}}" alt="Smile" height="20" width="20">
 								</div>
 								<div class="panel-body">
-									<div ng-repeat="l in r.DONE">
+									<div ng-repeat="l in r.DONE track by $index">
 										<h5 ng-bind-html="l | rawHtml"></h5>
 									</div>
 								</div>
