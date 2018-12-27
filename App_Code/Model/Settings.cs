@@ -163,6 +163,11 @@ public class RawSettings
 		get { return GetVal("INSTALLSFOLDER"); }
 		set { values["INSTALLSFOLDER"] = value; }
 	}
+	public string DEVINSTALLSFOLDER
+	{
+		get { return GetVal("DEVINSTALLSFOLDER"); }
+		set { values["DEVINSTALLSFOLDER"] = value; }
+	}
 	public string FIELDPROCLIENT
 	{
 		get { return GetVal("FIELDPROCLIENT"); }

@@ -26,14 +26,17 @@ public class getinstall : IHttpHandler
 		List<int> nums = new List<int>();
 		foreach (string n in numbers)
 		{
-			var num = Convert.ToInt32(n);
-			nums.Add(num);
-			verfolder += num.ToString() + "."; //replace 01 to 1
+			int num;
+			if (int.TryParse(n, out num))
+			{
+				nums.Add(num);
+				verfolder += num.ToString() + "."; //replace 01 to 1
+			}
 		}
 		verfolder = verfolder.Remove(verfolder.Length - 1);
 
 		folder += verfolder + "\\";
-		if (t == "efip" || t == "cx" || t == "onsite" || t == "demo" || t == "client" || t == "flex")
+		if (t == "efip" || t == "cx" || t == "onsite" || t == "demo" || t == "client" || t == "flex" || t == "devmx" || t == "devfip")
 		{
 			string download = "";
 			if (t == "client")
@@ -43,6 +46,14 @@ public class getinstall : IHttpHandler
 			else if (t == "flex")
 			{
 				download = Settings.CurrentSettings.INSTALLSFOLDER + Settings.CurrentSettings.FLEXLMSERVER;
+			}
+			else if (t == "devfip")
+			{
+				download = string.Format("{0}{1}\\Release.zip", Settings.CurrentSettings.DEVINSTALLSFOLDER, v);
+			}
+			else if (t == "devmx")
+			{
+				download = string.Format("{0}{1}\\Modules.zip", Settings.CurrentSettings.DEVINSTALLSFOLDER, v);
 			}
 			else
 			{

@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="Task" Language="C#" MasterPageFile="~/Master.Master" AutoEventWireup="true" CodeFile="showtask.aspx.cs" Inherits="Showtask" %>
-<%@ Register src="~/CommitsControl.ascx" tagname="commits" tagprefix="uc" %>
+<%@ Register Src="~/CommitsControl.ascx" TagName="commits" TagPrefix="uc" %>
 
 <asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
 	<%=System.Web.Optimization.Styles.Render("~/bundles/showtask_css")%>
@@ -202,7 +202,11 @@
 										<textarea id="bstcommands" class="form-control" rows="28" ng-disabled="!canChangeDefect()" ng-model="defect.BSTCOMMANDS"></textarea>
 									</div>
 									<div id="bsthistory" class="tab-pane fade">
-										<a ng-repeat="b in builds" href ng-click="showTests(b.TESTGUID)" class="btn btn-block btn-info">{{b.DATEUP}}</a>
+										<div ng-repeat="b in builds" class="btn-group btn-group-justified">
+											<a class="btn btn-block btn-info" href ng-click="showTests(b.TESTGUID)">History for {{b.DATEUP}}</a>
+											<a href="getinstall.ashx?type=devfip&version={{b.TESTGUID}}" class="btn btn-block btn-info"><span class="glyphicon glyphicon-cloud-download"></span>Fieldpro</a>
+											<a href="getinstall.ashx?type=devmx&version={{b.TESTGUID}}" class="btn btn-block btn-info"><span class="glyphicon glyphicon-cloud-download"></span>Modules</a>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -290,7 +294,7 @@
 								</div>
 							</div>
 							<div class="panel-body">
-								<uc:commits runat="server"/>
+								<uc:commits runat="server" />
 							</div>
 						</div>
 					</div>
