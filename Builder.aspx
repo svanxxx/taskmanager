@@ -15,9 +15,9 @@
 					<strong>Attention!</strong> Do not use/click/see this page if you are not aware what it does!
 				</div>
 				<button ng-click="start()" ng-disabled="readonly || progress()" type="button" class="btn btn-block btn-success">Get git.<img ng-show="progress()" height="20" width="20" src="images/process.gif" /></button>
-				<div class="well well-sm" ng-show="gitStatus.length > 0" ng-bind-html="gitStatus | rawHtml"></div>
+				<pre ng-show="gitStatus.length > 0"><code ng-bind-html="gitStatus | rawHtml"></code></pre>
 				<button ng-show="gitStatus.length > 0" ng-click="release()" ng-disabled="readonly || progress()" type="button" class="btn btn-block btn-success">Increment Version.<img ng-show="progress()" height="20" width="20" src="images/process.gif" /></button>
-				<div ng-show="psStatus.length > 0" class="well well-sm" ng-bind-html="psStatus | rawHtml"></div>
+				<pre ng-show="psStatus.length > 0"><code ng-bind-html="psStatus | rawHtml"></code></pre>
 				<button ng-show="psStatus.length > 0" ng-click="push2Master()" ng-disabled="readonly || progress()" type="button" class="btn btn-block btn-success">Push To mater.<img ng-show="progress()" height="20" width="20" src="images/process.gif" /></button>
 				<div ng-show="pushStatus.length > 0" class="well well-sm" ng-bind-html="pushStatus | rawHtml"></div>
 			</div>
