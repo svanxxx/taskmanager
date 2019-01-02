@@ -254,7 +254,24 @@ $(function () {
 				$scope.loadData();
 			});
 		};
-
+		$scope.addTask = function () {
+			var summary = prompt("Enter Summary For New Task:", "Free To Use");
+			if (summary !== "" && summary !== null) {
+				$http.post("trservice.asmx/newTask4MeNow", JSON.stringify({ "summary": summary}))
+					.then(function (response) {
+						openTask(response.data.d);
+					});
+			}
+		};
+		$scope.planTask = function () {
+			var summary = prompt("Enter Summary For New Task:", "Free To Use");
+			if (summary !== "" && summary !== null) {
+				$http.post("trservice.asmx/planTask4MeNow", JSON.stringify({ "summary": summary }))
+					.then(function (response) {
+						openTask(response.data.d);
+					});
+			}
+		};
 		$scope.isTodayRecord = function () {
 			var d = new Date();
 			d.setHours(0, 0, 0, 0);
@@ -293,7 +310,7 @@ $(function () {
 					body: message
 				});
 				notification.onclick = function () {
-					window.open("showtask.aspx?ttid=" + ttid);
+					openTask(ttid);
 				};
 			}
 		};

@@ -47,6 +47,7 @@
 					<li><a href="mytr.aspx"><span class="glyphicon glyphicon-list-alt"></span>My TR</a></li>
 					<li><a href="ttrep.aspx"><span class="glyphicon glyphicon-tasks"></span>Tasks</a></li>
 					<li><a href="javascript:enterTT();"><span class="glyphicon glyphicon-flash"></span>Show Task</a></li>
+					<li><a href="javascript:createTT();"><span class="glyphicon glyphicon-plus-sign"></span>Add Task</a></li>
 					<li><a href="editplan.aspx"><span class="glyphicon glyphicon-calendar"></span>Edit Plan</a></li>
 					<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Reports<span class="caret"></span></a>
 						<ul class="dropdown-menu">

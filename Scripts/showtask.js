@@ -157,7 +157,7 @@
 			window.location.reload();
 		}
 		$scope.canChangeDefect = function () {
-			return ($scope.defect != null) && (!inProgress()) && ($scope.currentlock == $scope.globallock);
+			return ($scope.defect != null) && !inProgress() && ($scope.currentlock === $scope.globallock);
 		};
 		$scope.saveDefect = function () {
 			//updating object to convert date
@@ -297,7 +297,7 @@
 				}
 			}
 			return "ghost";
-		}
+		};
 		//data section
 		var taskprg = StartProgress("Loading task...");
 		$http.post("trservice.asmx/gettask", JSON.stringify({ "ttid": ttid }))
@@ -370,8 +370,15 @@
 		$scope.locktask = function () {
 			$scope.notifyHub.server.lockTask(ttid, $scope.currentlock, userID());
 		};
+		$scope.duplicate = function () {
+			$http.post("trservice.asmx/copyTask", JSON.stringify({ "ttid": ttid }))
+				.then(function (response) {
+					openTask(response.data.d);
+				});
+		};
 
 		//start
+		$scope.currentlock = guid();
 		$scope.buildtime = parseInt(document.getElementById("buildtime").value);
 		$scope.testlink = document.getElementById("testlink").value;
 		$scope.addresses = document.getElementById("deflist").value;
@@ -387,7 +394,6 @@
 		$scope.tab_workflow = "Workflow";
 		$scope.tab_specs = "Specification";
 		$scope.buildpriorities = [{ ID: 1, DESCR: "1 (Low)" }, { ID: 2, DESCR: "2 (Programmer big release)" }, { ID: 3, DESCR: "3 (Release)" }, { ID: 4, DESCR: "4 (Programmer)" }, { ID: 5, DESCR: "5 (High)" }];
-		$scope.currentlock = guid();
 		$scope.globallock = "";
 		$scope.batches = null;
 		$scope.batchesslots = [];
@@ -397,9 +403,6 @@
 		};
 		$scope.batchsearch = "";
 
-		$.connection.hub.start().done(function () {
-			$scope.locktask();
-		});
 		$.connection.hub.disconnected(function () {
 			setTimeout(function () { $.connection.hub.start(); }, 5000); // Restart connection after 5 seconds.
 		});
@@ -413,5 +416,8 @@
 			$scope.loadBuilds();
 			$scope.$apply();
 		};
+		$.connection.hub.start().done(function () {
+			$scope.locktask();
+		});
 	}]);
 });

@@ -69,7 +69,6 @@ public class DefectDispo : Reference
 			return new List<int>(_gWorkable);
 		}
 	}
-
 	static List<int> _gCannotStart;
 	public static List<int> EnumCannotStart()
 	{
@@ -94,7 +93,7 @@ public class DefectDispo : Reference
 			if (_gCanStart == null)
 			{
 				_gCanStart = new List<int>();
-				foreach (int i in EnumRecords(_Tabl, _ID, new string[] { _CannotStart }, new object[] { 0 }))
+				foreach (int i in EnumRecords(_Tabl, _ID, new string[] { _CannotStart }, new object[] { 0 }, _idOrd))
 				{
 					_gCanStart.Add(i);
 				}

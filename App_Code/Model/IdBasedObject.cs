@@ -83,7 +83,7 @@ public class IdBasedObject
 		string sql = GetBaseSQLQuery(limit) + where;
 		return DBHelper.GetDataSet(sql).Tables[0].Rows;
 	}
-	protected static List<int> EnumRecords(string table, string returnfield, string[] filterfields = null, object[] values = null)
+	protected static List<int> EnumRecords(string table, string returnfield, string[] filterfields = null, object[] values = null, string orderby = "")
 	{
 		List<OleDbParameter> pars = new List<OleDbParameter>();
 		string where = "";
@@ -105,7 +105,11 @@ public class IdBasedObject
 				}
 			}
 		}
-		string slq = string.Format("SELECT {0} FROM {1} {2}", returnfield, table, where);
+		if (!string.IsNullOrEmpty(orderby))
+		{
+			orderby = string.Format(" ORDER BY {0} ", orderby);
+		}
+		string slq = string.Format("SELECT {0} FROM {1} {2} {3}", returnfield, table, where, orderby);
 
 		List<int> res = new List<int>();
 		foreach (DataRow row in DBHelper.GetDataSet(slq, pars.ToArray()).Tables[0].Rows)

@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="Task" Language="C#" MasterPageFile="~/Master.Master" AutoEventWireup="true" CodeFile="showtask.aspx.cs" Inherits="Showtask" %>
+
 <%@ Register Src="~/CommitsControl.ascx" TagName="commits" TagPrefix="uc" %>
 
 <asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
@@ -23,6 +24,9 @@
 		</div>
 		<div class="row">
 			<div class="col-lg-2 hidden-md">
+				<div ng-click="duplicate()" class="btn btn-default btn-block btn-lg" style="text-align: center">
+					<span>Duplicate</span>&nbsp;<span class="glyphicon glyphicon-duplicate"></span>
+				</div>
 			</div>
 			<div class="col-lg-8 col-md-12">
 				<label for="summary">TT{{defect.ID}} {{defect.SUMMARY}}</label>

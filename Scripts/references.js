@@ -222,14 +222,32 @@ function createDSFilter(userid) {
 	filter.userid = "" + userid;
 	return filter;
 }
+function openTask(ttid) {
+	window.open("showtask.aspx?ttid=" + ttid, '_blank');
+}
 function enterTT() {
 	var ttid = parseInt(prompt("Please enter TT ID", getParameterByName("ttid")));
 	if (!isNaN(ttid)) {
-		window.open("showtask.aspx?ttid=" + ttid, '_blank');
+		openTask(ttid);
+	}
+}
+function createTT() {
+	var summary = prompt("Enter Summary For New Task:", "Free To Use");
+	if (summary !== "" && summary !== null) {
+		$.ajax({
+			type: "POST",
+			url: GetSitePath() + "trservice.asmx/newTask",
+			data: JSON.stringify({ "summary": summary}),
+			contentType: "application/json; charset=utf-8",
+			dataType: "json",
+			success: function (mess) {
+				openTask(mess.d);
+			}
+		});
 	}
 }
 function reActivateTooltips() {
-	setTimeout(function () { $('[data-toggle="tooltip"]').tooltip({html: true}); }, 1000);//when data loaded - activate tooltip.
+	setTimeout(function () { $('[data-toggle="tooltip"]').tooltip({ html: true }); }, 1000);//when data loaded - activate tooltip.
 }
 function copyurl(txt) {
 	var $temp = $("<input>");

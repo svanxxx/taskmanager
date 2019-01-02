@@ -53,7 +53,7 @@ public class DefectDefaults
 			fields += string.Format(", '{0}'", k);
 		}
 		fields = fields.Remove(0, 1);
-		string sql = string.Format("select FieldCode, DefaultVal from {0} where FieldCode in ({1})", _Tabl, fields);
+		string sql = string.Format("select FieldCode, DefaultVal from {0} where FieldCode in ({1}) AND EntityType = 1684431732", _Tabl, fields);
 		foreach (DataRow row in DBHelper.GetRows(sql))
 		{
 			v._ivalues[row[0].ToString()] = int.Parse(row[1].ToString());
@@ -90,5 +90,10 @@ public class DefectDefaults
 	{
 		get { return _ivalues["SEVR"]; }
 		set { _ivalues["SEVR"] = value; }
+	}
+	public int ESTIMATED
+	{
+		get { return _ivalues["Z_ESTE"]; }
+		set { _ivalues["Z_ESTE"] = value; }
 	}
 }

@@ -43,12 +43,16 @@ public partial class DefectBase : IdBasedObject
 {
 	public static string _idRec = "idRecord";
 	public static string _ID = "DefectNum";
+	protected static string _PrjID = "ProjectID";
 	protected static string _Summ = "Summary";
+	protected static string _Stat = "Status";
+	protected static string _StatI = "InitStatus";
 	protected static string _Disp = "idDisposit";
 	protected static string _Est = "Estim";
 	protected static string _Order = "iOrder";
 	protected static string _BackOrder = "BackOrder";
 	protected static string _AsUser = "idUsr";
+	protected static string _AdLoc = "AddLocat";
 	protected static string _Seve = "idSeverity";
 	protected static string _sMod = "sModifier";
 	protected static string _sModTRID = "sModifierTRID";
@@ -58,6 +62,7 @@ public partial class DefectBase : IdBasedObject
 	protected static string _CreaBy = "idCreateBy";
 	protected static string _Type = "idType";
 	protected static string _Prod = "idProduct";
+	protected static string _idEntr = "idEnterBy";
 	protected static string _Ref = "Reference";
 	protected static string _Prio = "idPriority";
 	protected static string _OrderDate = "IOrderDate";
@@ -322,7 +327,10 @@ public partial class DefectBase : IdBasedObject
 	}
 	protected override void PostStore()
 	{
-		NotifyHub.NotifyPlanChange((new DefectUser(int.Parse(AUSER)).TRID));
+		if (!string.IsNullOrEmpty(AUSER))
+		{
+			NotifyHub.NotifyPlanChange((new DefectUser(int.Parse(AUSER)).TRID));
+		}
 	}
 
 	public DefectBase()
@@ -612,7 +620,10 @@ public partial class Defect : DefectBase
 		}
 		else if (col == _AsUser)
 		{
-			DefectEvent.AddEventByTask(IDREC, DefectEvent.Eventtype.assigned, "", -1, Convert.ToInt32(AUSER));
+			if (!string.IsNullOrEmpty(AUSER))
+			{
+				DefectEvent.AddEventByTask(IDREC, DefectEvent.Eventtype.assigned, "", -1, Convert.ToInt32(AUSER));
+			}
 			return;
 		}
 		else
@@ -703,6 +714,22 @@ public partial class Defect : DefectBase
 	{
 		this[_sMod] = CurrentContext.User.EMAIL;
 	}
+	public void From(Defect d)
+	{
+		ESTIM = d.ESTIM;
+		TYPE = d.TYPE;
+		PRODUCT = d.PRODUCT;
+		PRIO = d.PRIO;
+		COMP = d.COMP;
+		SEVE = d.SEVE;
+		DATE = d.DATE;
+		AUSER = d.AUSER;
+		SUMMARY = d.SUMMARY;
+		DESCR = d.DESCR;
+		SPECS = d.SPECS;
+		BSTBATCHES = d.BSTBATCHES;
+		BSTCOMMANDS = d.BSTCOMMANDS;
+	}
 	public Defect()
 		: base(_Tabl, _allcols, "0", _ID, false)
 	{
@@ -721,5 +748,61 @@ public partial class Defect : DefectBase
 	public static int GetTTbyID(int id)
 	{
 		return Convert.ToInt32(GetRecdata(_Tabl, _ID, _idRec, id));
+	}
+	static object _lockobject = new object();
+	public static int New(string summary)
+	{
+		lock (_lockobject)
+		{
+			string sql = string.Format(@"
+			INSERT INTO {0}
+			({1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, {12}, {13}, {14}, {15}, {16}, {17}, {18}, {19})
+			values
+			(
+			   1
+			 , (SELECT MAX(T1.{2}) + 1 FROM {0} T1)
+			 , GETUTCDATE()
+			 , {20}
+			 , GETUTCDATE()
+			 , {20}
+			 , (SELECT MAX(T1.{7}) + 1 FROM {0} T1)
+			 , '{21}'
+			 , 1
+			 , 1
+			 , {22}
+			 , {23}
+			 , {20}
+			 , {24}
+			 , {25}
+			 , {26}
+			 , {27}
+			 , GETUTCDATE()
+			 , 1
+			)		
+			", _Tabl,
+				_PrjID, _idRec, _Created, _CreaBy, _ModDate, _ModBy, _ID, _Summ, _Stat, _StatI, _Type, _Prod, _idEntr, _Disp, _Prio, _Comp, _Seve, _Date, _AdLoc
+													, CurrentContext.TTUSERID
+																							 , summary
+																														 , DefectDefaults.CurrentDefaults.TYPE
+																																	, DefectDefaults.CurrentDefaults.PRODUCT
+																																						, DefectDefaults.CurrentDefaults.DISP
+																																								 , DefectDefaults.CurrentDefaults.PRIO
+																																											, DefectDefaults.CurrentDefaults.COMP
+																																													, DefectDefaults.CurrentDefaults.SEVR);
+
+			SQLExecute(sql);
+			string sqlid = string.Format("SELECT TOP 1 {0} FROM {1} WHERE {2} = {3} ORDER BY {0} DESC", _ID, _Tabl, _CreaBy, CurrentContext.TTUSERID);
+			int ttid = Convert.ToInt32(GetValue(sqlid));
+			int recid = Defect.GetIDbyTT(ttid);
+
+			string sqlrep = string.Format(@"
+				INSERT INTO {0}(IDRECORD, PROJECTID, IDFOUNDBY, DATEFOUND, ORDERNUM, IDREPROD, TSTCONTYPE, IDCONFIG, IDDEFREC)
+				VALUES((SELECT MAX(R2.IDRECORD) + 1 FROM {0} R2), 1, {1}, GETUTCDATE(), 1, 0, 1, 4294967293, {2})
+			", _RepTable, CurrentContext.TTUSERID, recid);
+
+			SQLExecute(sqlrep);
+
+			return ttid;
+		}
 	}
 }

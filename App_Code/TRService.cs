@@ -132,6 +132,60 @@ public class TRService : System.Web.Services.WebService
 		return d.EnumUnPlan(string.IsNullOrEmpty(userid) ? CurrentContext.User.TTUSERID : Convert.ToInt32(userid));
 	}
 	[WebMethod(EnableSession = true)]
+	public int newTask4MeNow(string summary)
+	{
+		if (string.IsNullOrEmpty(summary))
+			return -1;
+		DefectBase d = new DefectBase(Defect.New(summary));
+		d.AUSER = CurrentContext.TTUSERID.ToString();
+		d.ESTIM = 1;
+		d.DISPO = DefectDispo.GetWorkingRec().ToString();
+		d.ORDER = 1;
+		d.Store();
+		return d.ID;
+	}
+	[WebMethod(EnableSession = true)]
+	public int planTask4MeNow(string summary)
+	{
+		if (string.IsNullOrEmpty(summary))
+			return -1;
+		DefectBase d = new DefectBase(Defect.New(summary));
+		d.AUSER = CurrentContext.TTUSERID.ToString();
+		d.ESTIM = 1;
+		List<int> disp = DefectDispo.EnumCanStart();
+		if (disp.Count > 0)
+		{
+			d.DISPO = disp[0].ToString();
+		}
+		d.ORDER = 1;
+		d.Store();
+		return d.ID;
+	}
+	[WebMethod(EnableSession = true)]
+	public int newTask(string summary)
+	{
+		if (string.IsNullOrEmpty(summary))
+			return -1;
+		DefectBase d = new DefectBase(Defect.New(summary));
+		d.ESTIM = 1;
+		List<int> disp = DefectDispo.EnumCanStart();
+		if (disp.Count > 0)
+		{
+			d.DISPO = disp[0].ToString();
+		}
+		d.Store();
+		return d.ID;
+	}
+	[WebMethod(EnableSession = true)]
+	public int copyTask(int ttid)
+	{
+		Defect old = new Defect(ttid);
+		Defect d = new Defect(Defect.New(old.SUMMARY));
+		d.From(old);
+		d.Store();
+		return d.ID;
+	}
+	[WebMethod(EnableSession = true)]
 	public Defect gettask(string ttid)
 	{
 		if (string.IsNullOrEmpty(ttid))

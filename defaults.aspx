@@ -53,6 +53,10 @@
 							<option ng-repeat="t in severs" ng-value="t.ID">{{t.DESCR}}</option>
 						</select>
 					</div>
+					<label class="col-sm-2 control-label">Estimated</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control input-sm" ng-disabled="readonly" ng-model="deffObj.ESTIMATED">
+					</div>
 				</div>
 			</div>
 			<div class="col-sm-3"></div>
