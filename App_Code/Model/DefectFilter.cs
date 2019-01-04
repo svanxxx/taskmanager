@@ -3,6 +3,77 @@ using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 
+public class StoredDefectsFilter : IdBasedObject
+{
+	private static string _pid = "ID";
+	private static string _Nam = "Name";
+	private static string _Dat = "Filter";
+	private static string _Usr = "idUser";
+	private static string _Share = "Shared";
+	private static string _Cre = "dateCreated";
+	private static string _Mod = "dateModified";
+	private static string[] _allCols = new string[] { _pid, _Nam, _Dat, _Usr, _Share, _Cre, _Mod };
+	private static string _Tabl = "[TT_RES].[DBO].[DEFECTFILTERS]";
+
+	public int ID
+	{
+		get { return GetAsInt(_pid); }
+		set { this[_pid] = value; }
+	}
+	public string NAME
+	{
+		get { return this[_Nam].ToString(); }
+		set { this[_Nam] = value; }
+	}
+	string DATA
+	{
+		get { return this[_Dat].ToString(); }
+		set { this[_Dat] = value; }
+	}
+	public int TTUSER
+	{
+		get { return GetAsInt(_Usr); }
+		set { this[_Usr] = value; }
+	}
+
+	public StoredDefectsFilter()
+	  : base(_Tabl, _allCols, 0.ToString(), _pid, false)
+	{
+	}
+	public StoredDefectsFilter(int id)
+	  : base(_Tabl, _allCols, id.ToString(), _pid, true)
+	{
+	}
+	public DefectsFilter GetFilter()
+	{
+		return Newtonsoft.Json.JsonConvert.DeserializeObject<DefectsFilter>(DATA);
+	}
+	static public StoredDefectsFilter NewFilter(string name, DefectsFilter f, int user)
+	{
+		string g = Guid.NewGuid().ToString();
+		SQLExecute(string.Format("INSERT INTO {0} ({1}, {2}) VALUES ('{3}', '{4}')", _Tabl, _Nam, _Usr, g, user));
+		int id = Convert.ToInt32(GetValue(string.Format("SELECT {0} FROM {1} WHERE {2} = '{3}'", _pid, _Tabl, _Nam, g)));
+		StoredDefectsFilter sf = new StoredDefectsFilter(id)
+		{
+			NAME = name,
+			DATA = Newtonsoft.Json.JsonConvert.SerializeObject(f)
+		};
+		sf.Store();
+		return sf;
+	}
+	static public List<StoredDefectsFilter> Enum(int user)
+	{
+		List<StoredDefectsFilter> res = new List<StoredDefectsFilter>();
+		foreach (DataRow r in (new StoredDefectsFilter()).GetRecords(String.Format("WHERE {0} = 1 OR {1} = {2} ORDER BY {3} asc", _Share, _Usr, user, _Nam)))
+		{
+			StoredDefectsFilter d = new StoredDefectsFilter();
+			d.Load(r);
+			res.Add(d);
+		}
+		return res;
+	}
+}
+
 public class DefectsFilter
 {
 	public DefectsFilter() { }

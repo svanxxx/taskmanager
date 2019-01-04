@@ -34,11 +34,6 @@ table tbody tr td {
 	max-width: 1px;
 }
 
-#searchtxt {
-	width: 50%;
-	float: right;
-}
-
 .refselector {
 	width: 70%;
 }

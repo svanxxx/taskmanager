@@ -63,9 +63,25 @@
 				<button type="button" class="btn btn-success" ng-click="changeDefects()">Apply</button>
 			</div>
 		</div>
-		<a data-toggle="tooltip" title="Copy link to this report to clipboard" href onclick="copyurl()" class="btn btn-info"><span class="glyphicon glyphicon-copy" ></span></a>
-		<label for="searchtxt">Enter phrase in double quotes or a set of words to be found:</label>
-		<input class="form-control" id="searchtxt" type="text" ng-model="DefectsFilter.text" ng-change="changed=true" ng-keypress="onGo($event)" autofocus />
+		<div class="row">
+			<div class="col-sm-2">
+				<a data-toggle="tooltip" title="Copy link to this report to clipboard" href onclick="copyurl()" class="btn btn-info"><span class="glyphicon glyphicon-copy"></span></a>
+				<button ng-click="saveFilter()" data-toggle="tooltip" title="Save Filter" type="button" class="btn btn-default"><span class="glyphicon glyphicon-save"></span></button>
+				<button ng-click="resetFilter()" data-toggle="tooltip" title="Reset Filter" type="button" class="btn btn-default"><span class="glyphicon glyphicon-home"></span></button>
+				<label for="selectedfltr">Saved filters:</label>
+			</div>
+			<div class="col-sm-2">
+				<select id="selectedfltr" class="form-control" ng-change="applySelectedFilter()" ng-model="selectedFilter">
+					<option ng-repeat="f in filters" value="{{f.ID}}">{{f.NAME}}</option>
+				</select>
+			</div>
+			<div class="col-sm-3">
+				<label for="searchtxt">Enter phrase in double quotes or a set of words to be found:</label>
+			</div>
+			<div class="col-sm-5">
+				<input class="form-control" id="searchtxt" type="text" ng-model="DefectsFilter.text" ng-change="changed=true" ng-keypress="onGo($event)" autofocus />
+			</div>
+		</div>
 		<table class="table table-bordered table-colresizable">
 			<thead>
 				<tr>

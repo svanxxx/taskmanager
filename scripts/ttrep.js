@@ -62,6 +62,14 @@
 		getProducts($scope, "products", $http);
 		getComps($scope, "comps", $http);
 
+		$scope.getServiceFilter = function () {
+			var o = Object.assign({}, $scope.DefectsFilter);
+			o.startDateEnter = o.startDateEnter === "" ? "" : DateToString(o.startDateEnter);
+			o.endDateEnter = o.endDateEnter === "" ? "" : DateToString(o.endDateEnter);
+			o.startDateCreated = o.startDateCreated === "" ? "" : DateToString(o.startDateCreated);
+			o.endDateCreated = o.endDateCreated === "" ? "" : DateToString(o.endDateCreated);
+			return o;
+		};
 		$scope.loadData = function () {
 			$scope.defectsselected = false;
 			var taskprg = StartProgress("Loading tasks...");
@@ -70,16 +78,8 @@
 			if (localStorage.DefectsFilter) {
 				$scope.DefectsFilter = JSON.parse(localStorage.DefectsFilter);
 			}
-
 			createTasksFilter($scope.DefectsFilter);
-
-			var o = Object.assign({}, $scope.DefectsFilter);
-			o.startDateEnter = o.startDateEnter === "" ? "" : DateToString(o.startDateEnter);
-			o.endDateEnter = o.endDateEnter === "" ? "" : DateToString(o.endDateEnter);
-			o.startDateCreated = o.startDateCreated === "" ? "" : DateToString(o.startDateCreated);
-			o.endDateCreated = o.endDateCreated === "" ? "" : DateToString(o.endDateCreated);
-
-			$http.post("trservice.asmx/gettasks", JSON.stringify({ "f": o }))
+			$http.post("trservice.asmx/gettasks", JSON.stringify({ "f": $scope.getServiceFilter() }))
 				.then(function (response) {
 					$scope.defects = response.data.d;
 					for (var i = 0; i < $scope.defects.length; i++) {
@@ -88,14 +88,28 @@
 					EndProgress(taskprg);
 				});
 		};
-		
+		$scope.initFilters = function (filters) {
+			$scope.filters = [{ ID: 0, NAME: "<Select>" }];
+			if (filters) {
+				filters.forEach(function (f) {
+					$scope.filters.push(f);
+				});
+			}
+		};
 		getUsers($scope, "users", $http, $scope.loadData);
 
+		$scope.initFilters();
+		$scope.selectedFilter = "0";
 		$scope.apply = {};
 		$scope.apply.disposition = { "use": false, "value": -1 };
 		$scope.apply.component = { "use": false, "value": -1 };
 		$scope.apply.severity = { "use": false, "value": -1 };
 		$scope.apply.user = { "use": false, "value": -1 };
+
+		$http.post("trservice.asmx/getFilters", JSON.stringify({ }))
+			.then(function (response) {
+				$scope.initFilters(response.data.d);
+			});
 
 		$scope.checkall = function () {
 			if ($scope.defects.length < 1) {
@@ -110,15 +124,40 @@
 			}
 		};
 		$scope.applyfilter = function () {
-			var proccessed = Object.assign({}, $scope.DefectsFilter);
-			proccessed.startDateEnter = proccessed.startDateEnter === "" ? "" : DateToString(proccessed.startDateEnter);
-			proccessed.endDateEnter = proccessed.endDateEnter === "" ? "" : DateToString(proccessed.endDateEnter);
-			proccessed.startDateCreated = proccessed.startDateCreated === "" ? "" : DateToString(proccessed.startDateCreated);
-			proccessed.endDateCreated = proccessed.endDateCreated === "" ? "" : DateToString(proccessed.endDateCreated);
+			var proccessed = $scope.getServiceFilter();
 			localStorage.DefectsFilter = JSON.stringify(proccessed);
 			var o = Object.assign({}, proccessed);
 			window.history.pushState(o, "filter:" + localStorage.DefectsFilter, replaceUrlParam(location.href, "filter", localStorage.DefectsFilter));
 			$scope.loadData();
+		};
+		$scope.saveFilter = function () {
+			var name = prompt("Please enter filter name", "New Filter");
+			if (name === null) {
+				return;
+			}
+			var prg = StartProgress("Storing filter...");
+			$http.post("trservice.asmx/saveFilter", JSON.stringify({ "name": name, "filter": $scope.getServiceFilter() }))
+				.then(function (response) {
+					$scope.filters.push(response.data.d);
+					$scope.selectedFilter = "" + response.data.d.ID;
+					EndProgress(prg);
+				});
+		};
+		$scope.resetFilter = function () {
+			$scope.DefectsFilter = {};
+			$scope.selectedFilter = "0";
+			createTasksFilter($scope.DefectsFilter);
+			$scope.applyfilter();
+		};
+		$scope.applySelectedFilter = function () {
+			if ($scope.selectedFilter !== "0") {
+				$http.post("trservice.asmx/savedFilterData", JSON.stringify({ "id": $scope.selectedFilter }))
+					.then(function (response) {
+						$scope.DefectsFilter = response.data.d;
+						createTasksFilter($scope.DefectsFilter);
+						$scope.applyfilter();
+					});
+			}
 		};
 		$scope.discardfilter = function () {
 			window.location.reload();

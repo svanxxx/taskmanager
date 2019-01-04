@@ -186,6 +186,21 @@ public class TRService : System.Web.Services.WebService
 		return d.ID;
 	}
 	[WebMethod(EnableSession = true)]
+	public StoredDefectsFilter saveFilter(string name, DefectsFilter filter)
+	{
+		return StoredDefectsFilter.NewFilter(name, filter, CurrentContext.TTUSERID);
+	}
+	[WebMethod(EnableSession = true)]
+	public DefectsFilter savedFilterData(int id)
+	{
+		return (new StoredDefectsFilter(id)).GetFilter();
+	}
+	[WebMethod(EnableSession = true)]
+	public List<StoredDefectsFilter> getFilters()
+	{
+		return StoredDefectsFilter.Enum(CurrentContext.TTUSERID);
+	}
+	[WebMethod(EnableSession = true)]
 	public Defect gettask(string ttid)
 	{
 		if (string.IsNullOrEmpty(ttid))
