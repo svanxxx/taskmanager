@@ -72,7 +72,7 @@
 							</div>
 							<div class="col-sm-9">
 								<select class="form-control input-sm" id="dispo" ng-disabled="!canChangeDefect()" ng-model="defect.DISPO">
-									<option ng-repeat="d in dispos" value="{{d.ID}}" style="background-color: {{d .COLOR}}">{{d.DESCR}}</option>
+									<option ng-repeat="d in dispos | orderBy:'FORDER'" value="{{d.ID}}" style="background-color: {{d .COLOR}}">{{d.DESCR}}</option>
 								</select>
 							</div>
 						</div>
@@ -82,7 +82,7 @@
 							</div>
 							<div class="col-sm-9">
 								<select class="form-control input-sm" id="prio" ng-disabled="!canChangeDefect()" ng-model="defect.PRIO">
-									<option ng-repeat="p in priorities" value="{{p.ID}}">{{p.DESCR}}</option>
+									<option ng-repeat="p in priorities | orderBy:'FORDER'" value="{{p.ID}}">{{p.DESCR}}</option>
 								</select>
 							</div>
 						</div>
@@ -92,7 +92,7 @@
 							</div>
 							<div class="col-sm-9">
 								<select class="form-control input-sm" id="comp" ng-disabled="!canChangeDefect()" ng-model="defect.COMP">
-									<option ng-repeat="c in comps" value="{{c.ID}}">{{c.DESCR}}</option>
+									<option ng-repeat="c in comps | orderBy:'FORDER'" value="{{c.ID}}">{{c.DESCR}}</option>
 								</select>
 							</div>
 						</div>
