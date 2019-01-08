@@ -331,6 +331,7 @@ public partial class DefectBase : IdBasedObject
 		{
 			NotifyHub.NotifyPlanChange((new DefectUser(int.Parse(AUSER)).TRID));
 		}
+		NotifyHub.NotifyDefectChange(ID);
 	}
 
 	public DefectBase()

@@ -3,6 +3,11 @@ using System.Collections.Concurrent;
 
 public class NotifyHub : Hub
 {
+	public static void NotifyDefectChange(int ttid)
+	{
+		var context = GlobalHost.ConnectionManager.GetHubContext<NotifyHub>();
+		context.Clients.All.OnDefectChanged(ttid);
+	}
 	public static void NotifyPlanChange(int userid)
 	{
 		var context = GlobalHost.ConnectionManager.GetHubContext<NotifyHub>();

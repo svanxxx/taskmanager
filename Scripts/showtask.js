@@ -157,10 +157,12 @@
 			window.location.reload();
 		}
 		$scope.canChangeDefect = function () {
-			return ($scope.defect != null) && !inProgress() && ($scope.currentlock === $scope.globallock);
+			return $scope.defect != null && !inProgress() && $scope.currentlock === $scope.globallock;
 		};
+		$scope.saving = false;
 		$scope.saveDefect = function () {
 			//updating object to convert date
+			$scope.saving = true;
 			var copy = Object.assign({}, $scope.defect);
 			copy.DATE = DateToString(copy.DATE);
 			if (!copy.ORDER) {
@@ -211,6 +213,7 @@
 					$scope.events = null;
 					$scope.loadHistory();
 					$scope.loadEvents();
+					$scope.saving = false;
 				});
 		};
 		$scope.changetab = function (event) {
@@ -299,20 +302,25 @@
 			return "ghost";
 		};
 		//data section
-		var taskprg = StartProgress("Loading task...");
-		$http.post("trservice.asmx/gettask", JSON.stringify({ "ttid": ttid }))
-			.then(function (response) {
-				$scope.defect = response.data.d;
-				if ($scope.defect) {
-					$scope.defect.DATE = StringToDate($scope.defect.DATE);
-					$scope.defect.CREATEDBY = "" + $scope.defect.CREATEDBY;
-					if ($scope.defect.ORDER == -1) {
-						$scope.defect.ORDER = null;
+		$scope.loadData = function () {
+			var taskprg = StartProgress("Loading task...");
+			$http.post("trservice.asmx/gettask", JSON.stringify({ "ttid": ttid }))
+				.then(function (response) {
+					$scope.defect = response.data.d;
+					if ($scope.defect) {
+						$scope.defect.DATE = StringToDate($scope.defect.DATE);
+						$scope.defect.CREATEDBY = "" + $scope.defect.CREATEDBY;
+						if ($scope.defect.ORDER == -1) {
+							$scope.defect.ORDER = null;
+						}
 					}
-				}
-				document.title = "Task: #" + ttid;
-				EndProgress(taskprg);
-			});
+					document.title = "Task: #" + ttid;
+					EndProgress(taskprg);
+				});
+		};
+
+		$scope.reloading = false;
+		$scope.loadData();
 
 		$scope.generateSlots = function () {
 			var slotcap = 13;
@@ -356,7 +364,11 @@
 		};
 		$scope.$watchCollection('defect', function (newval, oldval) {
 			if (newval && oldval) {
-				$scope.changed = true;
+				if (!$scope.reloading) {
+					$scope.changed = true;
+				} else {
+					$scope.reloading = false;
+				}
 			}
 		});
 		$scope.$watchCollection('batchsearch', function (newval, oldval) {
@@ -407,6 +419,13 @@
 			setTimeout(function () { $.connection.hub.start(); }, 5000); // Restart connection after 5 seconds.
 		});
 		$scope.notifyHub = $.connection.notifyHub;
+		$scope.notifyHub.client.onDefectChanged = function (defectid) {
+			if (!$scope.saving && ttid == defectid) {
+				$scope.reloading = true;
+				$scope.loadData();
+				$scope.$apply();
+			}
+		};
 		$scope.notifyHub.client.onLockTask = function (li) {
 			$scope.globallock = li.globallock;
 			$scope.lockedby = li.lockedby;
