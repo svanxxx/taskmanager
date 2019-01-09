@@ -386,6 +386,19 @@
 		$scope.locktask = function () {
 			$scope.notifyHub.server.lockTask(ttid, $scope.currentlock, userID());
 		};
+		$scope.resettask = function () {
+			if (!confirm("Are you sure you want to delete all task information and reset all the fields?")) {
+				return;
+			}
+			$scope.defect.SUMMARY = "Free To Use";
+			$scope.defect.DESCR = "";
+			$scope.defect.AUSER = "";
+			$scope.defect.SPECS = "";
+			$scope.defect.ESTIM = 0;
+			$scope.attachs.forEach(function (a) {
+				$scope.deleteAttach(a.ID);
+			});
+		};
 		$scope.duplicate = function () {
 			$http.post("trservice.asmx/copyTask", JSON.stringify({ "ttid": ttid }))
 				.then(function (response) {

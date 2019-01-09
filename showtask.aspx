@@ -27,6 +27,9 @@
 				<div ng-click="duplicate()" class="btn btn-default btn-block btn-lg" style="text-align: center">
 					<span>Duplicate</span>&nbsp;<span class="glyphicon glyphicon-duplicate"></span>
 				</div>
+				<button ng-click="resettask()" ng-disabled="!canChangeDefect()"  type="button" class="btn btn-default btn-block btn-lg">
+					<span>Reset to reuse</span>&nbsp;<span class="glyphicon glyphicon-retweet"></span>
+				</button>
 			</div>
 			<div class="col-lg-8 col-md-12">
 				<label for="summary">TT{{defect.ID}} {{defect.SUMMARY}}</label>
