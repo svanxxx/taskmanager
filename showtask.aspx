@@ -27,7 +27,7 @@
 				<div ng-click="duplicate()" class="btn btn-default btn-block btn-lg" style="text-align: center">
 					<span>Duplicate</span>&nbsp;<span class="glyphicon glyphicon-duplicate"></span>
 				</div>
-				<button ng-click="resettask()" ng-disabled="!canChangeDefect()"  type="button" class="btn btn-default btn-block btn-lg">
+				<button ng-click="resettask()" ng-disabled="!canChangeDefect()" type="button" class="btn btn-default btn-block btn-lg">
 					<span>Reset to reuse</span>&nbsp;<span class="glyphicon glyphicon-retweet"></span>
 				</button>
 			</div>
@@ -245,17 +245,15 @@
 						<label ng-show="!history">loading...</label>
 						<div class="list-group">
 							<a href="#" class="list-group-item" ng-repeat="h in history">
-								<div class="col-sm-3">
-									<img class="img-circle" ng-src="{{'getUserImg.ashx?ttid=' + h.IDUSER}}" alt="Smile" height="20" width="20">
-									<b>{{h.IDUSER | getUserById:this}}</b>
+								<div class="media">
+									<div class="media-left">
+										<img class="media-object img-circle" ng-src="{{'getUserImg.ashx?ttid=' + h.IDUSER}}" alt="Smile" height="30" width="30">
+									</div>
+									<div class="media-body">
+										<h4 class="media-heading">{{h.IDUSER | getUserById:this}} <small><i>{{h.DATE}}</i></small></h4>
+										<p>{{h.NOTES}}</p>
+									</div>
 								</div>
-								<div class="col-sm-2">
-									<span class="label label-info">{{h.DATE}}</span>
-								</div>
-								<div class="col-sm-6">
-									<span>{{h.NOTES}}</span>
-								</div>
-								<span>&nbsp</span>
 							</a>
 						</div>
 					</div>
