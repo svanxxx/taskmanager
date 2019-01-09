@@ -518,14 +518,14 @@ public partial class Defect : DefectBase
 		LockEvent ev = locker[ttid];
 		return !ev.Obsolete;
 	}
-	public static LockInfo Locktask(string ttid, string lockid, string userid)
+	public static LockInfo Locktask(string ttid, string lockid, string userid, bool force = false)
 	{
 		lock (thisLock)
 		{
 			if (locker.Keys.Contains(ttid))
 			{
 				LockEvent ev = locker[ttid];
-				if (ev.Obsolete)
+				if (ev.Obsolete || force)
 				{
 					LockEvent newev = new LockEvent(lockid, userid);
 					locker[ttid] = newev;

@@ -379,6 +379,10 @@
 		$scope.releaseRequest = function () {
 			$scope.notifyHub.server.sendMessage(userID(), $scope.lockedby, "Please release TT" + $scope.defect.ID + "!!!");
 		};
+		$scope.releaseForce = function () {
+			$scope.notifyHub.server.sendMessage(userID(), $scope.lockedby, "You was disconnected from TT" + $scope.defect.ID + " task!");
+			$scope.notifyHub.server.lockTaskForce(ttid, $scope.currentlock, userID());
+		};
 		$scope.locktask = function () {
 			$scope.notifyHub.server.lockTask(ttid, $scope.currentlock, userID());
 		};

@@ -271,11 +271,18 @@
 					</div>
 					<div id="lockinfo" class="tab-pane fade">
 						<div class="row">
-							<span class="label label-info">{{getMPSUserName(lockedby)}}</span>
-							<img class="img-circle" ng-src="{{'getUserImg.ashx?id=' + lockedby}}" alt="Smile" height="42" width="42">
-						</div>
-						<div class="row">
-							<button type="button" ng-click="releaseRequest()" class="btn btn-primary btn-xs">Request to release!</button>
+							<div class="col-sm-4">
+								<div class="well">
+								<span class="label label-info">{{getMPSUserName(lockedby)}}</span>
+								<img class="img-circle" ng-src="{{'getUserImg.ashx?id=' + lockedby}}" alt="Smile" height="42" width="42">
+								</div>
+							</div>
+							<div class="col-sm-4">
+								<button type="button" ng-click="releaseRequest()" class="btn btn-primary btn-lg">Request to release!</button>
+							</div>
+							<div class="col-sm-4">
+								<button type="button" ng-click="releaseForce()" class="btn btn-danger btn-lg">Force Task Unlock</button>
+							</div>
 						</div>
 					</div>
 					<div id="taskgit" class="tab-pane fade">

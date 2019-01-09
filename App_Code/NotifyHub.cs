@@ -54,6 +54,11 @@ public class NotifyHub : Hub
 		LockInfo li = Defect.Locktask(ttid.ToString(), currentlock, userid.ToString());
 		Clients.Caller.OnLockTask(li);
 	}
+	public void lockTaskForce(int ttid, string currentlock, int userid)
+	{
+		LockInfo li = Defect.Locktask(ttid.ToString(), currentlock, userid.ToString(), true);
+		Clients.Caller.OnLockTask(li);
+	}
 	public void UnLockTask(int ttid, string currentlock)
 	{
 		Defect.UnLocktask(ttid.ToString(), currentlock);
