@@ -182,6 +182,8 @@ public class TRService : System.Web.Services.WebService
 		Defect old = new Defect(ttid);
 		Defect d = new Defect(Defect.New(old.SUMMARY));
 		d.From(old);
+		d.AUSER = "";
+		d.ESTIM = 0;
 		d.Store();
 		return d.ID;
 	}

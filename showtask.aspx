@@ -273,15 +273,19 @@
 						<div class="row">
 							<div class="col-sm-4">
 								<div class="well">
-								<span class="label label-info">{{getMPSUserName(lockedby)}}</span>
-								<img class="img-circle" ng-src="{{'getUserImg.ashx?id=' + lockedby}}" alt="Smile" height="42" width="42">
+									<img class="img-circle" ng-src="{{'getUserImg.ashx?id=' + lockedby}}" alt="Smile" height="42" width="42">
+									<span class="label label-info">{{getMPSUserName(lockedby)}}</span>
 								</div>
 							</div>
 							<div class="col-sm-4">
-								<button type="button" ng-click="releaseRequest()" class="btn btn-primary btn-lg">Request to release!</button>
+								<div class="well">
+									<button type="button" ng-click="releaseRequest()" class="btn btn-block btn-primary btn-lg">Request to release!</button>
+								</div>
 							</div>
 							<div class="col-sm-4">
-								<button type="button" ng-click="releaseForce()" class="btn btn-danger btn-lg">Force Task Unlock</button>
+								<div class="well">
+									<button type="button" ng-click="releaseForce()" class="btn btn-block btn-danger btn-lg">Force Task Unlock</button>
+								</div>
 							</div>
 						</div>
 					</div>
