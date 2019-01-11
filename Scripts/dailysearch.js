@@ -41,7 +41,7 @@
 							if (match !== null) {
 								var ttid = match[0];
 								ttid = ttid.substring(2);
-								var url = '<a href="showtask.aspx?ttid=' + ttid + '" target="_blank"><span class="badge">TT' + ttid + '</span></a>';
+								var url = '<a href="showtask.aspx?ttid=' + ttid + '" target="_blank"><span class="badge badge-pill badge-secondary">TT' + ttid + '</span></a>';
 								reps[i].DONE.push(l.replace(match[0], url));
 								continue;
 							}

@@ -6,7 +6,10 @@
 		$scope.GetFile = function (v, t) {
 			window.open('getinstall.ashx?type=' + t + '&version=' + v.version);
 		};
-
+		$scope.copyurl = function (txt) {
+			copyurl(txt);
+		};
+		
 		var taskprg = StartProgress("Loading data..."); $scope["loaders"]++;
 		$http.post("trservice.asmx/getVersionLog", JSON.stringify({}))
 			.then(function (result) {

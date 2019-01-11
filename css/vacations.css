@@ -21,6 +21,10 @@ table thead tr th {
 	text-align: center;
 }
 
+thead {
+	font-size: 0.9em;
+}
+
 .sticky {
 	position: fixed;
 	top: 0;

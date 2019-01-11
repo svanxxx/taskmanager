@@ -22,10 +22,3 @@
 		opacity: 0;
 	}
 }
-
-.nav > li > a.tab-small {
-	padding-top: 5px;
-	padding-bottom: 5px;
-	padding-right: 10px;
-	padding-left: 10px;
-}

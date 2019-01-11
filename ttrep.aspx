@@ -65,9 +65,9 @@
 		</div>
 		<div class="row">
 			<div class="col-sm-2">
-				<a data-toggle="tooltip" title="Copy link to this report to clipboard" href onclick="copyurl()" class="btn btn-info"><span class="glyphicon glyphicon-copy"></span></a>
-				<button ng-click="saveFilter()" data-toggle="tooltip" title="Save Filter" type="button" class="btn btn-default"><span class="glyphicon glyphicon-save"></span></button>
-				<button ng-click="resetFilter()" data-toggle="tooltip" title="Reset Filter" type="button" class="btn btn-default"><span class="glyphicon glyphicon-home"></span></button>
+				<a data-toggle="tooltip" title="Copy link to this report to clipboard" href onclick="copyurl()" class="btn btn-info"><i class="fas fa-copy"></i></a>
+				<button ng-click="saveFilter()" data-toggle="tooltip" title="Save Filter" type="button" class="btn btn-default"><i class="fas fa-save"></i></button>
+				<button ng-click="resetFilter()" data-toggle="tooltip" title="Reset Filter" type="button" class="btn btn-default"><i class="fas fa-home"></i></button>
 				<label for="selectedfltr">Saved filters:</label>
 			</div>
 			<div class="col-sm-2">
@@ -249,11 +249,11 @@
 						<input type="checkbox" ng-model="d.checked"></td>
 					<td>
 						<a href="showtask.aspx?ttid={{d.ID}}" target="_blank">
-							<span class="badge">{{d.ID}}</span>
+							<span class="badge badge-pill badge-secondary">{{d.ID}}</span>
 						</a>
 					</td>
 					<td>
-						<span class="label label-danger">{{d.ESTIM}}</span>
+						<span class="badge badge-danger">{{d.ESTIM}}</span>
 					</td>
 					<td><a target="_blank" href="{{'editplan.aspx?userid='}}{{d.AUSER | getUserTRIDById:this}}">{{d.AUSER | getUserById:this}}</a></td>
 					<td>{{d.REFERENCE}}</td>

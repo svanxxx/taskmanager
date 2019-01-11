@@ -1,5 +1,5 @@
 ﻿$(function () {
-	$('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
+	$('ul#tasktabs li a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 		localStorage.taskactivetab = $(e.target).attr("href");
 	});
 	if (localStorage.taskactivetab) {
@@ -93,7 +93,7 @@
 			}
 		};
 		$scope.specsStyle = function () {
-			var active = $("ul#tasktabs li.active")[0].innerText.trim() === $scope.tab_specs;
+			var active = $("ul#tasktabs li a.active")[0].innerText.trim() === $scope.tab_specs;
 			return !active && $scope.defect !== undefined && $scope.defect.SPECS.trim().length > 0 ? 'blink_me' : '';
 		};
 		$interval(function () {
@@ -254,10 +254,10 @@
 			if (!$scope.canChangeDefect()) {
 				return;
 			}
-			if (document.querySelector("#bsttabs li.active").id === $scope.bsttab_bat) {
+			if (document.querySelector("#bsttabs li a.active").id === $scope.bsttab_bat) {
 				var preb = $scope.defect.BSTBATCHES === "" ? "" : "\n";
 				$scope.defect.BSTBATCHES += preb + batch;
-			} else if (document.querySelector("#bsttabs li.active").id === $scope.bsttab_com) {
+			} else if (document.querySelector("#bsttabs li a.active").id === $scope.bsttab_com) {
 				var bcom = StartProgress("Loading commands...");
 				$http.post("trservice.asmx/getBSTBatchData", JSON.stringify({ batch: batch }))
 					.then(function (response) {

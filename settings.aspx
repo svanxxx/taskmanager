@@ -12,19 +12,22 @@
 			<button type="button" class="btn btn-lg btn-info" ng-click="save()">Save</button>
 			<button type="button" class="btn btn-lg btn-danger" ng-click="discard()">Discard</button>
 		</div>
-		<table class="table table-hover table-bordered">
-			<thead>
-				<tr class="info">
-					<th>Name</th>
-					<th>Value</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="s in settings | orderBy : 's.NAME'" class="{{s.changed?'data-changed':''}}">
-					<td>{{s.NAME}}</td>
-					<td><input ng-disabled="readonly" class="intable-data-input" type="text" ng-model="s.VALUE" ng-change="itemchanged(s)"></td>
-				</tr>
-			</tbody>
-		</table>
+		<div class="table-responsive">
+			<table class="table table-hover table-bordered">
+				<thead class="thead-dark">
+					<tr class="info">
+						<th>Name</th>
+						<th>Value</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="s in settings | orderBy : 's.NAME'" class="{{s.changed?'data-changed':''}}">
+						<td>{{s.NAME}}</td>
+						<td>
+							<input ng-disabled="readonly" class="intable-data-input" type="text" ng-model="s.VALUE" ng-change="itemchanged(s)"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
 </asp:Content>

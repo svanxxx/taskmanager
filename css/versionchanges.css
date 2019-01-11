@@ -1,27 +1,7 @@
-﻿.header-right {
-	float: right;
-}
-
-.btn-efieldpro {
-	background-color: aquamarine;
-}
-
-.btn-models {
-	background-color: antiquewhite;
-}
-
-.btn-onsite {
-	background-color: cyan;
-}
-
-h2 {
+﻿h2 {
 	text-align: center;
 }
 
-.btn-demo {
-	background-color: #f0e;
-}
-
-.btn-client {
-	background-color: #FFEB3B;
+.card-header {
+	background-color: #c1dcf9eb;
 }

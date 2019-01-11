@@ -11,7 +11,7 @@
 				<span>{{c.NOTES}}</span>
 			</div>
 			<div class="col-sm-1">
-				<img class="rep-img img-circle" ng-src="{{'getUserImg.ashx?eml=' + c.AUTHOREML}}" alt="Smile" height="20" width="20">
+				<img class="rep-img rounded-circle" ng-src="{{'getUserImg.ashx?eml=' + c.AUTHOREML}}" alt="Smile" height="20" width="20">
 				<span>{{c.AUTHORNAME}}</span>
 			</div>
 			<div class="col-sm-1">

@@ -93,15 +93,15 @@ public class RawSettings
 		get { return GetVal("JQUERYCDN"); }
 		set { values["JQUERYCDN"] = value; }
 	}
-	public string BOOTCSSCDN
+	public string CDNBOOTSTRAP
 	{
-		get { return GetVal("BOOTCSSCDN"); }
-		set { values["BOOTCSSCDN"] = value; }
+		get { return GetVal("CDNBOOTSTRAP"); }
+		set { values["CDNBOOTSTRAP"] = value; }
 	}
-	public string BOOTSTRAPCDN
+	public string CDNFONTAWESOME
 	{
-		get { return GetVal("BOOTSTRAPCDN"); }
-		set { values["BOOTSTRAPCDN"] = value; }
+		get { return GetVal("CDNFONTAWESOME"); }
+		set { values["CDNFONTAWESOME"] = value; }
 	}
 	public string MPSCDN
 	{

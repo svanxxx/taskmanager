@@ -15,10 +15,30 @@
 	float: right;
 }
 
-.userslist {
-	background-color: #e9e3f9;
+.btn-xs {
+	padding: .2rem .3rem;
+	font-size: .875rem;
+	line-height: .5;
+	border-radius: .2rem;
 }
 
-.userssublist {
-	background-color: #cff7b2;
+.btn-primary {
+	background-color: #c1dcf9eb;
+	border-color: #c1dcf9eb;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+	background-color: #c1dcf9eb;
+}
+
+.btn-outline-info {
+	border-color: #c1dcf9eb;
+}
+
+	.btn-outline-info:hover {
+		background-color: #007bff;
+	}
+
+.nav-item:hover {
+	background-color: #007bff;
 }

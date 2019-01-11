@@ -87,7 +87,7 @@ $(function () {
 				});
 
 		}, 60000);
-		$scope.percentdonestyle = "progress-bar-danger";
+		$scope.percentdonestyle = "bg-danger";
 		$scope.recalcPercent = function () {
 			if ($scope.trrec) {
 				var diff = $scope.trrec.OUT.getTime() - $scope.trrec.IN.getTime();
@@ -97,17 +97,17 @@ $(function () {
 				var mins = Math.floor(secs / 60.0 - hrs * 60.0);
 				$scope.timedone = "presence: " + hrs + ":" + mins;
 				if ($scope.percentdone < 25) {
-					$scope.percentdonestyle = "progress-bar-danger";
+					$scope.percentdonestyle = "bg-danger";
 				} else if ($scope.percentdone < 50) {
-					$scope.percentdonestyle = "progress-bar-warning";
+					$scope.percentdonestyle = "bg-warning";
 				} else if ($scope.percentdone < 75) {
-					$scope.percentdonestyle = "progress-bar-info";
+					$scope.percentdonestyle = "bg-info";
 				} else {
-					$scope.percentdonestyle = "progress-bar-success";
+					$scope.percentdonestyle = "bg-success";
 				}
 			}
 			else {
-				$scope.percentdonestyle = "progress-bar-danger"
+				$scope.percentdonestyle = "bg-danger";
 				$scope.percentdone = 0;
 			}
 		};

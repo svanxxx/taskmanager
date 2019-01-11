@@ -43,7 +43,7 @@
 						<tr ng-repeat="u in mpsusers | orderBy : 'PERSON_NAME'">
 							<td>
 								<a data-toggle="tooltip" title="Click to see all user's activity." target="_blank" href="dailysearch.aspx?filter={{createDSFilter(u.ID);}}" class="btn btn-default btn-xs" role="button">
-									<img class="img-circle" ng-src="{{'getUserImg.ashx?id=' + u.ID}}" alt="Smile" height="60" width="60">
+									<img class="rounded-circle" ng-src="{{'getUserImg.ashx?id=' + u.ID}}" alt="Smile" height="60" width="60">
 									<br />
 									<b><span>{{u.LOGIN}}</span></b>
 									<br />
@@ -63,13 +63,13 @@
 								</div>
 								<hr>
 								<div ng-hide="u.CREATEDTASKS1.length < 1">
-									<strong>Created tasks:</strong><a ng-repeat="t in u.CREATEDTASKS1" href="showtask.aspx?ttid={{t}}" target="_blank"><span class="badge">{{t}}</span></a>
+									<strong>Created tasks:</strong><a ng-repeat="t in u.CREATEDTASKS1" href="showtask.aspx?ttid={{t}}" target="_blank"><span class="badge badge-pill badge-secondary">{{t}}</span></a>
 								</div>
 								<div ng-hide="u.SCHEDULEDTASKS1.length < 1">
-									<strong>Scheduled tasks:</strong><a ng-repeat="t in u.SCHEDULEDTASKS1" href="showtask.aspx?ttid={{t}}" target="_blank"><span class="badge">{{t}}</span></a>
+									<strong>Scheduled tasks:</strong><a ng-repeat="t in u.SCHEDULEDTASKS1" href="showtask.aspx?ttid={{t}}" target="_blank"><span class="badge badge-pill badge-secondary">{{t}}</span></a>
 								</div>
 								<div ng-hide="u.MODIFIEDTASKS1.length < 1">
-									<strong>Modified tasks:</strong><a ng-repeat="t in u.MODIFIEDTASKS1" href="showtask.aspx?ttid={{t}}" target="_blank"><span class="badge">{{t}}</span></a>
+									<strong>Modified tasks:</strong><a ng-repeat="t in u.MODIFIEDTASKS1" href="showtask.aspx?ttid={{t}}" target="_blank"><span class="badge badge-pill badge-secondary">{{t}}</span></a>
 								</div>
 							</td>
 							<td>
@@ -83,13 +83,13 @@
 								</div>
 								<hr>
 								<div ng-hide="u.CREATEDTASKS2.length < 1">
-									<strong>Created tasks:</strong><a ng-repeat="t in u.CREATEDTASKS2" href="showtask.aspx?ttid={{t}}" target="_blank"><span class="badge">{{t}}</span></a>
+									<strong>Created tasks:</strong><a ng-repeat="t in u.CREATEDTASKS2" href="showtask.aspx?ttid={{t}}" target="_blank"><span class="badge badge-pill badge-secondary">{{t}}</span></a>
 								</div>
 								<div ng-hide="u.SCHEDULEDTASKS2.length < 1">
-									<strong>Scheduled tasks:</strong><a ng-repeat="t in u.SCHEDULEDTASKS2" href="showtask.aspx?ttid={{t}}" target="_blank"><span class="badge">{{t}}</span></a>
+									<strong>Scheduled tasks:</strong><a ng-repeat="t in u.SCHEDULEDTASKS2" href="showtask.aspx?ttid={{t}}" target="_blank"><span class="badge badge-pill badge-secondary">{{t}}</span></a>
 								</div>
 								<div ng-hide="u.MODIFIEDTASKS2.length < 1">
-									<strong>Modified tasks:</strong><a ng-repeat="t in u.MODIFIEDTASKS2" href="showtask.aspx?ttid={{t}}" target="_blank"><span class="badge">{{t}}</span></a>
+									<strong>Modified tasks:</strong><a ng-repeat="t in u.MODIFIEDTASKS2" href="showtask.aspx?ttid={{t}}" target="_blank"><span class="badge badge-pill badge-secondary">{{t}}</span></a>
 								</div>
 							</td>
 							<td>
@@ -105,9 +105,9 @@
 								</div>
 								<div ng-repeat="d in u.PLAN track by $index" ng-style="{{d.DISPO | getDispoColorById:this}}" class="task {{$index < 10 ? 'task-first' : 'task-last'}}">
 									<a href="showtask.aspx?ttid={{d.ID}}" target="_blank">
-										<span class="badge">{{d.ID}}</span>
+										<span class="badge badge-pill badge-secondary">{{d.ID}}</span>
 									</a>
-									<span class="label label-danger">{{d.ESTIM}}</span>
+									<span class="badge badge-danger">{{d.ESTIM}}</span>
 									<span>{{d.SUMMARY}}</span>
 								</div>
 								<button data-toggle="tooltip" title="Click to see additional 10 items. Number of items is limited by 20. For more items click plan button near" onclick="moretasks(this)" type="button" class="btn btn-default btn-xs">...</button>

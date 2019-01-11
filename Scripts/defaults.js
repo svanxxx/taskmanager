@@ -32,11 +32,11 @@
 					EndProgress(taskprg);
 				});
 		};
-		$scope.itemchanged = function (r) {
-			r.changed = true;
-			$scope.changed = true;
-		};
-
+		$scope.$watchCollection("deffObj", function (newval, oldval) {
+			if (Object.keys(newval).length > 0 && Object.keys(oldval).length > 0) {
+				$scope.changed = true;
+			}
+		});
 		$scope.loadData();
 	}]);
 });

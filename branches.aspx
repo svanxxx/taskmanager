@@ -20,7 +20,7 @@
 								</div>
 								<div ng-show="b.TTID > 0">
 									<span class="glyphicon glyphicon-user"></span>
-									<a href="showtask.aspx?ttid={{b.TTID}}" target="_blank"><span class="badge ng-binding">{{b.TTID}}</span></a>
+									<a href="showtask.aspx?ttid={{b.TTID}}" target="_blank"><span class="badge badge-pill badge-secondary ng-binding">{{b.TTID}}</span></a>
 								</div>
 							</div>
 							<div class="col-sm-3">
@@ -28,7 +28,7 @@
 								<td><a href="commits.aspx?branch={{b.NAME}}">{{b.DATE}}</a></td>
 							</div>
 							<div class="col-sm-3">
-								<img class="rep-img img-circle" ng-src="{{'getUserImg.ashx?eml=' + b.AUTHOREML}}" alt="Smile" height="20" width="20">
+								<img class="rep-img rounded-circle" ng-src="{{'getUserImg.ashx?eml=' + b.AUTHOREML}}" alt="Smile" height="20" width="20">
 								<td><a ng-click="filterby(b.AUTHOR)" href>{{b.AUTHOR}}</a></td>
 							</div>
 							<div class="col-sm-3">

@@ -31,7 +31,7 @@
 						<tr>
 							<th>Mon</th>
 							<th>Day</th>
-							<th ng-repeat="u in users | orderBy : 'PERSON_NAME'"><span>{{u.LOGIN}}</span><span class="label label-default">{{u.unscheduled.length}}</span></th>
+							<th ng-repeat="u in users | orderBy : 'PERSON_NAME'"><span>{{u.LOGIN}}</span><span class="badge badge-dark">{{u.unscheduled.length}}</span></th>
 						</tr>
 					</thead>
 				</table>
@@ -50,11 +50,11 @@
 							<td style="background-color: {{getColor(u, d)}}" ng-repeat="u in users | orderBy : 'PERSON_NAME'">
 								<div ng-show="hasVacation(u, d) > 0">
 									<a ng-repeat="vac in getVacation(u, d)" href="showtask.aspx?ttid={{vac}}" target="_blank" class="vac">
-										<span class="glyphicon glyphicon-plane"></span>
+										<i class="fas fa-plane"></i>
 									</a>
 								</div>
 								<a ng-show="hasWorkRec(u, d)" href="#" class="wrec">
-									<span class="glyphicon glyphicon-wrench"></span>
+									<i class="fas fa-wrench"></i>
 								</a>
 								<button type="button" ng-show="!hasWorkRec(u, d) && hasVacation(u, d) < 1" class="addvac" ng-click="scheduleVacation(u, d)">+</button>
 							</td>

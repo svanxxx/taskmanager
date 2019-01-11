@@ -16,47 +16,72 @@
 			<div class="col-sm-3"></div>
 			<div class="col-sm-6">
 				<h2>Default Task Values</h2>
-				<div class="form-group">
-					<label class="col-sm-2 control-label">Product</label>
-					<div class="col-sm-10">
-						<select class="form-control input-sm" ng-disabled="readonly" ng-model="deffObj.PRODUCT">
-							<option ng-repeat="p in products" ng-value="p.ID">{{p.DESCR}}</option>
-						</select>
-					</div>
-					<label class="col-sm-2 control-label">Type</label>
-					<div class="col-sm-10">
-						<select class="form-control input-sm" ng-disabled="readonly" ng-model="deffObj.TYPE">
-							<option ng-repeat="t in types" ng-value="t.ID">{{t.DESCR}}</option>
-						</select>
-					</div>
-					<label class="col-sm-2 control-label">Disposition</label>
-					<div class="col-sm-10">
-						<select class="form-control input-sm" ng-disabled="readonly" ng-model="deffObj.DISP">
-							<option ng-repeat="t in dispos" ng-value="t.ID">{{t.DESCR}}</option>
-						</select>
-					</div>
-					<label class="col-sm-2 control-label">Priority</label>
-					<div class="col-sm-10">
-						<select class="form-control input-sm" ng-disabled="readonly" ng-model="deffObj.PRIO">
-							<option ng-repeat="t in prios" ng-value="t.ID">{{t.DESCR}}</option>
-						</select>
-					</div>
-					<label class="col-sm-2 control-label">Component</label>
-					<div class="col-sm-10">
-						<select class="form-control input-sm" ng-disabled="readonly" ng-model="deffObj.COMP">
-							<option ng-repeat="t in comps" ng-value="t.ID">{{t.DESCR}}</option>
-						</select>
-					</div>
-					<label class="col-sm-2 control-label">Severity</label>
-					<div class="col-sm-10">
-						<select class="form-control input-sm" ng-disabled="readonly" ng-model="deffObj.SEVR">
-							<option ng-repeat="t in severs" ng-value="t.ID">{{t.DESCR}}</option>
-						</select>
-					</div>
-					<label class="col-sm-2 control-label">Estimated</label>
-					<div class="col-sm-10">
-						<input type="text" class="form-control input-sm" ng-disabled="readonly" ng-model="deffObj.ESTIMATED">
-					</div>
+
+				<div class="table-responsive">
+					<table class="table table-hover table-bordered">
+						<thead class="thead-dark">
+							<tr class="info">
+								<th>Property</th>
+								<th>Value</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Product</td>
+								<td>
+									<select class="form-control form-control-sm w-100" ng-disabled="readonly" ng-model="deffObj.PRODUCT">
+										<option ng-repeat="p in products" ng-value="p.ID">{{p.DESCR}}</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td>Type</td>
+								<td>
+									<select class="form-control form-control-sm w-100" ng-disabled="readonly" ng-model="deffObj.TYPE">
+										<option ng-repeat="t in types" ng-value="t.ID">{{t.DESCR}}</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td>Disposition</td>
+								<td>
+									<select class="form-control form-control-sm w-100" ng-disabled="readonly" ng-model="deffObj.DISP">
+										<option ng-repeat="t in dispos" ng-value="t.ID">{{t.DESCR}}</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td>Priority</td>
+								<td>
+									<select class="form-control form-control-sm w-100" ng-disabled="readonly" ng-model="deffObj.PRIO">
+										<option ng-repeat="t in prios" ng-value="t.ID">{{t.DESCR}}</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td>Component</td>
+								<td>
+									<select class="form-control form-control-sm w-100" ng-disabled="readonly" ng-model="deffObj.COMP">
+										<option ng-repeat="t in comps" ng-value="t.ID">{{t.DESCR}}</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td>Severity</td>
+								<td>
+									<select class="form-control form-control-sm w-100" ng-disabled="readonly" ng-model="deffObj.SEVR">
+										<option ng-repeat="t in severs" ng-value="t.ID">{{t.DESCR}}</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td>Estimated</td>
+								<td>
+									<input type="text" class="form-control form-control-sm w-100" ng-disabled="readonly" ng-model="deffObj.ESTIMATED">
+								</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 			</div>
 			<div class="col-sm-3"></div>

@@ -8,6 +8,10 @@
 	margin: 0px;
 }
 
+thead, td {
+	font-size: 0.9em;
+}
+
 .table-bordered > thead > tr > th {
 	text-align: center;
 }

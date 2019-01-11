@@ -74,3 +74,14 @@
 .person-items {
 	width: 100%;
 }
+
+.btn-xs {
+	padding: .2rem .3rem;
+	font-size: .875rem;
+	line-height: .5;
+	border-radius: .2rem;
+}
+
+.person-bar {
+	background-color: #c1dcf9eb;
+}
