@@ -6,7 +6,7 @@
 		$scope.loadData = function () {
 			var prg = StartProgress("Loading data...");
 			$scope.branch = getParameterByName("branch");
-			$http.post("trservice.asmx/EnumCommits", JSON.stringify({ branch: $scope.branch, from: $scope.showby * ($scope.page - 1) + 1, to: $scope.showby * $scope.page }))
+			$http.post("trservice.asmx/EnumCommits", JSON.stringify({ branch: $scope.branch, from: $scope.state.showby * ($scope.state.page - 1) + 1, to: $scope.state.showby * $scope.state.page }))
 				.then(function (result) {
 					$scope.commits = result.data.d;
 					EndProgress(prg);
@@ -14,14 +14,14 @@
 		};
 		$scope.loadCommit = function (c) { loadCommit(c, $scope, $http); };
 		$scope.pushState = function () {
-			var url = replaceUrlParam(replaceUrlParam(location.href, "showby", $scope.showby), "page", $scope.page);
-			window.history.pushState({ showby: $scope.showby, page: $scope.page }, "page " + $scope.page + ", showby " + $scope.showby, url);
+			var url = replaceUrlParam(replaceUrlParam(location.href, "showby", $scope.state.showby), "page", $scope.state.page);
+			window.history.pushState({ showby: $scope.state.showby, page: $scope.state.page }, "page " + $scope.state.page + ", showby " + $scope.state.showby, url);
 		};
 		$scope.decPage = function () {
-			if ($scope.page === 1) {
+			if ($scope.state.page === 1) {
 				return;
 			}
-			$scope.page--;
+			$scope.state.page--;
 			$scope.loadData();
 			$scope.pushState();
 		};
@@ -29,7 +29,7 @@
 			if ($scope.commits.length === 0) {
 				return;
 			}
-			$scope.page++;
+			$scope.state.page++;
 			$scope.loadData();
 			$scope.pushState();
 		};
@@ -39,14 +39,15 @@
 		};
 		var page = getParameterByName("page");
 		var showby = getParameterByName("showby");
-		$scope.page = 1;
-		$scope.showby = "15";
+		$scope.state = {};
+		$scope.state.page = 1;
+		$scope.state.showby = "15";
 		$scope.showbys = ["15", "30", "60", "120"];
 		if (page !== "") {
-			$scope.page = parseInt(page);
+			$scope.state.page = parseInt(page);
 		}
 		if (showby !== "") {
-			$scope.showby = "" + parseInt(showby);
+			$scope.state.showby = "" + parseInt(showby);
 		}
 
 		$scope.loadData();

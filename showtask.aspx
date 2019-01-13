@@ -1,6 +1,5 @@
 ﻿<%@ Page Title="Task" Language="C#" MasterPageFile="~/Master.Master" AutoEventWireup="true" CodeFile="showtask.aspx.cs" Inherits="Showtask" %>
-
-<%@ Register Src="~/CommitsControl.ascx" TagName="commits" TagPrefix="uc" %>
+<%@ Register src="~/controls/CommitsControl.ascx" tagname="commits" tagprefix="uc" %>
 
 <asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
 	<%=System.Web.Optimization.Styles.Render("~/bundles/showtask_css")%>

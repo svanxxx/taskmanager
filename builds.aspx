@@ -1,5 +1,7 @@
 ﻿<%@ Page Title="Builds" Language="C#" MasterPageFile="~/Master.Master" AutoEventWireup="true" CodeFile="builds.aspx.cs" Inherits="Builds" %>
 
+<%@ Register Src="~/controls/PagerControl.ascx" TagName="pagercontrol" TagPrefix="uc" %>
+
 <asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
 	<%=System.Web.Optimization.Styles.Render("~/bundles/builds_css")%>
 	<%=System.Web.Optimization.Scripts.Render("~/bundles/buildshelper_js")%>
@@ -12,9 +14,13 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
 	<input type="hidden" id="buildtime" value="<%=Settings.CurrentSettings.BUILDTIME.ToString()%>" />
 	<div ng-app="mpsapplication" ng-controller="mpscontroller">
-		<div class="panel panel-info" ng-cloak>
-			<div class="panel-heading" style="text-align: center">Builds History</div>
-			<div class="panel-body">
+		<div class="card" ng-cloak>
+			<div class="card-header" style="text-align: center">
+				<div class="alert alert-info mb-0">
+					<a class="alert-link" href="branches.aspx">Builds History</a>
+				</div>
+			</div>
+			<div class="card-body">
 				<div class="list-group">
 					<div class="list-group-item" ng-repeat="b in builds" target="_blank" style="background-color: {{b.COLOR}}">
 						<div class="row">
@@ -23,7 +29,7 @@
 							</div>
 							<div class="col-sm-2">
 								<a href="showtask.aspx?ttid={{b.TTID}}" target="_blank">
-									<span class="badge">{{b.TTID}}</span>
+									<span class="badge badge-pill badge-secondary">{{b.TTID}}</span>
 								</a>
 								<span>{{b.STATUS}}</span>
 							</div>
@@ -56,18 +62,6 @@
 				</div>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-sm-11">
-				<ul class="pager">
-					<li><a style="cursor: pointer" ng-click="decPage()">Previous</a></li>
-					<span>{{page}}</span>
-					<li><a style="cursor: pointer" ng-click="incPage()">Next</a></li>
-				</ul>
-			</div>
-			<div class="col-sm-1">
-				show by:
-				<select class="form-control" ng-change="changeShowBy()" ng-model="showby" ng-options="x for x in showbys" />
-			</div>
-		</div>
+		<uc:pagercontrol runat="server" />
 	</div>
 </asp:Content>

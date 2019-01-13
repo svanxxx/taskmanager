@@ -1,0 +1,1 @@
+﻿public partial class PagerControl : System.Web.UI.UserControl { }
