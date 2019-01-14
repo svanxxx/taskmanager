@@ -8,56 +8,61 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
 	<div ng-app="mpsapplication" ng-controller="mpscontroller">
-		<div class="row">
-			<h2 class="rep-cap">Daily Reports Search</h2>
-		</div>
 		<div class="row" ng-cloak>
 			<div class="col-lg-2">
-				<button id="searchbtn" type="button" class="btn btn-block btn-primary" ng-click="loadData(false)">Load</button>
+				<div class="card text-center">
+					<div class="card-header">
+						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?id=' + state.filter.userid}}" alt="Smile" height="100" width="100">
+					</div>
+				</div>
 			</div>
 			<div class="col-lg-8">
-				<div class="panel panel-primary">
-					<div class="panel-heading">
-						<div class="row row-eq-height">
-							<div class="col-lg-1">
-								<img class="rounded-circle" ng-src="{{'getUserImg.ashx?id=' + state.filter.userid}}" alt="Smile" height="60" width="60">
-							</div>
-							<div class="col-lg-3">
-								<label>Person:</label>
-								<select ng-model="state.filter.userid" class="form-control">
+				<div class="jumbotron p-1 mb-0 text-center">
+					<h2>Daily Reports Search</h2>
+				</div>
+				<div class="card">
+					<div class="card-header">
+						<div class="d-flex">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text form-control-sm">Person:</span>
+								</div>
+								<select ng-model="state.filter.userid" class="form-control form-control-sm">
 									<option ng-repeat="u in mpsusers" value="{{u.ID}}">{{u.PERSON_NAME}}</option>
 								</select>
 							</div>
-							<div class="col-lg-2">
-								<label>From:</label>
-								<input required ng-model="state.filter.startdate" class="form-control" type="date" />
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text form-control-sm">From:</span>
+								</div>
+								<input required ng-model="state.filter.startdate" class="form-control form-control-sm" type="date" />
 							</div>
-							<div class="col-lg-2">
-								<label>Through:</label>
-								<input required ng-model="state.filter.enddate" class="form-control" type="date" />
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text form-control-sm">Through:</span>
+								</div>
+								<input required ng-model="state.filter.enddate" class="form-control form-control-sm" type="date" />
 							</div>
-							<div class="col-lg-4">
-								<label>Text</label>
-								<input type="text" style="display: none;" />
-								<input required ng-model="state.filter.text" class="form-control" type="text" onkeydown="if (event.keyCode == 13) document.getElementById('searchbtn').click()" />
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text form-control-sm">Text:</span>
+								</div>
+								<input required ng-model="state.filter.text" class="form-control form-control-sm" type="text" onkeydown="if (event.keyCode == 13) document.getElementById('searchbtn').click()" />
 							</div>
+							<button id="searchbtn" type="button" class="btn btn-block btn-primary btn-sm" ng-click="loadData(false)">Load</button>
 						</div>
 					</div>
-					<div class="panel-body">
-						<div class="panel-group">
-							<div ng-repeat="r in state.reports" class="panel panel-info report-day">
-								<div class="panel-heading">
-									<span class="glyphicon glyphicon-hourglass"></span>
-									<span>{{r.DATE}}</span>
-									<img class="rounded-circle rep-img" ng-src="{{'getUserImg.ashx?id='+state.filter.userid}}" alt="Smile" height="20" width="20">
-								</div>
-								<div class="panel-body">
-									<div ng-repeat="l in r.DONE track by $index">
-										<h5 ng-bind-html="l | rawHtml"></h5>
+					<div class="card-body">
+						<ul class="list-group list-group-flush">
+							<li ng-repeat="r in state.reports" class="list-group-item">
+								<div class="media">
+									<div class="media-body">
+										<div ng-repeat="l in r.DONE track by $index" ng-bind-html="l | rawHtml"></div>
 									</div>
+									<small><i>{{r.DATE}}</i></small>
 								</div>
-							</div>
-						</div>
+							</li>
+						</ul>
 					</div>
 				</div>
 			</div>
