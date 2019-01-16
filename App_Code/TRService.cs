@@ -217,6 +217,7 @@ public class TRService : System.Web.Services.WebService
 	{
 		Defect dstore = new Defect(d.ID);
 		dstore.FromAnotherObject(d);
+		dstore.REQUESTRESET = d.REQUESTRESET;
 		if (dstore.IsModified())
 		{
 			dstore.Store();

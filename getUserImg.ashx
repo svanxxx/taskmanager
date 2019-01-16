@@ -39,8 +39,8 @@ public class getUserImg : IHttpHandler
 			}
 			else
 			{
-				int ttid = Convert.ToInt32(sttid);
-				if (ttid < 1)
+				int ttid;
+				if (!int.TryParse(sttid, out ttid) || ttid < 1)
 				{
 					error(context);
 					return;

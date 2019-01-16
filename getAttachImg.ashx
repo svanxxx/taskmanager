@@ -21,7 +21,12 @@ public class getAttachImg : IHttpHandler
 			error(context);
 			return;
 		}
-		int id = Convert.ToInt32(sid);
+		int id;
+		if (!int.TryParse(sid, out id))
+		{
+			error(context);
+			return;
+		}
 		if (id < 1)
 		{
 			error(context);

@@ -70,4 +70,9 @@ public class DefectHistory : IdBasedObject
 			CurrentContext.User.TTUSERID, notes, id);
 		SQLExecute(sql);
 	}
+	public static void DelHisotoryByTask(int parentid)
+	{
+		string sql = string.Format(@"DELETE FROM {0} WHERE {1} = {2}", _Tabl, _ParentID, parentid);
+		SQLExecute(sql);
+	}
 }

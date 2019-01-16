@@ -251,6 +251,7 @@
 					};
 				});
 			}
+			$scope.defect.REQUESTRESET = false;
 			$http.post("trservice.asmx/settask", angular.toJson({ "d": copy }))
 				.then(function (response) {
 					EndProgress(prgsaving);
@@ -442,9 +443,18 @@
 			$scope.defect.SPECS = "";
 			$scope.defect.ESTIM = 0;
 			$scope.defect.REFERENCE = "";
-			$scope.attachs.forEach(function (a) {
-				$scope.deleteAttach(a.ID);
-			});
+			$scope.defect.BSTBATCHES = "";
+			$scope.defect.BSTCOMMANDS = "";
+			$scope.defect.REQUESTRESET = true;
+			var requested = $scope.dispos.find(function (d) { return d.CANNOTSTART; });
+			if (requested) {
+				$scope.defect.DISPO = ""+requested.ID;
+			}
+			if ($scope.attachs) {
+				$scope.attachs.forEach(function (a) {
+					$scope.deleteAttach(a.ID);
+				});
+			}
 		};
 		$scope.duplicate = function () {
 			$http.post("trservice.asmx/copyTask", JSON.stringify({ "ttid": ttid }))

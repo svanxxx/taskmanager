@@ -116,7 +116,7 @@ public partial class DefectBase : IdBasedObject
 		get { return this[_Est] == DBNull.Value ? 0 : Convert.ToInt32(this[_Est]); }
 		set
 		{
-			if (value == 0)
+			if (value == 0 && this[_Est] != DBNull.Value)
 			{
 				this[_Est] = DBNull.Value;
 			}
@@ -193,7 +193,13 @@ public partial class DefectBase : IdBasedObject
 	public string DATE
 	{
 		get { return GetAsDate(_Date); }
-		set { SetAsDate(_Date, value); }
+		set
+		{
+			if (DATE != value)
+			{
+				SetAsDate(_Date, value);
+			}
+		}
 	}
 	public string CREATED
 	{
@@ -242,7 +248,13 @@ public partial class DefectBase : IdBasedObject
 			string val = this[_branch].ToString().Trim();
 			return (string.IsNullOrEmpty(val)) ? "TT" + ID.ToString() : val;
 		}
-		set { this[_branch] = value; }
+		set
+		{
+			if (value != "TT" + ID.ToString())
+			{
+				this[_branch] = value;
+			}
+		}
 	}
 	public string TESTPRIORITY
 	{
@@ -574,6 +586,12 @@ public partial class Defect : DefectBase
 	}
 	protected override void PostStore()
 	{
+		if (REQUESTRESET)
+		{
+			DefectHistory.DelHisotoryByTask(IDREC);
+			DefectEvent.DelHisotoryByTask(IDREC);
+			_HistoryChanges = "Task was reset.";
+		}
 		if (!string.IsNullOrEmpty(_HistoryChanges))
 		{
 			DefectHistory.AddHisotoryByTask(IDREC, _HistoryChanges);
@@ -650,6 +668,10 @@ public partial class Defect : DefectBase
 			return true;
 
 		return base.IsColumnComplex(col);
+	}
+	public bool REQUESTRESET
+	{
+		get; set;
 	}
 	public string DESCR
 	{
