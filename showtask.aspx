@@ -1,5 +1,6 @@
 ﻿<%@ Page Title="Task" Language="C#" MasterPageFile="~/Master.Master" AutoEventWireup="true" CodeFile="showtask.aspx.cs" Inherits="Showtask" %>
-<%@ Register src="~/controls/CommitsControl.ascx" tagname="commits" tagprefix="uc" %>
+
+<%@ Register Src="~/controls/CommitsControl.ascx" TagName="commits" TagPrefix="uc" %>
 
 <asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
 	<%=System.Web.Optimization.Styles.Render("~/bundles/showtask_css")%>
@@ -233,7 +234,7 @@
 								</div>
 								{{h.EVENT}}:
 								<img ng-show="h.ASSIGNUSERID > 0" class="rounded-circle" ng-src="{{'getUserImg.ashx?ttid=' + h.ASSIGNUSERID}}" alt="Smile" height="20" width="20" />
-								<b>{{h.ASSIGNUSERID | getUserById:this}}</b> <span class="badge badge-secondary">{{h.TIME}}</span>
+								{{h.ASSIGNUSERID | getUserById:this}} <span class="badge badge-secondary">{{h.TIME}}</span>
 								{{h.NOTES}}	&nbsp;
 							</a>
 						</div>
@@ -247,7 +248,9 @@
 										<img class="media-object rounded-circle" ng-src="{{'getUserImg.ashx?ttid=' + h.IDUSER}}" alt="Smile" height="30" width="30">
 									</div>
 									<div class="media-body">
-										<h7 class="media-heading">{{h.IDUSER | getUserById:this}} <small style="float: right"><i>{{h.DATE}}</i></small></h7>
+										<b>
+											<h7 class="media-heading">
+											{{h.IDUSER | getUserById:this}}</b> <small style="float: right"><i>{{h.DATE}}</i></small></h7>
 										<p>{{h.NOTES}}</p>
 									</div>
 								</div>
@@ -261,9 +264,10 @@
 							<li ng-style="a.deleted ? {'text-decoration':'line-through'} : ''" ng-repeat="a in attachs">
 								<a target="_blank" href="getattach.aspx?idrecord={{a.ID+'&ext='+getfileext(a.FILENAME)}}">
 									<span>{{a.FILENAME}}</span>
-									<img src="getAttachImg.ashx?idrecord={{a.ID+'&ext='+getfileext(a.FILENAME)}}" style="max-width: 100%" />
+									<img ng-src="getAttachImg.ashx?idrecord={{a.ID+'&ext='+getfileext(a.FILENAME)}}" style="max-width: 100%" />
+									<img ng-src="{{a.newblob}}" style="max-width: 100%" />
 								</a>&nbsp
-						<button ng-click="deleteAttach(a.ID)" type="button" class="btn btn-danger btn-xs">Delete</button>
+								<button ng-click="deleteAttach(a.ID)" type="button" class="btn btn-danger btn-xs">Delete</button>
 							</li>
 						</ul>
 					</div>

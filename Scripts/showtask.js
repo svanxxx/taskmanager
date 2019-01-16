@@ -88,8 +88,13 @@
 		$scope.deleteAttach = function (id) {
 			var index = $scope.attachs.findIndex(function (x) { return x.ID == id; });
 			if (index > -1) {
-				$scope.attachs[index].deleted = true;
-				$scope.changed = true;
+				if (id > 0) {
+					$scope.attachs[index].deleted = true;
+					$scope.changed = true;
+				} else {
+					$scope.attachs.splice(index, 1);
+					$scope.changed = true;
+				}
 			}
 		};
 		$scope.specsStyle = function () {
@@ -146,16 +151,47 @@
 		$scope.addFile = function () {
 			var file = $('<input type="file" name="filefor" style="display: none;" />');
 			file.on('input', function (e) {
-				var att = { "ID": -1, "FILENAME": this.files[0].name, "ARCHIVE": "", "DATE": "", "SIZE": this.files[0].size, "newfile": this.files[0] };
+				var att = { "ID": -(new Date()).getTime(), "FILENAME": this.files[0].name, "ARCHIVE": "", "DATE": "", "SIZE": this.files[0].size, "newfile": this.files[0] };
 				$scope.attachs.push(att);
 				$scope.changed = true;
 				$scope.$apply();
 			});
 			file.trigger('click');
 		};
+		document.onpaste = function (event) {
+			if (!$scope.canChangeDefect()) return;
+			var items = (event.clipboardData || event.originalEvent.clipboardData).items;
+			for (index in items) {
+				var item = items[index];
+				if (item.kind === 'file') {
+					var blob = item.getAsFile();
+					var reader = new FileReader();
+					reader.onload = function (event) {
+						var postfix = -1;
+						var prefix = "TT" + ttid + "_attach#";
+						$scope.attachs.forEach(function (a) {
+							var fname = a.FILENAME;
+							if (fname.endsWith(".png")) { fname = fname.substring(0, fname.length - 4); }
+							if (fname.startsWith(prefix)) {
+								var num = parseInt(fname.replace(prefix, ""));
+								if (!isNaN(num)) {
+									postfix = Math.max(num, postfix);
+								}
+							}
+						});
+						postfix = postfix < 0 ? 1 : postfix + 1;
+						var att = { "ID": -(new Date()).getTime(), "FILENAME": prefix + postfix + ".png", "ARCHIVE": "", "DATE": "", "SIZE": event.target.result.length, "newblob": event.target.result };
+						$scope.attachs.push(att);
+						$scope.changed = true;
+						$scope.$apply();
+					};
+					reader.readAsDataURL(blob);
+				}
+			}
+		};
 		$scope.discardDefect = function () {
 			window.location.reload();
-		}
+		};
 		$scope.canChangeDefect = function () {
 			return $scope.defect != null && !inProgress() && $scope.currentlock === $scope.globallock;
 		};
@@ -173,21 +209,19 @@
 
 			$scope.attachsinprogress = 0;
 			if ($scope.attachs) {
-				for (var a = 0; a < $scope.attachs.length; a++) {
-					if ($scope.attachs[a].deleted) {
-						$http.post("trservice.asmx/delfileupload", angular.toJson({ "ttid": $scope.defect.ID, "id": $scope.attachs[a].ID })).then(function () {
+				$scope.attachs.forEach(function (a) {
+					if (a.deleted) {
+						$http.post("trservice.asmx/delfileupload", angular.toJson({ "ttid": $scope.defect.ID, "id": a.ID })).then(function () {
 							$scope.attachsinprogress--;
 							if ($scope.attachsinprogress == 0) {
 								$scope.loadAttachments();
 							}
 						});
 						$scope.attachsinprogress++;
-						$scope.attachs.splice(a, 1);
-						a--;
 					}
-					else if ($scope.attachs[a].newfile) {
+					else if (a.newfile) {
 						var r = new FileReader();
-						r.attfilename = $scope.attachs[a].newfile.name;
+						r.attfilename = a.newfile.name;
 						r.onloadend = function (e) {
 							var data = e.target.result;
 							var fileupload = StartProgress("Uploading file " + this.attfilename + "...");
@@ -201,9 +235,21 @@
 								});
 							$scope.attachsinprogress++;
 						};
-						r.readAsDataURL($scope.attachs[a].newfile);
+						r.readAsDataURL(a.newfile);
 					}
-				}
+					else if (a.newblob) {
+						var fileupload = StartProgress("Uploading file " + a.FILENAME + "...");
+						$http.post("trservice.asmx/newfileupload", angular.toJson({ "ttid": ttid, "filename": a.FILENAME, "data": a.newblob }))
+							.then(function (response) {
+								EndProgress(fileupload);
+								$scope.attachsinprogress--;
+								if ($scope.attachsinprogress == 0) {
+									$scope.loadAttachments();
+								}
+							});
+						$scope.attachsinprogress++;
+					};
+				});
 			}
 			$http.post("trservice.asmx/settask", angular.toJson({ "d": copy }))
 				.then(function (response) {
@@ -217,7 +263,7 @@
 				});
 		};
 		$scope.changetab = function (event) {
-			var tab = event.target.innerText;
+			var tab = event.target.tagName === "A" ? event.target.innerText : event.target.parentElement.innerText;
 			if (tab === $scope.tab_builds) {
 				if (!$scope.commits) {
 					$scope.loadCommits();
@@ -395,6 +441,7 @@
 			$scope.defect.AUSER = "";
 			$scope.defect.SPECS = "";
 			$scope.defect.ESTIM = 0;
+			$scope.defect.REFERENCE = "";
 			$scope.attachs.forEach(function (a) {
 				$scope.deleteAttach(a.ID);
 			});
