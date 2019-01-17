@@ -65,180 +65,224 @@
 		</div>
 		<div class="row">
 			<div class="col-sm-2">
-				<a data-toggle="tooltip" title="Copy link to this report to clipboard" href onclick="copyurl()" class="btn btn-info"><i class="fas fa-copy"></i></a>
-				<button ng-click="saveFilter()" data-toggle="tooltip" title="Save Filter" type="button" class="btn btn-default"><i class="fas fa-save"></i></button>
-				<button ng-click="resetFilter()" data-toggle="tooltip" title="Reset Filter" type="button" class="btn btn-default"><i class="fas fa-home"></i></button>
-				<label for="selectedfltr">Saved filters:</label>
+				<div class="btn-group">
+					<button onclick="copyurl()" data-toggle="tooltip" title="Copy link to this report to clipboard" type="button" class="btn btn-outline-secondary"><i class="fas fa-copy"></i></button>
+					<button ng-click="saveFilter()" data-toggle="tooltip" title="Save Filter" type="button" class="btn btn-outline-secondary"><i class="fas fa-save"></i></button>
+					<button ng-click="resetFilter()" data-toggle="tooltip" title="Reset Filter" type="button" class="btn btn-outline-secondary"><i class="fas fa-home"></i></button>
+					<button ng-click="deleteFilter()" data-toggle="tooltip" title="Delete Filter" type="button" class="btn btn-outline-secondary"><i class="fas fa-trash-alt"></i></button>
+				</div>
 			</div>
 			<div class="col-sm-2">
-				<select id="selectedfltr" class="form-control" ng-change="applySelectedFilter()" ng-model="selectedFilter">
-					<option ng-repeat="f in filters" value="{{f.ID}}">{{f.NAME}}</option>
-				</select>
+				<div class="input-group input-group-sm">
+					<div class="input-group-prepend">
+						<span class="input-group-text">Saved filters:</span>
+					</div>
+					<select id="selectedfltr" class="form-control" ng-change="applySelectedFilter()" ng-model="selectedFilter">
+						<option ng-repeat="f in filters" value="{{f.ID}}">{{f.NAME}}</option>
+					</select>
+				</div>
 			</div>
-			<div class="col-sm-3">
-				<label for="searchtxt">Enter phrase in double quotes or a set of words to be found:</label>
-			</div>
-			<div class="col-sm-5">
-				<input class="form-control" id="searchtxt" type="text" ng-model="DefectsFilter.text" ng-change="changed=true" ng-keypress="onGo($event)" autofocus />
+			<div class="col-sm-8">
+				<div class="input-group input-group-sm">
+					<div class="input-group-prepend">
+						<span class="input-group-text">Enter phrase in double quotes or a set of words to be found:</span>
+					</div>
+					<input class="form-control" id="searchtxt" type="text" ng-model="DefectsFilter.text" ng-change="changed=true" ng-keypress="onGo($event)" autofocus />
+				</div>
 			</div>
 		</div>
 		<table class="table table-bordered table-colresizable">
 			<thead>
 				<tr>
 					<th>
-						<input type="button" value="&#9745" ng-click="checkall()">
+						<button ng-click="checkall()" type="button" class="btn btn-sm btn-default"><i class="fas fa-check-square"></i></button>
 					</th>
 					<th class="{{classFiltered('ID')}}">
-						<div class="dropdown middlecol">
-							<a href="#" data-toggle="dropdown" class="dropdown-toggle">ID<b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<li>
-									<button class="refclear" type="button" ng-click="resetReferenceFilter('ID', $event)">&#9746</button>
-									<span>IDs:</span><input ng-model="DefectsFilter.ID">
-								</li>
-								<br />
-								<span>Enter ids in form: xxx,yyy-zzz,aaa separating by comma, with ranges indicated by - symbol</span>
-								<br />
-							</ul>
+						<div class="dropdown" data-toggle="tooltip" title="Task ID">
+							<button type="button" class="btn btn-outline-light text-dark btn-sm dropdown-toggle" data-toggle="dropdown">
+								ID
+							</button>
+							<div class="dropdown-menu">
+								<div class="input-group input-group-sm dropdown-item-text">
+									<div class="input-group-prepend">
+										<button type="button" ng-click="DefectsFilter.ID = '';" class="btn btn-primary btn-sm"><i class="fas fa-broom"></i></button>
+									</div>
+									<input type="text" class="form-control" ng-model="DefectsFilter.ID">
+								</div>
+								<span class="dropdown-item-text">Enter ids in form: xxx,yyy-zzz,aaa separating by comma, with ranges indicated by - symbol</span>
+							</div>
 						</div>
 					</th>
 					<th class="{{classFiltered('startEstim', 'endEstim')}}">
-						<div class="dropdown middlecol">
-							<a href="#" data-toggle="dropdown" class="dropdown-toggle">Time<b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<li>
-									<div class="checkbox">
-										<label>
-											<input ng-checked="{{DefectsFilter.startEstim !== ''}}" ng-click="ChangeNum('startEstim');" type="checkbox">From:<input ng-model="DefectsFilter.startEstim" type="number">
-										</label>
+						<div class="dropdown" data-toggle="tooltip" title="Time Estimation">
+							<button type="button" class="btn btn-outline-light text-dark btn-sm dropdown-toggle" data-toggle="dropdown"><i class="far fa-clock"></i></button>
+							<div class="dropdown-menu">
+								<div class="input-group input-group-sm dropdown-item-text">
+									<div class="input-group-prepend"><span class="input-group-text">From:</span></div>
+									<input type="number" class="form-control" ng-model="DefectsFilter.startEstim">
+									<div class="input-group-append">
+										<button type="button" ng-click="DefectsFilter.startEstim = '';" class="btn btn-primary btn-sm"><i class="fas fa-broom"></i></button>
 									</div>
-									<div class="checkbox">
-										<label>
-											<input ng-checked="{{DefectsFilter.endEstim !== ''}}" ng-click="ChangeNum('endEstim');" type="checkbox">To:<input ng-model="DefectsFilter.endEstim" type="number">
-										</label>
+								</div>
+								<div class="input-group input-group-sm dropdown-item-text">
+									<div class="input-group-prepend"><span class="input-group-text">UpTo:</span></div>
+									<input type="number" class="form-control" ng-model="DefectsFilter.endEstim">
+									<div class="input-group-append">
+										<button type="button" ng-click="DefectsFilter.endEstim = '';" class="btn btn-primary btn-sm"><i class="fas fa-broom"></i></button>
 									</div>
-								</li>
-							</ul>
+								</div>
+							</div>
 						</div>
 					</th>
 					<th class="{{classFiltered('users')}}">
-						<div class="dropdown middlecol">
-							<a href="#" data-toggle="dropdown" class="refmenu dropdown-toggle">User<b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<button class="refclear" type="button" ng-click="resetReferenceFilter('users', $event)">&#9746</button>
-								<input class="refselector" type="text" />
-								<li class="usersshortlist">
-									<div ng-repeat="u in users" class="checkbox">
-										<label>
-											<input ng-click="changeReferenceFilter(u.ID, 'users')" type="checkbox" ng-checked="{{referenceFiltered(u.ID, 'users')}}">{{u.FULLNAME}}
-										</label>
+						<div class="dropdown middlecol" data-toggle="tooltip" title="Assigned To User">
+							<button type="button" class="btn btn-outline-light text-dark btn-sm dropdown-toggle" data-toggle="dropdown">
+								User
+							</button>
+							<div class="dropdown-menu pre-scrollable">
+								<div class="input-group input-group-sm">
+									<div class="input-group-prepend">
+										<button type="button" ng-click="resetReferenceFilter('users', $event)" class="btn btn-primary btn-sm"><i class="fas fa-broom"></i></button>
 									</div>
-								</li>
-							</ul>
+									<input type="text" class="form-control refselector">
+								</div>
+								<div ng-repeat="u in users" class="dropdown-item pt-0 pb-0">
+									<label class="form-check-label">
+										<img class="rounded-circle" ng-src="{{'getUserImg.ashx?ttid=' + u.ID}}" alt="Smile" height="30" width="30">
+										<input ng-click="changeReferenceFilter(u.ID, 'users')" ng-checked="u.filter" type="checkbox" value="">
+										<span>{{u.FULLNAME}}</span>
+									</label>
+								</div>
+							</div>
 						</div>
 					</th>
 					<th>Ref</th>
 					<th>Summary</th>
 					<th class="{{classFiltered('dispositions')}}">
-						<div class="dropdown middlecol">
-							<a href="#" data-toggle="dropdown" class="refmenu dropdown-toggle">Disposition<b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<button class="refclear" type="button" ng-click="resetReferenceFilter('dispositions', $event)">&#9746</button>
-								<input class="refselector" type="text" />
-								<li>
-									<div ng-repeat="d in dispos" class="checkbox">
-										<label>
-											<input ng-click="changeReferenceFilter(d.ID, 'dispositions')" type="checkbox" ng-checked="{{referenceFiltered(d.ID, 'dispositions')}}">{{d.DESCR}}
-										</label>
+						<div class="dropdown middlecol" data-toggle="tooltip" title="Disposition">
+							<button type="button" class="btn btn-outline-light text-dark btn-sm dropdown-toggle" data-toggle="dropdown">
+								Disp
+							</button>
+							<div class="dropdown-menu dropdown-menu-right">
+								<div class="input-group input-group-sm">
+									<div class="input-group-prepend">
+										<button type="button" ng-click="resetReferenceFilter('dispositions', $event)" class="btn btn-primary btn-sm"><i class="fas fa-broom"></i></button>
 									</div>
-								</li>
-							</ul>
+									<input type="text" class="form-control refselector">
+								</div>
+								<div ng-repeat="d in dispos" class="dropdown-item pt-0 pb-0">
+									<label class="form-check-label">
+										<input ng-click="changeReferenceFilter(d.ID, 'dispositions')" ng-checked="d.filter" type="checkbox" value="">
+										<span>{{d.DESCR}}</span>
+									</label>
+								</div>
+							</div>
 						</div>
 					</th>
 					<th class="{{classFiltered('components')}}">
-						<div class="dropdown middlecol">
-							<a href="#" data-toggle="dropdown" class="refmenu dropdown-toggle">Component<b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<button class="refclear" type="button" ng-click="resetReferenceFilter('components', $event)">&#9746</button>
-								<input class="refselector" type="text" />
-								<li>
-									<div ng-repeat="d in comps" class="checkbox">
-										<label>
-											<input ng-click="changeReferenceFilter(d.ID, 'components')" type="checkbox" ng-checked="{{referenceFiltered(d.ID, 'components')}}">{{d.DESCR}}
-										</label>
+						<div class="dropdown middlecol" data-toggle="tooltip" title="Component">
+							<button type="button" class="btn btn-outline-light text-dark btn-sm dropdown-toggle" data-toggle="dropdown">
+								Comp
+							</button>
+							<div class="dropdown-menu dropdown-menu-right pre-scrollable">
+								<div class="input-group input-group-sm">
+									<div class="input-group-prepend">
+										<button type="button" ng-click="resetReferenceFilter('components', $event)" class="btn btn-primary btn-sm"><i class="fas fa-broom"></i></button>
 									</div>
-								</li>
-							</ul>
+									<input type="text" class="form-control refselector">
+								</div>
+								<div ng-repeat="d in comps" class="dropdown-item pt-0 pb-0">
+									<label class="form-check-label">
+										<input ng-click="changeReferenceFilter(d.ID, 'components')" ng-checked="d.filter" type="checkbox" value="">
+										<span>{{d.DESCR}}</span>
+									</label>
+								</div>
+							</div>
 						</div>
 					</th>
 					<th class="{{classFiltered('severities')}}">
-						<div class="dropdown middlecol">
-							<a href="#" data-toggle="dropdown" class="refmenu dropdown-toggle">Severity<b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<button class="refclear" type="button" ng-click="resetReferenceFilter('severities', $event)">&#9746</button>
-								<input class="refselector" type="text" />
-								<li>
-									<div ng-repeat="s in severs" class="checkbox">
-										<label>
-											<input ng-click="changeReferenceFilter(s.ID, 'severities')" type="checkbox" ng-checked="{{referenceFiltered(s.ID, 'severities')}}">{{s.DESCR}}
-										</label>
+						<div class="dropdown middlecol" data-toggle="tooltip" title="Severity">
+							<button type="button" class="btn btn-outline-light text-dark btn-sm dropdown-toggle" data-toggle="dropdown">
+								Sev
+							</button>
+							<div class="dropdown-menu dropdown-menu-right pre-scrollable">
+								<div class="input-group input-group-sm">
+									<div class="input-group-prepend">
+										<button type="button" ng-click="resetReferenceFilter('severities', $event)" class="btn btn-primary btn-sm"><i class="fas fa-broom"></i></button>
 									</div>
-								</li>
-							</ul>
+									<input type="text" class="form-control refselector">
+								</div>
+								<div ng-repeat="d in severs" class="dropdown-item pt-0 pb-0">
+									<label class="form-check-label">
+										<input ng-click="changeReferenceFilter(d.ID, 'severities')" ng-checked="d.filter" type="checkbox" value="">
+										<span>{{d.DESCR}}</span>
+									</label>
+								</div>
+							</div>
 						</div>
 					</th>
 					<th class="{{classFiltered('createdUsers')}}">
 						<div class="dropdown middlecol">
-							<a href="#" data-toggle="dropdown" class="refmenu dropdown-toggle">Created<b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<button class="refclear" type="button" ng-click="resetReferenceFilter('createdUsers', $event)">&#9746</button>
-								<input class="refselector" type="text" />
-								<li class="usersshortlist">
-									<div ng-repeat="u in users" class="checkbox">
-										<label>
-											<input ng-click="changeReferenceFilter(u.ID, 'createdUsers')" type="checkbox">{{u.FULLNAME}}
-										</label>
+							<button type="button" class="btn btn-outline-light text-dark btn-sm dropdown-toggle" data-toggle="dropdown">By</button>
+							<div class="dropdown-menu dropdown-menu-right pre-scrollable">
+								<div class="input-group input-group-sm">
+									<div class="input-group-prepend">
+										<button type="button" ng-click="resetReferenceFilter('createdUsers', $event)" class="btn btn-primary btn-sm"><i class="fas fa-broom"></i></button>
 									</div>
-								</li>
-							</ul>
+									<input type="text" class="form-control refselector">
+								</div>
+								<div ng-repeat="u in users" class="dropdown-item pt-0 pb-0">
+									<label class="form-check-label">
+										<img class="rounded-circle" ng-src="{{'getUserImg.ashx?ttid=' + u.ID}}" alt="Smile" height="30" width="30">
+										<input ng-click="changeReferenceFilter(u.ID, 'createdUsers')" ng-checked="u.createdFilter" type="checkbox" value="">
+										<span>{{u.FULLNAME}}</span>
+									</label>
+								</div>
+							</div>
 						</div>
 					</th>
-					<th class="{{classFiltered('startDateCreated')}}">
-						<div class="dropdown middlecol">
-							<a href="#" data-toggle="dropdown" class="dropdown-toggle">Date Created<b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<li class="usersshortlist">
-									<div class="checkbox">
-										<label>
-											<input ng-checked="{{DefectsFilter.startDateCreated !== ''}}" ng-click="ChangeDate('startDateCreated');" type="checkbox">From:<input ng-model="DefectsFilter.startDateCreated" type="date">
-										</label>
+					<th class="{{classFiltered('startDateCreated', 'endDateCreated')}}">
+						<div class="dropdown" data-toggle="tooltip" title="Date Created">
+							<button type="button" class="btn btn-outline-light text-dark btn-sm dropdown-toggle" data-toggle="dropdown"><i class="far fa-clock"></i>Cre</button>
+							<div class="dropdown-menu dropdown-menu-right">
+								<button class="btn btn-outline-secondary dropdown-item pl-5 pr-5 ml-2 mr-2" type="button" ng-click="DefectsFilter.startDateCreated='';DefectsFilter.endDateCreated='';">Reset Date Created Filter</button>
+								<div class="input-group input-group-sm dropdown-item-text">
+									<div class="input-group-prepend"><span class="input-group-text">From:</span></div>
+									<input type="date" class="form-control" ng-model="DefectsFilter.startDateCreated">
+									<div class="input-group-append">
+										<button type="button" ng-click="DefectsFilter.startDateCreated = '';" class="btn btn-primary btn-sm"><i class="fas fa-broom"></i></button>
 									</div>
-									<div class="checkbox">
-										<label>
-											<input ng-checked="{{DefectsFilter.endDateCreated !== ''}}" ng-click="ChangeDate('endDateCreated');" type="checkbox">To:<input ng-model="DefectsFilter.endDateCreated" type="date">
-										</label>
+								</div>
+								<div class="input-group input-group-sm dropdown-item-text">
+									<div class="input-group-prepend"><span class="input-group-text">UpTo:</span></div>
+									<input type="date" class="form-control" ng-model="DefectsFilter.endDateCreated">
+									<div class="input-group-append">
+										<button type="button" ng-click="DefectsFilter.endDateCreated = '';" class="btn btn-primary btn-sm"><i class="fas fa-broom"></i></button>
 									</div>
-								</li>
-							</ul>
+								</div>
+							</div>
 						</div>
 					</th>
-					<th class="{{classFiltered('startDateEnter')}}">
-						<div class="dropdown middlecol">
-							<a href="#" data-toggle="dropdown" class="dropdown-toggle">Date Enter<b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<li class="usersshortlist">
-									<div class="checkbox">
-										<label>
-											<input ng-checked="{{DefectsFilter.startDateEnter !== ''}}" ng-click="ChangeDate('startDateEnter');" type="checkbox">From:<input ng-model="DefectsFilter.startDateEnter" type="date">
-										</label>
+					<th class="{{classFiltered('startDateEnter', 'endDateEnter')}}">
+						<div class="dropdown" data-toggle="tooltip" title="Date Entered">
+							<button type="button" class="btn btn-outline-light text-dark btn-sm dropdown-toggle" data-toggle="dropdown"><i class="far fa-clock"></i>Ent</button>
+							<div class="dropdown-menu dropdown-menu-right">
+								<button class="btn btn-outline-secondary dropdown-item pl-5 pr-5 ml-2 mr-2" type="button" ng-click="DefectsFilter.startDateEnter='';DefectsFilter.endDateEnter='';">Reset Date Entered Filter</button>
+								<div class="dropdown-item-text input-group input-group-sm">
+									<div class="input-group-prepend"><span class="input-group-text">From:</span></div>
+									<input type="date" class="form-control" ng-model="DefectsFilter.startDateEnter">
+									<div class="input-group-append">
+										<button type="button" ng-click="DefectsFilter.startDateEnter = '';" class="btn btn-primary btn-sm"><i class="fas fa-broom"></i></button>
 									</div>
-									<div class="checkbox">
-										<label>
-											<input ng-checked="{{DefectsFilter.endDateEnter !== ''}}" ng-click="ChangeDate('endDateEnter');" type="checkbox">To:<input ng-model="DefectsFilter.endDateEnter" type="date">
-										</label>
+								</div>
+								<div class="dropdown-item-text input-group input-group-sm">
+									<div class="input-group-prepend"><span class="input-group-text">UpTo:</span></div>
+									<input type="date" class="form-control" ng-model="DefectsFilter.endDateEnter">
+									<div class="input-group-append">
+										<button type="button" ng-click="DefectsFilter.endDateEnter = '';" class="btn btn-primary btn-sm"><i class="fas fa-broom"></i></button>
 									</div>
-								</li>
-							</ul>
+								</div>
+							</div>
 						</div>
 					</th>
 				</tr>

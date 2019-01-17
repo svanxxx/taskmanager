@@ -17,7 +17,7 @@
 		<div class="card" ng-cloak>
 			<div class="card-header" style="text-align: center">
 				<div class="alert alert-info mb-0">
-					<a class="alert-link" href="branches.aspx">Builds History</a>
+					<a class="alert-link" href="builds.aspx"><i class="fab fa-linode"></i> Builds History</a>
 				</div>
 			</div>
 			<div class="card-body">
@@ -25,7 +25,7 @@
 					<div class="list-group-item" ng-repeat="b in builds" target="_blank" style="background-color: {{b.COLOR}}">
 						<div class="row">
 							<div class="col-sm-1">
-								<span class="label label-info ng-binding"><span class="glyphicon glyphicon-time"></span>{{b.DATE}}</span>
+								<span class="badge badge-info ng-binding">{{b.DATE}}</span>
 							</div>
 							<div class="col-sm-2">
 								<a href="showtask.aspx?ttid={{b.TTID}}" target="_blank">
@@ -35,10 +35,10 @@
 							</div>
 							<div class="col-sm-2">
 								<img class="rep-img rounded-circle" ng-src="{{'getUserImg.ashx?ttid=' + b.TTUSERID}}" alt="Smile" height="20" width="20">
-								<span class="glyphicon glyphicon-comment"></span><span>{{b.NOTES}}</span>
+								<span>{{b.NOTES}}</span>
 							</div>
 							<div class="col-sm-2">
-								<span class="glyphicon glyphicon-blackboard"></span><span>{{b.MACHINE}}&nbsp({{b.DURATION}} min)</span>
+								<span>{{b.MACHINE}}&nbsp({{b.DURATION}} min)</span>
 								<div class="progress" ng-show="b.STATUS.includes('wait')==true">
 									<div class="progress-bar progress-bar-striped active progress-bar-warning" role="progressbar" style="width: 100%">
 										{{b.STATUS}}...
@@ -51,7 +51,7 @@
 								</div>
 							</div>
 							<div class="col-sm-1">
-								<span class="label label-info ng-binding"><span class="glyphicon glyphicon-time"></span>{{b.DATEUP}}</span>
+								<span class="badge badge-info ng-binding">{{b.DATEUP}}</span>
 							</div>
 							<div class="col-sm-3">
 								<a href="getBuildLog.ashx?id={{b.ID}}">{{b.STATUSTXT}}

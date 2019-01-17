@@ -12,7 +12,7 @@
 			return;
 		}
 		var txt = event.target.value.toLowerCase();
-		var items = event.target.parentElement.querySelectorAll("label");
+		var items = event.target.parentElement.parentElement.querySelectorAll("label");
 		if (txt === "") {
 			items.forEach(function (i) {
 				i.style.display = "";
@@ -70,6 +70,46 @@
 			o.endDateCreated = o.endDateCreated === "" ? "" : DateToString(o.endDateCreated);
 			return o;
 		};
+		$scope.updateFilterObjects = function () {
+			$scope.users.forEach(function (u) {
+				u.filter = false;
+				u.createdFilter = false;
+				$scope.DefectsFilter.users.forEach(function (id) {
+					if (u.ID == id) {
+						u.filter = true;
+					}
+				});
+				$scope.DefectsFilter.createdUsers.forEach(function (id) {
+					if (u.ID == id) {
+						u.createdFilter = true;
+					}
+				});
+			});
+			$scope.dispos.forEach(function (d) {
+				d.filter = false;
+				$scope.DefectsFilter.dispositions.forEach(function (id) {
+					if (d.ID == id) {
+						d.filter = true;
+					}
+				});
+			});
+			$scope.comps.forEach(function (d) {
+				d.filter = false;
+				$scope.DefectsFilter.components.forEach(function (id) {
+					if (d.ID == id) {
+						d.filter = true;
+					}
+				});
+			});
+			$scope.severs.forEach(function (d) {
+				d.filter = false;
+				$scope.DefectsFilter.severities.forEach(function (id) {
+					if (d.ID == id) {
+						d.filter = true;
+					}
+				});
+			});
+		};
 		$scope.loadData = function () {
 			$scope.defectsselected = false;
 			var taskprg = StartProgress("Loading tasks...");
@@ -87,6 +127,7 @@
 					}
 					EndProgress(taskprg);
 				});
+			$scope.updateFilterObjects();
 		};
 		$scope.initFilters = function (filters) {
 			$scope.filters = [{ ID: 0, NAME: "<Select>" }];
@@ -106,7 +147,7 @@
 		$scope.apply.severity = { "use": false, "value": -1 };
 		$scope.apply.user = { "use": false, "value": -1 };
 
-		$http.post("trservice.asmx/getFilters", JSON.stringify({ }))
+		$http.post("trservice.asmx/getFilters", JSON.stringify({}))
 			.then(function (response) {
 				$scope.initFilters(response.data.d);
 			});
@@ -142,6 +183,24 @@
 					$scope.selectedFilter = "" + response.data.d.ID;
 					EndProgress(prg);
 				});
+		};
+		$scope.deleteFilter = function () {
+			if ($scope.selectedFilter === "0") {
+				return;
+			}
+			var flt = $scope.filters.filter(function (f) { return f.ID == $scope.selectedFilter; })[0];
+			var name = flt.NAME;
+			var id = flt.ID;
+			var r = confirm("Are you sure you want to delete currently selected filter: " + name + " ?");
+			if (r === true) {
+				var prg = StartProgress("Deleting filter...");
+				$http.post("trservice.asmx/deleteFilter", JSON.stringify({ "id": id }))
+					.then(function () {
+						$scope.filters = $scope.filters.filter(function (f) { return f.ID !== id; });
+						$scope.selectedFilter = "0";
+						EndProgress(prg);
+					});
+			}
 		};
 		$scope.resetFilter = function () {
 			$scope.DefectsFilter = {};
@@ -219,12 +278,13 @@
 		$scope.resetReferenceFilter = function (refname, obj) {
 			$(obj.target).parent().find("input").prop("checked", false);
 			$scope.changed = true;
-			if (typeof $scope.DefectsFilter[refname] == "string") {
+			if (typeof $scope.DefectsFilter[refname] === "string") {
 				$scope.DefectsFilter[refname] = "";
 			}
 			else {
 				$scope.DefectsFilter[refname] = [];
 			}
+			$scope.updateFilterObjects();
 		};
 		$scope.ChangeDate = function (dateparam) {
 			$scope.changed = true;

@@ -15,7 +15,7 @@
 				<span>{{c.AUTHORNAME}}</span>
 			</div>
 			<div class="col-sm-1">
-				<span data-toggle="tooltip" title="{{c.COMMIT}}" class="label label-warning ng-binding"><span class="glyphicon glyphicon-pushpin"></span>{{c.COMMIT.substr(0, 7)}}</span>
+				<span data-toggle="tooltip" title="{{c.COMMIT}}" class="badge badge-warning ng-binding">{{c.COMMIT.substr(0, 7)}}</span>
 			</div>
 		</div>
 		<div class="row">

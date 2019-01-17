@@ -18,14 +18,14 @@
 			</div>
 			<div class="col-lg-8">
 				<div class="jumbotron p-1 mb-0 text-center">
-					<h2>Daily Reports Search</h2>
+					<h2><i class="fas fa-search"></i> Daily Reports Search</h2>
 				</div>
 				<div class="card">
 					<div class="card-header">
 						<div class="d-flex">
 							<div class="input-group">
 								<div class="input-group-prepend">
-									<span class="input-group-text form-control-sm">Person:</span>
+									<span class="input-group-text">Person:</span>
 								</div>
 								<select ng-model="state.filter.userid" class="form-control form-control-sm">
 									<option ng-repeat="u in mpsusers" value="{{u.ID}}">{{u.PERSON_NAME}}</option>
@@ -33,19 +33,19 @@
 							</div>
 							<div class="input-group">
 								<div class="input-group-prepend">
-									<span class="input-group-text form-control-sm">From:</span>
+									<span class="input-group-text form-control-sm d-none d-xl-block">From:</span>
 								</div>
 								<input required ng-model="state.filter.startdate" class="form-control form-control-sm" type="date" />
 							</div>
 							<div class="input-group">
 								<div class="input-group-prepend">
-									<span class="input-group-text form-control-sm">Through:</span>
+									<span class="input-group-text form-control-sm d-none d-xl-inline">Through:</span>
 								</div>
 								<input required ng-model="state.filter.enddate" class="form-control form-control-sm" type="date" />
 							</div>
 							<div class="input-group">
 								<div class="input-group-prepend">
-									<span class="input-group-text form-control-sm">Text:</span>
+									<span class="input-group-text form-control-sm d-none d-xl-inline">Text:</span>
 								</div>
 								<input required ng-model="state.filter.text" class="form-control form-control-sm" type="text" onkeydown="if (event.keyCode == 13) document.getElementById('searchbtn').click()" />
 							</div>

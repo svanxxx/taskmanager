@@ -50,12 +50,12 @@
 					<a class="nav-link pl-3 dropdown-toggle" href="#" data-toggle="dropdown">Reports
 					</a>
 					<div class="dropdown-menu">
-						<a class="dropdown-item" href="vacations.aspx"><i class="fa fa-plane"></i>Vacations</a>
-						<a class="dropdown-item" href="dailyreport.aspx"><i class="fa fa-book"></i>Daily Report</a>
-						<a class="dropdown-item" href="dailysearch.aspx"><i class="fa fa-book"></i>Daily Search</a>
-						<a class="dropdown-item" href="statistics.aspx"><i class="fa fa-book"></i>Statistics</a>
-						<a class="dropdown-item" href="builds.aspx"><i class="fa fa-book"></i>Builds</a>
-						<a class="dropdown-item" href="branches.aspx"><i class="fa fa-book"></i>Branches</a>
+						<a class="dropdown-item" href="vacations.aspx"><i class="fa fa-plane"></i> Vacations</a>
+						<a class="dropdown-item" href="dailyreport.aspx"><i class="fa fa-book"></i> Daily Report</a>
+						<a class="dropdown-item" href="dailysearch.aspx"><i class="fas fa-search"></i> Daily Search</a>
+						<a class="dropdown-item" href="statistics.aspx"><i class="fa fa-book"></i> Statistics</a>
+						<a class="dropdown-item" href="builds.aspx"><i class="fab fa-linode"></i> Builds</a>
+						<a class="dropdown-item" href="branches.aspx"><i class="fas fa-code-branch"></i> Branches</a>
 					</div>
 				</li>
 				<li><a class="nav-link pl-3" href="machines.aspx"><i class="fas fa-desktop"></i>&nbsp;Machines</a></li>

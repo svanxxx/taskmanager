@@ -193,6 +193,11 @@ public class TRService : System.Web.Services.WebService
 		return StoredDefectsFilter.NewFilter(name, filter, CurrentContext.TTUSERID);
 	}
 	[WebMethod(EnableSession = true)]
+	public void deleteFilter(int id)
+	{
+		StoredDefectsFilter.Delete(id);
+	}
+	[WebMethod(EnableSession = true)]
 	public DefectsFilter savedFilterData(int id)
 	{
 		return (new StoredDefectsFilter(id)).GetFilter();

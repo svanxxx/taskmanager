@@ -15,8 +15,8 @@
 					<h1 class="label-center">Select machine to process</h1>
 					<div class="flex-container">
 						<div title="{{m.DETAILS}}" data-toggle="tooltip" ng-style="m | mcol:this" ng-click="setMachine(m.NAME)" class="btn btn-info button-server" ng-repeat="m in machines | orderBy : 'NAME'">
-							<span ng-show="m.ping" class="glyphicon glyphicon-ok"></span>
-							<span ng-show="!m.ping" class="glyphicon glyphicon-off"></span>
+							<i ng-show="m.ping" class="fas fa-thumbs-up"></i>
+							<i ng-show="!m.ping" class="fas fa-power-off"></i>
 							<img src="images/server.png"></img>
 							<img ng-show="unpinged(m)" class="ping" src="images/process.gif" />
 							<div>

@@ -42,7 +42,7 @@
 					<tbody>
 						<tr ng-repeat="u in mpsusers | orderBy : 'PERSON_NAME'">
 							<td>
-								<a data-toggle="tooltip" title="Click to see all user's activity." target="_blank" href="dailysearch.aspx?filter={{createDSFilter(u.ID);}}" class="btn btn-default btn-xs" role="button">
+								<a data-toggle="tooltip" title="Click to see all user's activity." target="_blank" href="dailysearch.aspx?filter={{createDSFilter(u.ID);}}" class="btn btn-outline-secondary btn-sm" role="button">
 									<img class="rounded-circle" ng-src="{{'getUserImg.ashx?id=' + u.ID}}" alt="Smile" height="60" width="60">
 									<br />
 									<b><span>{{u.LOGIN}}</span></b>
@@ -50,12 +50,14 @@
 									<span>{{u.PERSON_NAME}}</span>
 								</a>
 								<br />
-								<span class="label label-info">{{u.TODAYIN}}-{{u.TODAYOUT}}</span>
+								<span class="badge badge-info">{{u.TODAYIN}}-{{u.TODAYOUT}}</span>
 							</td>
 							<td>
 								<div ng-repeat="v in vacations | filter: { AUSER : u.TTUSERID, DATE: yesterdaystring }">
 									<a data-toggle="tooltip" title="{{v.ID}}" href="showtask.aspx?ttid={{v.ID}}" target="_blank">
-										<h3 class="vacation-box"><span style="color: {{v.SICK ? 'red' : ''}}" class="glyphicon glyphicon-plane"></span></h3>
+										<h3 class="vacation-box">
+											<i class="fas fa-plane" style="color: {{v.SICK ? 'red' : ''}}"></i>
+										</h3>
 									</a>
 								</div>
 								<div ng-repeat="l in u.YESTERDAY track by $index">
@@ -75,7 +77,7 @@
 							<td>
 								<div ng-repeat="v in vacations | filter: { AUSER : u.TTUSERID, DATE: todaystring }">
 									<a data-toggle="tooltip" title="{{v.ID}}" href="showtask.aspx?ttid={{v.ID}}" target="_blank">
-										<h3 class="vacation-box"><span style="color: {{v.SICK ? 'red' : ''}}" class="glyphicon glyphicon-plane"></span></h3>
+										<h3 class="vacation-box"><span style="color: {{v.SICK ? 'red' : ''}}" class="fas fa-plane"></span></h3>
 									</a>
 								</div>
 								<div ng-repeat="l in u.TODAY track by $index">
@@ -99,8 +101,10 @@
 										<h3 class="vacation-box">{{getUpcomingdays(u)}}</h3>
 									</a>
 									<a data-toggle="tooltip" title="{{v.ID}}" href="showtask.aspx?ttid={{v.ID}}" target="_blank" ng-repeat="v in vacations | orderBy : 'order' | filter: { AUSER : u.TTUSERID } | filter: {DATE: '!' + todaystring} | filter: {DATE: '!' + yesterdaystring}">
-										<h3 class="vacation-box"><span class="glyphicon glyphicon-plane"></span></h3>
-										<span ng-repeat="n in v.nextin track by $index" class="glyphicon glyphicon-wrench" ng-style="n ? {'color':'red'} : {'color':'blue'}"></span>
+										<h3 class="vacation-box">
+											<span class="fas fa-plane"></span>
+											<span ng-repeat="n in v.nextin track by $index" class="fas fa-wrench" ng-style="n ? {'color':'red'} : {'color':'blue'}"></span>
+										</h3>
 									</a>
 								</div>
 								<div ng-repeat="d in u.PLAN track by $index" ng-style="{{d.DISPO | getDispoColorById:this}}" class="task {{$index < 10 ? 'task-first' : 'task-last'}}">

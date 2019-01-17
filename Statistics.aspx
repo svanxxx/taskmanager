@@ -24,12 +24,12 @@
 			<div class="col-lg-2"></div>
 			<div class="col-lg-8">
 				<ul class="nav nav-pills">
-					<li class="small active"><a data-toggle="pill" href="#vacations">Vacations</a></li>
-					<li><a class="small" data-toggle="pill" href="#hours">Hours</a></li>
-					<li><a class="small" data-toggle="pill" href="#tasks">Tasks</a></li>
+					<li class="nav-item small"><a class="nav-link active" data-toggle="pill" href="#vacations">Vacations</a></li>
+					<li class="nav-item small"><a class="nav-link" data-toggle="pill" href="#hours">Hours</a></li>
+					<li class="nav-item small"><a class="nav-link" data-toggle="pill" href="#tasks">Tasks</a></li>
 				</ul>
 				<div class="tab-content">
-					<div id="vacations" class="tab-pane fade in active">
+					<div id="vacations" class="tab-pane active">
 						<div class="row">
 							<div class="panel panel-success">
 								<div class="panel-heading">Sick days and vacations</div>

@@ -446,10 +446,15 @@
 			$scope.defect.BSTBATCHES = "";
 			$scope.defect.BSTCOMMANDS = "";
 			$scope.defect.REQUESTRESET = true;
-			var requested = $scope.dispos.find(function (d) { return d.CANNOTSTART; });
-			if (requested) {
-				$scope.defect.DISPO = ""+requested.ID;
-			}
+
+			$scope.defect.DISPO = ""+$scope.defectDefaults.DISP;
+			$scope.defect.TYPE = "" +$scope.defectDefaults.TYPE;
+			$scope.defect.PRODUCT = "" +$scope.defectDefaults.PRODUCT;
+			$scope.defect.PRIO = "" +$scope.defectDefaults.PRIO;
+			$scope.defect.COMP = "" +$scope.defectDefaults.COMP;
+			$scope.defect.SEVE = "" +$scope.defectDefaults.SEVR;
+			$scope.defect.ESTIM = $scope.defectDefaults.ESTIMATED;
+
 			if ($scope.attachs) {
 				$scope.attachs.forEach(function (a) {
 					$scope.deleteAttach(a.ID);
@@ -464,6 +469,7 @@
 		};
 
 		//start
+		$scope.defectDefaults = JSON.parse(document.getElementById("defectdefaults").value);
 		$scope.currentlock = guid();
 		$scope.buildtime = parseInt(document.getElementById("buildtime").value);
 		$scope.testlink = document.getElementById("testlink").value;

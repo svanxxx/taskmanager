@@ -17,23 +17,23 @@
 			<div class="col-lg-2">
 				<div class="alert alert-info">
 					<i class="fas fa-cloud-download-alt"></i>
-					<strong>FlexLM server</strong> installation - follow next link: <span class="label label-info"><a href="getinstall.ashx?type=flex&version=0.0.0" target="_blank" class="badge badge-light">click here</a></span>.
+					<strong>FlexLM server</strong> installation - follow next link: <span class="badge badge-info"><a href="getinstall.ashx?type=flex&version=0.0.0" target="_blank" class="badge badge-light">click here</a></span>.
 				</div>
 				<div class="alert alert-info">
 					<i class="fas fa-cloud-download-alt"></i>
-					<strong>Fieldpro Client</strong> installation - follow next link: <span class="label label-info"><a href="getinstall.ashx?type=client&version=0.0.0" target="_blank" class="badge badge-light">click here</a></span>.
+					<strong>Fieldpro Client</strong> installation - follow next link: <span class="badge badge-info"><a href="getinstall.ashx?type=client&version=0.0.0" target="_blank" class="badge badge-light">click here</a></span>.
 				</div>
 				<div class="alert alert-info">
-					<span class="glyphicon glyphicon-book"></span>
+					<i class="fas fa-book"></i>
 					<strong>Fieldpro Server Installation Guide</strong> follow next link: 
-					<span class="label label-info">
+					<span class="badge badge-info">
 						<a href="<%=Settings.CurrentSettings.INSTALLGUIDE.ToString()%>" target="_blank" class="badge badge-light">click here</a>
 					</span>.
 				</div>
 				<div class="alert alert-info">
-					<span class="glyphicon glyphicon-tasks"></span>
+					<i class="fas fa-database"></i>
 					<strong>MS SQL server </strong> follow next link: 
-					<span class="label label-info">
+					<span class="badge badge-info">
 						<a href="https://www.microsoft.com/en-us/sql-server/sql-server-downloads" target="_blank" class="badge badge-light">click here</a>
 					</span>.
 				</div>

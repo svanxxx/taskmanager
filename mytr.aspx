@@ -18,7 +18,7 @@
 						<span>&hArr;&nbsp;{{birthdayYears}}*</span>
 						<img src="images/cake.jpg" alt="Smile" height="60" width="60">
 						<span>=</span>
-						<span class="glyphicon glyphicon-thumbs-up"></span>
+						<i class="fas fa-thumbs-up"></i>
 					</button>
 					<a id="mytasks" href="#" class="btn btn-outline-secondary" role="button" target="_blank"><i class="fas fa-compress-arrows-alt"></i>&nbsp;Tasks assigned to me</a>
 					<a id="metasks" href="#" class="btn btn-outline-secondary" role="button" target="_blank"><i class="fas fa-expand-arrows-alt"></i>&nbsp;Tasks created by me</a>

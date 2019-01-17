@@ -16,7 +16,8 @@
 	<input type="hidden" id="buildtime" value="<%=Settings.CurrentSettings.BUILDTIME.ToString()%>" />
 	<input type="hidden" id="testlink" value="<%=Settings.CurrentSettings.TESTREQUESTLINK.ToString()%>" />
 	<input type="hidden" id="releasettid" value="<%=Settings.CurrentSettings.RELEASETTID.ToString()%>" />
-
+	<input type="hidden" id="defectdefaults" value='<%=Newtonsoft.Json.JsonConvert.SerializeObject(DefectDefaults.CurrentDefaults)%>' />
+	
 	<div ng-app="mpsapplication" ng-controller="mpscontroller" ng-cloak>
 		<div class="alert alert-danger savebutton btn-group-vertical" ng-cloak ng-show="changed">
 			<button type="button" class="btn btn-lg btn-info" ng-click="saveDefect()">Save</button>
@@ -275,7 +276,7 @@
 						<div class="list-group">
 							<a href="#" class="list-group-item list-group-item-action">
 								<img class="rounded-circle" ng-src="{{'getUserImg.ashx?id=' + lockedby}}" alt="Smile" height="42" width="42">
-								<span class="label label-info">{{getMPSUserName(lockedby)}}</span>
+								<span class="badge badge-info">{{getMPSUserName(lockedby)}}</span>
 							</a>
 							<a href="#" class="list-group-item list-group-item-action list-group-item-primary">
 								<button type="button" ng-click="releaseRequest()" class="btn btn-block btn-primary btn-lg">Request to release!</button>
