@@ -18,9 +18,15 @@
 			<div class="col-lg-2 col-md-2 hidden-sm hidden-xs">
 				<div class="alert alert-primary">
 					<p>To schedule the task: click on radio button for the task! Then holding <strong>Ctrl</strong> key press <strong>move up</strong> or <strong>move down</strong> to move the task in list correspondingly.</p>
-					<p>Click <button type="button" class="btn btn-xs"><i class="fas fa-arrow-up"></i></button> to move task the the top which will result in the task being done first of all</p>
-					<p>Click <button type="button" class="btn btn-xs"><i class="fas fa-arrow-right"></i></button> to move task out of schedlue</p>
-					<p>In unscheduled section click <button type="button" class="btn btn-xs"><i class="fas fa-arrow-left"></i></button> to move task into the schedlue being on the top of list</p>
+					<p>Click
+						<button type="button" class="btn btn-xs"><i class="fas fa-arrow-up"></i></button>
+						to move task the the top which will result in the task being done first of all</p>
+					<p>Click
+						<button type="button" class="btn btn-xs"><i class="fas fa-arrow-right"></i></button>
+						to move task out of schedlue</p>
+					<p>In unscheduled section click
+						<button type="button" class="btn btn-xs"><i class="fas fa-arrow-left"></i></button>
+						to move task into the schedlue being on the top of list</p>
 				</div>
 				<div class="alert alert-primary">
 					<button onclick="copyurl()" type="button" class="btn btn-link"><i class="fas fa-copy"></i>Copy page link</button>
@@ -37,8 +43,8 @@
 					<ul class="nav nav-pills nav-justified">
 						<li class="nav-item">
 							<a class="nav-link active" data-toggle="pill" href="#plan">
-								Plan <span class="badge badge-light">{{defects.length}}</span>
-								 <button ng-click="add2Plan()" class="btn btn-outline-primary btn-sm float-right">Add</button>
+								<span>Plan </span>
+								<span class="badge badge-light">{{defects.length}}</span>
 							</a>
 						</li>
 						<li class="nav-item"><a class="nav-link" data-toggle="pill" href="#unscheduled">Unscheduled <span class="badge badge-light">{{unscheduled.length}}</span></a></li>
@@ -78,7 +84,10 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-lg-1 hidden-md hidden-sm hidden-xs">
+			<div class="col-lg-1">
+				<button type="button" class="btn btn-outline-secondary" ng-click="add2Plan()" data-toggle="tooltip" title="Add Task To Currently Selected User On The Top Of The Plan">
+					<i class="fas fa-plus-circle"></i> Add Task
+				</button>
 			</div>
 		</div>
 	</div>
