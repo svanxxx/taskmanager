@@ -230,11 +230,12 @@ $(function () {
 
 		$scope.autotime = $.cookie("autotime") === "true";
 		$scope.copylastday = $.cookie("copylastday") === "true";
-		$scope.oncopylastday = function () {
+		$scope.onCopyLastDay = function () {
 			$scope.copylastday = !$scope.copylastday;
 			$.cookie("copylastday", $scope.copylastday, { expires: 365 });
 		};
-		$scope.changeAutoDate = function () {
+		$scope.onChangeAutoTime = function () {
+			$scope.autotime = !$scope.autotime;
 			$.cookie("autotime", $scope.autotime, { expires: 365 });
 		};
 

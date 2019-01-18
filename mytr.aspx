@@ -69,6 +69,12 @@
 										<button class="btn" type="button" ng-click="out()">Out:</button>
 									</div>
 									<input ng-disabled="!loaded()" id="timeou" required type="time" class="input-sm form-control" ng-model="trrec.OUT" />
+									<div class="input-group-append" data-toggle="tooltip" title="Automatically adjust Time-Out while page is kept open.">
+										<button ng-click="onChangeAutoTime()" type="button" class="btn btn-outline-secondary btn-sm">
+											<span class="fas fa-check" ng-show="autotime"></span>
+											<span class="fas fa-times" ng-show="!autotime"></span>
+										</button>
+									</div>
 								</div>
 								<div class="input-group input-group-sm">
 									<div class="input-group-prepend w-25">
@@ -83,7 +89,7 @@
 									<div class="input-group-prepend">
 										<span class="input-group-text">Copy Last Day</span>
 									</div>
-									<button ng-click="oncopylastday()" type="button" class="btn btn-outline-secondary btn-sm">
+									<button ng-click="onCopyLastDay()" type="button" class="btn btn-outline-secondary btn-sm">
 										<span class="fas fa-check" ng-show="copylastday"></span>
 										<span class="fas fa-times" ng-show="!copylastday"></span>
 									</button>
