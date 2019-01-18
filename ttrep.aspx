@@ -8,6 +8,7 @@
 </asp:Content>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
+	<input type="hidden" id="filters" value='<%=Newtonsoft.Json.JsonConvert.SerializeObject(StoredDefectsFilter.Enum(CurrentContext.TTUSERID))%>' />
 	<div ng-app="mpsapplication" ng-controller="mpscontroller">
 		<div class="alert alert-danger savebutton btn-group-vertical" ng-cloak ng-show="changed">
 			<button type="button" class="btn btn-lg btn-info" ng-click="applyfilter()">Apply Filter</button>
@@ -90,7 +91,7 @@
 					<div class="input-group-prepend">
 						<span class="input-group-text">Enter phrase in double quotes or a set of words to be found:</span>
 					</div>
-					<input class="form-control" id="searchtxt" type="text" ng-model="DefectsFilter.text" ng-change="changed=true" ng-keypress="onGo($event)" autofocus />
+					<input class="form-control" id="searchtxt" type="search" ng-model="DefectsFilter.text" ng-change="changed=true" ng-keypress="onGo($event)" autofocus />
 				</div>
 			</div>
 		</div>
@@ -152,7 +153,7 @@
 								</div>
 								<div ng-repeat="u in users" class="dropdown-item pt-0 pb-0">
 									<label class="form-check-label">
-										<img class="rounded-circle" ng-src="{{'getUserImg.ashx?ttid=' + u.ID}}" alt="Smile" height="30" width="30">
+										<img async class="rounded-circle" ng-src="{{'getUserImg.ashx?ttid=' + u.ID}}" alt="Smile" height="30" width="30">
 										<input ng-click="changeReferenceFilter(u.ID, 'users')" ng-checked="u.filter" type="checkbox" value="">
 										<span>{{u.FULLNAME}}</span>
 									</label>

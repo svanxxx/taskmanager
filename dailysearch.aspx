@@ -47,7 +47,7 @@
 								<div class="input-group-prepend">
 									<span class="input-group-text d-none d-xl-inline">Text:</span>
 								</div>
-								<input required ng-model="state.filter.text" class="form-control" type="text" onkeydown="if (event.keyCode == 13) document.getElementById('searchbtn').click()" />
+								<input required ng-model="state.filter.text" class="form-control" type="search" ng-keypress="onGo($event)" autofocus />
 							</div>
 							<button id="searchbtn" type="button" class="btn btn-block btn-primary btn-sm" ng-click="loadData(false)">Load</button>
 						</div>

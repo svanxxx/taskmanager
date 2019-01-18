@@ -51,7 +51,12 @@
 					EndProgress(repsprg);
 				});
 		};
-
+		$scope.onGo = function (key) {
+			if (key.which === 13) {
+				$scope.loadData(false);
+				key.preventDefault();
+			}
+		};
 		$scope.mpsusers = [];
 		getMPSUsers($scope, "mpsusers", $http, function () {
 			$scope.state = {};

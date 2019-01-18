@@ -55,7 +55,6 @@
 										</div>
 									</div>
 								</button>
-								<i>{{status}}</i>
 							</div>
 							<div class="col-lg-3 col-xs-6 panel person-box">
 								<div class="input-group input-group-sm mb-1">
@@ -85,7 +84,7 @@
 							</div>
 							<div class="col-lg-2 col-xs-6">
 								<button ng-click="todayRec()" ng-disabled="isTodayRecord()" type="button" class="btn btn-outline-secondary {{isTodayRecord() ? '' : 'btn-primary'}} btn-block mb-1" data-toggle="tooltip" title="Click this button to create new daily record for today or show the data from already created recrod.">Today!</button>
-								<div class="input-group mb-3 input-group-sm" data-toggle="tooltip" title="When you add a record - previous day details will be automatically copied.">
+								<div class="input-group mb-1 input-group-sm" data-toggle="tooltip" title="When you add a record - previous day details will be automatically copied.">
 									<div class="input-group-prepend">
 										<span class="input-group-text">Copy Last Day</span>
 									</div>
@@ -94,6 +93,7 @@
 										<span class="fas fa-times" ng-show="!copylastday"></span>
 									</button>
 								</div>
+								<button type="button" class="btn btn-outline-light text-dark btn-sm btn-block"><i>{{status}}</i></button>
 							</div>
 						</div>
 					</div>

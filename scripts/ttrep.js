@@ -139,18 +139,13 @@
 		};
 		getUsers($scope, "users", $http, $scope.loadData);
 
-		$scope.initFilters();
+		$scope.initFilters(JSON.parse(document.getElementById("filters").value));
 		$scope.selectedFilter = "0";
 		$scope.apply = {};
 		$scope.apply.disposition = { "use": false, "value": -1 };
 		$scope.apply.component = { "use": false, "value": -1 };
 		$scope.apply.severity = { "use": false, "value": -1 };
 		$scope.apply.user = { "use": false, "value": -1 };
-
-		$http.post("trservice.asmx/getFilters", JSON.stringify({}))
-			.then(function (response) {
-				$scope.initFilters(response.data.d);
-			});
 
 		$scope.checkall = function () {
 			if ($scope.defects.length < 1) {

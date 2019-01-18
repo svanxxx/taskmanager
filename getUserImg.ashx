@@ -65,8 +65,8 @@ public class getUserImg : IHttpHandler
 		else
 		{
 			context.Response.Cache.SetCacheability(HttpCacheability.Public);
-			context.Response.Cache.SetExpires(DateTime.Now.AddHours(2));
-			context.Response.Cache.SetMaxAge(new TimeSpan(2, 0, 0));
+			context.Response.Cache.SetExpires(DateTime.Now.AddDays(500));
+			context.Response.Cache.SetMaxAge(new TimeSpan(500, 0, 0, 0));
 			context.Response.ContentType = "image/jpg";
 			context.Response.AddHeader("Content-Length", data == null ? "0" : data.Length.ToString());
 			context.Response.BinaryWrite(data);
