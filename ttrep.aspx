@@ -63,16 +63,14 @@
 				<button type="button" class="btn btn-success" ng-click="changeDefects()">Apply</button>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-sm-2">
+		<div class="row pb-2">
+			<div class="col-sm-1">
 				<div class="btn-group">
-					<button onclick="copyurl()" data-toggle="tooltip" title="Copy link to this report to clipboard" type="button" class="btn btn-outline-secondary"><i class="fas fa-copy"></i></button>
-					<button ng-click="saveFilter()" data-toggle="tooltip" title="Save Filter" type="button" class="btn btn-outline-secondary"><i class="fas fa-save"></i></button>
-					<button ng-click="resetFilter()" data-toggle="tooltip" title="Reset Filter" type="button" class="btn btn-outline-secondary"><i class="fas fa-home"></i></button>
-					<button ng-click="deleteFilter()" data-toggle="tooltip" title="Delete Filter" type="button" class="btn btn-outline-secondary"><i class="fas fa-trash-alt"></i></button>
+					<button onclick="copyurl()" data-toggle="tooltip" title="Copy link to this report to clipboard" type="button" class="btn btn-outline-secondary btn-sm"><i class="fas fa-copy"></i></button>
+					<button ng-click="loadData()" data-toggle="tooltip" title="Reload Tasks" type="button" class="btn btn-outline-secondary btn-sm"><i class="fas fa-sync-alt"></i></button>
 				</div>
 			</div>
-			<div class="col-sm-2">
+			<div class="col-sm-3">
 				<div class="input-group input-group-sm">
 					<div class="input-group-prepend">
 						<span class="input-group-text">Saved filters:</span>
@@ -80,6 +78,11 @@
 					<select id="selectedfltr" class="form-control" ng-change="applySelectedFilter()" ng-model="selectedFilter">
 						<option ng-repeat="f in filters" value="{{f.ID}}">{{f.NAME}}</option>
 					</select>
+					<div class="input-group-append btn-group">
+						<button ng-click="saveFilter()" data-toggle="tooltip" title="Save Filter" type="button" class="btn btn-outline-secondary"><i class="fas fa-save"></i></button>
+						<button ng-click="resetFilter()" data-toggle="tooltip" title="Reset Filter" type="button" class="btn btn-outline-secondary"><i class="fas fa-home"></i></button>
+						<button ng-click="deleteFilter()" data-toggle="tooltip" title="Delete Filter" type="button" class="btn btn-outline-secondary"><i class="fas fa-trash-alt"></i></button>
+					</div>
 				</div>
 			</div>
 			<div class="col-sm-8">
@@ -117,6 +120,7 @@
 						<div class="dropdown" data-toggle="tooltip" title="Time Estimation">
 							<button type="button" class="btn btn-outline-light text-dark btn-sm dropdown-toggle" data-toggle="dropdown"><i class="far fa-clock"></i></button>
 							<div class="dropdown-menu">
+								<button ng-click="DefectsFilter.startEstim='';DefectsFilter.endEstim='';" type="button" class="btn btn-outline-light text-dark dropdown-item-text">Reset Estimation Limits</button>
 								<div class="input-group input-group-sm dropdown-item-text">
 									<div class="input-group-prepend"><span class="input-group-text">From:</span></div>
 									<input type="number" class="form-control" ng-model="DefectsFilter.startEstim">

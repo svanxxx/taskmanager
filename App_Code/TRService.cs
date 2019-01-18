@@ -145,12 +145,12 @@ public class TRService : System.Web.Services.WebService
 		return d.ID;
 	}
 	[WebMethod(EnableSession = true)]
-	public int planTask4MeNow(string summary)
+	public int planTask(string summary, int ttuserid)
 	{
 		if (string.IsNullOrEmpty(summary))
 			return -1;
 		DefectBase d = new DefectBase(Defect.New(summary));
-		d.AUSER = CurrentContext.TTUSERID.ToString();
+		d.AUSER = ttuserid == -1 ? CurrentContext.TTUSERID.ToString() : ttuserid.ToString();
 		d.ESTIM = 1;
 		List<int> disp = DefectDispo.EnumCanStart();
 		if (disp.Count > 0)

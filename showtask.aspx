@@ -25,6 +25,7 @@
 		</div>
 		<div class="row">
 			<div class="col-lg-2 hidden-md">
+				<button onclick="copyurl()" type="button" class="btn btn-outline-secondary btn-block btn-lg">Copy link&nbsp;<i class="fas fa-link"></i></button>
 				<button ng-click="duplicate()" type="button" class="btn btn-outline-secondary btn-block btn-lg">Duplicate&nbsp;<i class="fas fa-clone"></i></button>
 				<button ng-click="resettask()" ng-disabled="!canChangeDefect()" type="button" class="btn btn-outline-secondary btn-block btn-lg">Reset To Re-Use&nbsp;<i class="fas fa-recycle"></i></button>
 			</div>

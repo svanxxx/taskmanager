@@ -35,7 +35,12 @@
 				</div>
 				<div>
 					<ul class="nav nav-pills nav-justified">
-						<li class="nav-item"><a class="nav-link active" data-toggle="pill" href="#plan">Plan <span class="badge badge-light">{{defects.length}}</span></a></li>
+						<li class="nav-item">
+							<a class="nav-link active" data-toggle="pill" href="#plan">
+								Plan <span class="badge badge-light">{{defects.length}}</span>
+								 <button ng-click="add2Plan()" class="btn btn-outline-primary btn-sm float-right">Add</button>
+							</a>
+						</li>
 						<li class="nav-item"><a class="nav-link" data-toggle="pill" href="#unscheduled">Unscheduled <span class="badge badge-light">{{unscheduled.length}}</span></a></li>
 					</ul>
 					<div class="tab-content panel panel-default">

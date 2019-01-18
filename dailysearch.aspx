@@ -23,31 +23,31 @@
 				<div class="card">
 					<div class="card-header">
 						<div class="d-flex">
-							<div class="input-group">
+							<div class="input-group input-group-sm">
 								<div class="input-group-prepend">
 									<span class="input-group-text">Person:</span>
 								</div>
-								<select ng-model="state.filter.userid" class="form-control form-control-sm">
+								<select ng-model="state.filter.userid" class="form-control">
 									<option ng-repeat="u in mpsusers" value="{{u.ID}}">{{u.PERSON_NAME}}</option>
 								</select>
 							</div>
-							<div class="input-group">
+							<div class="input-group input-group-sm">
 								<div class="input-group-prepend">
-									<span class="input-group-text form-control-sm d-none d-xl-block">From:</span>
+									<span class="input-group-text d-none d-xl-block">From:</span>
 								</div>
-								<input required ng-model="state.filter.startdate" class="form-control form-control-sm" type="date" />
+								<input required ng-model="state.filter.startdate" class="form-control" type="date" />
 							</div>
-							<div class="input-group">
+							<div class="input-group input-group-sm">
 								<div class="input-group-prepend">
-									<span class="input-group-text form-control-sm d-none d-xl-inline">Through:</span>
+									<span class="input-group-text d-none d-xl-inline">Through:</span>
 								</div>
-								<input required ng-model="state.filter.enddate" class="form-control form-control-sm" type="date" />
+								<input required ng-model="state.filter.enddate" class="form-control" type="date" />
 							</div>
-							<div class="input-group">
+							<div class="input-group input-group-sm">
 								<div class="input-group-prepend">
-									<span class="input-group-text form-control-sm d-none d-xl-inline">Text:</span>
+									<span class="input-group-text d-none d-xl-inline">Text:</span>
 								</div>
-								<input required ng-model="state.filter.text" class="form-control form-control-sm" type="text" onkeydown="if (event.keyCode == 13) document.getElementById('searchbtn').click()" />
+								<input required ng-model="state.filter.text" class="form-control" type="text" onkeydown="if (event.keyCode == 13) document.getElementById('searchbtn').click()" />
 							</div>
 							<button id="searchbtn" type="button" class="btn btn-block btn-primary btn-sm" ng-click="loadData(false)">Load</button>
 						</div>

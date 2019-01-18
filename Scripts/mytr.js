@@ -257,7 +257,7 @@ $(function () {
 		$scope.addTask = function () {
 			var summary = prompt("Enter Summary For New Task:", "Free To Use");
 			if (summary !== "" && summary !== null) {
-				$http.post("trservice.asmx/newTask4MeNow", JSON.stringify({ "summary": summary}))
+				$http.post("trservice.asmx/newTask4MeNow", JSON.stringify({ "summary": summary }))
 					.then(function (response) {
 						openTask(response.data.d);
 					});
@@ -266,7 +266,7 @@ $(function () {
 		$scope.planTask = function () {
 			var summary = prompt("Enter Summary For New Task:", "Free To Use");
 			if (summary !== "" && summary !== null) {
-				$http.post("trservice.asmx/planTask4MeNow", JSON.stringify({ "summary": summary }))
+				$http.post("trservice.asmx/planTask", JSON.stringify({ "summary": summary, "ttuserid": -1 }))
 					.then(function (response) {
 						openTask(response.data.d);
 					});

@@ -83,6 +83,15 @@ $(function () {
 				$scope.changeuser($scope.currentuser, false);
 			});
 		};
+		$scope.add2Plan = function () {
+			var summary = prompt("Enter Summary For New Task:", "New Task");
+			if (summary !== "" && summary !== null) {
+				$http.post("trservice.asmx/planTask", JSON.stringify({ "summary": summary, "ttuserid": $scope.currentuser.TTUSERID }))
+					.then(function (response) {
+						openTask(response.data.d);
+					});
+			}
+		};
 		$scope.tasktotop = function (d) {
 			for (var i = 0; i < $scope.defects.length; i++) {
 				if (d.ID == $scope.defects[i].ID && i > 0) {
@@ -120,7 +129,6 @@ $(function () {
 						}, 200);
 						break;
 					}
-
 				}
 				$timeout(function () {
 					$("input.taskselector:checked").focus();
