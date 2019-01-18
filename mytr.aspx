@@ -34,59 +34,60 @@
 						<div class="row person-items">
 							<div class="col-lg-2 col-xs-6 col-centered">
 								<div class="card person-box h-100">
-									<img class="rounded-circle" ng-src="{{'getUserImg.ashx?id=' + user.ID}}" alt="smile" width="80" height="80" style="margin: auto;"/>
-									<div class="card-body person-lab">
+									<img class="rounded-circle" ng-src="{{'getUserImg.ashx?id=' + user.ID}}" alt="smile" width="80" height="80" style="margin: auto;" />
+									<div class="card-body p-0 m-0">
 										<label>{{user.PERSON_NAME}}</label>
 									</div>
 								</div>
 							</div>
 							<div class="col-lg-2 col-xs-6">
-								<button ng-disabled="loaded()" ng-click="addRec()" type="button" class="btn btn-outline-success btn-block">Add</button>
-								<button ng-disabled="!loaded()" ng-click="deleteRec()" type="button" class="btn btn-outline-danger btn-block">Delete</button>
-								<input required ng-model="date" ng-change="findRec()" class="form-control date-input" type="date" />
+								<button ng-disabled="loaded()" ng-click="addRec()" type="button" class="btn btn-outline-success btn-block btn-sm">Add</button>
+								<button ng-disabled="!loaded()" ng-click="deleteRec()" type="button" class="btn btn-outline-danger btn-block btn-sm">Delete</button>
+								<input required ng-model="date" ng-change="findRec()" class="form-control date-input form-control-sm" type="date" />
 							</div>
 							<div class="col-lg-3 hidden-xs datelabel">
 								<h4>{{datestring}}</h4>
 								<h5>{{timedone}}</h5>
-								<div class="progress person-box">
-									<div class="progress-bar progress-bar-striped {{percentdonestyle}} active progress-bar-animated" role="progressbar" aria-valuenow="{{percentdone}}" aria-valuemin="0" aria-valuemax="100" style="width: {{percentdone}}%">
-										{{percentdone}}
+								<button type="button" class="btn btn-outline-light text-dark btn-block btn-sm">
+									<div class="progress person-box">
+										<div class="progress-bar progress-bar-striped {{percentdonestyle}} active progress-bar-animated" role="progressbar" aria-valuenow="{{percentdone}}" aria-valuemin="0" aria-valuemax="100" style="width: {{percentdone}}%">
+											{{percentdone}}
+										</div>
 									</div>
-								</div>
-								<h6><i>{{status}}</i></h6>
+								</button>
+								<i>{{status}}</i>
 							</div>
-							<div class="col-lg-3 col-xs-6 panel person-box time-box">
-								<div class="row row-timeline">
-									<div class="col-sm-3">
-										<label for="timein">In:</label>
+							<div class="col-lg-3 col-xs-6 panel person-box">
+								<div class="input-group input-group-sm mb-1">
+									<div class="input-group-prepend w-25">
+										<span class="input-group-text">In:</span>
 									</div>
-									<div class="col-sm-7">
-										<input ng-disabled="!loaded()" id="timein" required type="time" class="input-sm form-control" ng-model="trrec.IN" />
-									</div>
+									<input ng-disabled="!loaded()" id="timein" required type="time" class="input-sm form-control" ng-model="trrec.IN" />
 								</div>
-								<div class="row row-timeline">
-									<div class="col-sm-3">
-										<button class="btn btn-outline-secondary" type="button" ng-click="out()">Out:</button>
+								<div class="input-group input-group-sm mb-1">
+									<div class="input-group-prepend w-25">
+										<button class="btn" type="button" ng-click="out()">Out:</button>
 									</div>
-									<div class="col-sm-7">
-										<input ng-disabled="!loaded()" id="timeou" required type="time" class="input-sm form-control" ng-model="trrec.OUT" />
-									</div>
-									<div class="col-sm-2 center">
-										<input ng-model="autotime" ng-change="changeAutoDate()" type="checkbox" value="" data-toggle="tooltip" title="Automatically adjust time out when the page is opened.">
-									</div>
+									<input ng-disabled="!loaded()" id="timeou" required type="time" class="input-sm form-control" ng-model="trrec.OUT" />
 								</div>
-								<div class="row row-timeline">
-									<div class="col-sm-3">
-										<label for="timebr" style="">Break:</label>
+								<div class="input-group input-group-sm">
+									<div class="input-group-prepend w-25">
+										<span class="input-group-text">Break:</span>
 									</div>
-									<div class="col-sm-7">
-										<input ng-disabled="!loaded()" id="timebr" required type="time" class="input-sm form-control" ng-model="trrec.BREAK" />
-									</div>
+									<input ng-disabled="!loaded()" id="timebr" required type="time" class="input-sm form-control" ng-model="trrec.BREAK" />
 								</div>
 							</div>
 							<div class="col-lg-2 col-xs-6">
-								<input ng-model="copylastday" ng-change="oncopylastday()" type="checkbox" value="" data-toggle="tooltip" title="When you add a record - previous day details will be automatically copied.">Copy last day
-					<button ng-click="todayRec()" ng-disabled="isTodayRecord()" type="button" class="btn {{isTodayRecord() ? '' : 'btn-primary'}} btn-lg btn-block" data-toggle="tooltip" title="Click this button to create new daily record for today or show the data from already created recrod.">Today!</button>
+								<button ng-click="todayRec()" ng-disabled="isTodayRecord()" type="button" class="btn btn-outline-secondary {{isTodayRecord() ? '' : 'btn-primary'}} btn-block mb-1" data-toggle="tooltip" title="Click this button to create new daily record for today or show the data from already created recrod.">Today!</button>
+								<div class="input-group mb-3 input-group-sm" data-toggle="tooltip" title="When you add a record - previous day details will be automatically copied.">
+									<div class="input-group-prepend">
+										<span class="input-group-text">Copy Last Day</span>
+									</div>
+									<button ng-click="oncopylastday()" type="button" class="btn btn-outline-secondary btn-sm">
+										<span class="fas fa-check" ng-show="copylastday"></span>
+										<span class="fas fa-times" ng-show="!copylastday"></span>
+									</button>
+								</div>
 							</div>
 						</div>
 					</div>

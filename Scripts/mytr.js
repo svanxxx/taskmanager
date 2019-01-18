@@ -95,7 +95,7 @@ $(function () {
 				var secs = diff / 1000.0;
 				var hrs = Math.floor(secs / 3600.0);
 				var mins = Math.floor(secs / 60.0 - hrs * 60.0);
-				$scope.timedone = "presence: " + hrs + ":" + mins;
+				$scope.timedone = "In Office: " + hrs + ":" + mins + " hrs";
 				if ($scope.percentdone < 25) {
 					$scope.percentdonestyle = "bg-danger";
 				} else if ($scope.percentdone < 50) {
@@ -231,6 +231,7 @@ $(function () {
 		$scope.autotime = $.cookie("autotime") === "true";
 		$scope.copylastday = $.cookie("copylastday") === "true";
 		$scope.oncopylastday = function () {
+			$scope.copylastday = !$scope.copylastday;
 			$.cookie("copylastday", $scope.copylastday, { expires: 365 });
 		};
 		$scope.changeAutoDate = function () {
