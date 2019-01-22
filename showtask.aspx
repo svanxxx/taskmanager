@@ -17,7 +17,7 @@
 	<input type="hidden" id="testlink" value="<%=Settings.CurrentSettings.TESTREQUESTLINK.ToString()%>" />
 	<input type="hidden" id="releasettid" value="<%=Settings.CurrentSettings.RELEASETTID.ToString()%>" />
 	<input type="hidden" id="defectdefaults" value='<%=Newtonsoft.Json.JsonConvert.SerializeObject(DefectDefaults.CurrentDefaults)%>' />
-	
+
 	<div ng-app="mpsapplication" ng-controller="mpscontroller" ng-cloak>
 		<div class="alert alert-danger savebutton btn-group-vertical" ng-cloak ng-show="changed">
 			<button type="button" class="btn btn-lg btn-info" ng-click="saveDefect()">Save</button>
@@ -25,17 +25,18 @@
 		</div>
 		<div class="row">
 			<div class="col-lg-2 hidden-md">
-				<button onclick="copyurl()" type="button" class="btn btn-outline-secondary btn-block btn-lg">Copy link&nbsp;<i class="fas fa-link"></i></button>
-				<button ng-click="duplicate()" type="button" class="btn btn-outline-secondary btn-block btn-lg">Duplicate&nbsp;<i class="fas fa-clone"></i></button>
-				<button ng-click="resettask()" ng-disabled="!canChangeDefect()" type="button" class="btn btn-outline-secondary btn-block btn-lg">Reset To Re-Use&nbsp;<i class="fas fa-recycle"></i></button>
+				<button onclick="copyurl()" type="button" class="btn btn-outline-secondary btn-block btn-sm">Copy link&nbsp;<i class="fas fa-link"></i></button>
+				<button ng-click="duplicate()" type="button" class="btn btn-outline-secondary btn-block btn-sm">Duplicate&nbsp;<i class="fas fa-clone"></i></button>
+				<button ng-click="resettask()" ng-disabled="!canChangeDefect()" type="button" class="btn btn-outline-secondary btn-block btn-sm">Reset To Re-Use&nbsp;<i class="fas fa-recycle"></i></button>
 			</div>
 			<div class="col-lg-8 col-md-12">
-				<label for="summary">TT{{defect.ID}} {{defect.SUMMARY}}</label>
-				<button title="Copy task label to clipboard" data-toggle="tooltip" type="button" class="btn btn-default btn-sm" style="float: right" ng-click="cliplabl()">
-					<i class="fas fa-copy"></i>
-				</button>
-				<input type="text" class="form-control form-control-sm" id="summary" ng-disabled="!canChangeDefect()" ng-model="defect.SUMMARY">
-				<div class="hidden-xs row toolbar" ng-style="defect.DISPO | getDispoColorById:this">
+				<div class="input-group input-group-sm mb-1">
+					<div class="input-group-prepend">
+						<button title="Copy task label to clipboard" data-toggle="tooltip" class="btn btn-default btn-sm" type="button" ng-click="cliplabl()">TT{{defect.ID}}</button>
+					</div>
+					<input type="text" class="form-control" ng-disabled="!canChangeDefect()" ng-model="defect.SUMMARY">
+				</div>
+				<div class="hidden-xs row toolbar mb-1" ng-style="defect.DISPO | getDispoColorById:this">
 					<div class="col-sm-3">
 						<div class="row">
 							<div class="col-sm-3">

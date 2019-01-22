@@ -259,7 +259,7 @@ function copyurl(txt) {
 	}
 	document.execCommand("copy");
 	$temp.remove();
-	var p = StartProgress("The link has been copied to clipboard.");
+	var p = StartProgress("The ref has been copied to clipboard.");
 	setTimeout(function () { EndProgress(p); }, 2000);
 }
 $(function () {

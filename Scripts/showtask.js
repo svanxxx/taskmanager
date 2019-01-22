@@ -26,11 +26,7 @@
 			$scope.notifyHub.server.unLockTask(ttid, $scope.currentlock, userID());
 		};
 		$scope.cliplabl = function () {
-			var $temp = $("<input>");
-			$("body").append($temp);
-			$temp.val("TT" + $scope.defect.ID + " " + $scope.defect.SUMMARY).select();
-			document.execCommand("copy");
-			$temp.remove();
+			copyurl("TT" + $scope.defect.ID + " " + $scope.defect.SUMMARY);
 		};
 		$scope.loadAttachments = function () {
 			var prgattach = StartProgress("Loading attachments...");
