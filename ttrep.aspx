@@ -14,7 +14,7 @@
 			<button type="button" class="btn btn-lg btn-info" ng-click="applyfilter()">Apply Filter</button>
 			<button type="button" class="btn btn-lg btn-danger" ng-click="discardfilter()">Discard</button>
 		</div>
-		<div ng-cloak ng-show="defectsselected" class="panel panel-primary">
+		<div ng-show="defectsselected" class="panel panel-primary" ng-cloak>
 			<div class="panel-heading">Select Action</div>
 			<div class="panel-body">
 				<div class="row">
@@ -144,14 +144,20 @@
 							<button type="button" class="btn btn-outline-light text-dark btn-sm dropdown-toggle" data-toggle="dropdown">
 								User
 							</button>
-							<div class="dropdown-menu pre-scrollable">
+							<div class="dropdown-menu {{filterusers?'':'pre-scrollable'}}">
 								<div class="input-group input-group-sm">
-									<div class="input-group-prepend">
-										<button type="button" ng-click="resetReferenceFilter('users', $event)" class="btn btn-primary btn-sm"><i class="fas fa-broom"></i></button>
+									<div class="input-group-prepend" data-toggle="tooltip" title="Show/Hide all/active users">
+										<button type="button" ng-click="filterusers=!filterusers;updateUsersFilter();$event.stopPropagation();" class="btn btn-primary btn-sm">
+											<i class="fas fa-users" ng-show="filterusers"></i>
+											<i class="fas fa-user-minus" ng-show="!filterusers"></i>
+										</button>
 									</div>
 									<input type="text" class="form-control refselector">
+									<div class="input-group-append" data-toggle="tooltip" title="Reset filter for this column">
+										<button type="button" ng-click="resetReferenceFilter('users', $event)" class="btn btn-primary btn-sm"><i class="fas fa-broom"></i></button>
+									</div>
 								</div>
-								<div ng-repeat="u in users" class="dropdown-item pt-0 pb-0">
+								<div ng-repeat="u in filtered = (users | filter:{ show: true })" class="dropdown-item pt-0 pb-0">
 									<label class="form-check-label">
 										<img async class="rounded-circle" ng-src="{{'getUserImg.ashx?ttid=' + u.ID}}" alt="Smile" height="30" width="30">
 										<input ng-click="changeReferenceFilter(u.ID, 'users')" ng-checked="u.filter" type="checkbox" value="">
@@ -229,16 +235,22 @@
 					<th class="{{classFiltered('createdUsers')}}">
 						<div class="dropdown middlecol">
 							<button type="button" class="btn btn-outline-light text-dark btn-sm dropdown-toggle" data-toggle="dropdown">By</button>
-							<div class="dropdown-menu dropdown-menu-right pre-scrollable">
+							<div class="dropdown-menu dropdown-menu-right {{filterusers?'':'pre-scrollable'}}">
 								<div class="input-group input-group-sm">
-									<div class="input-group-prepend">
-										<button type="button" ng-click="resetReferenceFilter('createdUsers', $event)" class="btn btn-primary btn-sm"><i class="fas fa-broom"></i></button>
+									<div class="input-group-prepend" data-toggle="tooltip" title="Show/Hide all/active users">
+										<button type="button" ng-click="filterusers=!filterusers;updateUsersFilter();$event.stopPropagation();" class="btn btn-primary btn-sm">
+											<i class="fas fa-users" ng-show="filterusers"></i>
+											<i class="fas fa-user-minus" ng-show="!filterusers"></i>
+										</button>
 									</div>
 									<input type="text" class="form-control refselector">
+									<div class="input-group-append" data-toggle="tooltip" title="Reset filter for this column">
+										<button type="button" ng-click="resetReferenceFilter('createdUsers', $event)" class="btn btn-primary btn-sm"><i class="fas fa-broom"></i></button>
+									</div>
 								</div>
-								<div ng-repeat="u in users" class="dropdown-item pt-0 pb-0">
+								<div ng-repeat="u in filtered = (users | filter:{ show: true })" class="dropdown-item pt-0 pb-0">
 									<label class="form-check-label">
-										<img class="rounded-circle" ng-src="{{'getUserImg.ashx?ttid=' + u.ID}}" alt="Smile" height="30" width="30">
+										<img async class="rounded-circle" ng-src="{{'getUserImg.ashx?ttid=' + u.ID}}" alt="Smile" height="30" width="30">
 										<input ng-click="changeReferenceFilter(u.ID, 'createdUsers')" ng-checked="u.createdFilter" type="checkbox" value="">
 										<span>{{u.FULLNAME}}</span>
 									</label>
@@ -292,7 +304,7 @@
 					</th>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody ng-cloak>
 				<tr ng-repeat="d in defects" ng-style="d.DISPO | getDispoColorById:this">
 					<td>
 						<input type="checkbox" ng-model="d.checked"></td>

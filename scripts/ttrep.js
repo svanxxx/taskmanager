@@ -137,7 +137,16 @@
 				});
 			}
 		};
-		getUsers($scope, "users", $http, $scope.loadData);
+		$scope.filterusers = true;
+		$scope.updateUsersFilter = function () {
+			$scope.users.forEach(function (u) {
+				u.show = !$scope.filterusers || (u.ACTIVE && u.TRID >= 1);
+			});
+		};
+		getUsers($scope, "users", $http, function () {
+			$scope.loadData();
+			$scope.updateUsersFilter();
+		});
 
 		$scope.initFilters(JSON.parse(document.getElementById("filters").value));
 		$scope.selectedFilter = "0";
