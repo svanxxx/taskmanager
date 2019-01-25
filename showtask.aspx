@@ -38,127 +38,106 @@
 				</div>
 				<div class="hidden-xs row toolbar mb-1" ng-style="defect.DISPO | getDispoColorById:this">
 					<div class="col-sm-3">
-						<div class="row">
-							<div class="col-sm-3">
-								<span class="badge badge-light"><a href="types.aspx" target="_blank">Type:</a></span>
+						<div class="input-group input-group-sm">
+							<div class="input-group-prepend w-25">
+								<span class="input-group-text w-100"><a href="types.aspx" target="_blank">Type</a></span>
 							</div>
-							<div class="col-sm-9">
-								<select class="form-control form-control-sm" id="type" ng-disabled="!canChangeDefect()" ng-model="defect.TYPE">
-									<option value="{{t.ID}}" ng-repeat="t in types">{{t.DESCR}}</option>
-								</select>
-							</div>
+							<select class="form-control" id="type" ng-disabled="!canChangeDefect()" ng-model="defect.TYPE">
+								<option value="{{t.ID}}" ng-repeat="t in types">{{t.DESCR}}</option>
+							</select>
 						</div>
-						<div class="row">
-							<div class="col-sm-3">
-								<span class="badge badge-light"><a href="products.aspx" target="_blank">Product:</a></span>
+						<div class="input-group input-group-sm">
+							<div class="input-group-prepend w-25">
+								<span class="input-group-text w-100"><a href="products.aspx" target="_blank">Product</a></span>
 							</div>
-							<div class="col-sm-9">
-								<select class="form-control form-control-sm" id="product" ng-disabled="!canChangeDefect()" ng-model="defect.PRODUCT">
-									<option value="{{p.ID}}" ng-repeat="p in products">{{p.DESCR}}</option>
-								</select>
-							</div>
+							<select class="form-control" id="product" ng-disabled="!canChangeDefect()" ng-model="defect.PRODUCT">
+								<option value="{{p.ID}}" ng-repeat="p in products">{{p.DESCR}}</option>
+							</select>
 						</div>
-						<div class="row">
-							<div class="col-sm-3">
-								<span class="badge badge-light">Reference:</span>
+						<div class="input-group input-group-sm">
+							<div class="input-group-prepend w-25" title="Reference" data-toggle="tooltip">
+								<span class="input-group-text w-100">Ref</span>
 							</div>
-							<div class="col-sm-9">
-								<input type="text" class="form-control form-control-sm" id="reference" ng-disabled="!canChangeDefect()" ng-model="defect.REFERENCE">
-							</div>
+							<input type="text" class="form-control" id="reference" ng-disabled="!canChangeDefect()" ng-model="defect.REFERENCE">
 						</div>
 					</div>
 					<div class="col-sm-3">
-						<div class="row">
-							<div class="col-sm-3">
-								<span class="badge badge-light"><a href="dispositions.aspx" target="_blank">Disposition:</a></span>
+						<div class="input-group input-group-sm">
+							<div class="input-group-prepend w-25" title="Disposition" data-toggle="tooltip">
+								<span class="input-group-text w-100"><a href="dispositions.aspx" target="_blank">Dispo</a></span>
 							</div>
-							<div class="col-sm-9">
-								<select class="form-control form-control-sm" id="dispo" ng-disabled="!canChangeDefect()" ng-model="defect.DISPO">
-									<option ng-repeat="d in dispos | orderBy:'FORDER'" value="{{d.ID}}" style="background-color: {{d .COLOR}}">{{d.DESCR}}</option>
-								</select>
-							</div>
+							<select class="form-control" id="dispo" ng-disabled="!canChangeDefect()" ng-model="defect.DISPO">
+								<option ng-repeat="d in dispos | orderBy:'FORDER'" value="{{d.ID}}" style="background-color: {{d .COLOR}}">{{d.DESCR}}</option>
+							</select>
 						</div>
-						<div class="row">
-							<div class="col-sm-3">
-								<span class="badge badge-light"><a href="priorities.aspx" target="_blank">Priorities:</a></span>
+						<div class="input-group input-group-sm">
+							<div class="input-group-prepend w-25">
+								<span class="input-group-text w-100"><a href="priorities.aspx" target="_blank">Priority</a></span>
 							</div>
-							<div class="col-sm-9">
-								<select class="form-control form-control-sm" id="prio" ng-disabled="!canChangeDefect()" ng-model="defect.PRIO">
-									<option ng-repeat="p in priorities | orderBy:'FORDER'" value="{{p.ID}}">{{p.DESCR}}</option>
-								</select>
-							</div>
+							<select class="form-control" id="prio" ng-disabled="!canChangeDefect()" ng-model="defect.PRIO">
+								<option ng-repeat="p in priorities | orderBy:'FORDER'" value="{{p.ID}}">{{p.DESCR}}</option>
+							</select>
 						</div>
-						<div class="row">
-							<div class="col-sm-3">
-								<span class="badge badge-light"><a href="components.aspx" target="_blank">Component:</a></span>
+						<div class="input-group input-group-sm">
+							<div class="input-group-prepend w-25" title="Component" data-toggle="tooltip">
+								<span class="input-group-text w-100"><a href="components.aspx" target="_blank">Comp</a></span>
 							</div>
-							<div class="col-sm-9">
-								<select class="form-control form-control-sm" id="comp" ng-disabled="!canChangeDefect()" ng-model="defect.COMP">
-									<option ng-repeat="c in comps | orderBy:'FORDER'" value="{{c.ID}}">{{c.DESCR}}</option>
-								</select>
-							</div>
+							<select class="form-control" id="comp" ng-disabled="!canChangeDefect()" ng-model="defect.COMP">
+								<option ng-repeat="c in comps | orderBy:'FORDER'" value="{{c.ID}}">{{c.DESCR}}</option>
+							</select>
 						</div>
 					</div>
 					<div class="col-sm-3">
-						<div class="row">
-							<div class="col-sm-3">
-								<span class="badge badge-light"><a href="severities.aspx" target="_blank">Severity:</a></span>
+						<div class="input-group input-group-sm">
+							<div class="input-group-prepend w-25">
+								<span class="input-group-text w-100"><a href="severities.aspx" target="_blank">Severity</a></span>
 							</div>
-							<div class="col-sm-9">
-								<select class="form-control form-control-sm" id="dispo" ng-disabled="!canChangeDefect()" ng-model="defect.SEVE">
-									<option ng-repeat="s in severs" value="{{s.ID}}">{{s.DESCR}}</option>
-								</select>
-							</div>
+							<select class="form-control" id="dispo" ng-disabled="!canChangeDefect()" ng-model="defect.SEVE">
+								<option ng-repeat="s in severs" value="{{s.ID}}">{{s.DESCR}}</option>
+							</select>
 						</div>
-						<div class="row">
-							<div class="col-sm-3">
-								<span class="badge badge-light">Date:</span>
+						<div class="input-group input-group-sm">
+							<div class="input-group-prepend w-25">
+								<span class="input-group-text w-100">Date</span>
 							</div>
-							<div class="col-sm-9">
-								<input type="date" id="date" class="form-control form-control-sm" ng-disabled="!canChangeDefect()" ng-model="defect.DATE">
-							</div>
+							<input type="date" id="date" class="form-control" ng-disabled="!canChangeDefect()" ng-model="defect.DATE">
 						</div>
-						<div class="row">
-							<div class="col-sm-3">
-								<span class="badge badge-light">Created:</span>
+						<div class="input-group input-group-sm">
+							<div class="input-group-prepend w-25">
+								<span class="input-group-text w-100">Created</span>
 							</div>
-							<div class="col-sm-9">
-								<select class="form-control form-control-sm" id="created" ng-disabled="!canChangeDefect()" ng-model="defect.CREATEDBY">
-									<option ng-repeat="u in users | orderBy:'FULLNAME'" ng-show="u.ACTIVE" value="{{u.ID}}">{{u.FULLNAME}}</option>
-								</select>
-							</div>
+							<select class="form-control" id="created" ng-disabled="!canChangeDefect()" ng-model="defect.CREATEDBY">
+								<option ng-repeat="u in users | orderBy:'FULLNAME'" ng-show="u.ACTIVE" value="{{u.ID}}">{{u.FULLNAME}}</option>
+							</select>
 						</div>
 					</div>
 					<div class="col-sm-3">
-						<div class="row">
-							<div class="col-sm-3">
-								<span class="badge badge-light"><a href="editplan.aspx?userid={{defect.AUSER | getUserTRIDById:this}}" target="_blank">Assigned:</a></span>
+						<div class="input-group input-group-sm">
+							<div class="input-group-prepend w-25">
+								<span class="input-group-text w-100"><a href="editplan.aspx?userid={{defect.AUSER | getUserTRIDById:this}}" target="_blank">Assigned</a></span>
 							</div>
-							<div class="col-sm-9">
-								<select class="form-control form-control-sm" id="auser" ng-disabled="!canChangeDefect()" ng-model="defect.AUSER">
-									<option ng-repeat="u in users | orderBy:'FULLNAME'" ng-show="u.ACTIVE" value="{{u.ID}}">{{u.FULLNAME}}</option>
-								</select>
-							</div>
+							<select class="form-control" id="auser" ng-disabled="!canChangeDefect()" ng-model="defect.AUSER">
+								<option ng-repeat="u in users | orderBy:'FULLNAME'" ng-show="u.ACTIVE" value="{{u.ID}}">{{u.FULLNAME}}</option>
+							</select>
 						</div>
-						<div class="row">
-							<div class="col-sm-3">
-								<span class="badge badge-light">Estimated:</span>
+						<div class="input-group input-group-sm">
+							<div class="input-group-prepend w-25">
+								<span class="input-group-text w-100">Effort</span>
 							</div>
-							<div class="col-sm-9">
-								<input type="number" id="estim" class="form-control form-control-sm" ng-disabled="!canChangeDefect()" ng-model="defect.ESTIM">
-							</div>
+							<input type="number" id="estim" class="form-control w-25 pr-0" ng-disabled="!canChangeDefect()" ng-model="defect.ESTIM">
+							<select class="form-control w-50" ng-disabled="!canChangeDefect()" ng-model="defect.ESTIMBY">
+								<option ng-repeat="u in users | orderBy:'FULLNAME'" ng-show="u.ACTIVE" value="{{u.ID}}">{{u.FULLNAME}}</option>
+							</select>
 						</div>
-						<div class="row">
-							<div class="col-sm-3">
-								<span class="badge badge-light">Order:</span>
+						<div class="input-group input-group-sm">
+							<div class="input-group-prepend w-25">
+								<span class="input-group-text w-100">Order</span>
 							</div>
-							<div class="col-sm-9">
-								<input type="number" id="order" class="form-control form-control-sm" ng-disabled="!canChangeDefect()" ng-model="defect.ORDER">
-							</div>
+							<input type="number" id="order" class="form-control" ng-disabled="!canChangeDefect()" ng-model="defect.ORDER">
 						</div>
 					</div>
 				</div>
-				<ul id="tasktabs" class="nav nav-pills" role="tablist">
+				<ul id="tasktabs" class="nav nav-tabs nav-justified" role="tablist">
 					<li class="{{specsStyle()}} nav-item"><a class="nav-link small active" data-toggle="tab" href="#specification"><i class="far fa-list-alt"></i>{{tab_specs}}</a></li>
 					<li class="nav-item"><a class="nav-link small" data-toggle="tab" href="#detail"><i class="fas fa-search-plus"></i>&nbsp;Details</a></li>
 					<li class="nav-item" ng-click="changetab($event)"><a class="nav-link small" data-toggle="tab" href="#workflow"><i class="fas fa-sync"></i>{{tab_workflow}}</a></li>

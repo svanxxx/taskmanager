@@ -503,9 +503,10 @@ public partial class Defect : DefectBase
 	static protected string _Desc = "DESCR";
 	static protected string _Specs = "ReproSteps";
 	static protected string _workar = "Workaround";
+	static protected string _estby = "idEstby";
 
-	static string[] _allcols = _allBaseCols.Concat(new string[] { _Specs, _Desc, _workar }).ToArray();
-	static string[] _allcolsNames = _allBaseColsNames.Concat(new string[] { "Specification", "Details", "BST steps" }).ToArray();
+	static string[] _allcols = _allBaseCols.Concat(new string[] { _Specs, _Desc, _workar, _estby }).ToArray();
+	static string[] _allcolsNames = _allBaseColsNames.Concat(new string[] { "Specification", "Details", "BST steps", "Estimated by" }).ToArray();
 	public static string _RepTable = "[TT_RES].[DBO].[REPORTBY]";
 
 	public static void UnLocktask(string ttid, string lockid)
@@ -632,16 +633,16 @@ public partial class Defect : DefectBase
 			SQLExecute(sql);
 			return;
 		}
-		else if (col == _Est)
+		else if (col == _Est || col == _estby)
 		{
-			DefectEvent.AddEventByTask(IDREC, DefectEvent.Eventtype.estimated, "", ESTIM);
+			DefectEvent.AddEventByTask(IDREC, DefectEvent.Eventtype.estimated, ESTIMBY, "", ESTIM);
 			return;
 		}
 		else if (col == _AsUser)
 		{
 			if (!string.IsNullOrEmpty(AUSER))
 			{
-				DefectEvent.AddEventByTask(IDREC, DefectEvent.Eventtype.assigned, "", -1, Convert.ToInt32(AUSER));
+				DefectEvent.AddEventByTask(IDREC, DefectEvent.Eventtype.assigned, CurrentContext.TTUSERID, "", -1, Convert.ToInt32(AUSER));
 			}
 			return;
 		}
@@ -656,6 +657,10 @@ public partial class Defect : DefectBase
 		{
 			return string.Format("(SELECT R.DESCRPTN FROM {2} R WHERE R.IDDEFREC = (SELECT IDRECORD FROM {3} D WHERE D.DEFECTNUM = {0})) {1}", _id, _Desc, _RepTable, _Tabl);
 		}
+		else if (col == _estby)
+		{
+			return string.Format("({0}) {1}", CurrentContext.TTUSERID, _estby);
+		}
 		else if (col == _Specs)
 		{
 			return string.Format("(SELECT R.REPROSTEPS FROM {2} R WHERE R.IDDEFREC = (SELECT IDRECORD FROM {3} D WHERE D.DEFECTNUM = {0})) {1}", _id, _Specs, _RepTable, _Tabl);
@@ -668,6 +673,11 @@ public partial class Defect : DefectBase
 			return true;
 
 		return base.IsColumnComplex(col);
+	}
+	public decimal ESTIMBY
+	{
+		get { return Convert.ToDecimal(this[_estby]); }
+		set { this[_estby] = value; }
 	}
 	public bool REQUESTRESET
 	{

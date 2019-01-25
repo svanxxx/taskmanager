@@ -104,7 +104,7 @@ public class DefectEvent : IdBasedObject
 		}
 		return res;
 	}
-	public static void AddEventByTask(int id, Eventtype type, string notes, int estimation = -1, int assign = -1)
+	public static void AddEventByTask(int id, Eventtype type, decimal usr, string notes, int estimation = -1, int assign = -1)
 	{
 		notes = notes.Replace("'", "''");
 		string sql = string.Format(@"
@@ -133,7 +133,7 @@ public class DefectEvent : IdBasedObject
 			)		
 		", _Tabl,
 			_Proj, _ID, _EvtDefID, _Order, _ParentID, _EvtMUParnt, _idUser, _Dat, _Notes, _TimeSpent, _RsltState, _RelVersion, _AsgndUsers, _GenByType, _CreatorID, _DefAsgEff, _OvrWF, _OvrWFUsrID,
-			id, CurrentContext.User.TTUSERID, estimation, (int)type, assign == -1 ? "' '" : assign.ToString());
+			id, usr, estimation, (int)type, assign == -1 ? "' '" : assign.ToString());
 
 		SQLExecute(sql);
 	}

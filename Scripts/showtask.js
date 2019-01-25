@@ -353,6 +353,7 @@
 					if ($scope.defect) {
 						$scope.defect.DATE = StringToDate($scope.defect.DATE);
 						$scope.defect.CREATEDBY = "" + $scope.defect.CREATEDBY;
+						$scope.defect.ESTIMBY = "" + $scope.defect.ESTIMBY;
 						if ($scope.defect.ORDER == -1) {
 							$scope.defect.ORDER = null;
 						}
