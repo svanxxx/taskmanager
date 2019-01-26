@@ -115,7 +115,7 @@ public class DefectEvent : IdBasedObject
 			   1
 			 , (select max({2}) + 1 from {0} E1 where {2} < 3000000)
 			 , {22}
-			 , (select max(E1.{4}) + 1 from {0} E1 where E1.{5} = {19})
+			 , (select CASE WHEN max(E1.{4}) IS NULL THEN 1 ELSE max(E1.{4}) + 1 END from {0} E1 where E1.{5} = {19})
 			 , {19}
 			 , 4294967295
 			 , {20}
