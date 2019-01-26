@@ -4,3 +4,5 @@
 /UTest/obj/Debug/*
 /bin/GitHelper.dll
 /bin/GitHelper.pdb
+# Ignore NuGet Packages
+*.nupkg
