@@ -134,6 +134,8 @@
 								<span class="input-group-text w-100">Order</span>
 							</div>
 							<input type="number" id="order" class="form-control" ng-disabled="!canChangeDefect()" ng-model="defect.ORDER">
+							<button ng-disabled="!canChangeDefect()" type="button" class="bnt btn-outline-default" ng-click="chgOrder(false)"><i class="fas fa-arrow-up"></i></button>
+							<button ng-disabled="!canChangeDefect()" type="button" class="bnt btn-outline-default" ng-click="chgOrder(true)"><i class="fas fa-arrow-down"></i></button>
 						</div>
 					</div>
 				</div>

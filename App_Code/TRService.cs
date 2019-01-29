@@ -221,6 +221,11 @@ public class TRService : System.Web.Services.WebService
 	public string settask(Defect d)
 	{
 		Defect dstore = new Defect(d.ID);
+		if (d.ORDER != dstore.ORDER)
+		{
+			//copy object specifics for multiple savings from same page: only order change should be processed.
+			d.BACKORDER = dstore.BACKORDER;
+		}
 		dstore.FromAnotherObject(d);
 		dstore.REQUESTRESET = d.REQUESTRESET;
 		if (dstore.IsModified())

@@ -73,6 +73,23 @@
 			}
 			return "";
 		};
+		$scope.chgOrder = function (inc) {
+			if (inc) {
+				if (!$scope.defect.ORDER) {
+					$scope.defect.ORDER = 1;
+				} else {
+					$scope.defect.ORDER++;
+				}
+			} else {
+				if (!$scope.defect.ORDER) {
+					$scope.defect.ORDER = 1;
+				} else {
+					if ($scope.defect.ORDER > 1) {
+						$scope.defect.ORDER--;
+					}
+				}
+			}
+		};
 		$scope.sendEmail = function () {
 			var emailpr = StartProgress("Sending email...");
 			$http.post("trservice.asmx/alarmEmail", JSON.stringify({ "ttid": ttid, "addresses": $scope.addresses }))
