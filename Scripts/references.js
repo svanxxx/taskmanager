@@ -249,6 +249,14 @@ function createTT() {
 function reActivateTooltips() {
 	setTimeout(function () { $('[data-toggle="tooltip"]').tooltip({ html: true }); }, 1000);//when data loaded - activate tooltip.
 }
+function killTooltips() {
+	setTimeout(function () {
+		var elements = document.getElementsByClassName("tooltip");
+		while (elements.length > 0) {
+			elements[0].parentNode.removeChild(elements[0]);
+		}
+	}, 500);
+}
 function copyurl(txt) {
 	var $temp = $("<input>");
 	$("body").append($temp);

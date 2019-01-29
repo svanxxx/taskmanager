@@ -34,6 +34,7 @@ $(function () {
 			$scope.changeuser($scope.currentuser, false);
 		};
 		$scope.scheduletask = function (d) {
+			killTooltips();
 			for (var i = $scope.unscheduled.length - 1; i >= 0; i--) {
 				if ($scope.unscheduled[i].ID == d.ID) {
 					$scope.unscheduled.splice(i, 1);
