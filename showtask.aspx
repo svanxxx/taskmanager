@@ -124,7 +124,7 @@
 							<div class="input-group-prepend w-25">
 								<span class="input-group-text w-100">Effort</span>
 							</div>
-							<input type="number" id="estim" class="form-control w-25 pr-0" ng-disabled="!canChangeDefect()" ng-model="defect.ESTIM">
+							<input type="number" min="1" max="999" id="estim" class="form-control w-25 pr-0" ng-disabled="!canChangeDefect()" ng-model="defect.ESTIM">
 							<select class="form-control w-50" ng-disabled="!canChangeDefect()" ng-model="defect.ESTIMBY">
 								<option ng-repeat="u in users | orderBy:'FULLNAME'" ng-show="u.ACTIVE" value="{{u.ID}}">{{u.FULLNAME}}</option>
 							</select>

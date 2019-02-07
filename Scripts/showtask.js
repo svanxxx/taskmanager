@@ -426,6 +426,9 @@
 		$scope.$watchCollection('defect', function (newval, oldval) {
 			if (newval && oldval) {
 				if (!$scope.reloading) {
+					if (!newval.ESTIM || newval.ESTIM < 1) {
+						$scope.defect.ESTIM = 1;
+					}
 					$scope.changed = true;
 				} else {
 					$scope.reloading = false;
@@ -461,12 +464,12 @@
 			$scope.defect.BSTCOMMANDS = "";
 			$scope.defect.REQUESTRESET = true;
 
-			$scope.defect.DISPO = ""+$scope.defectDefaults.DISP;
-			$scope.defect.TYPE = "" +$scope.defectDefaults.TYPE;
-			$scope.defect.PRODUCT = "" +$scope.defectDefaults.PRODUCT;
-			$scope.defect.PRIO = "" +$scope.defectDefaults.PRIO;
-			$scope.defect.COMP = "" +$scope.defectDefaults.COMP;
-			$scope.defect.SEVE = "" +$scope.defectDefaults.SEVR;
+			$scope.defect.DISPO = "" + $scope.defectDefaults.DISP;
+			$scope.defect.TYPE = "" + $scope.defectDefaults.TYPE;
+			$scope.defect.PRODUCT = "" + $scope.defectDefaults.PRODUCT;
+			$scope.defect.PRIO = "" + $scope.defectDefaults.PRIO;
+			$scope.defect.COMP = "" + $scope.defectDefaults.COMP;
+			$scope.defect.SEVE = "" + $scope.defectDefaults.SEVR;
 			$scope.defect.ESTIM = $scope.defectDefaults.ESTIMATED;
 
 			if ($scope.attachs) {
