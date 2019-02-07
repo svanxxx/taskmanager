@@ -246,7 +246,7 @@
 						<button type="button" ng-disabled="!canChangeDefect()" ng-click="addFile()" id="button" class="btn btn-primary btn-xs">Add File...</button>
 						<ul>
 							<li ng-style="a.deleted ? {'text-decoration':'line-through'} : ''" ng-repeat="a in attachs">
-								<a target="_blank" href="getattach.aspx?idrecord={{a.ID+'&ext='+getfileext(a.FILENAME)}}">
+								<a target="_blank" href="getTaskAttachment.ashx?idrecord={{a.ID+'&ext='+getfileext(a.FILENAME)}}">
 									<span>{{a.FILENAME}}</span>
 									<img ng-src="getAttachImg.ashx?idrecord={{a.ID+'&ext='+getfileext(a.FILENAME)}}" style="max-width: 100%" />
 									<img ng-src="{{a.newblob}}" style="max-width: 100%" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 public class DefectAttach : IdBasedObject
 {
@@ -72,6 +73,11 @@ public class DefectAttach : IdBasedObject
 		int taksid = Defect.GetIDbyTT(ttid);
 		int repid = Defect.GetRepRecByTTID(taksid);
 		byte[] filedata = Convert.FromBase64String(data);
+		byte[] filedata4Disk = filedata;
+		if (filedata.Length > 1024 * 1024 * 5)
+		{
+			filedata = new byte[0];
+		}
 		int key = DefectAttach.AddObject(
 												_FileTabl,
 												new string[] { "idRecord", "ProjectID", "ArchvFile", "FileData" },
@@ -83,7 +89,7 @@ public class DefectAttach : IdBasedObject
 												},
 												"IDRECORD"
 												);
-		DefectAttach.AddObject(
+		int attkey = DefectAttach.AddObject(
 												_Tabl,
 												new string[] { _ID, _Proj, _Entit, _AttType, _Rid, _Name, _Mac, _MacCr, _DateC, _Size, _File, _Compr, _InDB },
 												new object[] {
@@ -103,6 +109,17 @@ public class DefectAttach : IdBasedObject
 												},
 												"IDRECORD"
 												);
+
+		if (filedata.Length < 1)
+		{
+			if (!Directory.Exists(Settings.CurrentSettings.DEFECTATTACHDIR))
+			{
+				Directory.CreateDirectory(Settings.CurrentSettings.DEFECTATTACHDIR);
+			}
+			DefectAttach da = new DefectAttach(attkey);
+			File.WriteAllBytes(da.FileOnDisk, filedata4Disk);
+		}
+
 		DefectHistory.AddHisotoryByTask(taksid, string.Format("Added attachment: {0}", filename));
 	}
 	public static void DeleteAttach(string ttid, int id)
@@ -110,14 +127,37 @@ public class DefectAttach : IdBasedObject
 		DefectAttach a = new DefectAttach(id);
 		int taksid = Defect.GetIDbyTT(Convert.ToInt32(ttid));
 		DefectHistory.AddHisotoryByTask(taksid, string.Format("Deleted attachment: {0}", a.FILENAME));
+		string fname = a.FileOnDisk;
+		if (File.Exists(fname))
+		{
+			File.Delete(fname);
+		}
 		DeleteObject(_Tabl, id.ToString(), _ID);
 	}
+	public string FileOnDisk
+	{
+		get
+		{
+			return Settings.CurrentSettings.DEFECTATTACHDIR + ARCHIVE;
+		}
+	}
+	public bool IsFileOnDisk
+	{
+		get
+		{
+			return File.Exists(FileOnDisk);
+		}
+	}
+
 	public byte[] FileBinary()
 	{
 		byte[] bytes = (byte[])GetRecdata(_FileTabl, "filedata", _File, string.Format("'{0}'", ARCHIVE));
-		if (bytes == null) //stored not id db - go to folder
+		if (bytes == null || bytes.Length < 1) //stored not id db - go to folder
 		{
-			bytes = System.IO.File.ReadAllBytes(string.Format(@"{0}{0}", Settings.CurrentSettings.DEFECTATTACHDIR, ARCHIVE));
+			if (File.Exists(FileOnDisk))
+			{
+				bytes = File.ReadAllBytes(FileOnDisk);
+			}
 		}
 		return bytes;
 	}

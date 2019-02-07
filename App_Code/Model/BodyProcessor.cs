@@ -8,7 +8,7 @@ public class BodyProcessor
 	private static readonly string img = "<img src='{0}'/>";
 	private static readonly string ttident = "SHOWTASK.ASPX?TTID=";
 	private static readonly string wikiident = "FIELDPROWIKI/INDEX.PHP?TITLE=";
-	private static readonly string imgident = "GETATTACH.ASPX?IDRECORD=";
+	private static readonly string imgident = "getTaskAttachment.ashx?IDRECORD=";
 
 	public BodyProcessor()
 	{
