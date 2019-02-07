@@ -501,7 +501,7 @@ public partial class Defect : DefectBase
 	static protected string _bstsep = "====bst_data_separator====";
 	static public string _DescInt = "DESCRPTN";
 	static protected string _Desc = "DESCR";
-	static protected string _Specs = "ReproSteps";
+	static public string _Specs = "ReproSteps";
 	static protected string _workar = "Workaround";
 	static protected string _estby = "idEstby";
 
