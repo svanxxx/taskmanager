@@ -226,7 +226,7 @@ function openTask(ttid) {
 	window.open("showtask.aspx?ttid=" + ttid, '_blank');
 }
 function enterTT() {
-	var ttid = parseInt(prompt("Please enter TT ID", getParameterByName("ttid")));
+	var ttid = parseInt(prompt("Please enter TT ID"));
 	if (!isNaN(ttid)) {
 		openTask(ttid);
 	}
