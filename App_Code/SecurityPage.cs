@@ -78,7 +78,7 @@ public class SecurityPage : System.Web.UI.Page
 		string ttid = GetPageTTID();
 		if (!string.IsNullOrEmpty(ttid))
 		{
-			return DefectBase.GetTaskDispName(int.Parse(ttid));
+			return DefectBase.GetTaskDispName(int.Parse(ttid)).Replace("\"", "&quot;").Replace("\'", "&apos;");
 		}
 		return "";
 	}
