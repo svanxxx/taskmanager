@@ -34,7 +34,7 @@ public class TRService : System.Web.Services.WebService
 	{
 		foreach (var d in data)
 		{
-			var dstore = Activator.CreateInstance(d.GetType(), d.GetID()) as IdBasedObject;
+			var dstore = Activator.CreateInstance(d.GetType(), d.GetID()) as Reference;
 			dstore.FromAnotherObject(d);
 			if (dstore.IsModified())
 			{
@@ -772,7 +772,7 @@ public class TRService : System.Web.Services.WebService
 			TelegramBotClient client = new TelegramBotClient(Settings.CurrentSettings.TELEGRAMTESTTOKEN);
 			client.GetMeAsync().Wait();
 			DefectUser u = new DefectUser(b.TTUSERID);
-			string mess = string.Format("New task from {3} is ready for tests!<a href='{0}{1}{2}'>&#8205;</a>", Settings.CurrentSettings.GLOBALSITEURL, StaticSettings.DefectUrl, b.TTID, u.FULLNAME);
+			string mess = $"New task from {u.FULLNAME} is ready for tests!<a href='{Settings.CurrentSettings.GetTTURL(b.TTID)}'>&#8205;</a>";
 			client.SendTextMessageAsync(Settings.CurrentSettings.TELEGRAMTESTCHANNEL, mess, Telegram.Bot.Types.Enums.ParseMode.Html).Wait();
 		}
 

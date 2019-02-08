@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Web;
 
@@ -250,6 +251,10 @@ public class RawSettings
 		{
 			values[dr["NAME"].ToString()] = dr["VALUE"].ToString();
 		}
+	}
+	public string GetTTURL(int ttid)
+	{
+		return $"{GLOBALSITEURL}{StaticSettings.DefectUrl}{ttid}&tstamp={DateTime.Now.Ticks}";
 	}
 	public RawSettings(bool loaddata)
 	{
