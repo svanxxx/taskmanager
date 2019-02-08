@@ -28,7 +28,7 @@
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-	background-color: #c1dcf9eb;
+	background-color: #9e9e9e;
 }
 
 .btn-outline-info {
@@ -40,5 +40,5 @@
 	}
 
 .nav-item:hover {
-	background-color: #007bff;
+	background-color: #9e9e9e73;
 }

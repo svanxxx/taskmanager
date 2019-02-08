@@ -15,8 +15,8 @@
 			<button type="button" class="btn btn-lg btn-danger" ng-click="discardDefects()">Discard</button>
 		</div>
 		<div class="d-flex">
-			<button type="button" class="flex-fill btn {{currentuserid===u.ID?'btn-primary':'btn-outline-info'}}" ng-click="changeuser(u, true)" ng-repeat="u in filtered = (users | filter:{ INWORK: true })">
-				<img class="rounded-circle" ng-src="{{'getUserImg.ashx?id=' + u.ID}}" alt="Smile" height="30" width="30" style="margin: auto;" />
+			<button type="button" class="flex-fill btn btn-sm {{currentuserid===u.ID?'btn-secondary':'btn-outline-secondary'}}" ng-click="changeuser(u, true)" ng-repeat="u in filtered = (users | filter:{ INWORK: true })" data-toggle="tooltip" title="{{u.PERSON_NAME}}">
+				<img class="rounded-circle" ng-src="{{'getUserImg.ashx?id=' + u.ID}}" alt="Smile" height="20" width="20" style="margin: auto;" />
 				{{u.LOGIN}}
 			</button>
 		</div>
@@ -46,14 +46,16 @@
 			</div>
 			<div class="col-xl-9 col-lg-10">
 				<div>
-					<ul class="nav nav-pills nav-justified">
-						<li class="nav-item">
+					<ul class="nav nav-pills nav-justified p-0">
+						<li class="nav-item p-0">
 							<a class="nav-link active" data-toggle="pill" href="#plan">
 								<span>Plan </span>
 								<span class="badge badge-light">{{defects.length}}</span>
 							</a>
 						</li>
-						<li class="nav-item"><a class="nav-link" data-toggle="pill" href="#unscheduled">Unscheduled <span class="badge badge-light">{{unscheduled.length}}</span></a></li>
+						<li class="nav-item p-0">
+							<a class="nav-link" data-toggle="pill" href="#unscheduled">Unscheduled <span class="badge badge-light">{{unscheduled.length}}</span></a>
+						</li>
 					</ul>
 					<div class="tab-content panel panel-default">
 						<div id="plan" class="tab-pane active">
