@@ -22,8 +22,8 @@
 		<div class="row">
 			<div class="col-lg-2">
 				<div class="btn-group-vertical btn-block" ng-cloak ng-show="changed">
-					<button type="button" class="btn btn-outline-success" ng-click="saveDefect()">Save</button>
-					<button type="button" class="btn btn-outline-danger" ng-click="discardDefect()">Discard</button>
+					<button type="button" class="btn btn-success" ng-click="saveDefect()">Save</button>
+					<button type="button" class="btn btn-danger" ng-click="discardDefect()">Discard</button>
 				</div>
 				<button onclick="copyurl()" type="button" class="btn btn-outline-secondary btn-block btn-sm">Copy link&nbsp;<i class="fas fa-link"></i></button>
 				<button ng-click="duplicate()" type="button" class="btn btn-outline-secondary btn-block btn-sm">Duplicate&nbsp;<i class="fas fa-clone"></i></button>

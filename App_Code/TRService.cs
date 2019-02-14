@@ -184,6 +184,7 @@ public class TRService : System.Web.Services.WebService
 		d.From(old);
 		d.AUSER = "";
 		d.ESTIM = 0;
+		d.ORDER = -1;
 		d.Store();
 		return d.ID;
 	}
