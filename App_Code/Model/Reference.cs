@@ -49,6 +49,7 @@ public class Reference : IdBasedObject
 		get { return Convert.ToInt32(this[_idOrd]); }
 		set { this[_idOrd] = value; }
 	}
+	public bool NEW { get; set; }
 
 	protected Reference(string table, string[] columns, string id, string pcname = "ID", bool doload = true)
 		: base(table, columns, id, pcname, doload)

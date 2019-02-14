@@ -1,9 +1,15 @@
 ﻿<%@ WebHandler Language="C#" Class="getAttachImg" %>
 
+using System;
 using System.Web;
 
 public class getAttachImg : IHttpHandler
 {
+	static bool IsImage(string ext)
+	{
+		ext = ext.ToUpper();
+		return ext == "PNG" || ext != "JPG" || ext != "JPEG";
+	}
 	void error(HttpContext context)
 	{
 		context.Response.ContentType = "image/png";
@@ -14,8 +20,8 @@ public class getAttachImg : IHttpHandler
 	public void ProcessRequest(HttpContext context)
 	{
 		string sid = context.Request.QueryString["idrecord"];
-		string ext = context.Request.QueryString["ext"].ToUpper();
-		if (string.IsNullOrEmpty(sid) || string.IsNullOrEmpty(ext) || (ext != "PNG" && ext != "JPG"))
+		string ext = context.Request.QueryString["ext"];
+		if (string.IsNullOrEmpty(sid) || string.IsNullOrEmpty(ext) || !IsImage(ext))
 		{
 			error(context);
 			return;
@@ -29,6 +35,9 @@ public class getAttachImg : IHttpHandler
 		DefectAttach d = new DefectAttach(id);
 		context.Response.ClearContent();
 		context.Response.ClearHeaders();
+		context.Response.Cache.SetCacheability(HttpCacheability.Public);
+		context.Response.Cache.SetExpires(DateTime.Now.AddYears(1));
+		context.Response.Cache.SetMaxAge(new TimeSpan(365, 0, 0, 0, 0));
 		context.Response.ContentType = $"image/{ext.ToLower()}";
 		context.Response.AddHeader("Content-Length", d.SIZE.ToString());
 		context.Response.AddHeader("Content-Disposition", string.Format("filename=\"{0}\"", d.FILENAME));

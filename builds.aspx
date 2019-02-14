@@ -15,9 +15,15 @@
 	<input type="hidden" id="buildtime" value="<%=Settings.CurrentSettings.BUILDTIME.ToString()%>" />
 	<div ng-app="mpsapplication" ng-controller="mpscontroller">
 		<div class="card" ng-cloak>
-			<div class="card-header" style="text-align: center">
-				<div class="alert alert-info mb-0">
-					<a class="alert-link" href="builds.aspx"><i class="fab fa-linode"></i> Builds History</a>
+			<div class="card-header p-1">
+				<div class="row">
+					<div class="col-sm-9 mt-1">
+						<h5 class="ml-2" style="display:inline"><i class="fab fa-linode"></i></h5>
+						<button type="button" class="btn btn-outline-light text-dark btn-sm" onClick="window.location='builds.aspx'">Builds History</button>
+					</div>
+					<div class="col-sm-3">
+						<uc:pagercontrol runat="server" />						
+					</div>
 				</div>
 			</div>
 			<div class="card-body">
@@ -62,6 +68,5 @@
 				</div>
 			</div>
 		</div>
-		<uc:pagercontrol runat="server" />
 	</div>
 </asp:Content>

@@ -145,7 +145,7 @@ public class DefectBuild : IdBasedObject
 						}
 					case BuildStatus.finishedok:
 						{
-							return "#8bc34a3d";
+							return "#00ff001a";
 						}
 					case BuildStatus.cancelled:
 						{

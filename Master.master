@@ -20,6 +20,19 @@
 	</asp:ContentPlaceHolder>
 	<script>
 		$(function () {
+			$('#createttbtn').click(function () {
+				createTT($('#tttext')[0].value);
+				$('#addtask').modal('hide');
+			});
+			$('#tttext').keydown(function (key) {
+				if (key.which === 13) {
+					createTT($('#tttext')[0].value);
+					$('#addtask').modal('hide');
+				}
+			});
+			$('#addtask').on('shown.bs.modal', function () {
+				$('#tttext').focus();
+			});
 			$('#footerp').html("&copy; " + (new Date().getFullYear()) + " MPS tasks control system");
 			$('a').each(function () {
 				if (window.location.href.toUpperCase().indexOf($(this).prop('href').toUpperCase()) != -1) {
@@ -34,6 +47,28 @@
 	<input type="hidden" id="isadmin" value="<%=CurrentContext.Admin.ToString()%>" />
 	<input type="hidden" id="userid" value="<%=CurrentContext.UserID.ToString()%>" />
 	<input type="hidden" id="ttuserid" value="<%=CurrentContext.TTUSERID.ToString()%>" />
+
+	<div class="modal" id="addtask">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">You are about to create new task</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<label for="usr">Task Summary:</label>
+						<input type="text" class="form-control" id="tttext" value="Free To Use">
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" id="createttbtn">Create</button>
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<nav class="navbar navbar-expand-md bg-dark navbar-dark">
 		<a class="navbar-brand" href="<%= Settings.CurrentSettings.COMPANYSITE.ToString()%>"><%= Settings.CurrentSettings.COMPANYNAME.ToString()%></a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
@@ -44,18 +79,18 @@
 				<li><a class="nav-link pl-3" href="mytr.aspx"><i class="fa fa-list-alt"></i>&nbsp;My TR</a></li>
 				<li><a class="nav-link pl-3" href="ttrep.aspx"><i class="fa fa-tasks"></i>&nbsp;Tasks</a></li>
 				<li><a class="nav-link pl-3" href="javascript:enterTT();"><i class="fas fa-bolt"></i>&nbsp;Show Task</a></li>
-				<li><a class="nav-link pl-3" href="javascript:createTT();"><i class="far fa-plus-square"></i>&nbsp;Add Task</a></li>
+				<li><a class="nav-link pl-3" href data-toggle="modal" data-target="#addtask"><i class="far fa-plus-square"></i>&nbsp;Add Task</a></li>
 				<li><a class="nav-link pl-3" href="editplan.aspx"><i class="fa fa-calendar"></i>&nbsp;Edit Plan</a></li>
 				<li class="nav-item dropdown">
 					<a class="nav-link pl-3 dropdown-toggle" href="#" data-toggle="dropdown">Reports
 					</a>
 					<div class="dropdown-menu">
-						<a class="dropdown-item" href="vacations.aspx"><i class="fa fa-plane"></i> Vacations</a>
-						<a class="dropdown-item" href="dailyreport.aspx"><i class="fa fa-book"></i> Daily Report</a>
-						<a class="dropdown-item" href="dailysearch.aspx"><i class="fas fa-search"></i> Daily Search</a>
-						<a class="dropdown-item" href="statistics.aspx"><i class="fa fa-book"></i> Statistics</a>
-						<a class="dropdown-item" href="builds.aspx"><i class="fab fa-linode"></i> Builds</a>
-						<a class="dropdown-item" href="branches.aspx"><i class="fas fa-code-branch"></i> Branches</a>
+						<a class="dropdown-item" href="vacations.aspx"><i class="fa fa-plane"></i>Vacations</a>
+						<a class="dropdown-item" href="dailyreport.aspx"><i class="fa fa-book"></i>Daily Report</a>
+						<a class="dropdown-item" href="dailysearch.aspx"><i class="fas fa-search"></i>Daily Search</a>
+						<a class="dropdown-item" href="statistics.aspx"><i class="fa fa-book"></i>Statistics</a>
+						<a class="dropdown-item" href="builds.aspx"><i class="fab fa-linode"></i>Builds</a>
+						<a class="dropdown-item" href="branches.aspx"><i class="fas fa-code-branch"></i>Branches</a>
 					</div>
 				</li>
 				<li><a class="nav-link pl-3" href="machines.aspx"><i class="fas fa-desktop"></i>&nbsp;Machines</a></li>

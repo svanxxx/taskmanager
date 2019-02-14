@@ -231,13 +231,27 @@ function enterTT() {
 		openTask(ttid);
 	}
 }
-function createTT() {
-	var summary = prompt("Enter Summary For New Task:", "Free To Use");
+function allowPosNumbers(e) {
+	if (!(
+			   (e.keyCode > 95 && e.keyCode < 106) //numpad numbers
+			|| (e.keyCode > 47 && e.keyCode < 58)  //numbers
+			|| (e.keyCode === 8)							//backspace
+			|| (e.keyCode === 9)							//tab
+			|| (e.keyCode === 13)						//enter
+			|| (e.keyCode === 45)						//insert - for pasting
+			|| (e.keyCode > 36 && e.keyCode < 41)	//left right up and down
+		)) {
+		e.preventDefault();
+		console.log(e.keyCode);
+		return false;
+	}
+}
+function createTT(summary) {
 	if (summary !== "" && summary !== null) {
 		$.ajax({
 			type: "POST",
 			url: GetSitePath() + "trservice.asmx/newTask",
-			data: JSON.stringify({ "summary": summary}),
+			data: JSON.stringify({ "summary": summary }),
 			contentType: "application/json; charset=utf-8",
 			dataType: "json",
 			success: function (mess) {

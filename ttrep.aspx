@@ -91,7 +91,7 @@
 					<div class="input-group-prepend">
 						<span class="input-group-text">Enter phrase in double quotes or a set of words to be found:</span>
 					</div>
-					<input class="form-control" id="searchtxt" type="search" ng-model="DefectsFilter.text" ng-change="changed=true" ng-keypress="onGo($event)" autofocus />
+					<input class="form-control" id="searchtxt" type="search" name="srch" ng-model="DefectsFilter.text" ng-change="changed=true" ng-keypress="onGo($event)" autofocus />
 				</div>
 			</div>
 		</div>

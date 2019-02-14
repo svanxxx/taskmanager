@@ -74,7 +74,9 @@
 			return "";
 		};
 		$scope.chgOrder = function (inc) {
-			if (inc) {
+			if (typeof (inc) === "undefined") {
+				$scope.defect.ORDER = undefined;
+			} else if (inc) {
 				if (!$scope.defect.ORDER) {
 					$scope.defect.ORDER = 1;
 				} else {
@@ -214,7 +216,7 @@
 			$scope.saving = true;
 			var copy = Object.assign({}, $scope.defect);
 			copy.DATE = DateToString(copy.DATE);
-			if (!copy.ORDER) {
+			if (!copy.ORDER || copy.ORDER < 1) {
 				copy.ORDER = -1;
 			}
 
@@ -428,6 +430,9 @@
 				if (!$scope.reloading) {
 					if (!newval.ESTIM || newval.ESTIM < 1) {
 						$scope.defect.ESTIM = 1;
+					}
+					if (newval.ORDER < 1) {
+						$scope.defect.ORDER = 1;
 					}
 					$scope.changed = true;
 				} else {

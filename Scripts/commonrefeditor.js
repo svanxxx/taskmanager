@@ -31,6 +31,9 @@
 			}
 		});
 
+		$scope.readonly = function () {
+			return !IsAdmin() || inProgress();
+		};
 		$scope.changed = false;
 		$scope.itemchanged = function (r) {
 			r.changed = true;

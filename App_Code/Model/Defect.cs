@@ -116,7 +116,7 @@ public partial class DefectBase : IdBasedObject
 		get { return this[_Est] == DBNull.Value ? 0 : Convert.ToInt32(this[_Est]); }
 		set
 		{
-			if (value == 0 && this[_Est] != DBNull.Value)
+			if (value < 0 && this[_Est] != DBNull.Value)
 			{
 				this[_Est] = DBNull.Value;
 			}
@@ -138,7 +138,7 @@ public partial class DefectBase : IdBasedObject
 			{
 				OnBackOrderChanged();
 			}
-			if (value == -1)
+			if (value < 0)
 			{
 				this[_BackOrder] = DBNull.Value;
 			}
@@ -162,7 +162,7 @@ public partial class DefectBase : IdBasedObject
 			{
 				this[_sMod] = CurrentContext.User.EMAIL;
 			}
-			if (value == -1)
+			if (value < 0)
 			{
 				this[_Order] = DBNull.Value;
 			}
@@ -269,12 +269,21 @@ public partial class DefectBase : IdBasedObject
 		}
 		else if (col == _BackOrder)
 		{
+			//do not change order of unassigned tasks. skip order modification
+			if (string.IsNullOrEmpty(AUSER) || IsModifiedCol(_Order))
+			{
+				return;
+			}
 			string sqlupdate = string.Format("UPDATE {0} SET {1} = {2} WHERE {3} = {4}", _Tabl, _Order, BACKORDER, _idRec, IDREC);
 			SQLExecute(sqlupdate);
 			return;
 		}
 		if (col == _Order)
 		{
+			if (string.IsNullOrEmpty(AUSER))
+			{
+				return;
+			}
 			if (val == DBNull.Value)
 			{
 				string sqlupdate = string.Format("UPDATE {0} SET {1} = NULL WHERE {3} = {4}", _Tabl, _Order, val, _idRec, IDREC);
