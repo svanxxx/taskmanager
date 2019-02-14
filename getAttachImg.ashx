@@ -1,6 +1,5 @@
 ﻿<%@ WebHandler Language="C#" Class="getAttachImg" %>
 
-using System;
 using System.Web;
 
 public class getAttachImg : IHttpHandler
@@ -15,8 +14,8 @@ public class getAttachImg : IHttpHandler
 	public void ProcessRequest(HttpContext context)
 	{
 		string sid = context.Request.QueryString["idrecord"];
-		string ext = context.Request.QueryString["ext"];
-		if (string.IsNullOrEmpty(sid) || string.IsNullOrEmpty(ext) || ext.ToUpper() != "PNG")
+		string ext = context.Request.QueryString["ext"].ToUpper();
+		if (string.IsNullOrEmpty(sid) || string.IsNullOrEmpty(ext) || (ext != "PNG" && ext != "JPG"))
 		{
 			error(context);
 			return;
@@ -30,7 +29,7 @@ public class getAttachImg : IHttpHandler
 		DefectAttach d = new DefectAttach(id);
 		context.Response.ClearContent();
 		context.Response.ClearHeaders();
-		context.Response.ContentType = "image/png";
+		context.Response.ContentType = $"image/{ext.ToLower()}";
 		context.Response.AddHeader("Content-Length", d.SIZE.ToString());
 		context.Response.AddHeader("Content-Disposition", string.Format("filename=\"{0}\"", d.FILENAME));
 		byte[] bytes = d.FileBinary();
