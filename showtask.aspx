@@ -160,18 +160,31 @@
 						<textarea class="form-control form-control-sm" id="Description" rows="30" ng-disabled="!canChangeDefect()" ng-model="defect.DESCR"></textarea>
 					</div>
 					<div id="bst" class="tab-pane fade">
+						<div class="alert alert-secondary p-2 m-0">
+							<div class="input-group input-group-sm">
+								<div class="input-group-prepend">
+									<span class="input-group-text">BST Branch:</span>
+								</div>
+								<input type="text" class="form-control" ng-disabled="!canChangeDefect()" ng-model="defect.BRANCHBST">
+							</div>
+						</div>
 						<div class="row">
-							<div class="col-md-3">
-								<input class="form-control form-control-sm" ng-model="batchsearch" type="text" />
+							<div class="col-md-3 pr-0">
+								<div class="input-group input-group-sm">
+									<div class="input-group-prepend">
+										<span class="input-group-text"><i class="fas fa-search"></i></span>
+									</div>
+									<input class="form-control" ng-model="batchsearch" type="text" />
+								</div>
 								<ul class="nav nav-pills nav-justified">
 									<li class="nav-item" ng-repeat="s in batchesslots">
-										<a data-toggle="pill" class="nav-link py-1 {{$index==0?'active':''}}" href="#batches{{$index}}">{{$index+1}}</a>
+										<a data-toggle="pill" class="nav-link p-0 {{$index==0?'active':''}}" href="#batches{{$index}}">{{$index+1}}</a>
 									</li>
 								</ul>
 								<div class="tab-content">
 									<div id="batches{{$index}}" class="tab-pane {{$index==0?'active':'fade'}}" ng-repeat="s in batchesslots">
 										<div class="list-group">
-											<a href="#" ng-click="add2Bst(batch)" class="list-group-item py-2" ng-repeat="batch in s">{{batch}}</a>
+											<a href="#" ng-click="add2Bst(batch)" class="list-group-item py-1" ng-repeat="batch in s">{{batch}}</a>
 										</div>
 									</div>
 								</div>
@@ -272,20 +285,16 @@
 					</div>
 					<div id="taskgit" class="tab-pane fade">
 						<div class="card">
-							<div class="card-header bg-info">
-								<div class="row">
-									<div class="col-md-3">
-										<label>Git branch (default is TT ID):</label>
+							<div class="card-header bg-light m-0 p-2">
+								<div class="input-group input-group-sm">
+									<div class="input-group-prepend">
+										<span class="input-group-text">Branch:</span>
 									</div>
-									<div class="col-md-3">
-										<input type="text" class="form-control" ng-disabled="!canChangeDefect()" ng-model="defect.BRANCH">
-									</div>
-									<div class="col-md-3">
-										<a href="builder.aspx" ng-show="isrelease()" class="btn btn-info btn-right-align" role="button">Release Marker</a>
-									</div>
-									<div class="col-md-3">
-										<button type="button" class="btn btn-sm btn-danger btn-right-align" ng-disabled="!commits||commits.length<1" ng-click="deleteBranch()">Delete Branch</button>
-										<button type="button" class="btn btn-sm btn-success btn-right-align" ng-click="loadCommits()">Scan Branch</button>
+									<input type="text" class="form-control" ng-disabled="!canChangeDefect()" ng-model="defect.BRANCH">
+									<div class="input-group-append">
+										<button type="button" ng-show="!isrelease()" class="btn btn-success" ng-click="loadCommits()">Scan Branch</button>
+										<button type="button" ng-show="!isrelease()" class="btn btn-danger" ng-disabled="!commits||commits.length<1" ng-click="deleteBranch()">Delete Branch</button>
+										<a href="builder.aspx" ng-show="isrelease()" class="btn btn-secondary" role="button">Release Marker</a>
 									</div>
 								</div>
 							</div>

@@ -386,7 +386,7 @@
 		$scope.loadData();
 
 		$scope.generateSlots = function () {
-			var slotcap = 13;
+			var slotcap = 17;
 			$scope.batchesslots = [];
 			var arr = [];
 			var bts = $scope.batches;
