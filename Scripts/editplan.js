@@ -93,6 +93,21 @@ $(function () {
 					});
 			}
 		};
+		$scope.addVacs = function () {
+			var uname = $scope.users.find(function (u) { return u.ID == $scope.currentuserid; }).PERSON_NAME;
+			var num = prompt("Enter Number Of Vacations For " + uname + ":", "1");
+			num = parseInt(num);
+			if (!isNaN(num)) {
+				var year = (new Date()).getFullYear();
+				var summary = prompt("Enter Summary For Vacations:", "Vacation " + year +" Day (" + uname + ")");
+				if (summary !== "" && summary !== null) {
+					$http.post("trservice.asmx/addVacation", JSON.stringify({ "summary": summary, "ttuserid": $scope.currentuser.TTUSERID, "num": num }))
+						.then(function (response) {
+							alert("Created.");
+						});
+				}
+			}
+		};
 		$scope.tasktotop = function (d) {
 			for (var i = 0; i < $scope.defects.length; i++) {
 				if (d.ID == $scope.defects[i].ID && i > 0) {
@@ -163,7 +178,7 @@ $(function () {
 			}
 			$scope.reloadTasks(prgtasks);
 		};
-
+		$scope.isadmin = IsAdmin();
 		getMPSUsers($scope, "users", $http, function () {
 			if ($scope.currentuserid < 0) {
 				$scope.currentuserid = userID();

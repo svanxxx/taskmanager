@@ -93,9 +93,14 @@
 				</div>
 			</div>
 			<div class="col-xl-1 col-lg-2">
-				<button type="button" class="btn btn-sm btn-outline-secondary" ng-click="add2Plan()" data-toggle="tooltip" title="Add Task To Currently Selected User On The Top Of The Plan">
-					<i class="fas fa-plus-circle"></i>Add Task
-				</button>
+				<div class="btn-group-vertical btn-group-sm d-flex">
+					<button type="button" class="btn btn-sm btn-outline-secondary mb-1" ng-click="add2Plan()" data-toggle="tooltip" title="Add Task To Currently Selected User On The Top Of The Plan">
+						<i class="fas fa-plus-circle"></i>Add Task
+					</button>
+					<button ng-show="isadmin" type="button" class="btn btn-sm btn-outline-secondary" ng-click="addVacs()" data-toggle="tooltip" title="Add vacations to current user">
+						<i class="fas fa-plane"></i>Add Vacations
+					</button>
+				</div>
 			</div>
 		</div>
 	</div>

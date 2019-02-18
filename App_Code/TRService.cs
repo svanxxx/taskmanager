@@ -162,6 +162,26 @@ public class TRService : System.Web.Services.WebService
 		return d.ID;
 	}
 	[WebMethod(EnableSession = true)]
+	public void addVacation(string summary, int ttuserid, int num)
+	{
+		if (string.IsNullOrEmpty(summary) || ttuserid < 1 || num < 1 || num > 100)
+			return;
+		for (int i = 0; i < num; i++)
+		{
+			DefectBase d = new DefectBase(Defect.New(summary + " #" + (i + 1).ToString()));
+			d.AUSER = ttuserid.ToString();
+			d.ESTIM = 8;
+			d.COMP = DefectComp.GetVacationRec()[0].ToString();
+			List<int> disp = DefectDispo.EnumCannotStart();
+			if (disp.Count > 0)
+			{
+				d.DISPO = disp[0].ToString();
+			}
+			d.DATE = new DateTime(DateTime.Now.Year, 12, 31).ToString(defDateFormat);
+			d.Store();
+		}
+	}
+	[WebMethod(EnableSession = true)]
 	public int newTask(string summary)
 	{
 		if (string.IsNullOrEmpty(summary))
