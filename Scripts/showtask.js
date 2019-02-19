@@ -431,7 +431,7 @@
 					if (!newval.ESTIM || newval.ESTIM < 1) {
 						$scope.defect.ESTIM = 1;
 					}
-					if (newval.ORDER < 1) {
+					if (newval.ORDER != null && newval.ORDER < 1) {
 						$scope.defect.ORDER = 1;
 					}
 					$scope.changed = true;
