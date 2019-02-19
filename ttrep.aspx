@@ -69,6 +69,7 @@
 				<div class="btn-group">
 					<button onclick="copyurl()" data-toggle="tooltip" title="Copy link to this report to clipboard" type="button" class="btn btn-outline-secondary btn-sm"><i class="fas fa-copy"></i></button>
 					<button ng-click="loadData()" data-toggle="tooltip" title="Reload Tasks" type="button" class="btn btn-outline-secondary btn-sm"><i class="fas fa-sync-alt"></i></button>
+					<button data-toggle="tooltip" title="Stats:" type="button" class="btn btn-outline-secondary btn-sm"><i class="fas fa-hashtag"></i>{{defects.length}}<i class="far fa-clock"></i>{{effort}}</button>
 				</div>
 			</div>
 			<div class="col-sm-3">
@@ -328,6 +329,6 @@
 				</tr>
 			</tbody>
 		</table>
-		<h5>{{'Number of defects:' + defects.length}}</h5>
+		<div>Number of defects: <span class="badge badge-light">{{defects.length}}</span> Effort: <span class="badge badge-light">{{effort}}</span> hrs</div>
 	</div>
 </asp:Content>

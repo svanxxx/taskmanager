@@ -111,6 +111,7 @@
 			});
 		};
 		$scope.loadData = function () {
+			$scope.effort = 0;
 			$scope.defectsselected = false;
 			var taskprg = StartProgress("Loading tasks...");
 			$scope.changed = false;
@@ -123,7 +124,8 @@
 				.then(function (response) {
 					$scope.defects = response.data.d;
 					for (var i = 0; i < $scope.defects.length; i++) {
-						$scope.defects.checked = false;
+						$scope.defects[i].checked = false;
+						$scope.effort += $scope.defects[i].ESTIM;
 					}
 					EndProgress(taskprg);
 				});
