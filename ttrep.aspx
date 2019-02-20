@@ -319,7 +319,7 @@
 					</td>
 					<td><a target="_blank" href="{{'editplan.aspx?userid='}}{{d.AUSER | getUserTRIDById:this}}">{{d.AUSER | getUserById:this}}</a></td>
 					<td>{{d.REFERENCE}}</td>
-					<td>{{d.SUMMARY}}</td>
+					<td ng-bind-html="d.SUMMARY | sumFormat"></td>
 					<td>{{d.DISPO | getDispoById:this}}</td>
 					<td>{{d.COMP | getCompById:this}}</td>
 					<td>{{d.SEVE | getSeveById:this}}</td>
@@ -329,6 +329,5 @@
 				</tr>
 			</tbody>
 		</table>
-		<div>Number of defects: <span class="badge badge-light">{{defects.length}}</span> Effort: <span class="badge badge-light">{{effort}}</span> hrs</div>
 	</div>
 </asp:Content>

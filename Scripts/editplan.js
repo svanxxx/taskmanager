@@ -11,6 +11,7 @@ $(function () {
 	var app = angular.module('mpsapplication', []);
 
 	app.filter('getDispoColorById', getDispoColorById);
+	app.filter("sumFormat", ["$sce", sumFormat]);
 
 	app.controller('mpscontroller', ["$scope", "$http", "$timeout", function ($scope, $http, $timeout) {
 		$scope.Math = window.Math;

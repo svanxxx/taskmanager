@@ -233,7 +233,7 @@ function enterTT() {
 }
 function allowPosNumbers(e) {
 	if (!(
-			   (e.keyCode > 95 && e.keyCode < 106) //numpad numbers
+				(e.keyCode > 95 && e.keyCode < 106) //numpad numbers
 			|| (e.keyCode > 47 && e.keyCode < 58)  //numbers
 			|| (e.keyCode === 8)							//backspace
 			|| (e.keyCode === 9)							//tab
@@ -262,6 +262,15 @@ function createTT(summary) {
 }
 function reActivateTooltips() {
 	setTimeout(function () { $('[data-toggle="tooltip"]').tooltip({ html: true }); }, 1000);//when data loaded - activate tooltip.
+}
+function sumFormat($sce) {
+	return function (val) {
+		var parts = val.split("@");
+		if (parts.length < 2) {
+			return $sce.trustAsHtml(val);
+		}
+		return $sce.trustAsHtml(parts[0] + "&nbsp;<sup><i>" + parts[1] + "</i></sup>");
+	};
 }
 function killTooltips() {
 	setTimeout(function () {

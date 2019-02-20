@@ -370,6 +370,15 @@
 				.then(function (response) {
 					$scope.defect = response.data.d;
 					if ($scope.defect) {
+						var vals = $scope.defect.SUMMARY.split("@");
+						$scope.defectsumm = "";
+						if (vals.length > 0) {
+							$scope.defectsumm = vals[0];
+						}
+						$scope.defecteml = "";
+						if (vals.length > 1) {
+							$scope.defecteml = vals[1];
+						}
 						$scope.defect.DATE = StringToDate($scope.defect.DATE);
 						$scope.defect.CREATEDBY = "" + $scope.defect.CREATEDBY;
 						$scope.defect.ESTIMBY = "" + $scope.defect.ESTIMBY;
@@ -489,7 +498,14 @@
 					openTask(response.data.d);
 				});
 		};
-
+		$scope.updateDefSum = function () {
+			$scope.defect.SUMMARY = $scope.defectsumm + "@" + $scope.defecteml;
+			$scope.changed = true;
+		};
+		$scope.updateDefEml = function () {
+			$scope.defect.SUMMARY = $scope.defectsumm + "@" + $scope.defecteml;
+			$scope.changed = true;
+		};
 		//start
 		$scope.defectDefaults = JSON.parse(document.getElementById("defectdefaults").value);
 		$scope.currentlock = guid();
@@ -497,6 +513,8 @@
 		$scope.testlink = document.getElementById("testlink").value;
 		$scope.addresses = document.getElementById("deflist").value;
 
+		$scope.defectsumm = "";
+		$scope.defecteml = "";
 		$scope.bsttab_bat = "bsttabs-batches";
 		$scope.bsttab_com = "bsttabs-command";
 		$scope.bsttab_his = "bsttabs-history";
@@ -516,6 +534,7 @@
 			return $scope.defect !== undefined && document.getElementById("releasettid").value == $scope.defect.ID;
 		};
 		$scope.batchsearch = "";
+		$scope.teststring = "&#64";
 
 		$.connection.hub.disconnected(function () {
 			setTimeout(function () { $.connection.hub.start(); }, 5000); // Restart connection after 5 seconds.

@@ -112,7 +112,7 @@
 										<span class="badge badge-pill badge-secondary">{{d.ID}}</span>
 									</a>
 									<span class="badge badge-danger">{{d.ESTIM}}</span>
-									<span>{{d.SUMMARY}}</span>
+									<span ng-bind-html="d.SUMMARY | sumFormat"></span>
 								</div>
 								<button data-toggle="tooltip" title="Click to see additional 10 items. Number of items is limited by 20. For more items click plan button near" onclick="moretasks(this)" type="button" class="btn btn-default btn-xs">...</button>
 								<a data-toggle="tooltip" title="Click to see full plan for selected person" target="_blank" href="editplan.aspx?userid={{u.ID}}" class="btn btn-default btn-xs" role="button">Full plan...</a>

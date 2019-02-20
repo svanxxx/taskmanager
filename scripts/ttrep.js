@@ -36,6 +36,7 @@
 	app.filter('getDispoById', getDispoById);
 	app.filter('getDispoColorById', getDispoColorById);
 	app.filter('getUserTRIDById', getUserTRIDById);
+	app.filter("sumFormat", ["$sce", sumFormat]);
 
 	app.controller('mpscontroller', ["$scope", "$http", function ($scope, $http) {
 		var f = getParameterByName("filter");

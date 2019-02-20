@@ -116,7 +116,7 @@ public class VersionBuilder
 								if (m.Success)
 								{
 									string ttid = m.Value.Replace("TT", "");
-									line = string.Format("<a href='{0}{1}{2}'>{3}</a>", Settings.CurrentSettings.GLOBALSITEURL, StaticSettings.DefectUrl, ttid, line.Substring(0, Math.Min(line.Length, 60)));
+									line = string.Format("<a href='{0}{1}{2}'>{3}</a>", Settings.CurrentSettings.GLOBALSITEURL, StaticSettings.DefectUrl, ttid, line.Substring(0, Math.Min(line.Length, 120)));
 								}
 							}
 							details += line + Environment.NewLine;

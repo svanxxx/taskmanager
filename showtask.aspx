@@ -17,7 +17,6 @@
 	<input type="hidden" id="testlink" value="<%=Settings.CurrentSettings.TESTREQUESTLINK.ToString()%>" />
 	<input type="hidden" id="releasettid" value="<%=Settings.CurrentSettings.RELEASETTID.ToString()%>" />
 	<input type="hidden" id="defectdefaults" value='<%=Newtonsoft.Json.JsonConvert.SerializeObject(DefectDefaults.CurrentDefaults)%>' />
-
 	<div ng-app="mpsapplication" ng-controller="mpscontroller" ng-cloak>
 		<div class="row">
 			<div class="col-lg-2">
@@ -34,7 +33,8 @@
 					<div class="input-group-prepend">
 						<button title="Copy task label to clipboard" data-toggle="tooltip" class="btn btn-default btn-sm" type="button" ng-click="cliplabl()">TT{{defect.ID}}</button>
 					</div>
-					<input type="text" class="form-control" ng-disabled="!canChangeDefect()" ng-model="defect.SUMMARY">
+					<input title="Task summary" data-toggle="tooltip" type="text" class="form-control" ng-disabled="!canChangeDefect()" ng-change="updateDefSum()" ng-model="defectsumm">
+					<input title="Task source: e.g. email subject" data-toggle="tooltip" type="text" class="form-control" ng-disabled="!canChangeDefect()" ng-change="updateDefEml()" ng-model="defecteml">
 				</div>
 				<div class="hidden-xs row toolbar mb-1" ng-style="defect.DISPO | getDispoColorById:this">
 					<div class="col-sm-3 pl-0">

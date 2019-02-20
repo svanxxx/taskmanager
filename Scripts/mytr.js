@@ -15,9 +15,11 @@ $(function () {
 	//worker.port.start();
 	//var s = new WebSocket(((window.location.protocol === "https:") ? "wss://" : "ws://") + window.location.host + "/ws");
 
-	var app = angular.module('mpsapplication', []);
-	app.filter('getDispoById', getDispoById);
-	app.filter('getDispoColorById', getDispoColorById);
+	var app = angular.module("mpsapplication", []);
+	app.filter("getDispoById", getDispoById);
+	app.filter("getDispoColorById", getDispoColorById);
+	app.filter("rawHtml", ["$sce", rawHtml]);
+	app.filter("sumFormat", ["$sce", sumFormat]);
 
 	var filter = {};
 	createTasksFilter(filter);
