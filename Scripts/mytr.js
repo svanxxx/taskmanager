@@ -195,6 +195,7 @@ $(function () {
 					$scope.changeDispo(d, $scope.dispos[index]);
 				}
 			}
+			killTooltips();
 		};
 		$scope.workTask = function (d) {
 			if ($scope.loaded()) {
@@ -205,6 +206,7 @@ $(function () {
 					}
 				}
 			}
+			killTooltips();
 		};
 		$scope.changed = false;
 		$scope.$watchCollection('trrec', function (newval, oldval) {

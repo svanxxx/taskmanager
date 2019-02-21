@@ -37,6 +37,7 @@
 	app.filter('getDispoColorById', getDispoColorById);
 	app.filter('getUserTRIDById', getUserTRIDById);
 	app.filter("sumFormat", ["$sce", sumFormat]);
+	app.filter('rawHtml', ['$sce', rawHtml]);
 
 	app.controller('mpscontroller', ["$scope", "$http", function ($scope, $http) {
 		var f = getParameterByName("filter");
@@ -112,7 +113,6 @@
 			});
 		};
 		$scope.loadData = function () {
-			$scope.effort = 0;
 			$scope.defectsselected = false;
 			var taskprg = StartProgress("Loading tasks...");
 			$scope.changed = false;
@@ -124,9 +124,21 @@
 			$http.post("trservice.asmx/gettasks", JSON.stringify({ "f": $scope.getServiceFilter() }))
 				.then(function (response) {
 					$scope.defects = response.data.d;
+					var efforts = {};
 					for (var i = 0; i < $scope.defects.length; i++) {
-						$scope.defects[i].checked = false;
-						$scope.effort += $scope.defects[i].ESTIM;
+						var d = $scope.defects[i];
+						d.checked = false;
+						var dsp = "" + d.DISPO;
+						if (dsp in efforts) {
+							efforts[dsp] += d.ESTIM;
+						} else {
+							efforts[dsp] = d.ESTIM;
+						}
+					}
+					$scope.effort = "";
+					for (var eff in efforts) {
+						var clr = getDispoColorById()(eff, $scope)["background-color"];
+						$scope.effort += "<span class='badge' style='background-color:" + clr + "'>" + efforts[eff] + "</span>";
 					}
 					EndProgress(taskprg);
 				});
@@ -153,6 +165,7 @@
 
 		$scope.initFilters(JSON.parse(document.getElementById("filters").value));
 		$scope.selectedFilter = "0";
+		$scope.effort = "";
 		$scope.apply = {};
 		$scope.apply.disposition = { "use": false, "value": -1 };
 		$scope.apply.component = { "use": false, "value": -1 };
@@ -283,7 +296,7 @@
 			}
 		};
 		$scope.resetReferenceFilter = function (refname, obj) {
-			$(obj.target).parent().find("input").prop("checked", false);
+			$(obj.target).parent().parent().parent().parent().find("input").prop("checked", false);
 			$scope.changed = true;
 			if (typeof $scope.DefectsFilter[refname] === "string") {
 				$scope.DefectsFilter[refname] = "";

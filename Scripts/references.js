@@ -290,8 +290,12 @@ function copyurl(txt) {
 	}
 	document.execCommand("copy");
 	$temp.remove();
-	var p = StartProgress("The ref has been copied to clipboard.");
-	setTimeout(function () { EndProgress(p); }, 2000);
+
+	var options = {
+		icon: "/images/fist.png"
+	};
+	var n = new Notification("The link has been copied to clipboard.", options);
+	setTimeout(n.close.bind(n), 2000);
 }
 $(function () {
 	$(document).bind("keydown", function (e) {

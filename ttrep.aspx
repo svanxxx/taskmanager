@@ -65,11 +65,15 @@
 			</div>
 		</div>
 		<div class="row pb-2">
-			<div class="col-sm-1">
-				<div class="btn-group">
-					<button onclick="copyurl()" data-toggle="tooltip" title="Copy link to this report to clipboard" type="button" class="btn btn-outline-secondary btn-sm"><i class="fas fa-copy"></i></button>
-					<button ng-click="loadData()" data-toggle="tooltip" title="Reload Tasks" type="button" class="btn btn-outline-secondary btn-sm"><i class="fas fa-sync-alt"></i></button>
-					<button data-toggle="tooltip" title="Stats:" type="button" class="btn btn-outline-secondary btn-sm"><i class="fas fa-hashtag"></i>{{defects.length}}<i class="far fa-clock"></i>{{effort}}</button>
+			<div class="col-sm-3">
+				<div class="input-group input-group-sm">
+					<div class="input-group-prepend btn-group">
+						<button onclick="copyurl()" data-toggle="tooltip" title="Copy link to this report to clipboard" type="button" class="btn btn-outline-secondary btn-sm"><i class="fas fa-copy"></i></button>
+						<button ng-click="loadData()" data-toggle="tooltip" title="Reload Tasks" type="button" class="btn btn-outline-secondary btn-sm"><i class="fas fa-sync-alt"></i></button>
+					</div>
+					<div class="input-group-append">
+						<span data-toggle="tooltip" title="Stats:" class="input-group-text"><i class="fas fa-hashtag"></i>{{defects.length}}:<span ng-bind-html="effort | rawHtml"></span></span>
+					</div>
 				</div>
 			</div>
 			<div class="col-sm-3">
@@ -87,7 +91,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-8">
+			<div class="col-sm-6">
 				<div class="input-group input-group-sm">
 					<div class="input-group-prepend">
 						<span class="input-group-text">Enter phrase in double quotes or a set of words to be found:</span>
@@ -177,12 +181,12 @@
 							</button>
 							<div class="dropdown-menu dropdown-menu-right">
 								<div class="input-group input-group-sm">
-									<div class="input-group-prepend">
+									<input type="text" class="form-control refselector">
+									<div class="input-group-append">
 										<button type="button" ng-click="resetReferenceFilter('dispositions', $event)" class="btn btn-primary btn-sm"><i class="fas fa-broom"></i></button>
 									</div>
-									<input type="text" class="form-control refselector">
 								</div>
-								<div ng-repeat="d in dispos" class="dropdown-item pt-0 pb-0">
+								<div ng-repeat="d in dispos" class="dropdown-item pt-0 pb-0" ng-style="d.ID | getDispoColorById:this">
 									<label class="form-check-label">
 										<input ng-click="changeReferenceFilter(d.ID, 'dispositions')" ng-checked="d.filter" type="checkbox" value="">
 										<span>{{d.DESCR}}</span>
@@ -198,10 +202,10 @@
 							</button>
 							<div class="dropdown-menu dropdown-menu-right pre-scrollable">
 								<div class="input-group input-group-sm">
-									<div class="input-group-prepend">
+									<input type="text" class="form-control refselector">
+									<div class="input-group-append">
 										<button type="button" ng-click="resetReferenceFilter('components', $event)" class="btn btn-primary btn-sm"><i class="fas fa-broom"></i></button>
 									</div>
-									<input type="text" class="form-control refselector">
 								</div>
 								<div ng-repeat="d in comps" class="dropdown-item pt-0 pb-0">
 									<label class="form-check-label">
@@ -219,10 +223,10 @@
 							</button>
 							<div class="dropdown-menu dropdown-menu-right pre-scrollable">
 								<div class="input-group input-group-sm">
-									<div class="input-group-prepend">
+									<input type="text" class="form-control refselector">
+									<div class="input-group-append">
 										<button type="button" ng-click="resetReferenceFilter('severities', $event)" class="btn btn-primary btn-sm"><i class="fas fa-broom"></i></button>
 									</div>
-									<input type="text" class="form-control refselector">
 								</div>
 								<div ng-repeat="d in severs" class="dropdown-item pt-0 pb-0">
 									<label class="form-check-label">

@@ -110,7 +110,13 @@ public partial class DefectBase : IdBasedObject
 	public string DISPO
 	{
 		get { return this[_Disp].ToString(); }
-		set { this[_Disp] = Convert.ToInt32(value); }
+		set
+		{
+			if (value != DISPO)
+			{
+				this[_Disp] = Convert.ToInt32(value);
+			}
+		}
 	}
 	public int ESTIM
 	{
