@@ -61,7 +61,7 @@
 									</a>
 								</div>
 								<div ng-repeat="l in u.YESTERDAY track by $index">
-									<span>{{l | limitTo:150}}</span><br>
+									<span ng-bind-html="l | sumFormat | limitTo:150"></span><br>
 								</div>
 								<hr>
 								<div ng-hide="u.CREATEDTASKS1.length < 1">
@@ -81,7 +81,7 @@
 									</a>
 								</div>
 								<div ng-repeat="l in u.TODAY track by $index">
-									<span>{{l | limitTo:150}}</span><br>
+									<span ng-bind-html="l | sumFormat | limitTo:150"></span><br>
 								</div>
 								<hr>
 								<div ng-hide="u.CREATEDTASKS2.length < 1">

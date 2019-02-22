@@ -269,7 +269,7 @@ function sumFormat($sce) {
 		if (parts.length < 2) {
 			return $sce.trustAsHtml(val);
 		}
-		return $sce.trustAsHtml(parts[0] + "&nbsp;<sup><i>" + parts[1] + "</i></sup>");
+		return $sce.trustAsHtml(parts[0] + "&nbsp;<sup><small><i>" + parts[1] + "</small></i></sup>");
 	};
 }
 function killTooltips() {

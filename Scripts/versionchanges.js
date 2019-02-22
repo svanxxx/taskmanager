@@ -1,5 +1,7 @@
 ﻿$(function () {
 	var app = angular.module('mpsapplication', []);
+	app.filter("sumFormat", ["$sce", sumFormat]);
+
 	app.controller('mpscontroller', ["$scope", "$http", function ($scope, $http) {
 		$scope.versions = [];
 		$scope["loaders"] = 0;

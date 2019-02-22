@@ -55,7 +55,7 @@
 								<a href="showtask.aspx?ttid={{c.ttid}}" target="_blank">
 									<span class="badge badge-pill badge-secondary">{{c.ttid}}</span>
 								</a>
-								<span>{{c.summary}}</span>
+								<span ng-bind-html="c.summary | sumFormat"></span>
 							</div>
 						</div>
 					</div>
