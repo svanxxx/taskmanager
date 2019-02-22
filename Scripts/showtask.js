@@ -44,6 +44,12 @@
 		};
 		$scope.loadCommits = function () {
 			$scope.commits = [];
+			$scope.gitbranchhash = "";
+			$http.post("trservice.asmx/BranchHash", JSON.stringify({ "branch": $scope.defect.BRANCH }))
+				.then(function (result) {
+					$scope.gitbranchhash = result.data.d;
+				});
+
 			$http.post("trservice.asmx/EnumCommits", JSON.stringify({ "branch": $scope.defect.BRANCH, from: 1, to: 20 }))
 				.then(function (result) {
 					if (JSON.stringify($scope.commits) !== JSON.stringify(result.data.d)) {

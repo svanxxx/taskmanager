@@ -740,7 +740,7 @@ public class TRService : System.Web.Services.WebService
 	[WebMethod(EnableSession = true)]
 	public void deleteBranch(string branch)
 	{
-		if (string.IsNullOrEmpty(branch))
+		if (string.IsNullOrEmpty(branch) || branch.ToUpper() == "MASTER" || branch.ToUpper() == "RELEASE")
 			return;
 		Git git = new Git(Settings.CurrentSettings.WORKGITLOCATION);
 		git.DeleteBranch(branch);
@@ -752,18 +752,18 @@ public class TRService : System.Web.Services.WebService
 		return git.GetBranch(branch).EnumCommits(from, to);
 	}
 	[WebMethod]
+	public string BranchHash(string branch)
+	{
+		Git git = new Git(Settings.CurrentSettings.WORKGITLOCATION);
+		return git.GetBranch(branch).TopCommit();
+	}
+	[WebMethod]
 	public List<string> getCommitDiff(string commit)
 	{
 		Git git = new Git(Settings.CurrentSettings.WORKGITLOCATION);
 		Commit c = new Commit(git);
 		c.COMMIT = commit;
 		return Git.DiffFriendOutput(c.Diff());
-	}
-	[WebMethod]
-	public List<ChangedFile> EnumFiles(string branch)
-	{
-		Git git = new Git(Settings.CurrentSettings.WORKGITLOCATION);
-		return git.GetBranch(branch).EnumFiles();
 	}
 	[WebMethod]
 	public void CommentBuild(int id, string comment)

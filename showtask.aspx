@@ -293,7 +293,7 @@
 									<input type="text" class="form-control" ng-disabled="!canChangeDefect()" ng-model="defect.BRANCH">
 									<div class="input-group-append">
 										<button type="button" ng-show="!isrelease()" class="btn btn-success" ng-click="loadCommits()">Scan Branch</button>
-										<button type="button" ng-show="!isrelease()" class="btn btn-danger" ng-disabled="!commits||commits.length<1" ng-click="deleteBranch()">Delete Branch</button>
+										<button type="button" ng-show="!isrelease()" class="btn btn-danger" ng-disabled="!gitbranchhash" ng-click="deleteBranch()">Delete Branch</button>
 										<a href="builder.aspx" ng-show="isrelease()" class="btn btn-secondary" role="button">Release Marker</a>
 									</div>
 								</div>
