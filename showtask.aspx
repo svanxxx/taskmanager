@@ -226,7 +226,7 @@
 										<img class="rounded-circle" ng-src="{{'getUserImg.ashx?ttid=' + h.IDUSER}}" alt="Smile" height="30" width="30">
 									</div>
 									<div class="media-body">
-										<h7 class="media-heading"><b>{{h.IDUSER | getUserById:this}}</b> <small style="float: right"><i>{{h.DATE}}</i></small></h7>
+										<h6 class="media-heading"><b>{{h.IDUSER | getUserById:this}}</b> <small style="float: right"><i>{{h.DATE}}</i></small></h6>
 										<p>{{h.NOTES}}</p>
 									</div>
 								</div>
@@ -240,16 +240,14 @@
 					<div id="history" class="tab-pane fade">
 						<label ng-show="!history">loading...</label>
 						<div class="list-group">
-							<a href class="list-group-item list-group-item-action" ng-repeat="h in history">
+							<a href class="p-2 list-group-item list-group-item-action" ng-repeat="h in history">
 								<div class="media">
 									<div class="media-left">
 										<img class="media-object rounded-circle" ng-src="{{'getUserImg.ashx?ttid=' + h.IDUSER}}" alt="Smile" height="30" width="30">
 									</div>
 									<div class="media-body">
-										<b>
-											<h7 class="media-heading">
-											{{h.IDUSER | getUserById:this}}</b> <small style="float: right"><i>{{h.DATE}}</i></small></h7>
-										<p>{{h.NOTES}}</p>
+										<h6 class="media-heading"><b>{{h.IDUSER | getUserById:this}}</b> <small style="float: right"><i>{{h.DATE}}</i></small></h6>
+										<p class="mb-0">{{h.NOTES}}</p>
 									</div>
 								</div>
 							</a>
