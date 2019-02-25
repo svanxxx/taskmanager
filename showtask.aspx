@@ -385,7 +385,16 @@
 							<strong>{{defect.CREATEDBY | getUserById:this}}</strong>
 						</div>
 					</a>
-					<i class="fas fa-long-arrow-alt-down"></i>
+					<i class="fas fa-folder-plus"></i>
+				</div>
+				<div class="alert alert-success" style="text-align: center">
+					<a data-toggle="tooltip" title="Click to see full plan for the person" target="_blank" href="editplan.aspx?userid={{defect.ESTIMBY | getUserTRIDById:this}}">
+						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?ttid=' + defect.ESTIMBY}}" alt="Smile" height="60" width="60" />
+						<div>
+							<strong>{{defect.ESTIMBY | getUserById:this}}</strong>
+						</div>
+					</a>
+					<i class="far fa-clock"></i><span>:{{defect.ESTIM}}</span>
 				</div>
 				<div class="alert alert-info" style="text-align: center">
 					<a data-toggle="tooltip" title="Click to see full plan for the person" target="_blank" href="editplan.aspx?userid={{defect.AUSER | getUserTRIDById:this}}">
@@ -394,6 +403,7 @@
 							<strong>{{defect.AUSER | getUserById:this}}</strong>
 						</div>
 					</a>
+					<i class="fas fa-tools"></i>
 				</div>
 			</div>
 		</div>

@@ -49,6 +49,7 @@ public partial class DefectBase : IdBasedObject
 	protected static string _StatI = "InitStatus";
 	protected static string _Disp = "idDisposit";
 	protected static string _Est = "Estim";
+	protected static string _EstId = "idEstim";
 	protected static string _Order = "iOrder";
 	protected static string _BackOrder = "BackOrder";
 	protected static string _AsUser = "idUsr";
@@ -74,8 +75,8 @@ public partial class DefectBase : IdBasedObject
 
 	public static string _Tabl = "[TT_RES].[DBO].[DEFECTS]";
 
-	protected static string[] _allBaseCols = new string[] { _ID, _Summ, _idRec, _Disp, _Est, _Order, _AsUser, _Seve, _sMod, _BackOrder, _Comp, _Date, _Created, _CreaBy, _Type, _Prod, _Ref, _Prio, _OrderDate, _ModDate, _ModBy, _sModTRID, _branch, _branchBST, _buildP };
-	protected static string[] _allBaseColsNames = new string[] { _ID, "Summary", _idRec, "Disposition", "Estimation", "Schedule Order", "Assigned User", "Severity", "", "Schedule Order", "Component", "Date Entered", "Date Created", "Created By", "Type", "Product", "Reference", "Priority", "Schedule Date", "", "", "", "Branch", "BST Branch", "Test Priority" };
+	protected static string[] _allBaseCols = new string[] { _ID, _Summ, _idRec, _Disp, _Est, _EstId, _Order, _AsUser, _Seve, _sMod, _BackOrder, _Comp, _Date, _Created, _CreaBy, _Type, _Prod, _Ref, _Prio, _OrderDate, _ModDate, _ModBy, _sModTRID, _branch, _branchBST, _buildP };
+	protected static string[] _allBaseColsNames = new string[] { _ID, "Summary", _idRec, "Disposition", "Estimation", "Estimated by", "Schedule Order", "Assigned User", "Severity", "", "Schedule Order", "Component", "Date Entered", "Date Created", "Created By", "Type", "Product", "Reference", "Priority", "Schedule Date", "", "", "", "Branch", "BST Branch", "Test Priority" };
 
 	public string SEVE
 	{
@@ -248,6 +249,18 @@ public partial class DefectBase : IdBasedObject
 		get { return this[_Prod].ToString(); }
 		set { this[_Prod] = Convert.ToInt32(value); }
 	}
+	public decimal ESTIMBY
+	{
+		get
+		{
+			if (this[_EstId] == DBNull.Value)
+			{
+				return CurrentContext.TTUSERID;
+			}
+			return Convert.ToDecimal(this[_EstId]);
+		}
+		set { this[_EstId] = value; }
+	}
 	public string BRANCH
 	{
 		get
@@ -348,6 +361,10 @@ public partial class DefectBase : IdBasedObject
 		if (col == _sModTRID)
 		{
 			return string.Format("(SELECT P.{0} FROM {1} P WHERE UPPER(P.{2}) = UPPER({3})) {4}", MPSUser._pid, MPSUser._Tabl, MPSUser._email, _sMod, _sModTRID);
+		}
+		else if (col == _EstId)
+		{
+			return _EstId;
 		}
 		else if (col == _Order)
 		{
@@ -533,10 +550,9 @@ public partial class Defect : DefectBase
 	static protected string _Desc = "DESCR";
 	static public string _Specs = "ReproSteps";
 	static protected string _workar = "Workaround";
-	static protected string _estby = "idEstby";
 
-	static string[] _allcols = _allBaseCols.Concat(new string[] { _Specs, _Desc, _workar, _estby }).ToArray();
-	static string[] _allcolsNames = _allBaseColsNames.Concat(new string[] { "Specification", "Details", "BST steps", "Estimated by" }).ToArray();
+	static string[] _allcols = _allBaseCols.Concat(new string[] { _Specs, _Desc, _workar }).ToArray();
+	static string[] _allcolsNames = _allBaseColsNames.Concat(new string[] { "Specification", "Details", "BST steps" }).ToArray();
 	public static string _RepTable = "[TT_RES].[DBO].[REPORTBY]";
 
 	public static void UnLocktask(string ttid, string lockid)
@@ -663,7 +679,7 @@ public partial class Defect : DefectBase
 			SQLExecute(sql);
 			return;
 		}
-		else if (col == _Est || col == _estby)
+		else if (col == _Est || col == _EstId)
 		{
 			DefectEvent.AddEventByTask(IDREC, DefectEvent.Eventtype.estimated, ESTIMBY, "", ESTIM);
 			return;
@@ -687,10 +703,6 @@ public partial class Defect : DefectBase
 		{
 			return string.Format("(SELECT R.DESCRPTN FROM {2} R WHERE R.IDDEFREC = (SELECT IDRECORD FROM {3} D WHERE D.DEFECTNUM = {0})) {1}", _id, _Desc, _RepTable, _Tabl);
 		}
-		else if (col == _estby)
-		{
-			return string.Format("({0}) {1}", CurrentContext.TTUSERID, _estby);
-		}
 		else if (col == _Specs)
 		{
 			return string.Format("(SELECT R.REPROSTEPS FROM {2} R WHERE R.IDDEFREC = (SELECT IDRECORD FROM {3} D WHERE D.DEFECTNUM = {0})) {1}", _id, _Specs, _RepTable, _Tabl);
@@ -703,11 +715,6 @@ public partial class Defect : DefectBase
 			return true;
 
 		return base.IsColumnComplex(col);
-	}
-	public decimal ESTIMBY
-	{
-		get { return Convert.ToDecimal(this[_estby]); }
-		set { this[_estby] = value; }
 	}
 	public bool REQUESTRESET
 	{
