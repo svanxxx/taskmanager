@@ -6,3 +6,9 @@
 /bin/GitHelper.pdb
 # Ignore NuGet Packages
 *.nupkg
+/UTest/obj/Release
+/bin/roslyn
+/bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+/bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll.refresh
+/bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+/App_Data/PublishProfiles/sirius beta beta.pubxml
