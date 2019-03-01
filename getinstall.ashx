@@ -61,7 +61,7 @@ public class getinstall : IHttpHandler
 				string postfix = "ACT";
 				if (t == "efip")
 				{
-					prefix = "eFIELDPRO_8";
+					prefix = "FIELDPRO_8";
 				}
 				else if (t == "cx")
 				{
