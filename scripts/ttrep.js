@@ -171,6 +171,7 @@
 		$scope.apply.component = { "use": false, "value": -1 };
 		$scope.apply.severity = { "use": false, "value": -1 };
 		$scope.apply.user = { "use": false, "value": -1 };
+		$scope.apply.estim = { "use": false, "value": 8 };
 
 		$scope.checkall = function () {
 			if ($scope.defects.length < 1) {
@@ -280,6 +281,9 @@
 					if ($scope.apply.user.use && $scope.apply.user.value > 0) {
 						copy.AUSER = $scope.apply.user.value;
 					}
+					if ($scope.apply.estim.use && $scope.apply.estim.value > 0) {
+						copy.ESTIM = $scope.apply.estim.value;
+					}
 					delete copy["checked"];
 					updated.push(copy);
 				}
@@ -294,6 +298,7 @@
 			} else {
 				// Do nothing!
 			}
+			$('#batchchanges').modal('hide');
 		};
 		$scope.resetReferenceFilter = function (refname, obj) {
 			$(obj.target).parent().parent().parent().parent().find("input").prop("checked", false);

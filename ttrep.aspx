@@ -14,62 +14,94 @@
 			<button type="button" class="btn btn-lg btn-info" ng-click="applyfilter()">Apply Filter</button>
 			<button type="button" class="btn btn-lg btn-danger" ng-click="discardfilter()">Discard</button>
 		</div>
-		<div ng-show="defectsselected" class="panel panel-primary" ng-cloak>
-			<div class="panel-heading">Select Action</div>
-			<div class="panel-body">
-				<div class="row">
-					<div class="col-sm-2">
-						<input type="checkbox" ng-model="apply.disposition.use">
-						<label>Disposition:</label>
+
+		<div class="modal" id="batchchanges">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Select actions to apply to selected tasks</h4>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
 					</div>
-					<div class="col-sm-10">
-						<select class="form-control input-sm" ng-model="apply.disposition.value">
-							<option ng-repeat="d in dispos" value="{{d.ID}}">{{d.DESCR}}</option>
-						</select>
+					<div class="modal-body">
+						<div class="input-group input-group-sm">
+							<div class="input-group-prepend">
+								<div class="input-group-text">
+									<input type="checkbox" ng-model="apply.disposition.use">
+								</div>
+							</div>
+							<div class="input-group-prepend">
+								<span class="input-group-text">Disposition</span>
+							</div>
+							<select class="form-control" ng-model="apply.disposition.value">
+								<option ng-repeat="d in dispos" value="{{d.ID}}">{{d.DESCR}}</option>
+							</select>
+						</div>
+						<div class="input-group input-group-sm">
+							<div class="input-group-prepend">
+								<div class="input-group-text">
+									<input type="checkbox" ng-model="apply.component.use">
+								</div>
+							</div>
+							<div class="input-group-prepend">
+								<span class="input-group-text">Component</span>
+							</div>
+							<select class="form-control" ng-model="apply.component.value">
+								<option ng-repeat="c in comps" value="{{c.ID}}">{{c.DESCR}}</option>
+							</select>
+						</div>
+						<div class="input-group input-group-sm">
+							<div class="input-group-prepend">
+								<div class="input-group-text">
+									<input type="checkbox" ng-model="apply.severity.use">
+								</div>
+							</div>
+							<div class="input-group-prepend">
+								<span class="input-group-text">Severity</span>
+							</div>
+							<select class="form-control" ng-model="apply.severity.value">
+								<option ng-repeat="c in severs" value="{{c.ID}}">{{c.DESCR}}</option>
+							</select>
+						</div>
+						<div class="input-group input-group-sm">
+							<div class="input-group-prepend">
+								<div class="input-group-text">
+									<input type="checkbox" ng-model="apply.user.use">
+								</div>
+							</div>
+							<div class="input-group-prepend">
+								<span class="input-group-text">User</span>
+							</div>
+							<select class="form-control" ng-model="apply.user.value">
+								<option ng-repeat="u in users" value="{{u.ID}}">{{u.FULLNAME}}</option>
+							</select>
+						</div>
+						<div class="input-group input-group-sm">
+							<div class="input-group-prepend">
+								<div class="input-group-text">
+									<input type="checkbox" ng-model="apply.estim.use">
+								</div>
+							</div>
+							<div class="input-group-prepend">
+								<span class="input-group-text">Estimated</span>
+							</div>
+							<input type="text" class="form-control" ng-model="apply.estim.value">
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" ng-click="changeDefects()" id="createttbtn">Apply</button>
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
 					</div>
 				</div>
-				<div class="row">
-					<div class="col-sm-2">
-						<input type="checkbox" ng-model="apply.component.use">
-						<label>Component:</label>
-					</div>
-					<div class="col-sm-10">
-						<select class="form-control input-sm" ng-model="apply.component.value">
-							<option ng-repeat="c in comps" value="{{c.ID}}">{{c.DESCR}}</option>
-						</select>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-sm-2">
-						<input type="checkbox" ng-model="apply.severity.use">
-						<label>Severity:</label>
-					</div>
-					<div class="col-sm-10">
-						<select class="form-control input-sm" ng-model="apply.severity.value">
-							<option ng-repeat="c in severs" value="{{c.ID}}">{{c.DESCR}}</option>
-						</select>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-sm-2">
-						<input type="checkbox" ng-model="apply.user.use">
-						<label>User:</label>
-					</div>
-					<div class="col-sm-10">
-						<select class="form-control input-sm" ng-model="apply.user.value">
-							<option ng-repeat="u in users" value="{{u.ID}}">{{u.FULLNAME}}</option>
-						</select>
-					</div>
-				</div>
-				<button type="button" class="btn btn-success" ng-click="changeDefects()">Apply</button>
 			</div>
 		</div>
+
 		<div class="row pb-2">
 			<div class="col-sm-3">
 				<div class="input-group input-group-sm">
 					<div class="input-group-prepend btn-group">
 						<button onclick="copyurl()" data-toggle="tooltip" title="Copy link to this report to clipboard" type="button" class="btn btn-outline-secondary btn-sm"><i class="fas fa-copy"></i></button>
 						<button ng-click="loadData()" data-toggle="tooltip" title="Reload Tasks" type="button" class="btn btn-outline-secondary btn-sm"><i class="fas fa-sync-alt"></i></button>
+						<button ng-disabled="!defectsselected" data-toggle="modal" data-target="#batchchanges" type="button" class="btn btn-outline-secondary btn-sm"><i data-toggle="tooltip" title="Apply bulk changes" class="fas fa-check-double"></i></button>
 					</div>
 					<div class="input-group-append">
 						<span data-toggle="tooltip" title="Stats:" class="input-group-text"><i class="fas fa-hashtag"></i>{{defects.length}}:<span ng-bind-html="effort | rawHtml"></span></span>
