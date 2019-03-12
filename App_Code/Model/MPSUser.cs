@@ -142,7 +142,21 @@ public class MPSUser : IdBasedObject
 	{
 		ReferenceVersion.Updatekey();
 	}
-
+	protected override void OnChangeColumn(string col, string val)
+	{
+		if (col ==_pname && TTUSERID > -1)
+		{
+			string[] vals = val.Replace("\'", "").Split(' ');
+			if (vals.Length == 2)
+			{
+				DefectUser du = new DefectUser(TTUSERID);
+				du.FIRSTNAME = vals[0];
+				du.LASTNAME = vals[1];
+				du.Store();
+			}
+		}
+		base.OnChangeColumn(col, val);
+	}
 	public byte[] GetImage()
 	{
 		return DBHelper.GetValue(string.Format("SELECT [{0}] FROM {1} WHERE {2} = {3}", _img, _Tabl, _pid, ID)) as byte[];
