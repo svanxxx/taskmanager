@@ -91,4 +91,11 @@ public class DefectUser : IdBasedObject
 		}
 		return null;
 	}
+	public static void NewUser(string fname, string lname, string eml)
+	{
+		string sql = 
+		$"insert into {_Tabl} (idRecord, ProjectID, Active, {_Firn}, idUsrGroup, {_Lasn}, EMailType, IsGlobal, IsCustomer, EMailAddr, AllowSSO, BetaSite, LoginName) " +
+		$"values ((select max({_ID}) + 1 from {_Tabl}), 1, 1, '{fname}', 3, '{lname}', 1, 1, 0, '{eml}', 0, 0, 'default')";
+		SQLExecute(sql);
+	}
 }

@@ -197,6 +197,8 @@ public class MPSUser : IdBasedObject
 				return new MPSUser(i);
 			}
 			AddObject(_Tabl, new string[] { _login, _pname, _pass, _isAdm, _ret, _birth, _lvl }, new object[] { name, dispUserName, "", 0, 0, DateTime.Now, 3 }, "");
+			DefectUser.NewUser(name, "", name);
+			ReferenceVersion.Updatekey();
 			foreach (int i in EnumRecords(_Tabl, _pid, new string[] { _login }, new object[] { name }))
 			{
 				return new MPSUser(i);
