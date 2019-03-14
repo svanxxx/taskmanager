@@ -78,6 +78,19 @@
 						<div class="input-group input-group-sm">
 							<div class="input-group-prepend">
 								<div class="input-group-text">
+									<input type="checkbox" ng-model="apply.priority.use">
+								</div>
+							</div>
+							<div class="input-group-prepend">
+								<span class="input-group-text">Priority</span>
+							</div>
+							<select class="form-control" ng-model="apply.priority.value">
+								<option ng-repeat="p in prios | orderBy:'FORDER'" value="{{p.ID}}">{{p.DESCR}}</option>
+							</select>
+						</div>
+						<div class="input-group input-group-sm">
+							<div class="input-group-prepend">
+								<div class="input-group-text">
 									<input type="checkbox" ng-model="apply.estim.use">
 								</div>
 							</div>

@@ -63,6 +63,7 @@
 		getSevers($scope, "severs", $http);
 		getProducts($scope, "products", $http);
 		getComps($scope, "comps", $http);
+		getPriorities($scope, "prios", $http);
 
 		$scope.getServiceFilter = function () {
 			var o = Object.assign({}, $scope.DefectsFilter);
@@ -172,6 +173,7 @@
 		$scope.apply.severity = { "use": false, "value": -1 };
 		$scope.apply.user = { "use": false, "value": -1 };
 		$scope.apply.estim = { "use": false, "value": 8 };
+		$scope.apply.priority = { "use": false, "value": -1 };
 
 		$scope.checkall = function () {
 			if ($scope.defects.length < 1) {
@@ -283,6 +285,9 @@
 					}
 					if ($scope.apply.estim.use && $scope.apply.estim.value > 0) {
 						copy.ESTIM = $scope.apply.estim.value;
+					}
+					if ($scope.apply.priority.use && $scope.apply.priority.value > 0) {
+						copy.PRIO = $scope.apply.priority.value;
 					}
 					delete copy["checked"];
 					updated.push(copy);
