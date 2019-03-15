@@ -27,6 +27,7 @@
 				<button onclick="copyurl()" type="button" class="btn btn-outline-secondary btn-block btn-sm">Copy link&nbsp;<i class="fas fa-link"></i></button>
 				<button ng-click="duplicate()" type="button" class="btn btn-outline-secondary btn-block btn-sm">Duplicate&nbsp;<i class="fas fa-clone"></i></button>
 				<button ng-click="resettask()" ng-disabled="!canChangeDefect()" type="button" class="btn btn-outline-secondary btn-block btn-sm">Reset To Re-Use&nbsp;<i class="fas fa-recycle"></i></button>
+				<button ng-click="normtext()" ng-disabled="!canChangeDefect()" type="button" class="btn btn-outline-secondary btn-block btn-sm">Normalize Details Text&nbsp;<i class="fab fa-wpforms"></i></button>
 			</div>
 			<div class="col-lg-8">
 				<div class="input-group input-group-sm mb-1">

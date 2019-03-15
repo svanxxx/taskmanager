@@ -498,6 +498,17 @@
 				});
 			}
 		};
+		$scope.normtext = function () {
+			var lines = $scope.defect.DESCR.split("\n");
+			for (var i = 0; i < lines.length; i++) {
+				lines[i] = lines[i].trim();
+				if (i > 0 && lines[i] === "" && lines[i - 1] === "") {
+					lines.splice(i, 1);
+					i--;
+				}
+			}
+			$scope.defect.DESCR = lines.join("\n");
+		};
 		$scope.duplicate = function () {
 			$http.post("trservice.asmx/copyTask", JSON.stringify({ "ttid": ttid }))
 				.then(function (response) {
