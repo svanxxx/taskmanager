@@ -852,7 +852,7 @@ public partial class Defect : DefectBase
 			", _Tabl,
 				_PrjID, _idRec, _Created, _CreaBy, _ModDate, _ModBy, _ID, _Summ, _Stat, _StatI, _Type, _Prod, _idEntr, _Disp, _Prio, _Comp, _Seve, _Date, _AdLoc
 													, CurrentContext.TTUSERID
-																							 , summary
+																							 , "?"
 																														 , DefectDefaults.CurrentDefaults.TYPE
 																																	, DefectDefaults.CurrentDefaults.PRODUCT
 																																						, DefectDefaults.CurrentDefaults.DISP
@@ -860,7 +860,7 @@ public partial class Defect : DefectBase
 																																											, DefectDefaults.CurrentDefaults.COMP
 																																													, DefectDefaults.CurrentDefaults.SEVR);
 
-			SQLExecute(sql);
+			SQLExecute(sql, new object[] { summary });
 			string sqlid = string.Format("SELECT TOP 1 {0} FROM {1} WHERE {2} = {3} ORDER BY {0} DESC", _ID, _Tabl, _CreaBy, CurrentContext.TTUSERID);
 			int ttid = Convert.ToInt32(GetValue(sqlid));
 			int recid = Defect.GetIDbyTT(ttid);
