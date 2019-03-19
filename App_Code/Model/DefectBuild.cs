@@ -275,7 +275,7 @@ public class DefectBuild : IdBasedObject
 	{
 		string g = Guid.NewGuid().ToString();
 
-		SQLExecute(string.Format("UPDATE {0} SET [{1}] = {2}, [{3}] = '{4}', [{5}] = '{6}' WHERE [{1}] is NULL", _Tabl, _stat, (int)BuildStatus.progress, _mach, machine, _gui, g));
+		SQLExecute(string.Format("UPDATE TOP (1) {0} SET [{1}] = {2}, [{3}] = '{4}', [{5}] = '{6}' WHERE [{1}] is NULL", _Tabl, _stat, (int)BuildStatus.progress, _mach, machine, _gui, g));
 
 		var o = DBHelper.GetValue(string.Format("SELECT [{0}] FROM {1} WHERE [{2}] = '{3}'", _pid, _Tabl, _gui, g));
 		if (o == DBNull.Value || o == null)
