@@ -116,9 +116,22 @@
 							<div class="input-group-prepend w-25">
 								<span class="input-group-text w-100">Created</span>
 							</div>
-							<select class="form-control" id="created" ng-disabled="!canChangeDefect()" ng-model="defect.CREATEDBY">
-								<option ng-repeat="u in users | orderBy:'FULLNAME'" ng-show="u.ACTIVE" value="{{u.ID}}">{{u.FULLNAME}}</option>
-							</select>
+							<div class="input-group-prepend w-75">
+								<div class="dropdown w-100">
+									<button type="button" class="w-100 btn btn-light btn-sm dropdown-toggle" data-toggle="dropdown" ng-disabled="!canChangeDefect()">
+										<img async class="rounded-circle" ng-src="{{'getUserImg.ashx?ttid=' + defect.CREATEDBY}}" alt="Smile" height="15" width="15">
+										{{defect.CREATEDBY | getUserById:this}}
+									</button>
+									<div class="dropdown-menu w-100">
+										<div ng-show="u.ACTIVE" ng-repeat="u in users | orderBy:'FULLNAME'">
+											<button style="text-align: left" type="button" class="btn btn-light btn-block btn-sm" ng-click="defect.CREATEDBY = u.ID">
+												<img async class="rounded-circle" ng-src="{{'getUserImg.ashx?ttid=' + u.ID}}" alt="Smile" height="30" width="30">
+												<span>{{u.FULLNAME}}</span>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 					<div class="col-sm-3 pr-0">
@@ -126,9 +139,22 @@
 							<div class="input-group-prepend w-25">
 								<span class="input-group-text w-100"><a href="editplan.aspx?userid={{defect.AUSER | getUserTRIDById:this}}" target="_blank">Assigned</a></span>
 							</div>
-							<select class="form-control" id="auser" ng-disabled="!canChangeDefect()" ng-model="defect.AUSER">
-								<option ng-repeat="u in users | orderBy:'FULLNAME'" ng-show="u.ACTIVE" value="{{u.ID}}">{{u.FULLNAME}}</option>
-							</select>
+							<div class="input-group-prepend w-75">
+								<div class="dropdown w-100">
+									<button type="button" class="w-100 btn btn-light btn-sm dropdown-toggle" data-toggle="dropdown" ng-disabled="!canChangeDefect()">
+										<img async class="rounded-circle" ng-src="{{'getUserImg.ashx?ttid=' + defect.AUSER}}" alt="Smile" height="15" width="15">
+										{{defect.AUSER | getUserById:this}}
+									</button>
+									<div class="dropdown-menu w-100">
+										<div ng-show="u.ACTIVE" ng-repeat="u in users | orderBy:'FULLNAME'">
+											<button style="text-align: left" type="button" class="btn btn-light btn-block btn-sm" ng-click="defect.AUSER = u.ID">
+												<img async class="rounded-circle" ng-src="{{'getUserImg.ashx?ttid=' + u.ID}}" alt="Smile" height="30" width="30">
+												<span>{{u.FULLNAME}}</span>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 						<div class="input-group input-group-sm">
 							<div class="input-group-prepend w-25">
