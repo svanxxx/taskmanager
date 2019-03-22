@@ -824,41 +824,50 @@ public partial class Defect : DefectBase
 	{
 		lock (_lockobject)
 		{
-			string sql = string.Format(@"
-			INSERT INTO {0}
-			({1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, {12}, {13}, {14}, {15}, {16}, {17}, {18}, {19})
+			string sql = $@"
+			INSERT INTO {_Tabl}
+			(
+				{_PrjID}, 
+				{_idRec}, 
+				{_Created}, 
+				{_CreaBy}, 
+				{_ModDate}, 
+				{_ModBy}, 
+				{_ID}, 
+				{_Summ}, 
+				{_Stat}, 
+				{_StatI}, 
+				{_Type}, 
+				{_Prod}, 
+				{_idEntr}, 
+				{_Disp}, 
+				{_Prio}, 
+				{_Comp}, 
+				{_Seve}, 
+				{_Date}, 
+				{_AdLoc})
 			values
 			(
 			   1
-			 , (SELECT MAX(T1.{2}) + 1 FROM {0} T1)
+			 , (SELECT MAX(T1.{_idRec}) + 1 FROM {_Tabl} T1)
 			 , GETUTCDATE()
-			 , {20}
+			 , {CurrentContext.TTUSERID}
 			 , GETUTCDATE()
-			 , {20}
-			 , (SELECT MAX(T1.{7}) + 1 FROM {0} T1)
-			 , '{21}'
+			 , {CurrentContext.TTUSERID}
+			 , (SELECT MAX(T1.{_ID}) + 1 FROM {_Tabl} T1)
+			 , ?
 			 , 1
 			 , 1
-			 , {22}
-			 , {23}
-			 , {20}
-			 , {24}
-			 , {25}
-			 , {26}
-			 , {27}
+			 , {DefectDefaults.CurrentDefaults.TYPE}
+			 , {DefectDefaults.CurrentDefaults.PRODUCT}
+			 , {CurrentContext.TTUSERID}
+			 , {DefectDefaults.CurrentDefaults.DISP}
+			 , {DefectDefaults.CurrentDefaults.PRIO}
+			 , {DefectDefaults.CurrentDefaults.COMP}
+			 , {DefectDefaults.CurrentDefaults.SEVR}
 			 , GETUTCDATE()
 			 , 1
-			)		
-			", _Tabl,
-				_PrjID, _idRec, _Created, _CreaBy, _ModDate, _ModBy, _ID, _Summ, _Stat, _StatI, _Type, _Prod, _idEntr, _Disp, _Prio, _Comp, _Seve, _Date, _AdLoc
-													, CurrentContext.TTUSERID
-																							 , "?"
-																														 , DefectDefaults.CurrentDefaults.TYPE
-																																	, DefectDefaults.CurrentDefaults.PRODUCT
-																																						, DefectDefaults.CurrentDefaults.DISP
-																																								 , DefectDefaults.CurrentDefaults.PRIO
-																																											, DefectDefaults.CurrentDefaults.COMP
-																																													, DefectDefaults.CurrentDefaults.SEVR);
+			)";
 
 			SQLExecute(sql, new object[] { summary });
 			string sqlid = string.Format("SELECT TOP 1 {0} FROM {1} WHERE {2} = {3} ORDER BY {0} DESC", _ID, _Tabl, _CreaBy, CurrentContext.TTUSERID);
