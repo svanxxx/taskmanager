@@ -155,6 +155,12 @@ public class MPSUser : IdBasedObject
 				du.Store();
 			}
 		}
+		else if (col == _ret && TTUSERID > -1)
+		{
+			DefectUser du = new DefectUser(TTUSERID);
+			du.ACTIVE = !RETIRED;
+			du.Store();
+		}
 		base.OnChangeColumn(col, val);
 	}
 	public byte[] GetImage()
