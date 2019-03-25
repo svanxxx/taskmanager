@@ -159,6 +159,23 @@
 				u.show = !$scope.filterusers || (u.ACTIVE && u.TRID >= 1);
 			});
 		};
+		$scope.duplicate = function () {
+			var r = confirm("Are you sure you want to duplicate all currently selected tasks?");
+			if (r === true) {
+				var prg = StartProgress("Duplicating...");
+				var ids = [];
+				$scope.defects.forEach(function (d) {
+					if (d.checked) {
+						ids.push(d.ID);
+					}
+				});
+				$http.post("trservice.asmx/copyTasks", JSON.stringify({ "ttids": ids.join(",") }))
+					.then(function () {
+						EndProgress(prg);
+						$scope.applyfilter();
+					});
+			}
+		};
 		getUsers($scope, "users", $http, function () {
 			$scope.loadData();
 			$scope.updateUsersFilter();
@@ -174,6 +191,8 @@
 		$scope.apply.user = { "use": false, "value": -1 };
 		$scope.apply.estim = { "use": false, "value": 8 };
 		$scope.apply.priority = { "use": false, "value": -1 };
+		$scope.apply.date = { "use": false, "value": "" };
+		$scope.apply.summary = { "use": false, "value1": "", "value2": "" };
 
 		$scope.checkall = function () {
 			if ($scope.defects.length < 1) {
@@ -288,6 +307,17 @@
 					}
 					if ($scope.apply.priority.use && $scope.apply.priority.value > 0) {
 						copy.PRIO = $scope.apply.priority.value;
+					}
+					if ($scope.apply.date.use && $scope.apply.date.value !== "") {
+						copy.DATE = DateToString($scope.apply.date.value);
+					}
+					if ($scope.apply.summary.use) {
+						if ($scope.apply.summary.value1 !== "") {
+							var re = new RegExp($scope.apply.summary.value1, "gi");
+							copy.SUMMARY = copy.SUMMARY.replace(re, $scope.apply.summary.value2);
+						} else if ($scope.apply.summary.value2 !== "") {
+							copy.SUMMARY = $scope.apply.summary.value2;
+						}
 					}
 					delete copy["checked"];
 					updated.push(copy);

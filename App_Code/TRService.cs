@@ -209,6 +209,19 @@ public class TRService : System.Web.Services.WebService
 		return d.ID;
 	}
 	[WebMethod(EnableSession = true)]
+	public void copyTasks(string ttids)
+	{
+		string[] ids = ttids.Split(',');
+		foreach (string id in ids)
+		{
+			Defect old = new Defect(int.Parse(id));
+			Defect d = new Defect(Defect.New(old.SUMMARY));
+			d.From(old);
+			d.DISPO = old.DISPO;
+			d.Store();
+		}
+	}
+	[WebMethod(EnableSession = true)]
 	public StoredDefectsFilter saveFilter(string name, DefectsFilter filter)
 	{
 		return StoredDefectsFilter.NewFilter(name, filter, CurrentContext.TTUSERID);

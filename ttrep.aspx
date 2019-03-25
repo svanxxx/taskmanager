@@ -99,6 +99,29 @@
 							</div>
 							<input type="text" class="form-control" ng-model="apply.estim.value">
 						</div>
+						<div class="input-group input-group-sm">
+							<div class="input-group-prepend">
+								<div class="input-group-text">
+									<input type="checkbox" ng-model="apply.date.use">
+								</div>
+							</div>
+							<div class="input-group-prepend">
+								<span class="input-group-text">Date</span>
+							</div>
+							<input type="date" class="form-control" ng-model="apply.date.value">
+						</div>
+						<div class="input-group input-group-sm">
+							<div class="input-group-prepend">
+								<div class="input-group-text">
+									<input type="checkbox" ng-model="apply.summary.use">
+								</div>
+							</div>
+							<div class="input-group-prepend" data-toggle="tooltip" title="Enter two values for replacement or only the second for entire summary set">
+								<span class="input-group-text">Summary</span>
+							</div>
+							<input type="text" class="form-control" ng-model="apply.summary.value1">
+							<input type="text" class="form-control" ng-model="apply.summary.value2">
+						</div>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-primary" ng-click="changeDefects()" id="createttbtn">Apply</button>
@@ -115,6 +138,7 @@
 						<button onclick="copyurl()" data-toggle="tooltip" title="Copy link to this report to clipboard" type="button" class="btn btn-outline-secondary btn-sm"><i class="fas fa-copy"></i></button>
 						<button ng-click="loadData()" data-toggle="tooltip" title="Reload Tasks" type="button" class="btn btn-outline-secondary btn-sm"><i class="fas fa-sync-alt"></i></button>
 						<button ng-disabled="!defectsselected" data-toggle="modal" data-target="#batchchanges" type="button" class="btn btn-outline-secondary btn-sm"><i data-toggle="tooltip" title="Apply bulk changes" class="fas fa-check-double"></i></button>
+						<button ng-click="duplicate()" ng-disabled="!defectsselected" type="button" class="btn btn-outline-secondary btn-sm"><i data-toggle="tooltip" title="Clone Selected" class="fas fa-clone"></i></button>
 					</div>
 					<div class="input-group-append">
 						<span data-toggle="tooltip" title="Stats:" class="input-group-text"><i class="fas fa-hashtag"></i>{{defects.length}}:<span ng-bind-html="effort | rawHtml"></span></span>
