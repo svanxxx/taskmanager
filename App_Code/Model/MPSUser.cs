@@ -21,10 +21,16 @@ public class MPSUser : IdBasedObject
 	const string _lvl = "LEVEL_ID";
 	const string _imgTransfer = "IMAGETRANSFER";
 	const string _birth = "PERSON_BIRTHDAY";
+	const string _chat = "CHATID";
 
-	static string[] _allcols = new string[] { _pid, _pname, _email, _ttuser, _addr, _login, _pass, _isAdm, _phone, _work, _ret, _imgTransfer, _birth, _lvl };
+	static string[] _allcols = new string[] { _pid, _pname, _email, _ttuser, _addr, _login, _pass, _isAdm, _phone, _work, _ret, _imgTransfer, _birth, _lvl, _chat };
 	public static string _Tabl = "[PERSONS]";
 
+	public string CHATID
+	{
+		get { return this[_chat].ToString(); }
+		set { this[_chat] = value; }
+	}
 	public string PHONE
 	{
 		get { return this[_phone].ToString(); }
@@ -234,6 +240,14 @@ public class MPSUser : IdBasedObject
 	public static MPSUser FindUserbyID(int id)
 	{
 		foreach (int i in EnumRecords(_Tabl, _pid, new string[] { _pid }, new object[] { id }))
+		{
+			return new MPSUser(i);
+		}
+		return null;
+	}
+	public static MPSUser FindUserbyPhone(string num)
+	{
+		foreach (int i in EnumRecords(_Tabl, _pid, new string[] { _phone }, new object[] { num }))
 		{
 			return new MPSUser(i);
 		}

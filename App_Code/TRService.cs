@@ -806,7 +806,7 @@ public class TRService : System.Web.Services.WebService
 			TelegramBotClient client = new TelegramBotClient(Settings.CurrentSettings.TELEGRAMTESTTOKEN);
 			client.GetMeAsync().Wait();
 			DefectUser u = new DefectUser(b.TTUSERID);
-			string mess = $"New task from {u.FULLNAME} is ready for tests!<a href='{Settings.CurrentSettings.GetTTURL(b.TTID)}'>&#8205;</a>";
+			string mess = $"New task from {u.FULLNAME} is ready for tests!{Settings.CurrentSettings.GetTTAnchor(b.TTID)}";
 			client.SendTextMessageAsync(Settings.CurrentSettings.TELEGRAMTESTCHANNEL, mess, Telegram.Bot.Types.Enums.ParseMode.Html).Wait();
 		}
 

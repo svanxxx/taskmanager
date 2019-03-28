@@ -306,20 +306,6 @@ $(function () {
 			}
 			$scope.$apply();
 		};
-		notifyHub.client.onBuildStatusChanged = function (id, ttid, userid, message) {
-			if (userid == ttUserID()) {
-				if (Notification.permission !== "granted") {
-					Notification.requestPermission();
-				}
-				var notification = new Notification('Your build request TT' + ttid + ' has changed its status!', {
-					icon: 'images/fist.png',
-					body: message
-				});
-				notification.onclick = function () {
-					openTask(ttid);
-				};
-			}
-		};
 		notifyHub.client.onMessage = function (fromID, message) {
 			if (Notification.permission !== "granted") {
 				Notification.requestPermission();
@@ -334,7 +320,6 @@ $(function () {
 			setTimeout(function () {
 				$.connection.hub.start().done(function () {
 					notifyHub.server.requestRoomUsers();
-					notifyHub.server.registerMessenger(userID());
 				});
 			}, 5000); // Restart connection after 5 seconds.
 		});
@@ -348,7 +333,6 @@ $(function () {
 			$scope.checkBirthday();
 			$.connection.hub.start().done(function () {
 				notifyHub.server.requestRoomUsers();
-				notifyHub.server.registerMessenger(userID());
 			});
 		});
 	}]);

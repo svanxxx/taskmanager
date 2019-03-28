@@ -224,6 +224,16 @@ public class RawSettings
 		get { return GetVal("TELEGRAMBUILDCHANNEL"); }
 		set { values["TELEGRAMBUILDCHANNEL"] = value; }
 	}
+	public string TELEGRAMTASKSTOKEN
+	{
+		get { return GetVal("TELEGRAMTASKSTOKEN"); }
+		set { values["TELEGRAMTASKSTOKEN"] = value; }
+	}
+	public string TELEGRAMTASKSURL
+	{
+		get { return GetVal("TELEGRAMTASKSURL"); }
+		set { values["TELEGRAMTASKSURL"] = value; }
+	}
 	public string TESTSGIT
 	{
 		get { return GetVal("TESTSGIT"); }
@@ -255,6 +265,10 @@ public class RawSettings
 	public string GetTTURL(int ttid)
 	{
 		return $"{GLOBALSITEURL}{StaticSettings.DefectUrl}{ttid}&tstamp={DateTime.Now.Ticks}";
+	}
+	public string GetTTAnchor(int ttid)
+	{
+		return $"<a href='{GetTTURL(ttid)}'>&#8205;</a>";
 	}
 	public RawSettings(bool loaddata)
 	{

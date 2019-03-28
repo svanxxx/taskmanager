@@ -26,6 +26,7 @@
 			string.Format("~/scripts/{0}.js", file)	
 			));
 		}
+		TasksBot.StartConnection();
 	}
 	void Application_End(object sender, EventArgs e)
 	{

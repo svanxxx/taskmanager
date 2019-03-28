@@ -811,6 +811,13 @@ public partial class Defect : DefectBase
 					_ID)
 	{
 	}
+	public Defect(string ttid)
+		: base(_Tabl,
+					_allcols,
+					ttid,
+					_ID)
+	{
+	}
 	public static int GetIDbyTT(int tt)
 	{
 		return Convert.ToInt32(GetRecdata(_Tabl, _idRec, _ID, tt));

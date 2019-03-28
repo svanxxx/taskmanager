@@ -25,29 +25,20 @@ public class NotifyHub : Hub
 	}
 	public static void NotifyBuildStatusChange(int id, int ttid, int userid, string message)
 	{
-		var context = GlobalHost.ConnectionManager.GetHubContext<NotifyHub>();
-		context.Clients.All.OnBuildStatusChanged(id, ttid, userid, message);
+		string mess = $"Build Request:  {message}{Settings.CurrentSettings.GetTTAnchor(ttid)}";
+		DefectUser u = new DefectUser(userid);
+		MPSUser mpu = new MPSUser(u.TRID);
+		TasksBot.SendMessage(mpu.CHATID, mess);
 	}
 	public void RequestRoomUsers()
 	{
 		Clients.Caller.OnRoomChanged(Roommate.Enum());
 	}
-	static ConcurrentDictionary<string, string> _registry = new ConcurrentDictionary<string, string>();
-	public void RegisterMessenger(string userid)
-	{
-		_registry[userid] = Context.ConnectionId;
-	}
 	public void SendMessage(int fromID, int toID, string message)
 	{
-		if (!_registry.ContainsKey(toID.ToString()))
-		{
-			return;
-		}
-		string id = _registry[toID.ToString()];
-		if (Clients.Client(id) != null)
-		{
-			Clients.Client(id).OnMessage(fromID, message);
-		}
+		MPSUser from = new MPSUser(fromID);
+		MPSUser to = new MPSUser(toID);
+		TasksBot.SendMessage(to.CHATID, $"{from.PERSON_NAME}: {message}");
 	}
 	public void LockTask(int ttid, string currentlock, int userid)
 	{

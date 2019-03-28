@@ -417,6 +417,7 @@
 					</div>
 					<div id="alarm" class="tab-pane fade">
 						<div class="jumbotron">
+							<a class="btn btn-outline-secondary btn-sm" href="<%=Settings.CurrentSettings.TELEGRAMTASKSURL.ToString()%>">Subscribe To Telegram Tasks Bot</a>
 							<h3>Email will alarm all the persons indicated below</h3>
 							<h4 class="{{changed ? 'blink_me' : ''}}">Please save the task indicating your questions in the top of details section</h4>
 							<label for="emailaddr">Addresses (comma separated):</label>
