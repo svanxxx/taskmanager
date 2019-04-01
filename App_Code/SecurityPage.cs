@@ -46,22 +46,18 @@ public class SecurityPage : System.Web.UI.Page
 	}
 	public static string GetPageOgImage()
 	{
-		string userid = GetPageUserID();
-		if (userid != "")
-		{
-			return HttpContext.Current.Request.Url.Scheme +
+		string basepath = HttpContext.Current.Request.Url.Scheme +
 			"://" +
 			HttpContext.Current.Request.Url.Host + ":" +
 			HttpContext.Current.Request.Url.Port.ToString() +
-			HttpContext.Current.Request.ApplicationPath +
-			"getUserImg.ashx?id=" + userid;
+			HttpContext.Current.Request.ApplicationPath;
+
+		string userid = GetPageUserID();
+		if (userid != "")
+		{
+			return basepath + "/getUserImg.ashx?id=" + userid;
 		}
-		return
-			HttpContext.Current.Request.Url.Scheme +
-			"://" +
-			HttpContext.Current.Request.Url.Host +
-			HttpContext.Current.Request.ApplicationPath +
-			"/images/taskicon.png";
+		return basepath + "/images/taskicon.png";
 	}
 	static string GetPageTTID()
 	{
