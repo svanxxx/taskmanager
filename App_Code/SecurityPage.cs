@@ -46,6 +46,16 @@ public class SecurityPage : System.Web.UI.Page
 	}
 	public static string GetPageOgImage()
 	{
+		string userid = GetPageUserID();
+		if (userid != "")
+		{
+			return HttpContext.Current.Request.Url.Scheme +
+			"://" +
+			HttpContext.Current.Request.Url.Host + ":" +
+			HttpContext.Current.Request.Url.Port.ToString() +
+			HttpContext.Current.Request.ApplicationPath +
+			"getUserImg.ashx?id=" + userid;
+		}
 		return
 			HttpContext.Current.Request.Url.Scheme +
 			"://" +
@@ -73,22 +83,52 @@ public class SecurityPage : System.Web.UI.Page
 		}
 		return s.Substring(ind + findstr.Length);
 	}
+	static string GetPageUserID()
+	{
+		if (HttpContext.Current == null || HttpContext.Current.Request == null)
+		{
+			return "";
+		}
+		object o = HttpContext.Current.Request.QueryString[SecurityPage.returl];
+		if (o == null)
+		{
+			return "";
+		}
+		string findstr = "userid=";
+		string s = o.ToString();
+		int ind = s.IndexOf(findstr);
+		if (ind < 0)
+		{
+			return "";
+		}
+		return s.Substring(ind + findstr.Length);
+	}
 	public static string GetPageOgTitle()
 	{
 		string ttid = GetPageTTID();
+		string userid = GetPageUserID();
 		if (!string.IsNullOrEmpty(ttid))
 		{
 			return DefectBase.GetTaskDispName(int.Parse(ttid)).Replace("\"", "&quot;").Replace("\'", "&apos;");
+		}
+		else if (!string.IsNullOrEmpty(userid))
+		{
+			return (new MPSUser(userid)).LOGIN + "'s Live Plan";
 		}
 		return "";
 	}
 	public static string GetPageOgDesc()
 	{
 		string ttid = GetPageTTID();
+		string userid = GetPageUserID();
 		if (!string.IsNullOrEmpty(ttid))
 		{
 			int id = int.Parse(ttid);
 			return "Estimated: " + DefectBase.GetTaskEstim(id) + ", Assigned: " + DefectBase.GetTaskUserName(id);
+		}
+		else if (!string.IsNullOrEmpty(userid))
+		{
+			return (new MPSUser(userid)).PERSON_NAME;
 		}
 		return "Click to see details.";
 	}
