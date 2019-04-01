@@ -86,9 +86,16 @@ public class VersionBuilder
 	}
 	public static void SendAlarm(string message)
 	{
-		TelegramBotClient client = new TelegramBotClient(Settings.CurrentSettings.TELEGRAMBUILDTOKEN);
-		client.GetMeAsync().Wait();
-		client.SendTextMessageAsync(Settings.CurrentSettings.TELEGRAMBUILDCHANNEL, message, Telegram.Bot.Types.Enums.ParseMode.Html, true).Wait();
+		try
+		{
+			TelegramBotClient client = new TelegramBotClient(Settings.CurrentSettings.TELEGRAMBUILDTOKEN);
+			client.GetMeAsync().Wait();
+			client.SendTextMessageAsync(Settings.CurrentSettings.TELEGRAMBUILDCHANNEL, message, Telegram.Bot.Types.Enums.ParseMode.Html, true).Wait();
+		}
+		catch (Exception)
+		{
+
+		}
 	}
 	public static void SendVersionAlarm()
 	{
