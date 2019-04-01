@@ -8,14 +8,26 @@ public class DefectDispo : Reference
 	static string _ReqWork = "RequireWork";
 	static string _Working = "BeingWorked";
 	static string _CannotStart = "CannotStart";
+	static string _TestsPas = "TestsPassed";
+	static string _TestsRej = "TestsRejected";
 
 	public static string _Tabl = "[TT_RES].[DBO].[FLDDISPO]";
-	static string[] _allCols = _allBaseCols.Concat(new string[] { _Color, _ReqWork, _Working, _CannotStart }).ToArray();
+	static string[] _allCols = _allBaseCols.Concat(new string[] { _Color, _ReqWork, _Working, _CannotStart, _TestsPas, _TestsRej }).ToArray();
 
 	public bool REQUIREWORK
 	{
 		get { return Convert.ToBoolean(this[_ReqWork]); }
 		set { this[_ReqWork] = value ? 1 : 0; }
+	}
+	public bool TESTSPASS
+	{
+		get { return Convert.ToBoolean(this[_TestsPas]); }
+		set { this[_TestsPas] = value ? 1 : 0; }
+	}
+	public bool TESTSFAIL
+	{
+		get { return Convert.ToBoolean(this[_TestsRej]); }
+		set { this[_TestsRej] = value ? 1 : 0; }
 	}
 	public bool WORKING
 	{
@@ -49,6 +61,10 @@ public class DefectDispo : Reference
 			res.Add(new DefectDispo(i));
 		}
 		return res;
+	}
+	public static int New(string desc)
+	{
+		return Reference.New(_Tabl, desc);
 	}
 
 	static Object thisLock = new Object();

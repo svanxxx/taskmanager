@@ -26,12 +26,17 @@ public class ReferenceVersion
 		}
 	}
 }
-
+public enum RefType
+{
+	disposition
+}
 public class Reference : IdBasedObject
 {
 	protected const string _ID = "idRecord";
 	protected const string _Desc = "Descriptor";
 	protected const string _idOrd = "FieldOrder";
+	protected const string _idPrj = "ProjectID";
+
 	protected static string[] _allBaseCols = new string[] { _ID, _Desc, _idOrd };
 
 	public int ID
@@ -57,5 +62,27 @@ public class Reference : IdBasedObject
 	protected override void PostStore()
 	{
 		ReferenceVersion.Updatekey();
+	}
+	public static int New(string tabl, string desc)
+	{
+		string sql = $@"
+			INSERT INTO {tabl}
+			(
+				{_ID}, 
+				{_idPrj}, 
+				{_idOrd}, 
+				{_Desc}
+			)
+			values
+			(
+			   (SELECT MAX(T1.{_ID}) + 1 FROM {tabl} T1)
+			 , 1
+			 , (SELECT MAX(T2.{_idOrd}) + 1 FROM {tabl} T2)
+			 , ?
+			)";
+
+		SQLExecute(sql, new object[] { desc });
+		ReferenceVersion.Updatekey();
+		return Convert.ToInt32(GetValue($"SELECT MAX({_ID}) FROM {tabl}"));
 	}
 }

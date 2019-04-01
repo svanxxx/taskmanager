@@ -14,7 +14,7 @@
 		</div>
 		<div class="row">
 			<div class="col-md-1">
-				<button ng-disabled="readonly()" type="button" class="btn btn-outline-secondary"><i class="fas fa-plus"></i>&nbsp;Add</button>
+				<button ng-click="addRef('<%=RefType.disposition.ToString()%>')" ng-disabled="readonly()" type="button" class="btn btn-outline-secondary btn-block"><i class="fas fa-plus"></i>&nbsp;Add</button>
 			</div>
 			<div class="col-md-11">
 				<div class="table-responsive">
@@ -27,6 +27,8 @@
 								<th>Requires Work</th>
 								<th>Working Now</th>
 								<th>Cannot Start</th>
+								<th>TESTS Passed</th>
+								<th>TESTS Failed</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -48,6 +50,12 @@
 								</td>
 								<td align="center">
 									<input ng-disabled="readonly()" type="checkbox" ng-model="r.CANNOTSTART" ng-change="itemchanged(r)">
+								</td>
+								<td align="center">
+									<input ng-disabled="readonly()" type="checkbox" ng-model="r.TESTSPASS" ng-change="itemchanged(r)">
+								</td>
+								<td align="center">
+									<input ng-disabled="readonly()" type="checkbox" ng-model="r.TESTSFAIL" ng-change="itemchanged(r)">
 								</td>
 							</tr>
 						</tbody>

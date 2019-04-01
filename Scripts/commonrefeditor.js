@@ -31,6 +31,18 @@
 			}
 		});
 
+		$scope.addRef = function (type) {
+			var desc = prompt("Please enter new name", "New reference");
+			if (desc !== null) {
+				var prg = StartProgress("Adding data...");
+				$http.post("trservice.asmx/addRef", angular.toJson({ type: type, desc: desc }))
+					.then(function () {
+						resetReferenceVersion("reload");
+						window[loadfunction]($scope, "refs", $http);
+						EndProgress(prg);
+					});
+			}
+		};
 		$scope.readonly = function () {
 			return !IsAdmin() || inProgress();
 		};

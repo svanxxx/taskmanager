@@ -404,6 +404,13 @@ public partial class DefectBase : IdBasedObject
 					_ID)
 	{
 	}
+	public DefectBase(string ttid)
+		: base(_Tabl,
+					_allBaseCols,
+					ttid,
+					_ID)
+	{
+	}
 	public DefectBase(string table, string[] columns, string id, string pcname = "ID", bool doload = true)
 		: base(table, columns, id, pcname, doload)
 	{
