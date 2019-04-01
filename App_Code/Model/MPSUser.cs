@@ -177,6 +177,10 @@ public class MPSUser : IdBasedObject
 	  : base(_Tabl, _allcols, id.ToString(), _pid)
 	{
 	}
+	public MPSUser(string id)
+	  : base(_Tabl, _allcols, id, _pid)
+	{
+	}
 	public MPSUser()
 	  : base(_Tabl, _allcols, 0.ToString(), _pid, false)
 	{
@@ -222,7 +226,7 @@ public class MPSUser : IdBasedObject
 			{
 				return new MPSUser(i);
 			}
-			AddObject(_Tabl, new string[] { _login, _pname, _pass, _isAdm, _ret, _birth, _lvl }, new object[] { name, dispUserName, "", 0, 0, DateTime.Now, 3 }, "");
+			AddObject(_Tabl, new string[] { _login, _pname, _pass, _isAdm, _ret, _birth, _lvl, _email }, new object[] { name, dispUserName, "", 0, 0, DateTime.Now, 3, name }, "");
 			DefectUser.NewUser(name, "", name);
 			ReferenceVersion.Updatekey();
 			foreach (int i in EnumRecords(_Tabl, _pid, new string[] { _login }, new object[] { name }))
