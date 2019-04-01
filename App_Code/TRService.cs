@@ -803,11 +803,15 @@ public class TRService : System.Web.Services.WebService
 		}
 		else
 		{
-			TelegramBotClient client = new TelegramBotClient(Settings.CurrentSettings.TELEGRAMTESTTOKEN);
-			client.GetMeAsync().Wait();
-			DefectUser u = new DefectUser(b.TTUSERID);
-			string mess = $"New task from {u.FULLNAME} is ready for tests!{Settings.CurrentSettings.GetTTAnchor(b.TTID)}";
-			client.SendTextMessageAsync(Settings.CurrentSettings.TELEGRAMTESTCHANNEL, mess, Telegram.Bot.Types.Enums.ParseMode.Html).Wait();
+			try
+			{
+				TelegramBotClient client = new TelegramBotClient(Settings.CurrentSettings.TELEGRAMTESTTOKEN);
+				client.GetMeAsync().Wait();
+				DefectUser u = new DefectUser(b.TTUSERID);
+				string mess = $"New task from {u.FULLNAME} is ready for tests!{Settings.CurrentSettings.GetTTAnchor(b.TTID)}";
+				client.SendTextMessageAsync(Settings.CurrentSettings.TELEGRAMTESTCHANNEL, mess, Telegram.Bot.Types.Enums.ParseMode.Html).Wait();
+			}
+			catch (Exception) { }
 		}
 
 		Defect d = new Defect(b.TTID);
@@ -825,6 +829,29 @@ public class TRService : System.Web.Services.WebService
 				reqparm.Add("commaseparatedcommands", commands);
 				reqparm.Add("priority", d.TESTPRIORITY);
 				wcClient.UploadValues(Settings.CurrentSettings.BSTSITESERVICE + "/StartTest", reqparm);
+			}
+		}
+	}
+	[WebMethod]
+	public void SetTaskTestStatus(string ttid, bool failed, string userphone)
+	{
+		DefectBase d = new DefectBase(ttid);
+		string lockguid = Guid.NewGuid().ToString();
+		var lt = locktask(ttid.ToString(), lockguid);
+		bool locked = lt.globallock != lockguid;
+		bool testok = !failed;
+		if (locked)
+		{
+			MPSUser lu = new MPSUser(lt.lockedby);
+			TasksBot.SendMessage(lu.CHATID, $"You was disconnected in task edtior page - TT{ttid} by the testing system to update task status!");
+			using (var nh = new NotifyHub())
+			{
+				MPSUser bsu = MPSUser.FindUserbyPhone(userphone);
+				if (bsu != null)
+				{
+					nh.lockTaskForce(int.Parse(ttid), lockguid, bsu.ID);
+					//d.DISPO = DefectDispo.EnumCannotStart
+				}
 			}
 		}
 	}
@@ -994,5 +1021,28 @@ public class TRService : System.Web.Services.WebService
 		string res = VersionBuilder.PushRelease();
 		VersionBuilder.SendVersionAlarm();
 		return res + "<br/>Finished!";
+	}
+	[WebMethod(EnableSession = true)]
+	public string addRef(string type, string desc)
+	{
+		if (!CurrentContext.Valid)
+		{
+			return "FAILED";
+		}
+		if (!CurrentContext.Admin)
+		{
+			return "FAILED - not admin.";
+		}
+		RefType rtype;
+		if (!Enum.TryParse(type, out rtype))
+		{
+			return "Invalid argument.";
+		}
+		switch (rtype)
+		{
+			case RefType.disposition:
+				return DefectDispo.New(desc).ToString();
+		}
+		return "Unsupported";
 	}
 }
