@@ -105,14 +105,19 @@ public class DefectBuild : IdBasedObject
 		progress = 1,
 		finishedok = 2,
 		cancelled = 3,
-		failed = 4
+		failed = 4,
+		notstarted = 5
+	}
+	public BuildStatus GetBuildStatus()
+	{
+		var o = this[_stat];
+		return o == DBNull.Value ? BuildStatus.notstarted : (BuildStatus)Convert.ToInt32(o);
 	}
 	public bool CANCELLED
 	{
 		get
 		{
-			var o = this[_stat];
-			return o != DBNull.Value && (BuildStatus)Convert.ToInt32(o) == BuildStatus.cancelled;
+			return GetBuildStatus() == BuildStatus.cancelled;
 		}
 		set { }
 	}
@@ -120,8 +125,7 @@ public class DefectBuild : IdBasedObject
 	{
 		get
 		{
-			var o = this[_stat];
-			return o != DBNull.Value && (BuildStatus)Convert.ToInt32(o) == BuildStatus.progress;
+			return GetBuildStatus() == BuildStatus.progress;
 		}
 		set { }
 	}
@@ -298,7 +302,12 @@ public class DefectBuild : IdBasedObject
 		if (col == _stat)
 		{
 			DefectBase db = new DefectBase(TTID);
-			NotifyHub.NotifyBuildStatusChange(ID, TTID, int.Parse(db.AUSER), STATUSTXT);
+			string ttimg = "";
+			if (GetBuildStatus() == BuildStatus.failed)
+			{
+				ttimg = "taskfail.png";
+			}
+			NotifyHub.NotifyBuildStatusChange(ID, TTID, int.Parse(db.AUSER), STATUSTXT, ttimg);
 		}
 	}
 }

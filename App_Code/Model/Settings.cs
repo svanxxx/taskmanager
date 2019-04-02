@@ -262,13 +262,15 @@ public class RawSettings
 			values[dr["NAME"].ToString()] = dr["VALUE"].ToString();
 		}
 	}
-	public string GetTTURL(int ttid)
+	public string GetTTURL(int ttid, string ttimg = "")
 	{
-		return $"{GLOBALSITEURL}{StaticSettings.DefectUrl}{ttid}&tstamp={DateTime.Now.Ticks}";
+		if (!string.IsNullOrEmpty(ttimg))
+			ttimg = $"&{StaticSettings.ogImg}=" + ttimg;
+		return $"{GLOBALSITEURL}{StaticSettings.DefectUrl}{ttid}&tstamp={DateTime.Now.Ticks}{ttimg}";
 	}
-	public string GetTTAnchor(int ttid)
+	public string GetTTAnchor(int ttid, string ttimg = "")
 	{
-		return $"<a href='{GetTTURL(ttid)}'>&#8205;</a>";
+		return $"<a href='{GetTTURL(ttid, ttimg)}'>&#8205;</a>";
 	}
 	public RawSettings(bool loaddata)
 	{
@@ -316,6 +318,13 @@ public class Settings : RawSettings
 }
 public class StaticSettings
 {
+	public static string ogImg
+	{
+		get
+		{
+			return "ogimg";
+		}
+	}
 	public static string DefectUrl
 	{
 		get

@@ -57,6 +57,9 @@ public class SecurityPage : System.Web.UI.Page
 		{
 			return basepath + "/getUserImg.ashx?id=" + userid;
 		}
+		string img = GetPageCustomImg();
+		if (!string.IsNullOrEmpty(img))
+			return basepath + $"/images/{img}";
 		return basepath + "/images/taskicon.png";
 	}
 	static string GetPageTTID()
@@ -78,6 +81,19 @@ public class SecurityPage : System.Web.UI.Page
 			return "";
 		}
 		return s.Substring(ind + findstr.Length);
+	}
+	static string GetPageCustomImg()
+	{
+		if (HttpContext.Current == null || HttpContext.Current.Request == null)
+		{
+			return "";
+		}
+		object o = HttpContext.Current.Request.QueryString[StaticSettings.ogImg];
+		if (o == null)
+		{
+			return "";
+		}
+		return o.ToString();
 	}
 	static string GetPageUserID()
 	{

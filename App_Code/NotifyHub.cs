@@ -23,9 +23,9 @@ public class NotifyHub : Hub
 		var context = GlobalHost.ConnectionManager.GetHubContext<NotifyHub>();
 		context.Clients.All.OnBuildChanged(id, ttid, userid, message);
 	}
-	public static void NotifyBuildStatusChange(int id, int ttid, int userid, string message)
+	public static void NotifyBuildStatusChange(int id, int ttid, int userid, string message, string ttimg)
 	{
-		string mess = $"Build Request:  {message}{Settings.CurrentSettings.GetTTAnchor(ttid)}";
+		string mess = $"Build Request:  {message}{Settings.CurrentSettings.GetTTAnchor(ttid, ttimg)}";
 		DefectUser u = new DefectUser(userid);
 		MPSUser mpu = new MPSUser(u.TRID);
 		TasksBot.SendMessage(mpu.CHATID, mess);
