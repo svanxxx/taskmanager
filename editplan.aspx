@@ -97,8 +97,11 @@
 					<button type="button" class="btn btn-sm btn-outline-secondary mb-1" ng-click="add2Plan()" data-toggle="tooltip" title="Add Task To Currently Selected User On The Top Of The Plan">
 						<i class="fas fa-plus-circle"></i>Add Task
 					</button>
-					<button ng-show="isadmin" type="button" class="btn btn-sm btn-outline-secondary" ng-click="addVacs()" data-toggle="tooltip" title="Add vacations to current user">
+					<button ng-show="isadmin" type="button" class="btn btn-sm btn-outline-secondary mb-1" ng-click="addVacs()" data-toggle="tooltip" title="Add vacations to current user">
 						<i class="fas fa-plane"></i>Add Vacations
+					</button>
+					<button ng-show="isadmin" type="button" class="btn btn-sm btn-outline-secondary" ng-click="addSickness()" data-toggle="tooltip" title="Add sickness (today) to current user">
+						<i style="color:green" class="fas fa-plane"></i>Add Sickness
 					</button>
 				</div>
 			</div>

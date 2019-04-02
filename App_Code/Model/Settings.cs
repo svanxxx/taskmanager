@@ -214,6 +214,11 @@ public class RawSettings
 		get { return GetVal("TELEGRAMTESTCHANNEL"); }
 		set { values["TELEGRAMTESTCHANNEL"] = value; }
 	}
+	public string TELEGRAMCOMPANYCHANNEL
+	{
+		get { return GetVal("TELEGRAMCOMPANYCHANNEL"); }
+		set { values["TELEGRAMCOMPANYCHANNEL"] = value; }
+	}
 	public string TELEGRAMBUILDTOKEN
 	{
 		get { return GetVal("TELEGRAMBUILDTOKEN"); }

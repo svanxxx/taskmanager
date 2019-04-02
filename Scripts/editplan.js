@@ -94,17 +94,31 @@ $(function () {
 					});
 			}
 		};
+		$scope.addSickness = function () {
+			var uname = $scope.users.find(function (u) { return u.ID == $scope.currentuserid; }).PERSON_NAME;
+			if (!confirm("Are you sure you want to create sickness for " + uname + "?")) {
+				return;
+			}
+			var mess = prompt("Enter the message that will be used in the task details and will be set using channel to all", uname + " will be out of office today because of sickness.");
+			if (!mess) {
+				return;
+			}
+			$http.post("trservice.asmx/addSickness", JSON.stringify({ "details": mess, "ttuserid": $scope.currentuser.TTUSERID }))
+				.then(function () {
+					alert("Created!");
+				});
+		};
 		$scope.addVacs = function () {
 			var uname = $scope.users.find(function (u) { return u.ID == $scope.currentuserid; }).PERSON_NAME;
 			var num = prompt("Enter Number Of Vacations For " + uname + ":", "1");
 			num = parseInt(num);
 			if (!isNaN(num)) {
 				var year = (new Date()).getFullYear();
-				var summary = prompt("Enter Summary For Vacations:", "Vacation " + year +" Day (" + uname + ")");
+				var summary = prompt("Enter Summary For Vacations:", "Vacation " + year + " Day (" + uname + ")");
 				if (summary !== "" && summary !== null) {
 					$http.post("trservice.asmx/addVacation", JSON.stringify({ "summary": summary, "ttuserid": $scope.currentuser.TTUSERID, "num": num }))
-						.then(function (response) {
-							alert("Created.");
+						.then(function () {
+							alert("Created!");
 						});
 				}
 			}

@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types.Enums;
@@ -9,12 +10,23 @@ public class TasksBot
 	static object _lockobj = new object();
 	public static void SendMessage(string chat, string mess)
 	{
-		if (string.IsNullOrEmpty(chat))
+		try
 		{
-			return;
+			if (string.IsNullOrEmpty(chat))
+			{
+				return;
+			}
+			StartConnection();
+			lock (_lockobj)
+			{
+				_client.SendTextMessageAsync(int.Parse(chat), mess, ParseMode.Html).GetAwaiter().GetResult();
+			}
 		}
-		StartConnection();
-		_client.SendTextMessageAsync(int.Parse(chat), mess, ParseMode.Html).GetAwaiter().GetResult();
+		catch (Exception e)
+		{
+			System.IO.File.AppendAllText("c:\\taskmanager.log", DateTime.Now.ToString());
+			System.IO.File.AppendAllText("c:\\taskmanager.log", e.ToString());
+		}
 	}
 	public static void StartConnection()
 	{
@@ -22,10 +34,18 @@ public class TasksBot
 		{
 			if (_client == null)
 			{
-				_client = new TelegramBotClient(Settings.CurrentSettings.TELEGRAMTASKSTOKEN);
-				_client.GetMeAsync().Wait();
-				_client.OnUpdate += BotOnUpdateReceived;
-				_client.StartReceiving();
+				try
+				{
+					_client = new TelegramBotClient(Settings.CurrentSettings.TELEGRAMTASKSTOKEN);
+					_client.GetMeAsync().Wait();
+					_client.OnUpdate += BotOnUpdateReceived;
+					_client.StartReceiving();
+				}
+				catch (Exception e)
+				{
+					System.IO.File.AppendAllText("c:\\taskmanager.log", DateTime.Now.ToString());
+					System.IO.File.AppendAllText("c:\\taskmanager.log", e.ToString());
+				}
 			}
 		}
 	}
@@ -33,6 +53,12 @@ public class TasksBot
 	private static async void BotOnUpdateReceived(object sender, UpdateEventArgs e)
 	{
 		var message = e.Update.Message;
+		if (Settings.CurrentSettings.TELEGRAMCOMPANYCHANNEL == message.Chat.Id.ToString())
+		{
+			//ignore company chats
+			return;
+		}
+
 		if (message == null || message.Type != MessageType.Text) return;
 		string text = message.Text.ToUpper();
 		if (text == "/START")

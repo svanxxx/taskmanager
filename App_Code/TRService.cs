@@ -182,6 +182,25 @@ public class TRService : System.Web.Services.WebService
 		}
 	}
 	[WebMethod(EnableSession = true)]
+	public void addSickness(string details, int ttuserid)
+	{
+		if (!CurrentContext.Valid)
+			return;
+
+		if (string.IsNullOrEmpty(details) || ttuserid < 1)
+			return;
+		DateTime dt = DateTime.Today;
+		Defect d = new Defect(Defect.New("SICKNESS DAY " + dt.Year));
+		d.DESCR = $"{CurrentContext.User.PERSON_NAME}: {details}";
+		d.AUSER = ttuserid.ToString();
+		d.DISPO = DefectDispo.GetWorkingRec().ToString();
+		d.ESTIM = 8;
+		d.COMP = DefectComp.GetVacationRec()[0].ToString();
+		d.DATE = dt.ToString(defDateFormat);
+		d.Store();
+		TasksBot.SendMessage(Settings.CurrentSettings.TELEGRAMCOMPANYCHANNEL, details);
+	}
+	[WebMethod(EnableSession = true)]
 	public int newTask(string summary)
 	{
 		if (string.IsNullOrEmpty(summary))
