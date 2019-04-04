@@ -24,8 +24,7 @@ public class TasksBot
 		}
 		catch (Exception e)
 		{
-			System.IO.File.AppendAllText("c:\\taskmanager.log", DateTime.Now.ToString());
-			System.IO.File.AppendAllText("c:\\taskmanager.log", e.ToString());
+			Logger.Log(e);
 		}
 	}
 	public static void StartConnection()
@@ -43,8 +42,7 @@ public class TasksBot
 				}
 				catch (Exception e)
 				{
-					System.IO.File.AppendAllText("c:\\taskmanager.log", DateTime.Now.ToString());
-					System.IO.File.AppendAllText("c:\\taskmanager.log", e.ToString());
+					Logger.Log(e);
 				}
 			}
 		}

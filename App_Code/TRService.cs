@@ -643,8 +643,9 @@ public class TRService : System.Web.Services.WebService
 				ma.Store();
 			}
 		}
-		catch (Exception /*e*/)
+		catch (Exception e)
 		{
+			Logger.Log(e);
 		}
 	}
 	[WebMethod(EnableSession = true)]
@@ -830,7 +831,10 @@ public class TRService : System.Web.Services.WebService
 				string mess = $"New task from {u.FULLNAME} is ready for tests!{Settings.CurrentSettings.GetTTAnchor(b.TTID)}";
 				client.SendTextMessageAsync(Settings.CurrentSettings.TELEGRAMTESTCHANNEL, mess, Telegram.Bot.Types.Enums.ParseMode.Html).Wait();
 			}
-			catch (Exception) { }
+			catch (Exception e)
+			{
+				Logger.Log(e);
+			}
 		}
 
 		Defect d = new Defect(b.TTID);
@@ -1064,5 +1068,15 @@ public class TRService : System.Web.Services.WebService
 				return DefectDispo.New(desc).ToString();
 		}
 		return "Unsupported";
+	}
+	[WebMethod(EnableSession = true)]
+	public string getLog(int from, int to)
+	{
+		return Logger.GetLog(from, to);
+	}
+	[WebMethod(EnableSession = true)]
+	public string clearLog()
+	{
+		return Logger.ClearLog();
 	}
 }

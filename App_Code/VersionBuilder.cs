@@ -92,9 +92,9 @@ public class VersionBuilder
 			client.GetMeAsync().Wait();
 			client.SendTextMessageAsync(Settings.CurrentSettings.TELEGRAMBUILDCHANNEL, message, Telegram.Bot.Types.Enums.ParseMode.Html, true).Wait();
 		}
-		catch (Exception)
+		catch (Exception e)
 		{
-
+			Logger.Log(e);
 		}
 	}
 	public static void SendVersionAlarm()
