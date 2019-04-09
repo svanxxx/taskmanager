@@ -118,7 +118,7 @@
 							</div>
 							<div class="input-group-prepend w-75">
 								<div class="dropdown w-100">
-									<button type="button" class="w-100 btn btn-light btn-sm dropdown-toggle" data-toggle="dropdown" ng-disabled="!canChangeDefect()">
+									<button type="button" class="overflow-hidden w-100 btn btn-light btn-sm dropdown-toggle" data-toggle="dropdown" ng-disabled="!canChangeDefect()">
 										<img async class="rounded-circle" ng-src="{{'getUserImg.ashx?ttid=' + defect.CREATEDBY}}" alt="Smile" height="15" width="15">
 										{{defect.CREATEDBY | getUserById:this}}
 									</button>
@@ -141,7 +141,7 @@
 							</div>
 							<div class="input-group-prepend w-75">
 								<div class="dropdown w-100">
-									<button type="button" class="w-100 btn btn-light btn-sm dropdown-toggle" data-toggle="dropdown" ng-disabled="!canChangeDefect()">
+									<button type="button" class="overflow-hidden w-100 btn btn-light btn-sm dropdown-toggle" data-toggle="dropdown" ng-disabled="!canChangeDefect()">
 										<img async class="rounded-circle" ng-src="{{'getUserImg.ashx?ttid=' + defect.AUSER}}" alt="Smile" height="15" width="15">
 										{{defect.AUSER | getUserById:this}}
 									</button>
@@ -163,7 +163,7 @@
 							<input type="number" min="1" max="999" id="estim" class="form-control w-25 pr-0" ng-disabled="!canChangeDefect()" ng-model="defect.ESTIM">
 							<div class="input-group-prepend w-50">
 								<div class="dropdown w-100">
-									<button type="button" class="w-100 btn btn-light btn-sm dropdown-toggle" data-toggle="dropdown" ng-disabled="!canChangeDefect()">
+									<button type="button" class="overflow-hidden w-100 btn btn-light btn-sm dropdown-toggle" data-toggle="dropdown" ng-disabled="!canChangeDefect()">
 										<img async class="rounded-circle" ng-src="{{'getUserImg.ashx?ttid=' + defect.ESTIMBY}}" alt="Smile" height="15" width="15">
 										{{defect.ESTIMBY | getUserById:this}}
 									</button>
