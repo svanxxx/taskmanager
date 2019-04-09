@@ -27,6 +27,10 @@ public class NotifyHub : Hub
 	{
 		string mess = $"Build Request:  {message}{Settings.CurrentSettings.GetTTAnchor(ttid, ttimg)}";
 		DefectUser u = new DefectUser(userid);
+		if (u.TRID < 1)
+		{
+			return; //assigned user is not specified - old tasks
+		}
 		MPSUser mpu = new MPSUser(u.TRID);
 		TasksBot.SendMessage(mpu.CHATID, mess);
 	}
@@ -49,6 +53,12 @@ public class NotifyHub : Hub
 	{
 		LockInfo li = Defect.Locktask(ttid.ToString(), currentlock, userid.ToString(), true);
 		Clients.Caller.OnLockTask(li);
+	}
+	public static void lockTaskForceUpdatePages(int ttid, string currentlock, int userid)
+	{
+		LockInfo li = Defect.Locktask(ttid.ToString(), currentlock, userid.ToString(), true);
+		var context = GlobalHost.ConnectionManager.GetHubContext<NotifyHub>();
+		context.Clients.All.OnLockTask(ttid);
 	}
 	public void UnLockTask(int ttid, string currentlock)
 	{

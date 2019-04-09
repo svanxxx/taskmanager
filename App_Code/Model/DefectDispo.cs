@@ -53,69 +53,68 @@ public class DefectDispo : Reference
 		: base(_Tabl, _allCols, id.ToString(), _ID)
 	{
 	}
+
+	static Object thisLock = new Object();
+	static List<DefectDispo> _gDispos;
 	public static List<DefectDispo> Enum()
 	{
-		List<DefectDispo> res = new List<DefectDispo>();
-		foreach (int i in EnumRecords(_Tabl, _ID))
+		lock (thisLock)
 		{
-			res.Add(new DefectDispo(i));
+			if (_gDispos == null)
+			{
+				_gDispos = new List<DefectDispo>();
+				foreach (int i in EnumRecords(_Tabl, _ID))
+				{
+					_gDispos.Add(new DefectDispo(i));
+				}
+			}
+			return new List<DefectDispo>(_gDispos);
 		}
-		return res;
 	}
 	public static int New(string desc)
 	{
-		return Reference.New(_Tabl, desc);
-	}
-
-	static Object thisLock = new Object();
-
-	static List<int> _gWorkable;
-	public static List<int> EnumWorkable()
-	{
+		int res = Reference.New(_Tabl, desc);
 		lock (thisLock)
 		{
-			if (_gWorkable == null)
-			{
-				_gWorkable = new List<int>();
-				foreach (int i in EnumRecords(_Tabl, _ID, new string[] { _ReqWork }, new object[] { 1 }))
-				{
-					_gWorkable.Add(i);
-				}
-			}
-			return new List<int>(_gWorkable);
+			_gDispos = null;
 		}
+		return res;
 	}
-	static List<int> _gCannotStart;
-	public static List<int> EnumCannotStart()
+	public static List<DefectDispo> EnumWorkable()
 	{
-		lock (thisLock)
-		{
-			if (_gCannotStart == null)
-			{
-				_gCannotStart = new List<int>();
-				foreach (int i in EnumRecords(_Tabl, _ID, new string[] { _CannotStart }, new object[] { 1 }))
-				{
-					_gCannotStart.Add(i);
-				}
-			}
-			return new List<int>(_gCannotStart);
-		}
+		return new List<DefectDispo>(Enum().Where(item => item.REQUIREWORK == true));
 	}
-	static List<int> _gCanStart;
-	public static List<int> EnumCanStart()
+	public static List<int> EnumWorkableIDs()
 	{
-		lock (thisLock)
-		{
-			if (_gCanStart == null)
-			{
-				_gCanStart = new List<int>();
-				foreach (int i in EnumRecords(_Tabl, _ID, new string[] { _CannotStart }, new object[] { 0 }, _idOrd))
-				{
-					_gCanStart.Add(i);
-				}
-			}
-			return new List<int>(_gCanStart);
-		}
+		return EnumWorkable().Select(x => x.ID).ToList();
+	}
+	public static List<DefectDispo> EnumCannotStart()
+	{
+		return new List<DefectDispo>(Enum().Where(item => item.CANNOTSTART == true));
+	}
+	public static List<int> EnumCannotStartIDs()
+	{
+		return EnumCannotStart().Select(x => x.ID).ToList();
+	}
+	public static List<DefectDispo> EnumTestsPassed()
+	{
+		return new List<DefectDispo>(Enum().Where(item => item.TESTSPASS == true));
+	}
+	public static List<DefectDispo> EnumTestsFailed()
+	{
+		return new List<DefectDispo>(Enum().Where(item => item.TESTSFAIL == true));
+	}
+	public static List<DefectDispo> EnumCanStart()
+	{
+		return new List<DefectDispo>(Enum().Where(item => item.CANNOTSTART == false));
+	}
+	public static List<int> EnumCanStartIDs()
+	{
+		return EnumCanStart().Select(x => x.ID).ToList();
+	}
+	public static List<DefectDispo> EnumWorkNow()
+	{
+		return new List<DefectDispo>(Enum().Where(item => item.WORKING == true));
 	}
 
 	static int _WorkingRec = -1;
@@ -123,9 +122,7 @@ public class DefectDispo : Reference
 	{
 		lock (thisLock)
 		{
-			_gWorkable = null;
-			_gCannotStart = null;
-			_gCanStart = null;
+			_gDispos = null;
 		}
 		_WorkingRec = -1;
 		base.Store();
@@ -137,10 +134,10 @@ public class DefectDispo : Reference
 			return _WorkingRec;
 		}
 
-		foreach (int i in EnumRecords(_Tabl, _ID, new string[] { _Working }, new object[] { 1 }))
+		foreach (DefectDispo d in EnumWorkNow())
 		{
-			_WorkingRec = i;
-			return i;
+			_WorkingRec = d.ID;
+			return _WorkingRec;
 		}
 		return 1;
 	}

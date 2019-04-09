@@ -152,7 +152,7 @@ public class TRService : System.Web.Services.WebService
 		DefectBase d = new DefectBase(Defect.New(summary));
 		d.AUSER = ttuserid == -1 ? CurrentContext.TTUSERID.ToString() : ttuserid.ToString();
 		d.ESTIM = 1;
-		List<int> disp = DefectDispo.EnumCanStart();
+		List<int> disp = DefectDispo.EnumCannotStartIDs();
 		if (disp.Count > 0)
 		{
 			d.DISPO = disp[0].ToString();
@@ -172,7 +172,7 @@ public class TRService : System.Web.Services.WebService
 			d.AUSER = ttuserid.ToString();
 			d.ESTIM = 8;
 			d.COMP = DefectComp.GetVacationRec()[0].ToString();
-			List<int> disp = DefectDispo.EnumCannotStart();
+			List<int> disp = DefectDispo.EnumCannotStartIDs();
 			if (disp.Count > 0)
 			{
 				d.DISPO = disp[0].ToString();
@@ -207,7 +207,7 @@ public class TRService : System.Web.Services.WebService
 			return -1;
 		DefectBase d = new DefectBase(Defect.New(summary));
 		d.ESTIM = 1;
-		List<int> disp = DefectDispo.EnumCanStart();
+		List<int> disp = DefectDispo.EnumCanStartIDs();
 		if (disp.Count > 0)
 		{
 			d.DISPO = disp[0].ToString();
@@ -810,73 +810,124 @@ public class TRService : System.Web.Services.WebService
 	[WebMethod]
 	public void FinishBuild(int id, string requestguid)
 	{
-		DefectBuild b = new DefectBuild(id)
+		try
 		{
-			STATUS = DefectBuild.BuildStatus.finishedok.ToString()
-			,
-			TESTGUID = requestguid
-		};
-		b.Store();
-		if (Settings.CurrentSettings.RELEASETTID == b.TTID.ToString())
-		{
-			VersionBuilder.SendAlarm("New local release build has been finished. Testing is starting...");
-		}
-		else
-		{
-			try
-			{
-				TelegramBotClient client = new TelegramBotClient(Settings.CurrentSettings.TELEGRAMTESTTOKEN);
-				client.GetMeAsync().Wait();
-				DefectUser u = new DefectUser(b.TTUSERID);
-				string mess = $"New task from {u.FULLNAME} is ready for tests!{Settings.CurrentSettings.GetTTAnchor(b.TTID)}";
-				client.SendTextMessageAsync(Settings.CurrentSettings.TELEGRAMTESTCHANNEL, mess, Telegram.Bot.Types.Enums.ParseMode.Html).Wait();
-			}
-			catch (Exception e)
-			{
-				Logger.Log(e);
-			}
-		}
+			DefectBuild b = new DefectBuild(id) { STATUS = DefectBuild.BuildStatus.finishedok.ToString(), TESTGUID = requestguid };
+			b.Store();
 
-		Defect d = new Defect(b.TTID);
-		string bst_b = d.BSTBATCHES.Trim();
-		string bst_c = d.BSTCOMMANDS.Trim();
-		if (!string.IsNullOrEmpty(bst_b) || !string.IsNullOrEmpty(bst_c))
-		{
-			string batches = string.Join(",", bst_b.Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries));
-			string commands = string.Join(",", bst_c.Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries));
-			using (var wcClient = new WebClient())
+			if (Settings.CurrentSettings.RELEASETTID == b.TTID.ToString())
 			{
-				var reqparm = new NameValueCollection();
-				reqparm.Add("guid", requestguid);
-				reqparm.Add("commaseparatedbatches", batches);
-				reqparm.Add("commaseparatedcommands", commands);
-				reqparm.Add("priority", d.TESTPRIORITY);
-				//reqparm.Add("branch", d.BRANCHBST);
-				wcClient.UploadValues(Settings.CurrentSettings.BSTSITESERVICE + "/StartTest", reqparm);
+				VersionBuilder.SendAlarm("New local release build has been finished. Testing is starting...");
 			}
+			else
+			{
+				try
+				{
+					TelegramBotClient client = new TelegramBotClient(Settings.CurrentSettings.TELEGRAMTESTTOKEN);
+					client.GetMeAsync().Wait();
+					DefectUser u = new DefectUser(b.TTUSERID);
+					string mess = $"New task from {u.FULLNAME} is ready for tests!{Settings.CurrentSettings.GetTTAnchor(b.TTID)}";
+					client.SendTextMessageAsync(Settings.CurrentSettings.TELEGRAMTESTCHANNEL, mess, Telegram.Bot.Types.Enums.ParseMode.Html).Wait();
+				}
+				catch (Exception e)
+				{
+					Logger.Log(e);
+				}
+			}
+
+			Defect d = new Defect(b.TTID);
+			string bst_b = d.BSTBATCHES.Trim();
+			string bst_c = d.BSTCOMMANDS.Trim();
+			if (!string.IsNullOrEmpty(bst_b) || !string.IsNullOrEmpty(bst_c))
+			{
+				string batches = string.Join(",", bst_b.Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries));
+				string commands = string.Join(",", bst_c.Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries));
+				using (var wcClient = new WebClient())
+				{
+					var reqparm = new NameValueCollection();
+					reqparm.Add("guid", requestguid);
+					reqparm.Add("commaseparatedbatches", batches);
+					reqparm.Add("commaseparatedcommands", commands);
+					reqparm.Add("priority", d.TESTPRIORITY);
+					//reqparm.Add("branch", d.BRANCHBST);
+					wcClient.UploadValues(Settings.CurrentSettings.BSTSITESERVICE + "/StartTest", reqparm);
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			Logger.Log(e);
 		}
 	}
 	[WebMethod]
-	public void SetTaskTestStatus(string ttid, bool failed, string userphone)
+	public void SetTaskTestStatus(string ttid, string failed, string userphone)
 	{
-		DefectBase d = new DefectBase(ttid);
-		string lockguid = Guid.NewGuid().ToString();
-		var lt = locktask(ttid.ToString(), lockguid);
-		bool locked = lt.globallock != lockguid;
-		bool testok = !failed;
-		if (locked)
+		try
 		{
-			MPSUser lu = new MPSUser(lt.lockedby);
-			TasksBot.SendMessage(lu.CHATID, $"You was disconnected in task edtior page - TT{ttid} by the testing system to update task status!");
-			using (var nh = new NotifyHub())
+			MPSUser bsu = MPSUser.FindUserbyPhone(userphone);
+			if (bsu == null)
 			{
-				MPSUser bsu = MPSUser.FindUserbyPhone(userphone);
-				if (bsu != null)
+				Logger.Log($"Cannot update task {ttid} by testing system. User was not found by phone number: {userphone}");
+				return;
+			}
+
+			Defect d = new Defect(ttid);
+			d.SetUpdater(bsu);
+			string lockguid = Guid.NewGuid().ToString();
+			var lt = Defect.Locktask(ttid.ToString(), lockguid, bsu.ID.ToString());
+			bool locked = lt.globallock != lockguid;
+			bool testok = !bool.Parse(failed);
+			if (locked)
+			{
+				MPSUser lu = new MPSUser(lt.lockedby);
+				TasksBot.SendMessage(lu.CHATID, $"You was disconnected in task editor page - TT{ttid} by the testing system to update task status!");
+				NotifyHub.lockTaskForceUpdatePages(int.Parse(ttid), lockguid, bsu.ID);
+				lt = Defect.Locktask(ttid.ToString(), lockguid, bsu.ID.ToString());
+			}
+			List<DefectDispo> disp = testok ? DefectDispo.EnumTestsPassed() : DefectDispo.EnumTestsFailed();
+			if (disp.Count > 0)
+			{
+				d.DISPO = disp[0].ID.ToString();
+				d.Store();
+				Defect.UnLocktask(ttid, lt.globallock);
+
+				DefectUser du = new DefectUser(d.AUSER);
+				if (du.TRID > -1)
 				{
-					nh.lockTaskForce(int.Parse(ttid), lockguid, bsu.ID);
-					//d.DISPO = DefectDispo.EnumCannotStart
+					MPSUser worker = new MPSUser(du.TRID);
+					string result = !testok ? "Failed!" : "Success!";
+					TasksBot.SendMessage(worker.CHATID, $"Your task {ttid} was processed by BST by {bsu.PERSON_NAME}. Result: {result}");
 				}
 			}
+		}
+		catch (Exception e)
+		{
+			Logger.Log(e);
+		}
+	}
+	[WebMethod]
+	public void NotifyDefectWorker(string ttid, string message, string userphone)
+	{
+		try
+		{
+			MPSUser bsu = MPSUser.FindUserbyPhone(userphone);
+			if (bsu == null)
+			{
+				Logger.Log($"Cannot update task {ttid} by testing system. User was not found by phone number: {userphone}");
+				return;
+			}
+
+			Defect d = new Defect(ttid);
+			DefectUser du = new DefectUser(d.AUSER);
+			if (du.TRID > -1)
+			{
+				MPSUser worker = new MPSUser(du.TRID);
+				TasksBot.SendMessage(worker.CHATID, message);
+			}
+		}
+		catch (Exception e)
+		{
+			Logger.Log(e);
 		}
 	}
 	[WebMethod]

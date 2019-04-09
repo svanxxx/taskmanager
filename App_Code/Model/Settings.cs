@@ -273,6 +273,10 @@ public class RawSettings
 			ttimg = $"&{StaticSettings.ogImg}=" + ttimg;
 		return $"{GLOBALSITEURL}{StaticSettings.DefectUrl}{ttid}&tstamp={DateTime.Now.Ticks}{ttimg}";
 	}
+	public string GetUserUrl(int id)
+	{
+		return $"{GLOBALSITEURL}{StaticSettings.UserUrl}{id}";
+	}
 	public string GetTTAnchor(int ttid, string ttimg = "")
 	{
 		return $"<a href='{GetTTURL(ttid, ttimg)}'>&#8205;</a>";
@@ -335,6 +339,13 @@ public class StaticSettings
 		get
 		{
 			return "showtask.aspx?ttid=";
+		}
+	}
+	public static string UserUrl
+	{
+		get
+		{
+			return "getUserImg.ashx?id=";
 		}
 	}
 }

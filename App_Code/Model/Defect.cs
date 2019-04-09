@@ -78,6 +78,15 @@ public partial class DefectBase : IdBasedObject
 	protected static string[] _allBaseCols = new string[] { _ID, _Summ, _idRec, _Disp, _Est, _EstId, _Order, _AsUser, _Seve, _sMod, _BackOrder, _Comp, _Date, _Created, _CreaBy, _Type, _Prod, _Ref, _Prio, _OrderDate, _ModDate, _ModBy, _sModTRID, _branch, _branchBST, _buildP };
 	protected static string[] _allBaseColsNames = new string[] { _ID, "Summary", _idRec, "Disposition", "Estimation", "Estimated by", "Schedule Order", "Assigned User", "Severity", "", "Schedule Order", "Component", "Date Entered", "Date Created", "Created By", "Type", "Product", "Reference", "Priority", "Schedule Date", "", "", "", "Branch", "BST Branch", "Test Priority" };
 
+	MPSUser _updater;
+	public MPSUser GetUpdater()
+	{
+		return _updater == null ? CurrentContext.User : _updater;
+	}
+	public void SetUpdater(MPSUser u)
+	{
+		_updater = u;
+	}
 	public string SEVE
 	{
 		get { return this[_Seve].ToString(); }
@@ -168,7 +177,7 @@ public partial class DefectBase : IdBasedObject
 		{
 			if (ORDER != value)
 			{
-				this[_sMod] = CurrentContext.User.EMAIL;
+				this[_sMod] = GetUpdater().EMAIL;
 			}
 			if (value < 0)
 			{
@@ -255,7 +264,7 @@ public partial class DefectBase : IdBasedObject
 		{
 			if (this[_EstId] == DBNull.Value)
 			{
-				return CurrentContext.TTUSERID;
+				return GetUpdater().TTUSERID;
 			}
 			return Convert.ToDecimal(this[_EstId]);
 		}
@@ -327,7 +336,7 @@ public partial class DefectBase : IdBasedObject
 			{
 				int ord = Convert.ToInt32(val);
 
-				List<int> wl = DefectDispo.EnumWorkable();
+				List<int> wl = DefectDispo.EnumWorkableIDs();
 				string ids = string.Join(",", wl);
 
 				string sql = $@"
@@ -368,7 +377,7 @@ public partial class DefectBase : IdBasedObject
 		}
 		else if (col == _Order)
 		{
-			List<int> wl = DefectDispo.EnumWorkable();
+			List<int> wl = DefectDispo.EnumWorkableIDs();
 			return string.Format("(CASE WHEN {1}.{0} IS NULL THEN NULL ELSE (SELECT COUNT(*) + 1 FROM {1} D2 WHERE D2.IDUSR = {1}.IDUSR AND D2.{0} > {1}.{0} AND {3} in ({4}))END) {2}", _Order, _Tabl, _Order, _Disp, string.Join(",", wl));
 		}
 		else if (col == _BackOrder)
@@ -425,7 +434,7 @@ public partial class DefectBase : IdBasedObject
 	}
 	public List<DefectBase> EnumPlanLim(int userid, int max) //zero for unlimited number
 	{
-		List<int> wl = DefectDispo.EnumWorkable();
+		List<int> wl = DefectDispo.EnumWorkableIDs();
 		string w_where = "";
 		if (wl.Count > 0)
 		{
@@ -444,7 +453,7 @@ public partial class DefectBase : IdBasedObject
 	}
 	public List<DefectBase> EnumUnPlan(int userid)
 	{
-		List<int> wl = DefectDispo.EnumWorkable();
+		List<int> wl = DefectDispo.EnumWorkableIDs();
 		string w_where1 = "";
 		if (wl.Count > 0)
 		{
@@ -491,7 +500,7 @@ public partial class DefectBase : IdBasedObject
 	{
 		DefectsFilter f = new DefectsFilter();
 		f.components = new List<int>(DefectComp.GetVacationRec());
-		f.dispositions = new List<int>(DefectDispo.EnumCannotStart());
+		f.dispositions = new List<int>(DefectDispo.EnumCannotStartIDs());
 		return f;
 	}
 	public static List<DefectBase> EnumUnusedVacations()
@@ -506,7 +515,7 @@ public partial class DefectBase : IdBasedObject
 	{
 		DefectsFilter f = new DefectsFilter();
 		f.components = new List<int>(DefectComp.GetVacationRec());
-		f.dispositions = new List<int>(DefectDispo.EnumCanStart());
+		f.dispositions = DefectDispo.EnumCanStartIDs();
 		f.startDateEnter = startdate;
 		f.endDateEnter = DateTime.ParseExact(startdate, defDateFormat, CultureInfo.InvariantCulture).AddDays(days).ToString(defDateFormat);//two weeks adnvance
 		return (new DefectBase()).Enum(f, 2000);
@@ -624,7 +633,7 @@ public partial class Defect : DefectBase
 	{
 		if (IsModified())
 		{
-			MODIFIEDBY = CurrentContext.User.TTUSERID;
+			MODIFIEDBY = GetUpdater().TTUSERID;
 			MODIFIED = DateTime.UtcNow.ToString(defDateFormat, CultureInfo.InvariantCulture);
 			if (IsModifiedCol(_Disp) && !IsModifiedCol(_Date))
 			{
@@ -648,7 +657,7 @@ public partial class Defect : DefectBase
 		}
 		if (!string.IsNullOrEmpty(_HistoryChanges))
 		{
-			DefectHistory.AddHisotoryByTask(IDREC, _HistoryChanges);
+			DefectHistory.AddHisotoryByTask(IDREC, _HistoryChanges, GetUpdater().TTUSERID.ToString());
 			_HistoryChanges = "";
 		}
 		base.PostStore();
@@ -695,7 +704,7 @@ public partial class Defect : DefectBase
 		{
 			if (!string.IsNullOrEmpty(AUSER))
 			{
-				DefectEvent.AddEventByTask(IDREC, DefectEvent.Eventtype.assigned, CurrentContext.TTUSERID, "", -1, Convert.ToInt32(AUSER));
+				DefectEvent.AddEventByTask(IDREC, DefectEvent.Eventtype.assigned, GetUpdater().TTUSERID, "", -1, Convert.ToInt32(AUSER));
 			}
 			return;
 		}
@@ -789,7 +798,7 @@ public partial class Defect : DefectBase
 	}
 	protected override void OnBackOrderChanged()
 	{
-		this[_sMod] = CurrentContext.User.EMAIL;
+		this[_sMod] = GetUpdater().EMAIL;
 	}
 	public void From(Defect d)
 	{

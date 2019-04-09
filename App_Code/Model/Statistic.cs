@@ -28,7 +28,7 @@ partial class Defect
 		end = end.AddDays(days);
 
 		string vacs = string.Join(",", DefectComp.GetVacationRec());
-		string vacsfree = string.Join(",", DefectDispo.EnumCannotStart());
+		string vacsfree = string.Join(",", DefectDispo.EnumCannotStartIDs());
 
 		string sql = string.Format(@"
 			SELECT D.{0} TTUSER, SUM(D.{2}) HOURS, COUNT(*) CNT, 1 FLAG FROM {1} D 

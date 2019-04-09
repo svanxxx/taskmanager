@@ -51,7 +51,7 @@ public class DefectHistory : IdBasedObject
 			);
 		return res;
 	}
-	public static void AddHisotoryByTask(int id, string notes)
+	public static void AddHisotoryByTask(int id, string notes, string ttuserid = "")
 	{
 		notes = notes.Replace("'", "''");
 		string sql = string.Format(@"
@@ -66,8 +66,7 @@ public class DefectHistory : IdBasedObject
 						,'{8}'
 						, {9}
 		)", _Tabl, 
-			_ID, _Proj, _idUser, _Dat, _Notes, _ParentID, 
-			CurrentContext.User.TTUSERID, notes, id);
+			_ID, _Proj, _idUser, _Dat, _Notes, _ParentID, string.IsNullOrEmpty(ttuserid) ? CurrentContext.User.TTUSERID.ToString() : ttuserid, notes, id);
 		SQLExecute(sql);
 	}
 	public static void DelHisotoryByTask(int parentid)

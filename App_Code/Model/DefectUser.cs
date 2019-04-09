@@ -74,6 +74,10 @@ public class DefectUser : IdBasedObject
 		: base(_Tabl, _Allcols, id.ToString(), _ID)
 	{
 	}
+	public DefectUser(string id)
+		: base(_Tabl, _Allcols, id, _ID)
+	{
+	}
 	public static List<DefectUser> Enum()
 	{
 		List<DefectUser> res = new List<DefectUser>();
