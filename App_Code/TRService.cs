@@ -895,8 +895,14 @@ public class TRService : System.Web.Services.WebService
 				if (du.TRID > -1)
 				{
 					MPSUser worker = new MPSUser(du.TRID);
-					string result = !testok ? "Failed!" : "Success!";
-					TasksBot.SendMessage(worker.CHATID, $"Your task {ttid} was processed by BST by {bsu.PERSON_NAME}. Result: {result}");
+					string result = "Success!";
+					string emo = "\U00002705";
+					if (!testok)
+					{
+						result = "Failed!";
+						emo = "\U0000274C";
+					}
+					TasksBot.SendMessage(worker.CHATID, $"{emo} Your task {ttid} was processed by BST by {bsu.PERSON_NAME}. Result: {result}");
 				}
 			}
 		}
