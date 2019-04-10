@@ -198,7 +198,7 @@ public class TRService : System.Web.Services.WebService
 		d.COMP = DefectComp.GetVacationRec()[0].ToString();
 		d.DATE = dt.ToString(defDateFormat);
 		d.Store();
-		TasksBot.SendMessage(Settings.CurrentSettings.TELEGRAMCOMPANYCHANNEL, details);
+		TasksBot.SendMessage(Settings.CurrentSettings.TELEGRAMCOMPANYCHANNEL, $"\U0000D83C\U0000DF21{details}");
 	}
 	[WebMethod(EnableSession = true)]
 	public int newTask(string summary)
