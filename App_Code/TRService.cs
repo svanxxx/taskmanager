@@ -876,7 +876,12 @@ public class TRService : System.Web.Services.WebService
 			string lockguid = Guid.NewGuid().ToString();
 			var lt = Defect.Locktask(ttid.ToString(), lockguid, bsu.ID.ToString());
 			bool locked = lt.globallock != lockguid;
-			bool testok = !bool.Parse(failed);
+			bool testFail;
+			bool testcancel = false;
+			if (!bool.TryParse(failed, out testFail))
+			{
+				testcancel = true;
+			}
 			if (locked)
 			{
 				MPSUser lu = new MPSUser(lt.lockedby);
@@ -884,7 +889,7 @@ public class TRService : System.Web.Services.WebService
 				NotifyHub.lockTaskForceUpdatePages(int.Parse(ttid), lockguid, bsu.ID);
 				lt = Defect.Locktask(ttid.ToString(), lockguid, bsu.ID.ToString());
 			}
-			List<DefectDispo> disp = testok ? DefectDispo.EnumTestsPassed() : DefectDispo.EnumTestsFailed();
+			List<DefectDispo> disp = testFail ? DefectDispo.EnumTestsFailed() : DefectDispo.EnumTestsPassed();
 			if (disp.Count > 0)
 			{
 				d.DISPO = disp[0].ID.ToString();
@@ -896,11 +901,16 @@ public class TRService : System.Web.Services.WebService
 				{
 					MPSUser worker = new MPSUser(du.TRID);
 					string result = "Success!";
-					string emo = "\U00002705";
-					if (!testok)
+					string emo = "✅";
+					if (testcancel)
+					{
+						result = "Cancel!";
+						emo = "🚮";
+					}
+					else if (testFail)
 					{
 						result = "Failed!";
-						emo = "\U0000274C";
+						emo = "❌";
 					}
 					TasksBot.SendMessage(worker.CHATID, $"{emo} Your task {ttid} was processed by BST by {bsu.PERSON_NAME}. Result: {result}");
 				}
