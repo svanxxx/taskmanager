@@ -810,7 +810,7 @@ public class TRService : System.Web.Services.WebService
 	[WebMethod]
 	public void VersionBuildAlarm(string message)
 	{
-		VersionBuilder.SendAlarm($"📢{message}");
+		VersionBuilder.SendAlarm($"{message}");
 	}
 	[WebMethod]
 	public void FinishBuild(int id, string requestguid)
@@ -822,7 +822,7 @@ public class TRService : System.Web.Services.WebService
 
 			if (Settings.CurrentSettings.RELEASETTID == b.TTID.ToString())
 			{
-				VersionBuilder.SendAlarm("✅New local release build has been finished. Testing is starting...");
+				VersionBuilder.SendAlarm("✅New internal release build has been finished. Testing is starting...");
 			}
 			else
 			{
