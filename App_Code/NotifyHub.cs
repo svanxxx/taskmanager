@@ -42,7 +42,7 @@ public class NotifyHub : Hub
 	{
 		MPSUser from = new MPSUser(fromID);
 		MPSUser to = new MPSUser(toID);
-		TasksBot.SendMessage(to.CHATID, $"\U00002757\U0000FE0F{from.PERSON_NAME}: {message}");
+		TasksBot.SendMessage(to.CHATID, $"⚠️{from.PERSON_NAME}: {message}");
 	}
 	public void LockTask(int ttid, string currentlock, int userid)
 	{

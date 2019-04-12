@@ -198,7 +198,7 @@ public class TRService : System.Web.Services.WebService
 		d.COMP = DefectComp.GetVacationRec()[0].ToString();
 		d.DATE = dt.ToString(defDateFormat);
 		d.Store();
-		TasksBot.SendMessage(Settings.CurrentSettings.TELEGRAMCOMPANYCHANNEL, $"\U0000D83C\U0000DF21{details}");
+		TasksBot.SendMessage(Settings.CurrentSettings.TELEGRAMCOMPANYCHANNEL, $"🌡{details}");
 	}
 	[WebMethod(EnableSession = true)]
 	public int newTask(string summary)
@@ -808,6 +808,11 @@ public class TRService : System.Web.Services.WebService
 		b.Store();
 	}
 	[WebMethod]
+	public void VersionBuildAlarm(string message)
+	{
+		VersionBuilder.SendAlarm($"📢{message}");
+	}
+	[WebMethod]
 	public void FinishBuild(int id, string requestguid)
 	{
 		try
@@ -817,7 +822,7 @@ public class TRService : System.Web.Services.WebService
 
 			if (Settings.CurrentSettings.RELEASETTID == b.TTID.ToString())
 			{
-				VersionBuilder.SendAlarm("New local release build has been finished. Testing is starting...");
+				VersionBuilder.SendAlarm("✅New local release build has been finished. Testing is starting...");
 			}
 			else
 			{
@@ -967,7 +972,7 @@ public class TRService : System.Web.Services.WebService
 		b.Store();
 		if (Settings.CurrentSettings.RELEASETTID == b.TTID.ToString())
 		{
-			VersionBuilder.SendAlarm("Failed to build version. Please check the logs!!!");
+			VersionBuilder.SendAlarm("❌Failed to build version. Please check the logs!!!");
 		}
 	}
 	[WebMethod(EnableSession = true)]
