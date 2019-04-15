@@ -47,7 +47,7 @@
 	<input type="hidden" id="isadmin" value="<%=CurrentContext.Admin.ToString()%>" />
 	<input type="hidden" id="userid" value="<%=CurrentContext.UserID.ToString()%>" />
 	<input type="hidden" id="ttuserid" value="<%=CurrentContext.TTUSERID.ToString()%>" />
-
+s	<input type="hidden" id="userlogin" value="<%=CurrentContext.UserLogin()%>" />
 	<div class="modal" id="addtask">
 		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">

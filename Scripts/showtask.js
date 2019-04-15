@@ -509,6 +509,12 @@
 			}
 			$scope.defect.DESCR = lines.join("\n");
 		};
+		$scope.adddesc = function (text) {
+			var d = new Date();
+			$scope.defect.DESCR = "<" + userLogin() + "> " +
+				(d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes()
+				+ " - " + text + "\n\n" + $scope.defect.DESCR;
+		};
 		$scope.duplicate = function () {
 			$http.post("trservice.asmx/copyTask", JSON.stringify({ "ttid": ttid }))
 				.then(function (response) {

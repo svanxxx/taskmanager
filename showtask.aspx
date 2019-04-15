@@ -28,6 +28,8 @@
 				<button ng-click="duplicate()" type="button" class="btn btn-outline-secondary btn-block btn-sm">Duplicate&nbsp;<i class="fas fa-clone"></i></button>
 				<button ng-click="resettask()" ng-disabled="!canChangeDefect()" type="button" class="btn btn-outline-secondary btn-block btn-sm">Reset To Re-Use&nbsp;<i class="fas fa-recycle"></i></button>
 				<button ng-click="normtext()" ng-disabled="!canChangeDefect()" type="button" class="btn btn-outline-secondary btn-block btn-sm">Normalize Details Text&nbsp;<i class="fab fa-wpforms"></i></button>
+				<button ng-click="adddesc('Tested')" ng-disabled="!canChangeDefect()" type="button" class="btn btn-outline-secondary btn-block btn-sm">Add Tested Comment&nbsp;<i class="fas fa-check"></i></button>
+				<button ng-click="adddesc('Rejected')" ng-disabled="!canChangeDefect()" type="button" class="btn btn-outline-secondary btn-block btn-sm">Add Rejected Comment&nbsp;<i class="fas fa-window-close"></i></button>
 				<div class="alert alert-info mt-2" style="text-align: center">
 					<a data-toggle="tooltip" title="Click to see full plan for the person" target="_blank" href="editplan.aspx?userid={{lockedby}}">
 						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?id=' + lockedby}}" alt="Smile" height="60" width="60" />

@@ -14,6 +14,9 @@ function ttUserID() {
 function resetReferenceVersion() {
 	document.getElementById("referenceid").value = "";
 }
+function userLogin() {
+	return document.getElementById("userlogin").value;
+}
 function loadReference($scope, member, $http, localmember, functionname, params, func) {
 	params = params || {};
 	var m = localmember + "_storageversion";
