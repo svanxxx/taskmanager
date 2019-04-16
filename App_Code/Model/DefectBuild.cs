@@ -106,12 +106,16 @@ public class DefectBuild : IdBasedObject
 		finishedok = 2,
 		cancelled = 3,
 		failed = 4,
-		notstarted = 5
+		notstarted = 5,
 	}
 	public BuildStatus GetBuildStatus()
 	{
 		var o = this[_stat];
 		return o == DBNull.Value ? BuildStatus.notstarted : (BuildStatus)Convert.ToInt32(o);
+	}
+	public void SetBuildStatus(BuildStatus s)
+	{
+		this[_stat] = (int)s;
 	}
 	public bool CANCELLED
 	{
@@ -217,7 +221,7 @@ public class DefectBuild : IdBasedObject
 	}
 
 	public DefectBuild()
-	  : base(_Tabl, _allBasecols, 0.ToString(), _pid, false, _View)
+	  : base(_Tabl, _allBasecols, "", _pid, false, _View)
 	{
 	}
 	public DefectBuild(int id)
@@ -290,6 +294,15 @@ public class DefectBuild : IdBasedObject
 	}
 	public static bool hasBuildRequest()
 	{
+		DefectBuild worker = new DefectBuild();
+		foreach (DataRow r in worker.GetRecords($"WHERE {_stat} = {(int)BuildStatus.progress} and DATEDIFF(MINUTE, {_dateUp}, GETDATE()) > {Settings.CurrentSettings.BUILDTIMEOUT}"))
+		{
+			DefectBuild d = new DefectBuild();
+			d.Load(r);
+			d.STATUSTXT = "Time out - cancelled!";
+			d.SetBuildStatus(BuildStatus.cancelled);
+			d.Store();
+		}
 		return Convert.ToInt32(GetValue(string.Format("SELECT COUNT(*) FROM {0} WHERE {1} IS NULL OR {1} = {2}", _Tabl, _stat, (int)BuildStatus.progress))) > 0;
 	}
 	protected override void PostStore()
@@ -303,7 +316,8 @@ public class DefectBuild : IdBasedObject
 		{
 			DefectBase db = new DefectBase(TTID);
 			string ttimg = "";
-			if (GetBuildStatus() == BuildStatus.failed)
+			var st = GetBuildStatus();
+			if (st == BuildStatus.failed || st == BuildStatus.cancelled)
 			{
 				ttimg = "taskfail.png";
 			}

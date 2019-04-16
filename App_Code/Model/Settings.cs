@@ -184,6 +184,11 @@ public class RawSettings
 		get { return GetVal("BUILDTIME"); }
 		set { values["BUILDTIME"] = value; }
 	}
+	public string BUILDTIMEOUT
+	{
+		get { return GetVal("BUILDTIMEOUT"); }
+		set { values["BUILDTIMEOUT"] = value; }
+	}
 	public string RELEASETTID
 	{
 		get { return GetVal("RELEASETTID"); }
