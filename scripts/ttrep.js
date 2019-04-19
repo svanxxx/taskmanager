@@ -387,5 +387,19 @@
 				$scope.changed = true;
 			}
 		}, true);
+
+		$.connection.hub.disconnected(function () {
+			setTimeout(function () { $.connection.hub.start(); }, 5000); // Restart connection after 5 seconds.
+		});
+		$scope.notifyHub = $.connection.notifyHub;
+		$scope.notifyHub.client.onDefectChanged = function (defectid) {
+			for (var i = 0; i < $scope.defects.length; i++) {
+				if ($scope.defects[i].ID == defectid) {
+					$scope.loadData();
+					return;
+				}
+			}
+		};
+		$.connection.hub.start();
 	}]);
 });

@@ -5,6 +5,8 @@
 	<%=System.Web.Optimization.Scripts.Render("~/bundles/ttrep_js")%>
 	<script src="<%=Settings.CurrentSettings.ANGULARCDN.ToString()%>angular.min.js"></script>
 	<script <%="src='" + Settings.CurrentSettings.COLRESIZABLECDN.ToString() + "colResizable-1.5.min.js'" %>></script>
+	<script src="scripts/jquery.signalR-2.3.0.min.js"></script>
+	<script src="signalr/hubs"></script>
 </asp:Content>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
