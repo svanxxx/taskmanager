@@ -21,27 +21,20 @@
 			</button>
 		</div>
 		<div class="row mt-2">
-			<div class="col-xl-2 d-none d-xl-block">
-				<div class="alert alert-primary">
-					<p>To schedule the task: click on radio button for the task! Then holding <strong>Ctrl</strong> key press <strong>move up</strong> or <strong>move down</strong> to move the task in list correspondingly.</p>
-					<p>
-						Click
-						<button type="button" class="btn btn-xs"><i class="fas fa-arrow-up"></i></button>
-						to move task the the top which will result in the task being done first of all
-					</p>
-					<p>
-						Click
-						<button type="button" class="btn btn-xs"><i class="fas fa-arrow-right"></i></button>
-						to move task out of schedlue
-					</p>
-					<p>
-						In unscheduled section click
-						<button type="button" class="btn btn-xs"><i class="fas fa-arrow-left"></i></button>
-						to move task into the schedlue being on the top of list
-					</p>
-				</div>
-				<div class="alert alert-primary">
-					<button onclick="copyurl()" type="button" class="btn btn-link"><i class="fas fa-copy"></i>Copy page link</button>
+			<div class="col-xl-1 col-lg-2">
+				<div class="btn-group-vertical btn-group-sm d-flex">
+					<button type="button" class="btn btn-sm btn-outline-secondary mb-1" ng-click="add2Plan()" data-toggle="tooltip" title="Add Task To Currently Selected User On The Top Of The Plan">
+						<i class="fas fa-plus-circle"></i>Add Task
+					</button>
+					<button ng-show="isadmin" type="button" class="btn btn-sm btn-outline-secondary mb-1" ng-click="addVacs()" data-toggle="tooltip" title="Add vacations to current user">
+						<i class="fas fa-plane"></i>Add Vacations
+					</button>
+					<button ng-show="isadmin" type="button" class="btn btn-sm btn-outline-secondary" ng-click="addSickness()" data-toggle="tooltip" title="Add sickness (today) to current user">
+						<i style="color: green" class="fas fa-plane"></i>Add Sickness
+					</button>
+					<button onclick="copyurl()" data-toggle="tooltip" title="Copy link to this page to clipboard" type="button" class="btn btn-outline-secondary btn-sm">
+						<i class="fas fa-copy"></i>Copy page link
+					</button>
 				</div>
 			</div>
 			<div class="col-xl-9 col-lg-10">
@@ -92,17 +85,24 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-xl-1 col-lg-2">
-				<div class="btn-group-vertical btn-group-sm d-flex">
-					<button type="button" class="btn btn-sm btn-outline-secondary mb-1" ng-click="add2Plan()" data-toggle="tooltip" title="Add Task To Currently Selected User On The Top Of The Plan">
-						<i class="fas fa-plus-circle"></i>Add Task
-					</button>
-					<button ng-show="isadmin" type="button" class="btn btn-sm btn-outline-secondary mb-1" ng-click="addVacs()" data-toggle="tooltip" title="Add vacations to current user">
-						<i class="fas fa-plane"></i>Add Vacations
-					</button>
-					<button ng-show="isadmin" type="button" class="btn btn-sm btn-outline-secondary" ng-click="addSickness()" data-toggle="tooltip" title="Add sickness (today) to current user">
-						<i style="color:green" class="fas fa-plane"></i>Add Sickness
-					</button>
+			<div class="col-xl-2 d-none d-xl-block">
+				<div class="alert alert-primary">
+					<p>To schedule the task: click on radio button for the task! Then holding <strong>Ctrl</strong> key press <strong>move up</strong> or <strong>move down</strong> to move the task in list correspondingly.</p>
+					<p>
+						Click
+						<button type="button" class="btn btn-xs"><i class="fas fa-arrow-up"></i></button>
+						to move task the the top which will result in the task being done first of all
+					</p>
+					<p>
+						Click
+						<button type="button" class="btn btn-xs"><i class="fas fa-arrow-right"></i></button>
+						to move task out of schedlue
+					</p>
+					<p>
+						In unscheduled section click
+						<button type="button" class="btn btn-xs"><i class="fas fa-arrow-left"></i></button>
+						to move task into the schedlue being on the top of list
+					</p>
 				</div>
 			</div>
 		</div>

@@ -180,6 +180,8 @@ public class TRService : System.Web.Services.WebService
 			d.DATE = new DateTime(DateTime.Now.Year, 12, 31).ToString(defDateFormat);
 			d.Store();
 		}
+		MPSUser mpu = new MPSUser(new DefectUser(ttuserid).TRID);
+		TasksBot.SendMessage(mpu.CHATID, $"{num} vacation tasks have been created for you by {CurrentContext.UserName()}");
 	}
 	[WebMethod(EnableSession = true)]
 	public void addSickness(string details, int ttuserid)
