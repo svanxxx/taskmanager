@@ -14,7 +14,7 @@
 				<div ng-show="!searchMachine && !hasMachine()">
 					<h1 class="label-center">Select machine to process</h1>
 					<div class="flex-container">
-						<div title="{{m.DETAILS}}" data-toggle="tooltip" ng-style="m | mcol:this" ng-click="setMachine(m.NAME)" class="btn btn-info button-server" ng-repeat="m in machines | orderBy : 'NAME'">
+						<div title="{{m.DETAILS}}" data-toggle="tooltip" ng-style="m | mcol:this" ng-click="setMachine(m)" class="p-1 btn btn-info button-server" ng-repeat="m in machines | orderBy : 'NAME'">
 							<i ng-show="m.ping" class="fas fa-thumbs-up"></i>
 							<i ng-show="!m.ping" class="fas fa-power-off"></i>
 							<img src="images/server.png"></img>
@@ -29,19 +29,22 @@
 				<div ng-show="searchMachine && !hasMachine()">
 					<h1 class="label-center">Select domain computer</h1>
 					<div class="flex-container">
-						<div ng-click="setMachine(c)" class="btn btn-info button-server" ng-repeat="c in domainComputers">
+						<div ng-click="setMachine({NAME:c, DETAILS:''})" class="btn btn-info button-server" ng-repeat="c in domainComputers">
 							<img src="images/server.png"></img><p class="label-server">{{c}}</p>
 						</div>
 					</div>
 					<button ng-click="searchMachine=false" type='button' class='btn btn-block btn-primary btn-lg'>Back</button>
 				</div>
 				<div ng-show="hasMachine()">
-					<h1 class="label-center">{{workmachine}}</h1>
+					<h1 class="label-center">{{workmachine.NAME}}</h1>
+					<div style="text-align: center;" class="alert alert-light small p-0" ng-bind-html="workmachine.DETAILS | rawHtml">
+					</div>
 					<button ng-click="wakeMachine()" type='button' class='btn btn-block btn-success btn-lg' id='wake'>Wake Up</button>
 					<button ng-click="shutMachine()" type='button' class='btn btn-block btn-warning btn-lg' id='shut'>Shut Down</button>
 					<button ng-click="scanMachine()" type='button' class='btn btn-block btn-primary btn-lg' id='scan'>Scan for MAC</button>
 					<button ng-click="remMachine()" type='button' class='btn btn-block btn-danger btn-lg' id='remove'>Remove</button>
-					<button ng-click="setMachine('')" type='button' class='btn btn-block btn-primary btn-lg'>Back</button>
+					<hr />
+					<button ng-click="setMachine()" type='button' class='btn btn-block btn-light btn-lg'>Back</button>
 				</div>
 			</div>
 			<div class="col-lg-2"></div>

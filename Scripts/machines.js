@@ -1,5 +1,6 @@
 ﻿$(function () {
 	var app = angular.module('mpsapplication', []);
+	app.filter('rawHtml', ['$sce', rawHtml]);
 	app.filter('mcol', function () {
 		return function (m, $scope) {
 			if (m.ping == true) {
@@ -17,7 +18,7 @@
 
 		$scope.unpinged = function (m) {
 			return (typeof m.ping === "undefined");
-		}
+		};
 
 		$http.post("trservice.asmx/getMachines", JSON.stringify({}))
 			.then(function (result) {
@@ -31,13 +32,13 @@
 				EndProgress(dompckprg);
 			});
 		$scope.setMachine = function (m) {
-			if (m == '') {
+			if (m == undefined) {
 				$scope.searchMachine = false;
 				$scope.workmachine = undefined;
 			} else {
 				$scope.workmachine = m;
 			}
-		}
+		};
 
 		$scope.mLoadSignal = new EventSource("machinesping.ashx");
 		$scope.mLoadSignal.addEventListener("machine", function (e) {
@@ -57,35 +58,35 @@
 		}, false);
 
 		$scope.shutMachine = function () {
-			var scankprg = StartProgress("Shutting down...");
+			StartProgress("Shutting down...");
 			$http.post("trservice.asmx/shutMachine", JSON.stringify({ "m": $scope.workmachine }))
-				.then(function (result) {
+				.then(function () {
 					window.location.reload();
 				});
-		}
+		};
 		$scope.wakeMachine = function () {
-			var scankprg = StartProgress("Waking up...");
+			StartProgress("Waking up...");
 			$http.post("trservice.asmx/wakeMachine", JSON.stringify({ "m": $scope.workmachine }))
-				.then(function (result) {
+				.then(function () {
 					window.location.reload();
 				});
-		}
+		};
 		$scope.scanMachine = function () {
-			var scankprg = StartProgress("Scanning...");
+			StartProgress("Scanning...");
 			$http.post("trservice.asmx/scanMachine", JSON.stringify({ "m": $scope.workmachine }))
-				.then(function (result) {
+				.then(function () {
 					window.location.reload();
 				});
-		}
+		};
 		$scope.remMachine = function () {
-			var scankprg = StartProgress("Removing...");
+			StartProgress("Removing...");
 			$http.post("trservice.asmx/remMachine", JSON.stringify({ "m": $scope.workmachine }))
-				.then(function (result) {
+				.then(function () {
 					window.location.reload();
 				});
-		}
+		};
 		$scope.hasMachine = function () {
 			return (typeof $scope.workmachine !== "undefined");
-		}
+		};
 	}]);
 })

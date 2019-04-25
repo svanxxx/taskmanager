@@ -298,7 +298,7 @@ function copyurl(txt) {
 	$temp.remove();
 
 	var options = {
-		icon: "/images/fist.png"
+		icon: "~/images/fist.png"
 	};
 	var n = new Notification("The link has been copied to clipboard.", options);
 	setTimeout(n.close.bind(n), 2000);
