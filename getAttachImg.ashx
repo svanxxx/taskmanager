@@ -2,13 +2,15 @@
 
 using System;
 using System.Web;
+using System.IO;
+using System.Drawing;
 
 public class getAttachImg : IHttpHandler
 {
 	static bool IsImage(string ext)
 	{
 		ext = ext.ToUpper();
-		return ext == "PNG" || ext != "JPG" || ext != "JPEG";
+		return ext == "PNG" || ext == "JPG" || ext == "JPEG";
 	}
 	void error(HttpContext context)
 	{
@@ -21,27 +23,51 @@ public class getAttachImg : IHttpHandler
 	{
 		string sid = context.Request.QueryString["idrecord"];
 		string ext = context.Request.QueryString["ext"];
-		if (string.IsNullOrEmpty(sid) || string.IsNullOrEmpty(ext) || !IsImage(ext))
+		if (string.IsNullOrEmpty(sid) || string.IsNullOrEmpty(ext))
 		{
 			error(context);
 			return;
 		}
+		Icon ico = null;
+		if (!IsImage(ext))
+		{
+			string file = Path.GetTempPath() + "img." + ext;
+			if (!File.Exists(file))
+			{
+				File.WriteAllText(file, string.Empty);
+			}
+			ico = Icon.ExtractAssociatedIcon(file);
+		}
+
 		int id;
 		if (!int.TryParse(sid, out id) || id < 1)
 		{
 			error(context);
 			return;
 		}
-		DefectAttach d = new DefectAttach(id);
 		context.Response.ClearContent();
 		context.Response.ClearHeaders();
 		context.Response.Cache.SetCacheability(HttpCacheability.Public);
 		context.Response.Cache.SetExpires(DateTime.Now.AddYears(1));
 		context.Response.Cache.SetMaxAge(new TimeSpan(365, 0, 0, 0, 0));
 		context.Response.ContentType = $"image/{ext.ToLower()}";
-		context.Response.AddHeader("Content-Length", d.SIZE.ToString());
+		DefectAttach d = new DefectAttach(id);
 		context.Response.AddHeader("Content-Disposition", string.Format("filename=\"{0}\"", d.FILENAME));
-		byte[] bytes = d.FileBinary();
+		byte[] bytes;
+		if (ico != null)
+		{
+			using (MemoryStream ms = new MemoryStream())
+			{
+				ico.Save(ms);
+				bytes = ms.ToArray();
+			}
+			ico.Dispose();
+		}
+		else
+		{
+			bytes = d.FileBinary();
+		}
+		context.Response.AddHeader("Content-Length", bytes.Length.ToString());
 		context.Response.OutputStream.Write(bytes, 0, bytes.Length);
 		context.Response.Flush();
 		context.ApplicationInstance.CompleteRequest();
