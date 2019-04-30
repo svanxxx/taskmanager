@@ -314,7 +314,7 @@
 									<img ng-src="getAttachImg.ashx?idrecord={{a.ID+'&ext='+getfileext(a.FILENAME)}}" style="max-width: 100%" />
 									<img ng-src="{{a.newblob}}" style="max-width: 100%" />
 								</a>&nbsp
-								<button ng-click="deleteAttach(a.ID)" type="button" class="btn btn-danger btn-xs">Delete</button>
+								<button ng-disabled="!canChangeDefect()" ng-click="deleteAttach(a.ID)" type="button" class="btn btn-danger btn-xs">Delete</button>
 							</li>
 						</ul>
 					</div>

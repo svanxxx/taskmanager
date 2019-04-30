@@ -60,7 +60,6 @@ public class getTaskAttachment : IHttpHandler, System.Web.SessionState.IRequires
 			Response.OutputStream.Write(bytes, 0, bytes.Length);
 		}
 	}
-
 	public bool IsReusable
 	{
 		get

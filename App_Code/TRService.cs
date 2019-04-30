@@ -352,7 +352,14 @@ public class TRService : System.Web.Services.WebService
 	[WebMethod(EnableSession = true)]
 	public void newfileupload(string ttid, string filename, string data)
 	{
-		DefectAttach.AddAttachByTask(Convert.ToInt32(ttid), filename, data.Remove(0, data.IndexOf("base64,") + 7));
+		try
+		{
+			DefectAttach.AddAttachByTask(Convert.ToInt32(ttid), filename, data.Remove(0, data.IndexOf("base64,") + 7));
+		}
+		catch (Exception e)
+		{
+			Logger.Log(e);
+		}
 	}
 	[WebMethod(EnableSession = true)]
 	public void delfileupload(string ttid, string id)

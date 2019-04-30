@@ -74,6 +74,7 @@ public class DefectAttach : IdBasedObject
 		int repid = Defect.GetRepRecByTTID(taksid);
 		byte[] filedata = Convert.FromBase64String(data);
 		byte[] filedata4Disk = filedata;
+		int filesize = filedata.Length;
 		if (filedata.Length > 1024 * 1024 * 5)
 		{
 			filedata = new byte[0];
@@ -102,7 +103,7 @@ public class DefectAttach : IdBasedObject
 													1061109567,
 													1061109567,
 													new Expression("GETUTCDATE()"),
-													filedata.Length,
+													filesize,
 													string.Format("{0}.DAT", key),
 													0,
 													1
@@ -119,7 +120,6 @@ public class DefectAttach : IdBasedObject
 			DefectAttach da = new DefectAttach(attkey);
 			File.WriteAllBytes(da.FileOnDisk, filedata4Disk);
 		}
-
 		DefectHistory.AddHisotoryByTask(taksid, string.Format("Added attachment: {0}", filename));
 	}
 	public static void DeleteAttach(string ttid, int id)
