@@ -59,34 +59,34 @@
 
 		$scope.shutMachine = function () {
 			StartProgress("Shutting down...");
-			$http.post("trservice.asmx/shutMachine", JSON.stringify({ "m": $scope.workmachine }))
+			$http.post("trservice.asmx/shutMachine", JSON.stringify({ "m": $scope.workmachine.NAME }))
 				.then(function () {
 					window.location.reload();
 				});
 		};
 		$scope.wakeMachine = function () {
 			StartProgress("Waking up...");
-			$http.post("trservice.asmx/wakeMachine", JSON.stringify({ "m": $scope.workmachine }))
+			$http.post("trservice.asmx/wakeMachine", JSON.stringify({ "m": $scope.workmachine.NAME }))
 				.then(function () {
 					window.location.reload();
 				});
 		};
 		$scope.scanMachine = function () {
 			StartProgress("Scanning...");
-			$http.post("trservice.asmx/scanMachine", JSON.stringify({ "m": $scope.workmachine }))
+			$http.post("trservice.asmx/scanMachine", JSON.stringify({ "m": $scope.workmachine.NAME }))
 				.then(function () {
 					window.location.reload();
 				});
 		};
 		$scope.remMachine = function () {
 			StartProgress("Removing...");
-			$http.post("trservice.asmx/remMachine", JSON.stringify({ "m": $scope.workmachine }))
+			$http.post("trservice.asmx/remMachine", JSON.stringify({ "m": $scope.workmachine.NAME }))
 				.then(function () {
 					window.location.reload();
 				});
 		};
 		$scope.hasMachine = function () {
-			return (typeof $scope.workmachine !== "undefined");
+			return typeof $scope.workmachine !== "undefined";
 		};
 	}]);
 })

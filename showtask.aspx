@@ -31,6 +31,7 @@
 				<button ng-click="adddesc('Tested')" ng-disabled="!canChangeDefect()" type="button" class="btn btn-outline-secondary btn-block btn-sm">Add Tested Comment&nbsp;<i class="fas fa-check"></i></button>
 				<button ng-click="adddesc('Rejected')" ng-disabled="!canChangeDefect()" type="button" class="btn btn-outline-secondary btn-block btn-sm">Add Rejected Comment&nbsp;<i class="fas fa-window-close"></i></button>
 				<div class="alert alert-info mt-2" style="text-align: center">
+					<button data-toggle="tooltip" title="Ask to release!" type="button" class="btn btn-light btn-sm float-right" ng-click="releaseRequest()"><i class="fas fa-bell text-danger"></i></button>
 					<a data-toggle="tooltip" title="Click to see full plan for the person" target="_blank" href="editplan.aspx?userid={{lockedby}}">
 						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?id=' + lockedby}}" alt="Smile" height="60" width="60" />
 						<div>
@@ -431,6 +432,7 @@
 			</div>
 			<div class="col-lg-2">
 				<div class="alert alert-warning" style="text-align: center">
+					<button data-toggle="tooltip" title="Invite person to see this task." type="button" class="btn btn-light btn-sm float-right" ng-click="invite(defect.CREATEDBY)"><i class="fas fa-bell"></i></button>
 					<a data-toggle="tooltip" title="Click to see full plan for the person" target="_blank" href="editplan.aspx?userid={{defect.CREATEDBY | getUserTRIDById:this}}">
 						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?ttid=' + defect.CREATEDBY}}" alt="Smile" height="60" width="60" />
 						<div>
@@ -440,6 +442,7 @@
 					<i class="fas fa-folder-plus"></i>
 				</div>
 				<div class="alert alert-success" style="text-align: center">
+					<button data-toggle="tooltip" title="Invite person to see this task." type="button" class="btn btn-light btn-sm float-right" ng-click="invite(defect.ESTIMBY)"><i class="fas fa-bell"></i></button>
 					<a data-toggle="tooltip" title="Click to see full plan for the person" target="_blank" href="editplan.aspx?userid={{defect.ESTIMBY | getUserTRIDById:this}}">
 						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?ttid=' + defect.ESTIMBY}}" alt="Smile" height="60" width="60" />
 						<div>
@@ -449,6 +452,7 @@
 					<i class="far fa-clock"></i><span>:{{defect.ESTIM}}</span>
 				</div>
 				<div class="alert alert-info" style="text-align: center">
+					<button data-toggle="tooltip" title="Invite person to see this task." type="button" class="btn btn-light btn-sm float-right" ng-click="invite(defect.AUSER)"><i class="fas fa-bell"></i></button>
 					<a data-toggle="tooltip" title="Click to see full plan for the person" target="_blank" href="editplan.aspx?userid={{defect.AUSER | getUserTRIDById:this}}">
 						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?ttid=' + defect.AUSER}}" alt="Smile" height="60" width="60" />
 						<div>

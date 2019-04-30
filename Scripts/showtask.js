@@ -347,6 +347,9 @@
 					EndProgress(pr);
 				});
 		};
+		$scope.invite = function (usr) {
+			$scope.notifyHub.server.sendMessage(userID(), getUserTRIDById()(usr, $scope), location.href);
+		};
 		//references secion:
 		getMPSUsers($scope, "mpsusers", $http);
 		getUsers($scope, "users", $http);
