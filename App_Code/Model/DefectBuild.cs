@@ -276,7 +276,7 @@ public class DefectBuild : IdBasedObject
 	}
 	public static void CancelRequestByTask(int ttid)
 	{
-		string sql = string.Format("UPDATE {0} SET {1} = {2} WHERE {3} = {4} AND {1} = {5}", _Tabl, _stat, (int)BuildStatus.cancelled, _par, Defect.GetIDbyTT(ttid), (int)BuildStatus.progress);
+		string sql = $"UPDATE {_Tabl} SET {_stat} = {(int)BuildStatus.cancelled} WHERE {_par} = {Defect.GetIDbyTT(ttid)} AND ({_stat} = {(int)BuildStatus.progress} OR {_stat} = {(int)BuildStatus.notstarted} OR {_stat} IS NULL)";
 		SQLExecute(sql);
 	}
 	public static DefectBuild GetTask2Build(string machine)
