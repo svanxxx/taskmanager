@@ -513,10 +513,13 @@
 			$scope.defect.DESCR = lines.join("\n");
 		};
 		$scope.adddesc = function (text) {
-			var d = new Date();
-			$scope.defect.DESCR = "<" + userLogin() + "> " +
-				(d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes()
-				+ " - " + text + "\n\n" + $scope.defect.DESCR;
+			msgBox("Add Comment", text, function (txt) {
+				var d = new Date();
+				$scope.defect.DESCR = "<" + userLogin() + " time='" +
+					(d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes()
+					+ "'>" + txt + "</" + userLogin() + ">\n\n" + $scope.defect.DESCR;
+				$scope.$apply();
+			});
 		};
 		$scope.duplicate = function () {
 			$http.post("trservice.asmx/copyTask", JSON.stringify({ "ttid": ttid }))
