@@ -23,17 +23,17 @@
 		<div class="row mt-2">
 			<div class="col-xl-1 col-lg-2">
 				<div class="btn-group-vertical btn-group-sm d-flex">
+					<button onclick="copyurl()" data-toggle="tooltip" title="Copy link to this page to clipboard" type="button" class="btn btn-outline-secondary btn-sm mb-1">
+						<i class="fas fa-copy"></i>Page link
+					</button>
 					<button type="button" class="btn btn-sm btn-outline-secondary mb-1" ng-click="add2Plan()" data-toggle="tooltip" title="Add Task To Currently Selected User On The Top Of The Plan">
-						<i class="fas fa-plus-circle"></i>Add Task
+						<i class="fas fa-plus-circle"></i>Task
 					</button>
 					<button ng-show="isadmin" type="button" class="btn btn-sm btn-outline-secondary mb-1" ng-click="addVacs()" data-toggle="tooltip" title="Add vacations to current user">
-						<i class="fas fa-plane"></i>Add Vacations
+						<i style="color: green" class="fas fa-plane"></i>Vacations
 					</button>
-					<button ng-show="isadmin" type="button" class="btn btn-sm btn-outline-secondary" ng-click="addSickness()" data-toggle="tooltip" title="Add sickness (today) to current user">
-						<i style="color: green" class="fas fa-plane"></i>Add Sickness
-					</button>
-					<button onclick="copyurl()" data-toggle="tooltip" title="Copy link to this page to clipboard" type="button" class="btn btn-outline-secondary btn-sm">
-						<i class="fas fa-copy"></i>Copy page link
+					<button ng-show="isadmin" type="button" class="btn btn-sm btn-outline-secondary" ng-click="addSickness()" data-toggle="tooltip" title="Add sickness (today) to current user and send alarm to everyone">
+						<i class="fas fa-temperature-high text-danger"></i>Sickness
 					</button>
 				</div>
 			</div>
