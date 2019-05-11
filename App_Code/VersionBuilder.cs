@@ -133,6 +133,6 @@ public class VersionBuilder
 			}
 		}
 		details = details.Trim();
-		SendAlarm(string.Format("📢<a href='{3}versionchanges.aspx'>{0}</a> has been setup.{1}List of changes:{1}{2}{1}The build will be started as soon as possible.", version, Environment.NewLine, details, Settings.CurrentSettings.GLOBALSITEURL));
+		SendAlarm(string.Format("📢<a href='{3}versionchanges.aspx'>{0}</a> has been setup.{1}List of changes:{1}{2}{1}The build will be started as soon as possible." + $"👤:{CurrentContext.UserLogin()}", version, Environment.NewLine, details, Settings.CurrentSettings.GLOBALSITEURL));
 	}
 }
