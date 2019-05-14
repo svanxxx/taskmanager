@@ -9,7 +9,17 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
 	<div ng-app="mpsapplication" ng-controller="mpscontroller">
 		<div class="row">
-			<div class="col-md-3"></div>
+			<div class="col-md-3">
+				<div class="alert alert-info mt-2" style="text-align: center" ng-hide="lockid == null">
+					<a data-toggle="tooltip" title="Click to see full plan for the person" target="_blank" href="editplan.aspx?userid={{lockid}}">
+						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?id=' + lockid}}" alt="Smile" height="60" width="60" />
+						<div>
+							<strong>Locked by: {{lockid | getUserById:this}}</strong>
+						</div>
+					</a>
+					<i class="fas fa-unlock-alt"></i>
+				</div>
+			</div>
 			<div class="col-md-6">
 				<div class="alert alert-success">
 					<strong>Attention!</strong> Do not use/click/see this page if you are not aware what it does!

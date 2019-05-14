@@ -7,8 +7,65 @@ using System.Text.RegularExpressions;
 
 public class VersionBuilder
 {
+	static int? _UserID = null;
+	static DateTime? _lockTime = null;
+	static object _lock = new object();
+	static bool TimedOut()
+	{
+		if (_lockTime != null)
+		{
+			TimeSpan ts = DateTime.Now - _lockTime.Value;
+			if (ts.TotalMinutes > 1)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	public static int? GetLock()
+	{
+		lock (_lock)
+		{
+			if (_lockTime != null)
+			{
+				if (TimedOut())
+				{
+					return null;
+				}
+			}
+			return _UserID;
+		}
+	}
+	static bool Lock()
+	{
+		lock (_lock)
+		{
+			if (_UserID == null)
+			{
+				_lockTime = DateTime.Now;
+				_UserID = CurrentContext.UserID;
+				return true;
+			}
+			if (_UserID == CurrentContext.UserID)
+			{
+				_lockTime = DateTime.Now;
+				return true;
+			}
+			if (TimedOut())
+			{
+				_lockTime = DateTime.Now;
+				_UserID = CurrentContext.UserID;
+				return true;
+			}
+			return false;
+		}
+	}
 	static public string PrepareGit()
 	{
+		if (!Lock())
+		{
+			return "Locked by another user!";
+		}
 		if (!CurrentContext.Admin)
 		{
 			throw new Exception("Not admin!");
@@ -32,6 +89,10 @@ public class VersionBuilder
 	}
 	static public string VersionIncrement()
 	{
+		if (!Lock())
+		{
+			return "Locked by another user!";
+		}
 		if (!CurrentContext.Admin)
 		{
 			throw new Exception("Not admin!");
@@ -65,6 +126,10 @@ public class VersionBuilder
 	}
 	static public string PushRelease()
 	{
+		if (!Lock())
+		{
+			return "Locked by another user!";
+		}
 		if (!CurrentContext.Admin)
 		{
 			throw new Exception("Not admin!");
