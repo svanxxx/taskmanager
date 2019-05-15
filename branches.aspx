@@ -35,7 +35,7 @@
 								<a href="commits.aspx?branch={{b.NAME}}">Commits...</a>
 							</div>
 							<div class="col-sm-3">
-								<img class="rep-img rounded-circle" ng-src="{{'getUserImg.ashx?eml=' + b.AUTHOREML}}" alt="Smile" height="20" width="20">
+								<img class="rep-img rounded-circle" ng-src="{{'getUserImg.ashx?sz=20&eml=' + b.AUTHOREML}}" alt="Smile" height="20" width="20">
 								<a ng-click="filterby(b.AUTHOR)" href>{{b.AUTHOR}}</a>
 							</div>
 						</div>

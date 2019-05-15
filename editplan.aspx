@@ -16,7 +16,7 @@
 		</div>
 		<div class="d-flex">
 			<button type="button" class="flex-fill btn btn-sm {{currentuserid===u.ID?'btn-secondary':'btn-outline-secondary'}}" ng-click="changeuser(u, true)" ng-repeat="u in filtered = (users | filter:{ INWORK: true })" data-toggle="tooltip" title="{{u.PERSON_NAME}}">
-				<img class="rounded-circle" ng-src="{{'getUserImg.ashx?id=' + u.ID}}" alt="Smile" height="20" width="20" style="margin: auto;" />
+				<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=20&id=' + u.ID}}" alt="Smile" height="20" width="20" style="margin: auto;" />
 				{{u.LOGIN}}
 			</button>
 		</div>
@@ -60,7 +60,7 @@
 									<td>
 										<input class="taskselector" type="radio" name="optradio" ng-keydown="taskMove(d, $event)"></td>
 									<td>
-										<img height="20" width="20" class="rounded-circle taskselector" ng-src="{{'getUserImg.ashx?id=' + d.SMODTRID}}" title="{{d.SMODIFIER}}" /></td>
+										<img height="20" width="20" class="rounded-circle taskselector" ng-src="{{'getUserImg.ashx?sz=20&id=' + d.SMODTRID}}" title="{{d.SMODIFIER}}" /></td>
 									<td>
 										<button ng-click="tasktotop(d)" data-toggle="tooltip" title="Move to top" type="button" class="btn btn-xs taskselector"><i class="fas fa-arrow-up"></i></button>
 									</td>

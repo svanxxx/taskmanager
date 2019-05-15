@@ -57,6 +57,9 @@
 		$http.post("trservice.asmx/getMPSUsers", JSON.stringify({ "active": false }))
 			.then(function (result) {
 				$scope.users = result.data.d;
+				$scope.users.sort(function (x, y) {
+					return (x.RETIRED === y.RETIRED) ? (x.PERSON_NAME.localeCompare(y.PERSON_NAME)) : (x.RETIRED ? 1 : -1);
+				});
 				$scope.users.forEach(function (u) {
 					if (u.BIRTHDAY !== "") {
 						u.BIRTHDAY = StringToDate(u.BIRTHDAY);

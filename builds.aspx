@@ -40,7 +40,7 @@
 								<span>{{b.STATUS}}</span>
 							</div>
 							<div class="col-sm-2">
-								<img class="rep-img rounded-circle" ng-src="{{'getUserImg.ashx?ttid=' + b.TTUSERID}}" alt="Smile" height="20" width="20">
+								<img class="rep-img rounded-circle" ng-src="{{'getUserImg.ashx?sz=20&ttid=' + b.TTUSERID}}" alt="Smile" height="20" width="20">
 								<span>{{b.NOTES}}</span>
 							</div>
 							<div class="col-sm-2">

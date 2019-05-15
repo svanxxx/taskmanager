@@ -12,7 +12,7 @@
 			<div class="col-md-3">
 				<div class="alert alert-info mt-2" style="text-align: center" ng-hide="lockid == null">
 					<a data-toggle="tooltip" title="Click to see full plan for the person" target="_blank" href="editplan.aspx?userid={{lockid}}">
-						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?id=' + lockid}}" alt="Smile" height="60" width="60" />
+						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=60&id=' + lockid}}" alt="Smile" height="60" width="60" />
 						<div>
 							<strong>Locked by: {{lockid | getUserById:this}}</strong>
 						</div>

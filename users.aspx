@@ -12,7 +12,7 @@
 			<button type="button" class="btn btn-lg btn-info" ng-click="save()">Save</button>
 			<button type="button" class="btn btn-lg btn-danger" ng-click="discard()">Discard</button>
 		</div>
-		<div class="table-responsive">
+		<div class="table-responsive table-sm">
 			<table class="table table-hover table-bordered">
 				<thead class="thead-dark">
 					<tr class="info">
@@ -30,30 +30,30 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="u in users | orderBy : 'PERSON_NAME'" class="{{u.changed?'data-changed':''}}">
+					<tr ng-repeat="u in users" class="{{(u.changed?'data-changed':'')+(u.RETIRED ? 'table-secondary':'')}}">
 						<td>
-							<button ng-click="changeImg(u.ID)" type="button" class="btn btn-info">
-								<img class="rep-img" ng-src="{{'getUserImg.ashx?id='+u.ID}}" alt=" " height="20" width="20"></button></td>
+							<button ng-click="changeImg(u.ID)" type="button" class="btn btn-info p-0">
+								<img class="rep-img" ng-src="{{'getUserImg.ashx?sz=25&id='+u.ID}}" alt=" " height="25" width="25"></button></td>
 						<td>
-							<input ng-disabled="readonly" class="intable-data-input" type="text" ng-model="u.PERSON_NAME" ng-change="itemchanged(u)"></td>
+							<input class="form-control form-control-sm border-0" ng-disabled="readonly" class="intable-data-input" type="text" ng-model="u.PERSON_NAME" ng-change="itemchanged(u)"></td>
 						<td align="center">
-							<input class="form-control" ng-disabled="readonly" type="date" ng-model="u.BIRTHDAY" ng-change="itemchanged(u)"></td>
+							<input class="form-control form-control-sm border-0" ng-disabled="readonly" type="date" ng-model="u.BIRTHDAY" ng-change="itemchanged(u)"></td>
 						<td>
-							<input ng-disabled="readonly" class="intable-data-input" type="text" ng-model="u.ADDRESS" ng-change="itemchanged(u)"></td>
+							<input class="form-control form-control-sm border-0" ng-disabled="readonly" class="intable-data-input" type="text" ng-model="u.ADDRESS" ng-change="itemchanged(u)"></td>
 						<td>
-							<input ng-disabled="readonly" class="intable-data-input" type="text" ng-model="u.LOGIN" ng-change="itemchanged(u)"></td>
+							<input class="form-control form-control-sm border-0" ng-disabled="readonly" class="intable-data-input" type="text" ng-model="u.LOGIN" ng-change="itemchanged(u)"></td>
 						<td>
-							<input ng-disabled="readonly" class="intable-data-input" type="password" ng-model="u.PASSWORD" ng-change="itemchanged(u)" placeholder="********"></td>
+							<input class="form-control form-control-sm border-0" ng-disabled="readonly" class="intable-data-input" type="password" ng-model="u.PASSWORD" ng-change="itemchanged(u)" placeholder="********"></td>
 						<td>
-							<input ng-disabled="readonly" class="intable-data-input" type="text" ng-model="u.EMAIL" ng-change="itemchanged(u)"></td>
+							<input class="form-control form-control-sm border-0" ng-disabled="readonly" class="intable-data-input" type="text" ng-model="u.EMAIL" ng-change="itemchanged(u)"></td>
 						<td>
-							<input ng-disabled="readonly" class="intable-data-input" type="text" ng-model="u.PHONE" ng-change="itemchanged(u)"></td>
+							<input class="form-control form-control-sm border-0" ng-disabled="readonly" class="intable-data-input" type="text" ng-model="u.PHONE" ng-change="itemchanged(u)"></td>
 						<td align="center">
-							<input ng-disabled="readonly" type="checkbox" ng-model="u.ISADMIN" ng-change="itemchanged(u)"></td>
+							<input class="form-check-input" ng-disabled="readonly" type="checkbox" ng-model="u.ISADMIN" ng-change="itemchanged(u)"></td>
 						<td align="center">
-							<input ng-disabled="readonly" type="checkbox" ng-model="u.INWORK" ng-change="itemchanged(u)"></td>
+							<input class="form-check-input" ng-disabled="readonly" type="checkbox" ng-model="u.INWORK" ng-change="itemchanged(u)"></td>
 						<td align="center">
-							<input ng-disabled="readonly" type="checkbox" ng-model="u.RETIRED" ng-change="itemchanged(u)"></td>
+							<input class="form-check-input" ng-disabled="readonly" type="checkbox" ng-model="u.RETIRED" ng-change="itemchanged(u)"></td>
 					</tr>
 				</tbody>
 			</table>

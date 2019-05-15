@@ -12,7 +12,7 @@
 			<div class="col-lg-2">
 				<div class="card text-center">
 					<div class="card-header">
-						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?id=' + state.filter.userid}}" alt="Smile" height="100" width="100">
+						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=100&id=' + state.filter.userid}}" alt="Smile" height="100" width="100">
 					</div>
 				</div>
 			</div>

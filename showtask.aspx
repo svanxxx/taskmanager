@@ -33,7 +33,7 @@
 				<div class="alert alert-info mt-2" style="text-align: center">
 					<button data-toggle="tooltip" title="Ask to release!" type="button" class="btn btn-light btn-sm float-right" ng-click="releaseRequest()"><i class="fas fa-bell text-danger"></i></button>
 					<a data-toggle="tooltip" title="Click to see full plan for the person" target="_blank" href="editplan.aspx?userid={{lockedby}}">
-						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?id=' + lockedby}}" alt="Smile" height="60" width="60" />
+						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=60&id=' + lockedby}}" alt="Smile" height="60" width="60" />
 						<div>
 							<strong>Locked by: {{getMPSUserName(lockedby)}}</strong>
 						</div>
@@ -122,13 +122,13 @@
 							<div class="input-group-prepend w-75">
 								<div class="dropdown w-100">
 									<button type="button" class="overflow-hidden w-100 btn btn-light btn-sm dropdown-toggle" data-toggle="dropdown" ng-disabled="!canChangeDefect()">
-										<img async class="rounded-circle" ng-src="{{'getUserImg.ashx?ttid=' + defect.CREATEDBY}}" alt="Smile" height="15" width="15">
+										<img async class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=15&ttid=' + defect.CREATEDBY}}" alt="Smile" height="15" width="15">
 										{{defect.CREATEDBY | getUserById:this}}
 									</button>
 									<div class="dropdown-menu w-100">
 										<div ng-show="u.ACTIVE" ng-repeat="u in users | orderBy:'FULLNAME'">
 											<button style="text-align: left" type="button" class="btn btn-light btn-block btn-sm" ng-click="defect.CREATEDBY = u.ID">
-												<img async class="rounded-circle" ng-src="{{'getUserImg.ashx?ttid=' + u.ID}}" alt="Smile" height="30" width="30">
+												<img async class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=30&ttid=' + u.ID}}" alt="Smile" height="30" width="30">
 												<span>{{u.FULLNAME}}</span>
 											</button>
 										</div>
@@ -145,13 +145,13 @@
 							<div class="input-group-prepend w-75">
 								<div class="dropdown w-100">
 									<button type="button" class="overflow-hidden w-100 btn btn-light btn-sm dropdown-toggle" data-toggle="dropdown" ng-disabled="!canChangeDefect()">
-										<img async class="rounded-circle" ng-src="{{'getUserImg.ashx?ttid=' + defect.AUSER}}" alt="Smile" height="15" width="15">
+										<img async class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=15&ttid=' + defect.AUSER}}" alt="Smile" height="15" width="15">
 										{{defect.AUSER | getUserById:this}}
 									</button>
 									<div class="dropdown-menu w-100">
 										<div ng-show="u.ACTIVE" ng-repeat="u in users | orderBy:'FULLNAME'">
 											<button style="text-align: left" type="button" class="btn btn-light btn-block btn-sm" ng-click="defect.AUSER = u.ID">
-												<img async class="rounded-circle" ng-src="{{'getUserImg.ashx?ttid=' + u.ID}}" alt="Smile" height="30" width="30">
+												<img async class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=30&ttid=' + u.ID}}" alt="Smile" height="30" width="30">
 												<span>{{u.FULLNAME}}</span>
 											</button>
 										</div>
@@ -167,13 +167,13 @@
 							<div class="input-group-prepend w-50">
 								<div class="dropdown w-100">
 									<button type="button" class="overflow-hidden w-100 btn btn-light btn-sm dropdown-toggle" data-toggle="dropdown" ng-disabled="!canChangeDefect()">
-										<img async class="rounded-circle" ng-src="{{'getUserImg.ashx?ttid=' + defect.ESTIMBY}}" alt="Smile" height="15" width="15">
+										<img async class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=15&ttid=' + defect.ESTIMBY}}" alt="Smile" height="15" width="15">
 										{{defect.ESTIMBY | getUserById:this}}
 									</button>
 									<div class="dropdown-menu w-100">
 										<div ng-show="u.ACTIVE" ng-repeat="u in users | orderBy:'FULLNAME'">
 											<button style="text-align: left" type="button" class="btn btn-light btn-block btn-sm" ng-click="defect.ESTIMBY = u.ID">
-												<img async class="rounded-circle" ng-src="{{'getUserImg.ashx?ttid=' + u.ID}}" alt="Smile" height="30" width="30">
+												<img async class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=30&ttid=' + u.ID}}" alt="Smile" height="30" width="30">
 												<span>{{u.FULLNAME}}</span>
 											</button>
 										</div>
@@ -275,7 +275,7 @@
 							<a href="#" class="list-group-item list-group-item-action" ng-repeat="h in events | orderBy : 'ORDER'">
 								<div class="media">
 									<div class="media-left">
-										<img class="rounded-circle" ng-src="{{'getUserImg.ashx?ttid=' + h.IDUSER}}" alt="Smile" height="30" width="30">
+										<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=30&ttid=' + h.IDUSER}}" alt="Smile" height="30" width="30">
 									</div>
 									<div class="media-body">
 										<h6 class="media-heading"><b>{{h.IDUSER | getUserById:this}}</b> <small style="float: right"><i>{{h.DATE}}</i></small></h6>
@@ -283,7 +283,7 @@
 									</div>
 								</div>
 								{{h.EVENT}}:
-								<img ng-show="h.ASSIGNUSERID > 0" class="rounded-circle" ng-src="{{'getUserImg.ashx?ttid=' + h.ASSIGNUSERID}}" alt="Smile" height="20" width="20" />
+								<img ng-show="h.ASSIGNUSERID > 0" class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=20&ttid=' + h.ASSIGNUSERID}}" alt="Smile" height="20" width="20" />
 								{{h.ASSIGNUSERID | getUserById:this}} <span class="badge badge-secondary">{{h.TIME}}</span>
 								{{h.NOTES}}	&nbsp;
 							</a>
@@ -295,7 +295,7 @@
 							<a href class="p-2 list-group-item list-group-item-action" ng-repeat="h in history">
 								<div class="media">
 									<div class="media-left">
-										<img class="media-object rounded-circle" ng-src="{{'getUserImg.ashx?ttid=' + h.IDUSER}}" alt="Smile" height="30" width="30">
+										<img class="media-object rounded-circle" ng-src="{{'getUserImg.ashx?sz=30&ttid=' + h.IDUSER}}" alt="Smile" height="30" width="30">
 									</div>
 									<div class="media-body">
 										<h6 class="media-heading"><b>{{h.IDUSER | getUserById:this}}</b> <small style="float: right"><i>{{h.DATE}}</i></small></h6>
@@ -322,7 +322,7 @@
 					<div id="lockinfo" class="tab-pane fade">
 						<div class="list-group">
 							<a href="#" class="list-group-item list-group-item-action">
-								<img class="rounded-circle" ng-src="{{'getUserImg.ashx?id=' + lockedby}}" alt="Smile" height="42" width="42">
+								<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=42&id=' + lockedby}}" alt="Smile" height="42" width="42">
 								<span class="badge badge-info">{{getMPSUserName(lockedby)}}</span>
 							</a>
 							<a href="#" class="list-group-item list-group-item-action list-group-item-primary">
@@ -434,7 +434,7 @@
 				<div class="alert alert-warning" style="text-align: center">
 					<button data-toggle="tooltip" title="Invite person to see this task." type="button" class="btn btn-light btn-sm float-right" ng-click="invite(defect.CREATEDBY)"><i class="fas fa-bell"></i></button>
 					<a data-toggle="tooltip" title="Click to see full plan for the person" target="_blank" href="editplan.aspx?userid={{defect.CREATEDBY | getUserTRIDById:this}}">
-						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?ttid=' + defect.CREATEDBY}}" alt="Smile" height="60" width="60" />
+						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=60&ttid=' + defect.CREATEDBY}}" alt="Smile" height="60" width="60" />
 						<div>
 							<strong>{{defect.CREATEDBY | getUserById:this}}</strong>
 						</div>
@@ -444,7 +444,7 @@
 				<div class="alert alert-success" style="text-align: center">
 					<button data-toggle="tooltip" title="Invite person to see this task." type="button" class="btn btn-light btn-sm float-right" ng-click="invite(defect.ESTIMBY)"><i class="fas fa-bell"></i></button>
 					<a data-toggle="tooltip" title="Click to see full plan for the person" target="_blank" href="editplan.aspx?userid={{defect.ESTIMBY | getUserTRIDById:this}}">
-						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?ttid=' + defect.ESTIMBY}}" alt="Smile" height="60" width="60" />
+						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=60&ttid=' + defect.ESTIMBY}}" alt="Smile" height="60" width="60" />
 						<div>
 							<strong>{{defect.ESTIMBY | getUserById:this}}</strong>
 						</div>
@@ -454,7 +454,7 @@
 				<div class="alert alert-info" style="text-align: center">
 					<button data-toggle="tooltip" title="Invite person to see this task." type="button" class="btn btn-light btn-sm float-right" ng-click="invite(defect.AUSER)"><i class="fas fa-bell"></i></button>
 					<a data-toggle="tooltip" title="Click to see full plan for the person" target="_blank" href="editplan.aspx?userid={{defect.AUSER | getUserTRIDById:this}}">
-						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?ttid=' + defect.AUSER}}" alt="Smile" height="60" width="60" />
+						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=60&ttid=' + defect.AUSER}}" alt="Smile" height="60" width="60" />
 						<div>
 							<strong>{{defect.AUSER | getUserById:this}}</strong>
 						</div>

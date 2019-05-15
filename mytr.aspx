@@ -14,7 +14,7 @@
 			<div class="col-lg-2 hidden-sm hidden-xs text-center">
 				<div class="btn-group-vertical">
 					<button type="button" class="btn btn-danger" ng-cloak ng-show="haveBirthday" ng-click="congratulate()">
-						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?id=' + birthdayID}}" alt="Smile" height="60" width="60">
+						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=60&id=' + birthdayID}}" alt="Smile" height="60" width="60">
 						<span>&hArr;&nbsp;{{birthdayYears}}*</span>
 						<img src="images/cake.jpg" alt="Smile" height="60" width="60">
 						<span>=</span>
@@ -34,7 +34,7 @@
 						<div class="row person-items">
 							<div class="col-lg-2 col-xs-6 col-centered">
 								<div class="card person-box h-100">
-									<img class="rounded-circle" ng-src="{{'getUserImg.ashx?id=' + user.ID}}" alt="smile" width="80" height="80" style="margin: auto;" />
+									<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=80&id=' + user.ID}}" alt="smile" width="80" height="80" style="margin: auto;" />
 									<div class="card-body p-0 m-0">
 										<label>{{user.PERSON_NAME}}</label>
 									</div>
@@ -120,7 +120,7 @@
 								<td><span class="badge badge-danger">{{d.ESTIM}}</span></td>
 								<td><span data-toggle="tooltip" title="{{d.SUMMARY}}" ng-bind-html="d.SUMMARY | sumFormat | limitTo:135"></span></td>
 								<td>
-									<img class="rounded-circle" height="20" width="20" class="btn-workme" ng-src="{{'getUserImg.ashx?id=' + d.SMODTRID}}" title="{{d.SMODIFIER}}" /></td>
+									<img class="rounded-circle" height="20" width="20" class="btn-workme" ng-src="{{'getUserImg.ashx?sz=20&id=' + d.SMODTRID}}" title="{{d.SMODIFIER}}" /></td>
 								<td>
 									<button ng-click="workTask(d)" data-toggle="tooltip" title="Start work on this task now!" type="button" class="btn btn-xs btn-workme"><i class="fas fa-arrow-alt-circle-up"></i></button>
 								</td>
@@ -159,7 +159,7 @@
 			<div class="text-center col-lg-2 hidden-sm hidden-xs">
 				<div class="btn-group-vertical">
 					<a style="margin-bottom: 1px; background-color: {{u.STATUS == 1 ? '#0000ff3d' : '#ff000096'}}" href="editplan.aspx?userid={{u.ID}}" class="btn btn-info" role="button" target="_blank" ng-repeat="u in mpsusers">
-						<img class="rounded-circle" style="float: left" ng-src="getUserImg.ashx?id={{u.ID}}" alt="Smile" height="20" width="20">
+						<img class="rounded-circle" style="float: left" ng-src="getUserImg.ashx?sz=20&id={{u.ID}}" alt="Smile" height="20" width="20">
 						{{u.LOGIN}}
 					</a>
 				</div>

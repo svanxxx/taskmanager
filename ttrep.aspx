@@ -235,7 +235,7 @@
 								</div>
 								<div ng-repeat="u in filtered = (users | filter:{ show: true })" class="dropdown-item pt-0 pb-0">
 									<label class="form-check-label">
-										<img async class="rounded-circle" ng-src="{{'getUserImg.ashx?ttid=' + u.ID}}" alt="Smile" height="30" width="30">
+										<img async class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=30&ttid=' + u.ID}}" alt="Smile" height="30" width="30">
 										<input ng-click="changeReferenceFilter(u.ID, 'users')" ng-checked="u.filter" type="checkbox" value="">
 										<span>{{u.FULLNAME}}</span>
 									</label>
@@ -326,7 +326,7 @@
 								</div>
 								<div ng-repeat="u in filtered = (users | filter:{ show: true })" class="dropdown-item pt-0 pb-0">
 									<label class="form-check-label">
-										<img async class="rounded-circle" ng-src="{{'getUserImg.ashx?ttid=' + u.ID}}" alt="Smile" height="30" width="30">
+										<img async class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=30&ttid=' + u.ID}}" alt="Smile" height="30" width="30">
 										<input ng-click="changeReferenceFilter(u.ID, 'createdUsers')" ng-checked="u.createdFilter" type="checkbox" value="">
 										<span>{{u.FULLNAME}}</span>
 									</label>

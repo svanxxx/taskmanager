@@ -89,7 +89,7 @@
 				<li>
 					<a class="bstusername" id="logina" href="<%=SecurityPage.loginpage.ToString()%>">
 						<i style="padding-right: 5px" class="fas fa-sign-in-alt"></i><%=CurrentContext.UserLogin()%>
-						<img src="getUserImg.ashx?id=<%=CurrentContext.UserID.ToString()%>" alt="Smile" height="20" width="20" class="rounded-circle" />
+						<img src="getUserImg.ashx?sz=20&id=<%=CurrentContext.UserID.ToString()%>" alt="Smile" height="20" width="20" class="rounded-circle" />
 					</a>
 				</li>
 			</ul>
