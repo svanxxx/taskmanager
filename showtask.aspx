@@ -31,7 +31,8 @@
 				<button ng-click="adddesc('Tested')" ng-disabled="!canChangeDefect()" type="button" class="btn btn-outline-secondary btn-block btn-sm">Add Tested Comment&nbsp;<i class="fas fa-check"></i></button>
 				<button ng-click="adddesc('Rejected')" ng-disabled="!canChangeDefect()" type="button" class="btn btn-outline-secondary btn-block btn-sm">Add Rejected Comment&nbsp;<i class="fas fa-window-close"></i></button>
 				<div class="alert alert-info mt-2" style="text-align: center">
-					<button data-toggle="tooltip" title="Ask to release!" type="button" class="btn btn-light btn-sm float-right" ng-click="releaseRequest()"><i class="fas fa-bell text-danger"></i></button>
+					<button data-toggle="tooltip" title="Ask to release!" type="button" class="btn btn-light btn-sm float-left" ng-click="releaseRequest()"><i class="fas fa-bell text-info"></i></button>
+					<button data-toggle="tooltip" title="FORCE to release!" type="button" class="btn btn-light btn-sm float-right" ng-click="releaseForce()"><i class="fas fa-jedi text-danger"></i></button>
 					<a data-toggle="tooltip" title="Click to see full plan for the person" target="_blank" href="editplan.aspx?userid={{lockedby}}">
 						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=60&id=' + lockedby}}" alt="Smile" height="60" width="60" />
 						<div>
@@ -201,7 +202,6 @@
 					<li class="nav-item" ng-click="changetab($event)" id="gittab"><a class="nav-link small" data-toggle="tab" href="#taskgit"><i class="fas fa-code-branch"></i>Git</a></li>
 					<li class="nav-item" ng-click="changetab($event)" id="buildstab"><a class="nav-link small" data-toggle="tab" href="#taskbuilds"><i class="fas fa-tools"></i>{{tab_builds}}</a></li>
 					<li class="nav-item" ng-click="changetab($event)"><a class="nav-link small" data-toggle="tab" href="#bst"><i class="fa fa-link"></i>{{tab_bst}}</a></li>
-					<li class="nav-item"><a class="nav-link small" data-toggle="tab" href="#lockinfo"><i class="fas fa-lock"></i>&nbsp;Lock Info</a></li>
 					<li class="nav-item"><a class="nav-link small" data-toggle="tab" href="#alarm"><i class="fas fa-envelope"></i>&nbsp;Alarm</a></li>
 				</ul>
 				<div class="tab-content">
@@ -318,20 +318,6 @@
 								<button ng-disabled="!canChangeDefect()" ng-click="deleteAttach(a.ID)" type="button" class="btn btn-danger btn-xs">Delete</button>
 							</li>
 						</ul>
-					</div>
-					<div id="lockinfo" class="tab-pane fade">
-						<div class="list-group">
-							<a href="#" class="list-group-item list-group-item-action">
-								<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=42&id=' + lockedby}}" alt="Smile" height="42" width="42">
-								<span class="badge badge-info">{{getMPSUserName(lockedby)}}</span>
-							</a>
-							<a href="#" class="list-group-item list-group-item-action list-group-item-primary">
-								<button type="button" ng-click="releaseRequest()" class="btn btn-block btn-primary btn-lg">Request to release!</button>
-							</a>
-							<a href="#" class="list-group-item list-group-item-action list-group-item-danger">
-								<button type="button" ng-click="releaseForce()" class="btn btn-block btn-danger btn-lg">Force Task Unlock</button>
-							</a>
-						</div>
 					</div>
 					<div id="taskgit" class="tab-pane fade">
 						<div class="card">
