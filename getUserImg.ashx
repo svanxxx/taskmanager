@@ -77,11 +77,24 @@ public class getUserImg : IHttpHandler
 		}
 	}
 	static object _Lock = new object();
+	void DellOldFiles(string dir, string validprefix)
+	{
+		var files = Directory.EnumerateFiles(dir);
+		foreach (var file in files)
+		{
+			string filename = Path.GetFileName(file);
+			if (!filename.StartsWith(validprefix))
+			{
+				File.Delete(file);
+			}
+		}
+	}
 	void LoadImageFile(HttpContext context, int id, int? size)
 	{
-		string dir = $"images/cache/{ReferenceVersion.REFSVERSION()}";
-		string newfilename = context.Server.MapPath($"{dir}scaled-id-{size}-sz-{id}.jpg");
-		string origfilename = context.Server.MapPath($"{dir}orig-id-{id}.jpg");
+		string dir = context.Server.MapPath($"images/cache/");
+		string prefix = ReferenceVersion.REFSVERSION();
+		string newfilename = $"{dir}{prefix}scaled-id-{size}-sz-{id}.jpg";
+		string origfilename = $"{dir}{prefix}orig-id-{id}.jpg";
 		if (!File.Exists(origfilename) || !File.Exists(newfilename))
 		{
 			lock (_Lock)
@@ -96,6 +109,7 @@ public class getUserImg : IHttpHandler
 						return;
 					}
 					File.WriteAllBytes(origfilename, data);
+					DellOldFiles(dir, prefix);
 				}
 				if (size == null)
 				{
@@ -108,6 +122,7 @@ public class getUserImg : IHttpHandler
 						using (Bitmap newb = new Bitmap((Image)orig, new Size(size.Value, size.Value)))
 						{
 							newb.Save(newfilename);
+							DellOldFiles(dir, prefix);
 						}
 					}
 				}

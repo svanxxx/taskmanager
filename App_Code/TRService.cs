@@ -837,11 +837,9 @@ public class TRService : System.Web.Services.WebService
 			{
 				try
 				{
-					TelegramBotClient client = new TelegramBotClient(Settings.CurrentSettings.TELEGRAMTESTTOKEN);
-					client.GetMeAsync().Wait();
 					DefectUser u = new DefectUser(b.TTUSERID);
 					string mess = $"New task from {u.FULLNAME} is ready for tests!{Settings.CurrentSettings.GetTTAnchor(b.TTID)}";
-					client.SendTextMessageAsync(Settings.CurrentSettings.TELEGRAMTESTCHANNEL, mess, Telegram.Bot.Types.Enums.ParseMode.Html).Wait();
+					TestChannel.SendMessage(mess);
 				}
 				catch (Exception e)
 				{
@@ -927,6 +925,33 @@ public class TRService : System.Web.Services.WebService
 						emo = "❌";
 					}
 					TasksBot.SendMessage(worker.CHATID, $"{emo} Your task {ttid} was processed by BST by {bsu.PERSON_NAME}. Result: {result}");
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			Logger.Log(e);
+		}
+	}
+	[WebMethod(EnableSession = true)]
+	public void NotifyDefect(string ttid, string message, string img, bool alsoteam)
+	{
+		try
+		{
+			if (!CurrentContext.Valid)
+			{
+				throw new Exception("NotifyDefect called without loggin in!");
+			}
+			Defect d = new Defect(ttid);
+			DefectUser du = new DefectUser(d.AUSER);
+			if (du.TRID > -1)
+			{
+				MPSUser worker = new MPSUser(du.TRID);
+				string mess2send = $"Task update from {CurrentContext.UserName()}:  {message}{Settings.CurrentSettings.GetTTAnchor(int.Parse(ttid), img)}";
+				TasksBot.SendMessage(worker.CHATID, mess2send);
+				if (alsoteam)
+				{
+					TestChannel.SendMessage(mess2send);
 				}
 			}
 		}

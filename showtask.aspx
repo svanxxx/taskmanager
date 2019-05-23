@@ -28,8 +28,8 @@
 				<button ng-click="duplicate()" type="button" class="btn btn-outline-secondary btn-block btn-sm">Duplicate&nbsp;<i class="fas fa-clone"></i></button>
 				<button ng-click="resettask()" ng-disabled="!canChangeDefect()" type="button" class="btn btn-outline-secondary btn-block btn-sm">Reset To Re-Use&nbsp;<i class="fas fa-recycle"></i></button>
 				<button ng-click="normtext()" ng-disabled="!canChangeDefect()" type="button" class="btn btn-outline-secondary btn-block btn-sm">Normalize Details Text&nbsp;<i class="fab fa-wpforms"></i></button>
-				<button ng-click="adddesc('Tested')" ng-disabled="!canChangeDefect()" type="button" class="btn btn-outline-secondary btn-block btn-sm">Add Tested Comment&nbsp;<i class="fas fa-check"></i></button>
-				<button ng-click="adddesc('Rejected')" ng-disabled="!canChangeDefect()" type="button" class="btn btn-outline-secondary btn-block btn-sm">Add Rejected Comment&nbsp;<i class="fas fa-window-close"></i></button>
+				<button ng-click="adddesc('Tested', 'taskokay.png')" ng-disabled="!canChangeDefect()" type="button" class="btn btn-outline-secondary btn-block btn-sm">Add Tested Comment&nbsp;<i class="fas fa-check"></i></button>
+				<button ng-click="adddesc('Rejected', 'taskfail.png')" ng-disabled="!canChangeDefect()" type="button" class="btn btn-outline-secondary btn-block btn-sm">Add Rejected Comment&nbsp;<i class="fas fa-window-close"></i></button>
 				<div class="alert alert-info mt-2" style="text-align: center">
 					<button data-toggle="tooltip" title="Ask to release!" type="button" class="btn btn-light btn-sm float-left" ng-click="releaseRequest()"><i class="fas fa-bell text-info"></i></button>
 					<button data-toggle="tooltip" title="FORCE to release!" type="button" class="btn btn-light btn-sm float-right" ng-click="releaseForce()"><i class="fas fa-jedi text-danger"></i></button>
@@ -40,6 +40,16 @@
 						</div>
 					</a>
 					<i class="fas fa-unlock-alt"></i>
+				</div>
+				<div class="alert alert-success mt-2" style="text-align: center" ng-show="commented">
+					<div class="custom-control custom-switch">
+						<input type="checkbox" class="custom-control-input" id="switchAusr" ng-model="commented_alarmuser">
+						<label class="custom-control-label" for="switchAusr">Alarm {{defect.AUSER | getUserById:this}}</label>
+					</div>
+					<div class="custom-control custom-switch">
+						<input type="checkbox" class="custom-control-input" id="switchAGrp" ng-model="commented_alarmgroup">
+						<label class="custom-control-label" for="switchAGrp">Alarm Team</label>
+					</div>
 				</div>
 			</div>
 			<div class="col-lg-8">

@@ -274,7 +274,7 @@
 			}
 			$scope.defect.REQUESTRESET = false;
 			$http.post("trservice.asmx/settask", angular.toJson({ "d": copy }))
-				.then(function (response) {
+				.then(function () {
 					EndProgress(prgsaving);
 					$scope.changed = false;
 					$scope.history = null;
@@ -282,6 +282,10 @@
 					$scope.loadHistory();
 					$scope.loadEvents();
 					$scope.saving = false;
+					if ($scope.commented && $scope.commented_alarmuser) {
+						$http.post("trservice.asmx/NotifyDefect", angular.toJson({ "ttid": ttid, "message": $scope.commented_txt, "img": $scope.commented_img, "alsoteam": $scope.commented_alarmgroup }));
+					}
+					$scope.commented = false;
 				});
 		};
 		$scope.changetab = function (event) {
@@ -512,8 +516,11 @@
 			}
 			$scope.defect.DESCR = lines.join("\n");
 		};
-		$scope.adddesc = function (text) {
+		$scope.adddesc = function (text, img) {
 			msgBox("Add Comment", text, function (txt) {
+				$scope.commented = true;
+				$scope.commented_txt = txt;
+				$scope.commented_img = img;
 				var d = new Date();
 				$scope.defect.DESCR = "<" + userLogin() + " time='" +
 					(d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes()
@@ -563,6 +570,11 @@
 			return $scope.defect !== undefined && document.getElementById("releasettid").value == $scope.defect.ID;
 		};
 		$scope.batchsearch = "";
+		$scope.commented = false;
+		$scope.commented_txt = "";
+		$scope.commented_img = "";
+		$scope.commented_alarmuser = true;
+		$scope.commented_alarmgroup = true;
 		$scope.teststring = "&#64";
 
 		$.connection.hub.disconnected(function () {

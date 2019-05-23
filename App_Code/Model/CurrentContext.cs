@@ -11,7 +11,7 @@ public static class CurrentContext
 	{
 		get
 		{
-			return User != null;
+			return User != null && !User.RETIRED;
 		}
 	}
 	public static bool Admin
