@@ -14,7 +14,7 @@
 			<button type="button" class="btn btn-lg btn-info" ng-click="saveDefects()">Save</button>
 			<button type="button" class="btn btn-lg btn-danger" ng-click="discardDefects()">Discard</button>
 		</div>
-		<div class="d-flex">
+		<div class="d-flex flex-wrap">
 			<button type="button" class="flex-fill btn btn-sm {{currentuserid===u.ID?'btn-secondary':'btn-outline-secondary'}}" ng-click="changeuser(u, true)" ng-repeat="u in filtered = (users | filter:{ INWORK: true })" data-toggle="tooltip" title="{{u.PERSON_NAME}}">
 				<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=20&id=' + u.ID}}" alt="Smile" height="20" width="20" style="margin: auto;" />
 				{{u.LOGIN}}
