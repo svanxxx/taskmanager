@@ -10,6 +10,7 @@
 	<title>MPS tasks system</title>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="Description" content="<%Settings.CurrentSettings.COMPANYNAME.ToString()%> Task Management System">
 	<link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 	<link <%= "href='" + Settings.CurrentSettings.CDNFONTAWESOME.ToString() + "css/all.min.css'"%> rel="stylesheet" />
 	<link <%= "href='" + Settings.CurrentSettings.CDNBOOTSTRAP.ToString() + "css/bootstrap.min.css'"%> rel="stylesheet" />
@@ -30,7 +31,7 @@
 	<input type="hidden" id="userlogin" value="<%=CurrentContext.UserLogin()%>" />
 	<uc:addtask runat="server" />
 	<uc:msgBox runat="server" />
-	
+
 	<nav class="navbar navbar-expand-md bg-dark navbar-dark">
 		<a class="navbar-brand" href="<%= Settings.CurrentSettings.COMPANYSITE.ToString()%>"><%= Settings.CurrentSettings.COMPANYNAME.ToString()%></a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">

@@ -14,9 +14,9 @@
 			<div class="col-lg-2 hidden-sm hidden-xs text-center">
 				<div class="btn-group-vertical">
 					<button type="button" class="btn btn-danger" ng-cloak ng-show="haveBirthday" ng-click="congratulate()">
-						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=60&id=' + birthdayID}}" alt="Smile" height="60" width="60">
+						<img class="rounded-circle" ng-src="{{haveBirthday ? ('getUserImg.ashx?sz=60&id=' + birthdayID) : ''}}" alt="Smile" height="60" width="60">
 						<span>&hArr;&nbsp;{{birthdayYears}}*</span>
-						<img src="images/cake.jpg" alt="Smile" height="60" width="60">
+						<img ng-src="{{haveBirthday ? 'images/cake.jpg' : ''}}" alt="Smile" height="60" width="60">
 						<span>=</span>
 						<i class="fas fa-thumbs-up"></i>
 					</button>
@@ -34,7 +34,7 @@
 						<div class="row person-items">
 							<div class="col-lg-2 col-xs-6 col-centered">
 								<div class="card person-box h-100">
-									<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=80&id=' + user.ID}}" alt="smile" width="80" height="80" style="margin: auto;" />
+									<img class="rounded-circle" <%= "src=getUserImg.ashx?sz=80&id=" + CurrentContext.UserID%> alt="smile" width="80" height="80" style="margin: auto;" />
 									<div class="card-body p-0 m-0">
 										<label>{{user.PERSON_NAME}}</label>
 									</div>
@@ -43,12 +43,12 @@
 							<div class="col-lg-2 col-xs-6">
 								<button ng-disabled="loaded()" ng-click="addRec()" type="button" class="btn btn-outline-success btn-block btn-sm">Add</button>
 								<button ng-disabled="!loaded()" ng-click="deleteRec()" type="button" class="btn btn-outline-danger btn-block btn-sm">Delete</button>
-								<input required ng-model="date" ng-change="findRec()" class="form-control date-input form-control-sm" type="date" />
+								<input required ng-model="date" ng-change="findRec()" class="form-control date-input form-control-sm" type="date" aria-label="Find record"/>
 							</div>
 							<div class="col-lg-3 hidden-xs datelabel">
 								<h4>{{datestring}}</h4>
 								<h5>{{timedone}}</h5>
-								<button type="button" class="btn btn-outline-light text-dark btn-block btn-sm">
+								<button type="button" class="btn btn-outline-light text-dark btn-block btn-sm" aria-label="Time Status">
 									<div class="progress person-box">
 										<div class="progress-bar progress-bar-striped {{percentdonestyle}} active progress-bar-animated" role="progressbar" aria-valuenow="{{percentdone}}" aria-valuemin="0" aria-valuemax="100" style="width: {{percentdone}}%">
 											{{percentdone}}
@@ -61,15 +61,15 @@
 									<div class="input-group-prepend w-25">
 										<span class="input-group-text">In:</span>
 									</div>
-									<input ng-disabled="!loaded()" id="timein" required type="time" class="input-sm form-control" ng-model="trrec.IN" />
+									<input ng-disabled="!loaded()" id="timein" required type="time" class="input-sm form-control" ng-model="trrec.IN" aria-label="Time In"/>
 								</div>
 								<div class="input-group input-group-sm mb-1">
 									<div class="input-group-prepend w-25">
 										<button class="btn" type="button" ng-click="out()">Out:</button>
 									</div>
-									<input ng-disabled="!loaded()" id="timeou" required type="time" class="input-sm form-control" ng-model="trrec.OUT" />
+									<input ng-disabled="!loaded()" id="timeou" required type="time" class="input-sm form-control" ng-model="trrec.OUT" aria-label="Time Out"/>
 									<div class="input-group-append" data-toggle="tooltip" title="Automatically adjust Time-Out while page is kept open.">
-										<button ng-click="onChangeAutoTime()" type="button" class="btn btn-outline-secondary btn-sm">
+										<button ng-click="onChangeAutoTime()" type="button" class="btn btn-outline-secondary btn-sm" aria-label="Set Time Auto Adjust">
 											<span class="fas fa-check" ng-show="autotime"></span>
 											<span class="fas fa-times" ng-show="!autotime"></span>
 										</button>
@@ -79,7 +79,7 @@
 									<div class="input-group-prepend w-25">
 										<span class="input-group-text">Break:</span>
 									</div>
-									<input ng-disabled="!loaded()" id="timebr" required type="time" class="input-sm form-control" ng-model="trrec.BREAK" />
+									<input ng-disabled="!loaded()" id="timebr" required type="time" class="input-sm form-control" ng-model="trrec.BREAK" aria-label="Break Time"/>
 								</div>
 							</div>
 							<div class="col-lg-2 col-xs-6">
@@ -88,7 +88,7 @@
 									<div class="input-group-prepend">
 										<span class="input-group-text">Copy Last Day</span>
 									</div>
-									<button ng-click="onCopyLastDay()" type="button" class="btn btn-outline-secondary btn-sm">
+									<button ng-click="onCopyLastDay()" type="button" class="btn btn-outline-secondary btn-sm" aria-label="Use last day details">
 										<span class="fas fa-check" ng-show="copylastday"></span>
 										<span class="fas fa-times" ng-show="!copylastday"></span>
 									</button>
@@ -99,9 +99,9 @@
 					</div>
 				</div>
 				<div class="card-body dailyreport">
-					<textarea ng-disabled="!loaded()" ng-model="trrec.DONE" class="form-control" rows="10" autofocus></textarea>
+					<textarea ng-disabled="!loaded()" ng-model="trrec.DONE" class="form-control" rows="10" autofocus aria-label="Details"></textarea>
 				</div>
-				<ul class="nav nav-pills" role="tablist">
+				<ul class="nav nav-pills">
 					<li class="nav-item">
 						<a class="nav-link active" data-toggle="tab" href="#plan">Plan&nbsp;<span class="badge badge-light">{{defects.length}}</span></a>
 					</li>
@@ -122,11 +122,11 @@
 								<td>
 									<img class="rounded-circle" height="20" width="20" class="btn-workme" ng-src="{{'getUserImg.ashx?sz=20&id=' + d.SMODTRID}}" title="{{d.SMODIFIER}}" /></td>
 								<td>
-									<button ng-click="workTask(d)" data-toggle="tooltip" title="Start work on this task now!" type="button" class="btn btn-xs btn-workme"><i class="fas fa-arrow-alt-circle-up"></i></button>
+									<button ng-click="workTask(d)" data-toggle="tooltip" title="Start work on this task now!" aria-label="Start!" type="button" class="btn btn-xs btn-workme"><i class="fas fa-arrow-alt-circle-up"></i></button>
 								</td>
 								<td>
 									<div class="dropdown btn-workme">
-										<button type="button" class="btn dropdown-toggle btn-xs" data-toggle="dropdown"></button>
+										<button type="button" class="btn dropdown-toggle btn-xs" data-toggle="dropdown" aria-label="Change"></button>
 										<div class="dropdown-menu">
 											<a class="dropdown-item" ng-repeat="disp in dispos" ng-click="changeDispo(d, disp)" style="background-color: {{disp.COLOR}}" href>{{disp.DESCR}}</a>
 										</div>
