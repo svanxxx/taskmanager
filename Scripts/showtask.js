@@ -247,7 +247,7 @@
 							var data = e.target.result;
 							var fileupload = StartProgress("Uploading file " + this.attfilename + "...");
 							$http.post("trservice.asmx/newfileupload", angular.toJson({ "ttid": ttid, "filename": this.attfilename, "data": data }))
-								.then(function (response) {
+								.then(function () {
 									EndProgress(fileupload);
 									$scope.attachsinprogress--;
 									if ($scope.attachsinprogress == 0) {
@@ -261,7 +261,7 @@
 					else if (a.newblob) {
 						var fileupload = StartProgress("Uploading file " + a.FILENAME + "...");
 						$http.post("trservice.asmx/newfileupload", angular.toJson({ "ttid": ttid, "filename": a.FILENAME, "data": a.newblob }))
-							.then(function (response) {
+							.then(function () {
 								EndProgress(fileupload);
 								$scope.attachsinprogress--;
 								if ($scope.attachsinprogress == 0) {
@@ -273,7 +273,7 @@
 				});
 			}
 			$scope.defect.REQUESTRESET = false;
-			$http.post("trservice.asmx/settask", angular.toJson({ "d": copy }))
+			$http.post("DefectService.asmx/settask", angular.toJson({ "d": copy }))
 				.then(function () {
 					EndProgress(prgsaving);
 					$scope.changed = false;

@@ -273,23 +273,6 @@ public class TRService : System.Web.Services.WebService
 		return d;
 	}
 	[WebMethod(EnableSession = true)]
-	public string settask(Defect d)
-	{
-		Defect dstore = new Defect(d.ID);
-		if (d.ORDER != dstore.ORDER)
-		{
-			//copy object specifics for multiple savings from same page: only order change should be processed.
-			d.BACKORDER = dstore.BACKORDER;
-		}
-		dstore.FromAnotherObject(d);
-		dstore.REQUESTRESET = d.REQUESTRESET;
-		if (dstore.IsModified())
-		{
-			dstore.Store();
-		}
-		return "OK";
-	}
-	[WebMethod(EnableSession = true)]
 	public void settaskBase(List<DefectBase> defects)
 	{
 		foreach (DefectBase d in defects)

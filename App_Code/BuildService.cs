@@ -3,7 +3,7 @@
 [WebService(Namespace = "http://tempuri.org/")]
 [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
 [System.Web.Script.Services.ScriptService]
-public class BuildService : System.Web.Services.WebService
+public class BuildService : WebService
 {
 	public BuildService(){}
 	[WebMethod(EnableSession = true)]
