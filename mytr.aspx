@@ -9,6 +9,7 @@
 </asp:Content>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
+	<input type="hidden" id="trrec" value='<%=TRRec.GetRecString()%>' />
 	<div ng-cloak id="controllerholder" ng-app="mpsapplication" ng-controller="mpscontroller">
 		<div class="row">
 			<div class="col-lg-2 hidden-sm hidden-xs text-center">
@@ -36,7 +37,7 @@
 								<div class="card person-box h-100">
 									<img class="rounded-circle" <%= "src=getUserImg.ashx?sz=80&id=" + CurrentContext.UserID%> alt="smile" width="80" height="80" style="margin: auto;" />
 									<div class="card-body p-0 m-0">
-										<label>{{user.PERSON_NAME}}</label>
+										<label><% =CurrentContext.UserName() %></label>
 									</div>
 								</div>
 							</div>

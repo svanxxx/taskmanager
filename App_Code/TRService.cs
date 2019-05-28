@@ -425,11 +425,6 @@ public class TRService : System.Web.Services.WebService
 		}
 	}
 	[WebMethod(EnableSession = true)]
-	public MPSUser getcurrentuser()
-	{
-		return CurrentContext.User;
-	}
-	[WebMethod(EnableSession = true)]
 	public DefectBase settaskdispo(string ttid, string disp)
 	{
 		if (Defect.Locked(ttid))

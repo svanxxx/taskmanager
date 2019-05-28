@@ -129,21 +129,24 @@ $(function () {
 			$scope.storeData();
 			$scope.loadData();
 		};
+		$scope.processTrRec = function (r) {
+			$scope.trrec = r;
+			if ($scope.trrec) {
+				$scope.trrec.DATE = StringToDate($scope.trrec.DATE);
+				$scope.trrec.IN = stringToTime($scope.trrec.IN);
+				$scope.trrec.OUT = stringToTime($scope.trrec.OUT);
+				$scope.trrec.BREAK = stringToTime($scope.trrec.BREAK);
+				$scope.recalcPercent();
+			}
+			$scope.status = "Saved.";
+			$scope.datestring = $scope.date.toDateString();
+		};
 		$scope.loadData = function () {
 			var taskprg = StartProgress("Loading data...");
 			$scope.status = "Loading...";
 			$http.post("trservice.asmx/gettrrec", JSON.stringify({ "date": DateToString($scope.date) }))
 				.then(function (response) {
-					$scope.trrec = response.data.d;
-					if ($scope.trrec) {
-						$scope.trrec.DATE = StringToDate($scope.trrec.DATE);
-						$scope.trrec.IN = stringToTime($scope.trrec.IN);
-						$scope.trrec.OUT = stringToTime($scope.trrec.OUT);
-						$scope.trrec.BREAK = stringToTime($scope.trrec.BREAK);
-						$scope.recalcPercent();
-					}
-					$scope.status = "Saved.";
-					$scope.datestring = $scope.date.toDateString();
+					$scope.processTrRec(response.data.d);
 					EndProgress(taskprg);
 				});
 		};
@@ -218,7 +221,10 @@ $(function () {
 		});
 
 		$scope.loadTasks();
-		$scope.loadData();
+		var defrec = document.getElementById("trrec").value;
+		if (defrec !== "") {
+			$scope.processTrRec(JSON.parse(defrec));
+		}
 
 		$scope.todayRec = function () {
 			$(".tooltip").tooltip("hide");
@@ -283,11 +289,6 @@ $(function () {
 			d.setHours(0, 0, 0, 0);
 			return ($scope.trrec) && ($scope.date.getTime() === d.getTime());
 		};
-
-		$http.post("trservice.asmx/getcurrentuser", JSON.stringify({}))
-			.then(function (response) {
-				$scope.user = response.data.d;
-			});
 
 		var notifyHub = $.connection.notifyHub;
 		notifyHub.client.onPlanChanged = function (userid) {

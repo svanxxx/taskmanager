@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
+using Newtonsoft.Json;
 
 public class TRRecSignal : IdBasedObject
 {
@@ -187,6 +188,16 @@ public partial class TRRec : TRRecSignal
 			return new TRRec(id);
 		}
 		return null;
+	}
+	public static string GetRecString()
+	{
+		if (!CurrentContext.Valid)
+		{
+			return "";
+		}
+		DateTime d = DateTime.Today;
+		TRRec r = TRRec.GetRec(d, CurrentContext.User.ID);
+		return JsonConvert.SerializeObject(r);
 	}
 	public static void DelRec(int id)
 	{
