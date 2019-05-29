@@ -524,7 +524,7 @@
 				var d = new Date();
 				$scope.defect.DESCR = "<" + userLogin() + " time='" +
 					(d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes()
-					+ "'>" + txt + "</" + userLogin() + ">\n\n" + $scope.defect.DESCR;
+					+ "'>\n" + txt + "\n</" + userLogin() + ">\n\n" + $scope.defect.DESCR;
 				$scope.$apply();
 			});
 		};

@@ -55,7 +55,7 @@
 			<div class="col-lg-8">
 				<div class="input-group input-group-sm mb-1">
 					<div class="input-group-prepend">
-						<button title="Copy task label to clipboard" data-toggle="tooltip" class="btn btn-default btn-sm" type="button" ng-click="cliplabl()">TT{{defect.ID}}</button>
+						<button title="Copy task label to clipboard" data-toggle="tooltip" class="btn btn-light btn-sm" type="button" ng-click="cliplabl()">TT{{defect.ID}}</button>
 					</div>
 					<input title="Task summary" data-toggle="tooltip" type="text" class="form-control" ng-disabled="!canChangeDefect()" ng-change="updateDefSum()" ng-model="defectsumm">
 					<input title="Task source: e.g. email subject" data-toggle="tooltip" type="text" class="form-control" ng-disabled="!canChangeDefect()" ng-change="updateDefEml()" ng-model="defecteml">
