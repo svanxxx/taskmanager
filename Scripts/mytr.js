@@ -131,8 +131,8 @@ $(function () {
 		};
 		$scope.processTrRec = function (r) {
 			$scope.trrec = r;
-			$scope.trrec.DONE = decodeURIComponent($scope.trrec.DONE);
 			if ($scope.trrec) {
+				$scope.trrec.DONE = decodeURIComponent($scope.trrec.DONE);
 				$scope.trrec.DATE = StringToDate($scope.trrec.DATE);
 				$scope.trrec.IN = stringToTime($scope.trrec.IN);
 				$scope.trrec.OUT = stringToTime($scope.trrec.OUT);
