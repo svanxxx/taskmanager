@@ -197,6 +197,7 @@ public partial class TRRec : TRRecSignal
 		}
 		DateTime d = DateTime.Today;
 		TRRec r = TRRec.GetRec(d, CurrentContext.User.ID);
+		r.DONE = Uri.EscapeDataString(r.DONE);
 		return JsonConvert.SerializeObject(r);
 	}
 	public static void DelRec(int id)
