@@ -556,11 +556,11 @@
 		$scope.bsttab_his = "bsttabs-history";
 		$scope.tab_builds = "Builds";
 		$scope.tab_git = "Git";
-		$scope.tab_attachs = "Attachments";
+		$scope.tab_attachs = "Attachs";
 		$scope.tab_history = "History";
 		$scope.tab_bst = "BST";
 		$scope.tab_workflow = "Workflow";
-		$scope.tab_specs = "Specification";
+		$scope.tab_specs = "Specs";
 		$scope.buildpriorities = [{ ID: 1, DESCR: "1 (Low)" }, { ID: 2, DESCR: "2 (Programmer big release)" }, { ID: 3, DESCR: "3 (Release)" }, { ID: 4, DESCR: "4 (Programmer)" }, { ID: 5, DESCR: "5 (High)" }];
 		$scope.globallock = "";
 		$scope.batches = null;

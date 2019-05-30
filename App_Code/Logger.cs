@@ -3,7 +3,7 @@ using System.IO;
 
 public static class Logger
 {
-	const string _fname = "c:\\taskmanager.log";
+	static string _fname = Path.GetTempPath() + "taskmanager.log";
 	public static void Log(string message)
 	{
 		File.AppendAllText(_fname, DateTime.Now.ToString() + Environment.NewLine);
