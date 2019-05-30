@@ -12,11 +12,23 @@ public class getAttachImg : IHttpHandler
 		ext = ext.ToUpper();
 		return ext == "PNG" || ext == "JPG" || ext == "JPEG";
 	}
+	static bool IsStandardImg(HttpContext context, string ext)
+	{
+		string file = context.Server.MapPath($"images/ftypes/{ext}.png");
+		if (File.Exists(file))
+		{
+			context.Response.ContentType = "image/png";
+			context.Response.AddHeader("Content-Length", (new FileInfo(file)).Length.ToString());
+			context.Response.WriteFile(file);
+			return true;
+		}
+		return false;
+	}
 	void error(HttpContext context)
 	{
 		context.Response.ContentType = "image/png";
 		string file = context.Server.MapPath("images/attach.png");
-		context.Response.AddHeader("Content-Length", (new System.IO.FileInfo(file)).Length.ToString());
+		context.Response.AddHeader("Content-Length", (new FileInfo(file)).Length.ToString());
 		context.Response.WriteFile(file);
 	}
 	public void ProcessRequest(HttpContext context)
@@ -26,6 +38,10 @@ public class getAttachImg : IHttpHandler
 		if (string.IsNullOrEmpty(sid) || string.IsNullOrEmpty(ext))
 		{
 			error(context);
+			return;
+		}
+		if (IsStandardImg(context, ext))
+		{
 			return;
 		}
 		Icon ico = null;
