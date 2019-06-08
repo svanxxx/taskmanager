@@ -17,10 +17,8 @@ public class DefectBuild : IdBasedObject
 	protected static string _TTID = "TTID";
 	protected static string _User = "UserID";
 	protected static string _tguid = "TestGUID";
-	protected static string _rown = "ROWN";
 	protected static string _Tabl = "[TT_RES].[dbo].[DefectBuild]";
-	protected static string _View = "[TT_RES].[dbo].[V_DefectBuild]";
-	protected static string[] _allBasecols = new string[] { _pid, _par, _date, _stat, _dateUp, _mach, _not, _stText, _TTID, _rown, _User, _dateB, _tguid };
+	protected static string[] _allBasecols = new string[] { _pid, _par, _date, _stat, _dateUp, _mach, _not, _stText, _TTID, _User, _dateB, _tguid };
 
 	public int ID
 	{
@@ -221,11 +219,11 @@ public class DefectBuild : IdBasedObject
 	}
 
 	public DefectBuild()
-	  : base(_Tabl, _allBasecols, "", _pid, false, _View)
+	  : base(_Tabl, _allBasecols, "", _pid, false)
 	{
 	}
 	public DefectBuild(int id)
-	  : base(_Tabl, _allBasecols, id.ToString(), _pid, true, _View)
+	  : base(_Tabl, _allBasecols, id.ToString(), _pid, true)
 	{
 	}
 	protected override string OnTransformCol(string col)
@@ -244,29 +242,14 @@ public class DefectBuild : IdBasedObject
 		}
 		base.OnProcessComplexColumn(col, val);
 	}
-
-	public static List<DefectBuild> GetEventsByTask(int ttid)
+	public static List<DefectBuild> EnumData(int from, int to, int ttid = -1)
 	{
 		List<DefectBuild> res = new List<DefectBuild>();
-		DefectBuild worker = new DefectBuild();
-		string where = string.Format(" WHERE {0} = {1} ORDER BY {2} DESC ", _par, Defect.GetIDbyTT(ttid), _pid);
-		foreach (DataRow dr in worker.GetRecords(where, 5))
+		string ttfilter = ttid < 0 ? "" : $" WHERE {_par} = {Defect.GetIDbyTT(ttid)} ";
+		string sql = $"SELECT * FROM (SELECT {_pid}, ROW_NUMBER() OVER (ORDER BY {_pid} DESC) ROWN FROM {_Tabl} {ttfilter}) TABL WHERE ROWN >= {from} AND ROWN <= {to} ORDER BY {_pid} desc";
+		foreach (DataRow r in DBHelper.GetRows(sql))
 		{
-			DefectBuild b = new DefectBuild();
-			b.Load(dr);
-			res.Add(b);
-		}
-		return res;
-	}
-	public static List<DefectBuild> EnumData(int from, int to)
-	{
-		List<DefectBuild> res = new List<DefectBuild>();
-		DefectBuild worker = new DefectBuild();
-		foreach (DataRow r in worker.GetRecords(String.Format("WHERE {0} >= {1} AND {0} <= {2} ORDER BY {3} desc", _rown, from, to, _date)))
-		{
-			DefectBuild d = new DefectBuild();
-			d.Load(r);
-			res.Add(d);
+			res.Add(new DefectBuild(Convert.ToInt32(r[_pid])));
 		}
 		return res;
 	}

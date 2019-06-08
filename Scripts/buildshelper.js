@@ -11,7 +11,7 @@
 			d.setDate(now.getDate());
 			var timeDiff = Math.abs(now.getTime() - d.getTime());
 			var diffMins = Math.ceil(timeDiff / (1000 * 60));
-			builds[i].PERCENT = diffMins / buildtime * 100.0;
+			builds[i].PERCENT = Math.round(diffMins / buildtime * 100.0);
 			if (builds[i].STARTED) {
 				builds[i].DURATION = diffMins;
 			}

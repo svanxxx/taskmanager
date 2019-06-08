@@ -7,6 +7,21 @@ public static class CurrentContext
 	public static string retiredURL = "retired";
 	static string _id = "userid";
 	static string _us = "currentuser";
+	public static void Validate()
+	{
+		if (!Valid)
+		{
+			throw new Exception("Unauthorized access.");
+		}
+	}
+	public static void ValidateAdmin()
+	{
+		Validate();
+		if (!Admin)
+		{
+			throw new Exception("Insufficient Rights");
+		}
+	}
 	public static bool Valid
 	{
 		get

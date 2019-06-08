@@ -65,11 +65,12 @@
 			if (!Array.isArray($scope.builds)) {
 				$scope.builds = [];
 			}
-			$http.post("trservice.asmx/getBuildsByTask", JSON.stringify({ "ttid": ttid }))
+			$http.post("BuildService.asmx/getBuildsByTask", JSON.stringify({ from: $scope.buildsstate.showby * ($scope.buildsstate.page - 1) + 1, to: $scope.buildsstate.showby * $scope.buildsstate.page, "ttid": ttid }))
 				.then(function (result) {
 					if (JSON.stringify($scope.builds) !== JSON.stringify(result.data.d)) {
 						$scope.builds = result.data.d;
 						$scope.updatePercent();
+						reActivateTooltips();
 					}
 				});
 		};
@@ -576,6 +577,29 @@
 		$scope.commented_alarmuser = true;
 		$scope.commented_alarmgroup = true;
 		$scope.teststring = "&#64";
+
+		$scope.buildsstate = {};
+		$scope.buildsstate.page = 1;
+		$scope.buildsstate.showby = "5";
+		$scope.buildsstate.filter = "";
+		$scope.buildsstate.showbys = ["5", "10", "15"];
+		$scope.decPage = function () {
+			if ($scope.buildsstate.page === 1) {
+				return;
+			}
+			$scope.buildsstate.page--;
+			$scope.loadBuilds();
+		};
+		$scope.incPage = function () {
+			if ($scope.builds.length === 0) {
+				return;
+			}
+			$scope.buildsstate.page++;
+			$scope.loadBuilds();
+		};
+		$scope.changeShowBy = function () {
+			$scope.loadBuilds();
+		};
 
 		$.connection.hub.disconnected(function () {
 			setTimeout(function () { $.connection.hub.start(); }, 5000); // Restart connection after 5 seconds.

@@ -300,13 +300,6 @@ public class TRService : System.Web.Services.WebService
 		return DefectAttach.GetAttachsByTask(Convert.ToInt32(ttid));
 	}
 	[WebMethod(EnableSession = true)]
-	public List<DefectBuild> getBuildsByTask(string ttid)
-	{
-		if (string.IsNullOrEmpty(ttid))
-			return new List<DefectBuild>();
-		return DefectBuild.GetEventsByTask(int.Parse(ttid));
-	}
-	[WebMethod(EnableSession = true)]
 	public void addBuildByTask(string ttid, string notes)
 	{
 		if (string.IsNullOrEmpty(ttid))
@@ -740,11 +733,6 @@ public class TRService : System.Web.Services.WebService
 			r.BRANCH = def.BRANCH;
 		}
 		return r;
-	}
-	[WebMethod]
-	public List<DefectBuild> getBuildRequests(int from, int to)
-	{
-		return DefectBuild.EnumData(from, to);
 	}
 	[WebMethod]
 	public bool hasBuildRequest()

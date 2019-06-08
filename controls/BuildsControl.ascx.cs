@@ -1,0 +1,1 @@
+﻿public partial class BuildsControl : System.Web.UI.UserControl { }
