@@ -52,14 +52,14 @@
 			var showby = getParameterByName("showby");
 			$scope.state = {};
 			$scope.state.page = 1;
-			$scope.state.showby = "15";
+			$scope.state.showby = "10";
 			$scope.state.filter = getParameterByName("filter");
-			$scope.showbys = ["15", "30", "60", "120"];
+			$scope.state.showbys = ["10", "15", "30", "60", "120"];
 			if (page !== "") {
 				$scope.state.page = parseInt(page);
 			}
 			if (showby !== "") {
-				$scope.showby = "" + parseInt(showby);
+				$scope.state.showby = "" + parseInt(showby);
 			}
 		};
 		$scope.init();

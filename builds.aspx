@@ -14,6 +14,8 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
 	<input type="hidden" id="buildtime" value="<%=Settings.CurrentSettings.BUILDTIME.ToString()%>" />
 	<div ng-app="mpsapplication" ng-controller="mpscontroller">
-		<uc:builds runat="server" />
+		<div class="container">
+			<uc:builds runat="server" />
+		</div>
 	</div>
 </asp:Content>
