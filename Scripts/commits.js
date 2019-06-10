@@ -6,22 +6,23 @@
 		$scope.loadData = function () {
 			var prg = StartProgress("Loading data...");
 			$scope.branch = getParameterByName("branch");
-			$http.post("trservice.asmx/EnumCommits", JSON.stringify({ branch: $scope.branch, from: $scope.state.showby * ($scope.state.page - 1) + 1, to: $scope.state.showby * $scope.state.page }))
+			$http.post("trservice.asmx/EnumCommits", JSON.stringify({ branch: $scope.branch, from: $scope.commitsstate.showby * ($scope.commitsstate.page - 1) + 1, to: $scope.commitsstate.showby * $scope.commitsstate.page }))
 				.then(function (result) {
 					$scope.commits = result.data.d;
+					reActivateTooltips();
 					EndProgress(prg);
 				});
 		};
 		$scope.loadCommit = function (c) { loadCommit(c, $scope, $http); };
 		$scope.pushState = function () {
-			var url = replaceUrlParam(replaceUrlParam(location.href, "showby", $scope.state.showby), "page", $scope.state.page);
-			window.history.pushState({ showby: $scope.state.showby, page: $scope.state.page }, "page " + $scope.state.page + ", showby " + $scope.state.showby, url);
+			var url = replaceUrlParam(replaceUrlParam(location.href, "showby", $scope.commitsstate.showby), "page", $scope.commitsstate.page);
+			window.history.pushState({ showby: $scope.commitsstate.showby, page: $scope.commitsstate.page }, "page " + $scope.commitsstate.page + ", showby " + $scope.commitsstate.showby, url);
 		};
 		$scope.decPage = function () {
-			if ($scope.state.page === 1) {
+			if ($scope.commitsstate.page === 1) {
 				return;
 			}
-			$scope.state.page--;
+			$scope.commitsstate.page--;
 			$scope.loadData();
 			$scope.pushState();
 		};
@@ -29,7 +30,7 @@
 			if ($scope.commits.length === 0) {
 				return;
 			}
-			$scope.state.page++;
+			$scope.commitsstate.page++;
 			$scope.loadData();
 			$scope.pushState();
 		};
@@ -39,15 +40,15 @@
 		};
 		var page = getParameterByName("page");
 		var showby = getParameterByName("showby");
-		$scope.state = {};
-		$scope.state.page = 1;
-		$scope.state.showby = "15";
-		$scope.showbys = ["15", "30", "60", "120"];
+		$scope.commitsstate = {};
+		$scope.commitsstate.page = 1;
+		$scope.commitsstate.showby = "10";
+		$scope.commitsstate.showbys = ["10", "15", "30", "60", "120"];
 		if (page !== "") {
-			$scope.state.page = parseInt(page);
+			$scope.commitsstate.page = parseInt(page);
 		}
 		if (showby !== "") {
-			$scope.state.showby = "" + parseInt(showby);
+			$scope.commitsstate.showby = "" + parseInt(showby);
 		}
 
 		$scope.loadData();

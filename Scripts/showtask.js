@@ -50,7 +50,7 @@
 					$scope.gitbranchhash = result.data.d;
 				});
 
-			$http.post("trservice.asmx/EnumCommits", JSON.stringify({ "branch": $scope.defect.BRANCH, from: 1, to: 20 }))
+			$http.post("trservice.asmx/EnumCommits", JSON.stringify({ "branch": $scope.defect.BRANCH, from: $scope.commitsstate.showby * ($scope.commitsstate.page - 1) + 1, to: $scope.commitsstate.showby * $scope.commitsstate.page }))
 				.then(function (result) {
 					if (JSON.stringify($scope.commits) !== JSON.stringify(result.data.d)) {
 						$scope.commits = result.data.d;
@@ -583,22 +583,37 @@
 		$scope.buildsstate.showby = "5";
 		$scope.buildsstate.filter = "";
 		$scope.buildsstate.showbys = ["5", "10", "15"];
-		$scope.decPage = function () {
-			if ($scope.buildsstate.page === 1) {
+
+		$scope.commitsstate = {};
+		$scope.commitsstate.page = 1;
+		$scope.commitsstate.showby = "5";
+		$scope.commitsstate.filter = "";
+		$scope.commitsstate.showbys = ["5", "10", "15"];
+
+		$scope.loadonepage = function (state) {
+			if (state === "commitsstate") {
+				$scope.loadCommits();
+			} else {
+				$scope.loadBuilds();
+			}
+		};
+
+		$scope.decPage = function (state) {
+			if ($scope[state].page === 1) {
 				return;
 			}
-			$scope.buildsstate.page--;
-			$scope.loadBuilds();
+			$scope[state].page--;
+			$scope.loadonepage(state);
 		};
-		$scope.incPage = function () {
-			if ($scope.builds.length === 0) {
+		$scope.incPage = function (state) {
+			if ($scope[state].length === 0) {
 				return;
 			}
-			$scope.buildsstate.page++;
-			$scope.loadBuilds();
+			$scope[state].page++;
+			$scope.loadonepage(state);
 		};
-		$scope.changeShowBy = function () {
-			$scope.loadBuilds();
+		$scope.changeShowBy = function (state) {
+			$scope.loadonepage(state);
 		};
 
 		$.connection.hub.disconnected(function () {
