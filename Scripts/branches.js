@@ -16,6 +16,7 @@
 				.then(function (result) {
 					$scope.state.branches = result.data.d;
 					EndProgress(prg);
+					reActivateTooltips();
 					if (pushstate) {
 						$scope.pushState();
 					}

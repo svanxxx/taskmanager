@@ -223,13 +223,11 @@
 						<textarea class="form-control form-control-sm" id="Description" rows="30" ng-disabled="!canChangeDefect()" ng-model="defect.DESCR"></textarea>
 					</div>
 					<div id="bst" class="tab-pane fade">
-						<div class="alert alert-secondary p-2 m-0">
-							<div class="input-group input-group-sm">
-								<div class="input-group-prepend">
-									<span class="input-group-text">BST Branch:</span>
-								</div>
-								<input type="text" class="form-control" ng-disabled="!canChangeDefect()" ng-model="defect.BRANCHBST">
+						<div class="input-group input-group-sm mb-1">
+							<div class="input-group-prepend">
+								<span class="input-group-text">BST Branch:</span>
 							</div>
+							<input type="text" class="form-control" ng-disabled="!canChangeDefect()" ng-model="defect.BRANCHBST">
 						</div>
 						<div class="row">
 							<div class="col-md-3 pr-0">
@@ -336,27 +334,23 @@
 						</ul>
 					</div>
 					<div id="taskgit" class="tab-pane fade">
-						<div class="card">
-							<div class="card-header bg-light m-0 p-2">
-								<div class="input-group input-group-sm">
-									<div class="input-group-prepend">
-										<span class="input-group-text">Branch:</span>
-									</div>
-									<input type="text" class="form-control" ng-disabled="!canChangeDefect()" ng-model="defect.BRANCH">
-									<div class="input-group-append">
-										<button type="button" ng-show="!isrelease()" class="btn btn-success" ng-click="loadCommits()">Scan Branch</button>
-										<button type="button" ng-show="!isrelease()" class="btn btn-danger" ng-disabled="!gitbranchhash" ng-click="deleteBranch()">Delete Branch</button>
-										<a href="builder.aspx" ng-show="isrelease()" class="btn btn-secondary" role="button">Release Marker</a>
-									</div>
+						<div class="d-flex mb-1">
+							<div class="input-group input-group-sm">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Branch:</span>
+								</div>
+								<input type="text" class="form-control" ng-disabled="!canChangeDefect()" ng-model="defect.BRANCH">
+								<div class="input-group-append">
+									<button type="button" ng-show="!isrelease()" class="btn btn-success" ng-click="loadCommits()">Scan Branch</button>
+									<button type="button" ng-show="!isrelease()" class="btn btn-danger" ng-disabled="!gitbranchhash" ng-click="deleteBranch()">Delete Branch</button>
+									<a href="builder.aspx" ng-show="isrelease()" class="btn btn-secondary" role="button">Release Marker</a>
 								</div>
 							</div>
-							<div class="card-body">
-								<uc:commits runat="server" />
-							</div>
 						</div>
+						<uc:commits runat="server" />
 					</div>
 					<div id="taskbuilds" class="tab-pane fade">
-						<div class="input-group input-group-sm">
+						<div class="input-group input-group-sm mb-1">
 							<div class="input-group-prepend">
 								<span class="input-group-text">Test Priority</span>
 							</div>

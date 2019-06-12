@@ -16,19 +16,27 @@
 	<div class="card-body">
 		<div class="list-group">
 			<div class="list-group-item list-group-item-action pt-1 pb-1" ng-repeat="b in state.branches" style="background-color: {{b.COLOR}}">
-				<div class="row">
-					<div ng-show="b.TTID < 0">
-						<a href="commits.aspx?branch={{b.NAME}}"><i class="fas fa-tag"></i><span class="badge badge-light">{{b.NAME}}</span></a>
-					</div>
-				</div>
 				<div class="d-flex">
-					<div ng-show="b.TTID > 0">
-						<a href="showtask.aspx?ttid={{b.TTID}}" target="_blank"><span class="badge badge-pill badge-secondary ng-binding">{{b.TTID}}</span></a>{{b.NAME.replace('TT' + b.TTID, '')}}
+					<div>
+						<div class="d-flex">
+							<div ng-show="b.TTID < 0">
+								<a href="commits.aspx?branch={{b.NAME}}"><i class="fas fa-tag"></i><span class="badge badge-light">{{b.NAME}}</span></a>
+							</div>
+							<div ng-show="b.TTID > 0">
+								<a href="showtask.aspx?ttid={{b.TTID}}" target="_blank"><span class="badge badge-pill badge-secondary ng-binding">{{b.TTID}}</span></a>{{b.NAME.replace('TT' + b.TTID, '')}}
+							</div>
+						</div>
+						<div class="d-flex">
+							<small>Commit Date:&nbsp;{{b.DATE}}</small>
+						</div>
+						<div class="d-flex">
+							<span data-toggle="tooltip" title="{{b.HASH}}" class="badge badge-warning ng-binding">{{b.HASH | limitTo: 20}}</span>
+						</div>
 					</div>
-					<i class="far fa-clock"></i>
-					<small class="mr-auto">Commit Date:&nbsp;{{b.DATE}}</small>
-					<a ng-click="filterby(b.AUTHOR)" href>{{b.AUTHOR}}</a>
-					<img class="rep-img rounded-circle" ng-src="{{'getUserImg.ashx?sz=40&eml=' + b.AUTHOREML}}" alt="Smile" height="40" width="40">
+					<div class="ml-auto">
+						<a ng-click="filterby(b.AUTHOR)" href>{{b.AUTHOR}}</a>
+						<img class="rep-img rounded-circle" ng-src="{{'getUserImg.ashx?sz=40&eml=' + b.AUTHOREML}}" alt="Smile" height="40" width="40">
+					</div>
 				</div>
 			</div>
 		</div>

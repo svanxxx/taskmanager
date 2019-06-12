@@ -13,14 +13,13 @@ using System.Collections.Specialized;
 using System.Xml.Serialization;
 using System.IO;
 using System.Text;
-using Telegram.Bot;
 using GitHelper;
 using System.Linq;
 
 [WebService(Namespace = "http://tempuri.org/")]
 [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
 [System.Web.Script.Services.ScriptService]
-public class TRService : System.Web.Services.WebService
+public class TRService : WebService
 {
 	static public string defDateFormat = "MM-dd-yyyy";
 	public TRService()
