@@ -59,6 +59,7 @@ public partial class DefectBase : IdBasedObject
 	protected static string _sModTRID = "sModifierTRID";
 	protected static string _Comp = "idCompon";
 	protected static string _Date = "dateEnter";
+	protected static string _DateT = "dateTimer";
 	protected static string _Created = "dateCreate";
 	protected static string _CreaBy = "idCreateBy";
 	protected static string _Type = "idType";
@@ -75,8 +76,8 @@ public partial class DefectBase : IdBasedObject
 
 	public static string _Tabl = "[TT_RES].[DBO].[DEFECTS]";
 
-	protected static string[] _allBaseCols = new string[] { _ID, _Summ, _idRec, _Disp, _Est, _EstId, _Order, _AsUser, _Seve, _sMod, _BackOrder, _Comp, _Date, _Created, _CreaBy, _Type, _Prod, _Ref, _Prio, _OrderDate, _ModDate, _ModBy, _sModTRID, _branch, _branchBST, _buildP };
-	protected static string[] _allBaseColsNames = new string[] { _ID, "Summary", _idRec, "Disposition", "Estimation", "Estimated by", "Schedule Order", "Assigned User", "Severity", "", "Schedule Order", "Component", "Date Entered", "Date Created", "Created By", "Type", "Product", "Reference", "Priority", "Schedule Date", "", "", "", "Branch", "BST Branch", "Test Priority" };
+	protected static string[] _allBaseCols = new string[] { _ID, _Summ, _idRec, _Disp, _Est, _EstId, _Order, _AsUser, _Seve, _sMod, _BackOrder, _Comp, _Date, _Created, _DateT, _CreaBy, _Type, _Prod, _Ref, _Prio, _OrderDate, _ModDate, _ModBy, _sModTRID, _branch, _branchBST, _buildP };
+	protected static string[] _allBaseColsNames = new string[] { _ID, "Summary", _idRec, "Disposition", "Estimation", "Estimated by", "Schedule Order", "Assigned User", "Severity", "", "Schedule Order", "Component", "Date Entered", "Date Created", "Alarm", "Created By", "Type", "Product", "Reference", "Priority", "Schedule Date", "", "", "", "Branch", "BST Branch", "Test Priority" };
 
 	MPSUser _updater;
 	public MPSUser GetUpdater()
@@ -215,6 +216,31 @@ public partial class DefectBase : IdBasedObject
 			if (DATE != value)
 			{
 				SetAsDate(_Date, value);
+			}
+		}
+	}
+	public bool FIRE
+	{
+		get
+		{
+			object o = this[_DateT];
+			if (o == DBNull.Value)
+			{
+				return false;
+			}
+			DateTime d = Convert.ToDateTime(this[_DateT]);
+			return (DateTime.Today - d).TotalDays <= 0;
+		}
+		set { }
+	}
+	public string TIMER
+	{
+		get { return GetAsDate(_DateT, ""); }
+		set
+		{
+			if (TIMER != value)
+			{
+				SetAsDate(_DateT, value);
 			}
 		}
 	}

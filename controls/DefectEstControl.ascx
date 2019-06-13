@@ -1,0 +1,2 @@
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="DefectEstControl.ascx.cs" Inherits="DefectEstControl" %>
+<span data-toggle="tooltip" title="Estimated: {{d.ESTIM}} hrs" class="badge badge-danger">{{d.ESTIM}}</span>

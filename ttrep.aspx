@@ -1,5 +1,8 @@
 ﻿<%@ Page Title="Tasks" Language="C#" MasterPageFile="~/Master.Master" AutoEventWireup="true" CodeFile="ttrep.aspx.cs" Inherits="TTRep" %>
 
+<%@ Register Src="~/controls/DefectNumControl.ascx" TagName="defNum" TagPrefix="uc" %>
+<%@ Register Src="~/controls/DefectEstControl.ascx" TagName="defEst" TagPrefix="uc" %>
+
 <asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
 	<%=System.Web.Optimization.Styles.Render("~/bundles/ttrep_css")%>
 	<%=System.Web.Optimization.Scripts.Render("~/bundles/ttrep_js")%>
@@ -382,16 +385,9 @@
 			</thead>
 			<tbody ng-cloak>
 				<tr ng-repeat="d in defects" ng-style="d.DISPO | getDispoColorById:this">
-					<td>
-						<input type="checkbox" ng-model="d.checked"></td>
-					<td>
-						<a href="showtask.aspx?ttid={{d.ID}}" target="_blank">
-							<span class="badge badge-pill badge-secondary">{{d.ID}}</span>
-						</a>
-					</td>
-					<td>
-						<span class="badge badge-danger">{{d.ESTIM}}</span>
-					</td>
+					<td><input type="checkbox" ng-model="d.checked"></td>
+					<td><uc:defNum runat="server" /></td>
+					<td><uc:defEst runat="server" /></td>
 					<td><a target="_blank" href="{{'editplan.aspx?userid='}}{{d.AUSER | getUserTRIDById:this}}">{{d.AUSER | getUserById:this}}</a></td>
 					<td>{{d.REFERENCE}}</td>
 					<td ng-bind-html="d.SUMMARY | sumFormat"></td>

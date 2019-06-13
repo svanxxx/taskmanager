@@ -42,6 +42,11 @@
 					</a>
 					<i class="fas fa-unlock-alt"></i>
 				</div>
+				<div ng-show="defect.FIRE" id="firealarm" class="alert alert-info mt-2" style="text-align: center; cursor: pointer" ng-click="gotoAlarm()">
+					<strong>The task is on fire<br />
+					It is urgently requested<br />
+					You can check alarm tab for deadline</strong>
+				</div>
 				<div class="alert alert-success mt-2" style="text-align: center" ng-show="commented">
 					<div class="custom-control custom-switch">
 						<input type="checkbox" class="custom-control-input" id="switchAusr" ng-model="commented_alarmuser">
@@ -366,7 +371,21 @@
 					</div>
 					<div id="alarm" class="tab-pane fade">
 						<div class="jumbotron">
+							<h5><i class="far fa-comment"></i>&nbsp;&nbsp;&nbsp;In order to receive messages from the system you have to:</h5>
 							<a class="btn btn-outline-secondary btn-sm" href="<%=Settings.CurrentSettings.TELEGRAMTASKSURL.ToString()%>">Subscribe To Telegram Tasks Bot</a>
+							<hr />
+							<h5><i class="fas fa-hourglass-start"></i>&nbsp;&nbsp;&nbsp;Set Fire alarm timer:</h5>
+							<div class="input-group input-group-sm">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Date time:</span>
+								</div>
+								<input type="date" class="form-control" ng-disabled="!canChangeDefect()" ng-model="defect.TIMER">
+								<div class="input-group-append">
+									<button type="button" class="btn btn-sm btn-outline-secondary" ng-disabled="!canChangeDefect()" ng-click="defect.TIMER = today"><i class="fas fa-check"></i></button>
+									<button type="button" class="btn btn-sm btn-outline-secondary" ng-disabled="!canChangeDefect()" ng-click="defect.TIMER = null"><i class="fas fa-times"></i></button>
+								</div>
+							</div>
+							<hr />
 							<h3>Email will alarm all the persons indicated below</h3>
 							<h4 class="{{changed ? 'blink_me' : ''}}">Please save the task indicating your questions in the top of details section</h4>
 							<label for="emailaddr">Addresses (comma separated):</label>

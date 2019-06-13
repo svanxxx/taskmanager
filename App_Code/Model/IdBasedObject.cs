@@ -386,14 +386,13 @@ public class IdBasedObject
 	}
 	protected void SetAsDate(string column, string value)
 	{
-		var dt = Convert.ToDateTime(value, CultureInfo.InvariantCulture);
-		if (value == DBHelper.sdefaultDate)
+		if (string.IsNullOrEmpty(value) || value == DBHelper.sdefaultDate)
 		{
 			this[column] = DBNull.Value;
 		}
 		else
 		{
-			this[column] = dt;
+			this[column] = Convert.ToDateTime(value, CultureInfo.InvariantCulture);
 		}
 	}
 	protected bool GetAsBool(string column, bool defVal = false)

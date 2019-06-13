@@ -23,7 +23,7 @@
 
 	app.controller('mpscontroller', ["$scope", "$http", "$interval", "$window", function ($scope, $http, $interval, $window) {
 		$window.onbeforeunload = function () {
-			$scope.notifyHub.server.unLockTask(ttid, $scope.currentlock, userID());
+			$scope.notifyHub.server.unLockTask(ttid, $scope.currentlock);
 		};
 		$scope.cliplabl = function () {
 			copyurl("TT" + $scope.defect.ID + " " + $scope.defect.SUMMARY);
@@ -170,6 +170,9 @@
 					});
 			}
 		};
+		$scope.gotoAlarm = function () {
+			$('[href="#alarm"]')[0].click();
+		};
 		$scope.addFile = function () {
 			var file = $('<input type="file" name="filefor" style="display: none;" />');
 			file.on('input', function (e) {
@@ -221,8 +224,10 @@
 		$scope.saveDefect = function () {
 			//updating object to convert date
 			$scope.saving = true;
+			$scope.defect.FIRE = $scope.defect.TIMER != null && $scope.today.getTime() <= $scope.defect.TIMER.getTime();
 			var copy = Object.assign({}, $scope.defect);
 			copy.DATE = DateToString(copy.DATE);
+			copy.TIMER = DateToString(copy.TIMER);
 			if (!copy.ORDER || copy.ORDER < 1) {
 				copy.ORDER = -1;
 			}
@@ -274,6 +279,7 @@
 				});
 			}
 			$scope.defect.REQUESTRESET = false;
+
 			$http.post("DefectService.asmx/settask", angular.toJson({ "d": copy }))
 				.then(function () {
 					EndProgress(prgsaving);
@@ -393,6 +399,7 @@
 						if (vals.length > 1) {
 							$scope.defecteml = vals[1];
 						}
+						$scope.defect.TIMER = StringToDate($scope.defect.TIMER);
 						$scope.defect.DATE = StringToDate($scope.defect.DATE);
 						$scope.defect.CREATEDBY = "" + $scope.defect.CREATEDBY;
 						$scope.defect.ESTIMBY = "" + $scope.defect.ESTIMBY;
@@ -401,6 +408,7 @@
 						}
 					}
 					document.title = "Task: #" + ttid;
+					document.getElementById("firealarm").style.backgroundImage = "url('images/fire.gif')";
 					EndProgress(taskprg);
 				});
 		};
@@ -550,6 +558,8 @@
 		$scope.testlink = document.getElementById("testlink").value;
 		$scope.addresses = document.getElementById("deflist").value;
 
+		$scope.today = new Date();
+		$scope.today.setHours(0, 0, 0, 0)
 		$scope.defectsumm = "";
 		$scope.defecteml = "";
 		$scope.bsttab_bat = "bsttabs-batches";

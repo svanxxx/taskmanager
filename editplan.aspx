@@ -1,5 +1,8 @@
 ﻿<%@ Page Title="Edit Plan" Language="C#" MasterPageFile="~/Master.Master" AutoEventWireup="true" CodeFile="editplan.aspx.cs" Inherits="PlanEditor" %>
 
+<%@ Register Src="~/controls/DefectNumControl.ascx" TagName="defNum" TagPrefix="uc" %>
+<%@ Register Src="~/controls/DefectEstControl.ascx" TagName="defEst" TagPrefix="uc" %>
+
 <asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
 	<%=System.Web.Optimization.Styles.Render("~/bundles/editplan_css")%>
 	<%=System.Web.Optimization.Scripts.Render("~/bundles/editplan_js")%>
@@ -54,8 +57,8 @@
 						<div id="plan" class="tab-pane active">
 							<table style="width: 100%">
 								<tr class="task alert {{d.orderchanged?'data-changed':''}}" ng-repeat="d in defects" ng-style="{{d.DISPO | getDispoColorById:this}}">
-									<td><a href="showtask.aspx?ttid={{d.ID}}" target="_blank"><span class="badge badge-pill badge-secondary">{{d.ID}}</span></a></td>
-									<td><span class="badge badge-danger">{{d.ESTIM}}</span></td>
+									<td><uc:defNum runat="server" /></td>
+									<td><uc:defEst runat="server" /></td>
 									<td><span data-toggle="tooltip" title="{{d.SUMMARY}}" ng-bind-html="d.SUMMARY | sumFormat | limitTo:135"></span></td>
 									<td>
 										<input class="taskselector" type="radio" name="optradio" ng-keydown="taskMove(d, $event)"></td>
@@ -73,8 +76,8 @@
 						<div id="unscheduled" class="tab-pane fade">
 							<table style="width: 100%">
 								<tr class="task alert {{d.orderchanged?'data-changed':''}}" ng-repeat="d in unscheduled" ng-style="{{d.DISPO | getDispoColorById:this}}">
-									<td><a href="showtask.aspx?ttid={{d.ID}}" target="_blank"><span class="badge badge-pill badge-secondary">{{d.ID}}</span></a></td>
-									<td><span class="badge badge-danger">{{d.ESTIM}}</span></td>
+									<td><uc:defNum runat="server" /></td>
+									<td><uc:defEst runat="server" /></td>
 									<td><span data-toggle="tooltip" title="{{d.SUMMARY}}" ng-bind-html="d.SUMMARY | sumFormat | limitTo:135"></span></td>
 									<td>
 										<button ng-click="scheduletask(d)" data-toggle="tooltip" title="Add to schedule list" type="button" class="btn btn-xs taskselector"><i class="fas fa-arrow-left"></i></button>
