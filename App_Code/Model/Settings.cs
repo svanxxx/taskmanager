@@ -209,6 +209,11 @@ public class RawSettings
 		get { return GetVal("TEMPGIT"); }
 		set { values["TEMPGIT"] = value; }
 	}
+	public string MERGEGIT
+	{
+		get { return GetVal("MERGEGIT"); }
+		set { values["MERGEGIT"] = value; }
+	}
 	public string TELEGRAMTESTTOKEN
 	{
 		get { return GetVal("TELEGRAMTESTTOKEN"); }

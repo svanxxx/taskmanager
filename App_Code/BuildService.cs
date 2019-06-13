@@ -14,6 +14,18 @@ public class BuildService : WebService
 		return VersionBuilder.PrepareGit();
 	}
 	[WebMethod(EnableSession = true)]
+	public string getUpdateMergeGit(string branch)
+	{
+		CurrentContext.ValidateAdmin();
+		return VersionMerger.PrepareGit(branch);
+	}
+	[WebMethod(EnableSession = true)]
+	public string rebaseBranch(string branch)
+	{
+		CurrentContext.ValidateAdmin();
+		return VersionMerger.MergeCode(branch);
+	}
+	[WebMethod(EnableSession = true)]
 	public string versionIncrement()
 	{
 		CurrentContext.ValidateAdmin();
@@ -28,10 +40,23 @@ public class BuildService : WebService
 		return res + "<br/>Finished!";
 	}
 	[WebMethod(EnableSession = true)]
+	public string pushMerger2Master(string ttid)
+	{
+		CurrentContext.ValidateAdmin();
+		string res = VersionMerger.Push(ttid);
+		return res + "<br/>Finished!";
+	}
+	[WebMethod(EnableSession = true)]
 	public int? GetBuilderID()
 	{
 		CurrentContext.ValidateAdmin();
 		return VersionBuilder.GetLock();
+	}
+	[WebMethod(EnableSession = true)]
+	public int? GetMergerID()
+	{
+		CurrentContext.ValidateAdmin();
+		return VersionMerger.GetLock();
 	}
 	[WebMethod(EnableSession = true)]
 	public List<DefectBuild> getBuildsByTask(int from, int to, string ttid)
