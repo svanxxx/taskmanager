@@ -224,7 +224,9 @@
 		$scope.saveDefect = function () {
 			//updating object to convert date
 			$scope.saving = true;
+			var alarmfire = !$scope.defect.FIRE;
 			$scope.defect.FIRE = $scope.defect.TIMER != null && $scope.today.getTime() <= $scope.defect.TIMER.getTime();
+			alarmfire = alarmfire && $scope.defect.FIRE;
 			var copy = Object.assign({}, $scope.defect);
 			copy.DATE = DateToString(copy.DATE);
 			copy.TIMER = DateToString(copy.TIMER);
@@ -293,6 +295,9 @@
 						$http.post("trservice.asmx/NotifyDefect", angular.toJson({ "ttid": ttid, "message": $scope.commented_txt, "img": $scope.commented_img, "alsoteam": $scope.commented_alarmgroup }));
 					}
 					$scope.commented = false;
+					if (alarmfire) {
+						$scope.invite($scope.defect.AUSER);
+					};
 				});
 		};
 		$scope.changetab = function (event) {
@@ -359,7 +364,7 @@
 				});
 		};
 		$scope.invite = function (usr) {
-			$scope.notifyHub.server.sendMessage(userID(), getUserTRIDById()(usr, $scope), location.href);
+			$scope.notifyHub.server.sendMessage(userID(), getUserTRIDById()(usr, $scope), location.href + "&tstamp=" + (new Date()).getTime());
 		};
 		//references secion:
 		getMPSUsers($scope, "mpsusers", $http);

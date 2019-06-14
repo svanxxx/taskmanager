@@ -794,6 +794,8 @@ public class TRService : WebService
 			DefectBuild b = new DefectBuild(id) { STATUS = DefectBuild.BuildStatus.finishedok.ToString(), TESTGUID = requestguid };
 			b.Store();
 
+			Defect d = new Defect(b.TTID);
+
 			if (Settings.CurrentSettings.RELEASETTID == b.TTID.ToString())
 			{
 				VersionBuilder.SendAlarm("✅New internal release build has been finished. Testing is starting...");
@@ -803,7 +805,7 @@ public class TRService : WebService
 				try
 				{
 					DefectUser u = new DefectUser(b.TTUSERID);
-					string mess = $"New task from {u.FULLNAME} is ready for tests!{Settings.CurrentSettings.GetTTAnchor(b.TTID)}";
+					string mess = $"New task from {u.FULLNAME} is ready for tests!{Settings.CurrentSettings.GetTTAnchor(b.TTID, d.FIRE ? "taskfire.png" : "")}";
 					TestChannel.SendMessage(mess);
 				}
 				catch (Exception e)
@@ -812,7 +814,6 @@ public class TRService : WebService
 				}
 			}
 
-			Defect d = new Defect(b.TTID);
 			string bst_b = d.BSTBATCHES.Trim();
 			string bst_c = d.BSTCOMMANDS.Trim();
 			if (!string.IsNullOrEmpty(bst_b) || !string.IsNullOrEmpty(bst_c))

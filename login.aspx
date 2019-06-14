@@ -1,10 +1,10 @@
 ﻿<%@ Page Title="Login" Language="C#" MasterPageFile="~/Master.Master" AutoEventWireup="true" CodeFile="login.aspx.cs" Inherits="Login" %>
 
 <asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
-	<meta property="og:title" content="<%=SecurityPage.GetPageOgTitle()%>">
-	<meta property="og:description" content="<%=SecurityPage.GetPageOgDesc()%>">
-	<meta property="og:image" content="<%=SecurityPage.GetPageOgImage()%>">
-	<meta property="og:site_name" content="<%=SecurityPage.GetPageOgName()%>">
+	<meta property="og:title" content="<%=GetPageOgTitle()%>">
+	<meta property="og:description" content="<%=GetPageOgDesc()%>">
+	<meta property="og:image" content="<%=GetPageOgImage()%>">
+	<meta property="og:site_name" content="<%=GetPageOgName()%>">
 	<meta property="og:type" content="website">
 </asp:Content>
 

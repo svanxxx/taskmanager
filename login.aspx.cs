@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web;
 
-public partial class Login : System.Web.UI.Page
+public partial class Login : OpenGraph
 {
 	protected void Page_Load(object sender, EventArgs e)
 	{

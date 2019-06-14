@@ -511,15 +511,13 @@ public partial class DefectBase : IdBasedObject
 	{
 		return DBHelper.GetValue(string.Format("SELECT {0} FROM {1} WHERE {2} = {3}", _Est, _Tabl, _ID, ttid)).ToString();
 	}
-	public static string GetTaskUserName(int ttid)
+	public string GetTaskUserName()
 	{
-		var o = DBHelper.GetValue(string.Format("SELECT {0} FROM {1} WHERE {2} = {3}", _AsUser, _Tabl, _ID, ttid));
-		if (o == DBNull.Value)
+		if (AUSER == "")
 		{
 			return "Unassigned";
 		}
-		int id = Convert.ToInt32(o);
-		DefectUser u = new DefectUser(id);
+		DefectUser u = new DefectUser(AUSER);
 		return u.FULLNAME;
 	}
 	static DefectsFilter UnusedVacations()
