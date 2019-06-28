@@ -867,7 +867,7 @@ public class TRService : WebService
 				NotifyHub.lockTaskForceUpdatePages(int.Parse(ttid), lockguid, bsu.ID);
 				lt = Defect.Locktask(ttid.ToString(), lockguid, bsu.ID.ToString());
 			}
-			List<DefectDispo> disp = testFail ? DefectDispo.EnumTestsFailed() : DefectDispo.EnumTestsPassed();
+			List<DefectDispo> disp = (testcancel || testFail) ? DefectDispo.EnumTestsFailed() : DefectDispo.EnumTestsPassed();
 			if (disp.Count > 0)
 			{
 				d.DISPO = disp[0].ID.ToString();
