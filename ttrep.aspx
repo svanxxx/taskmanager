@@ -152,14 +152,28 @@
 			</div>
 			<div class="col-sm-3">
 				<div class="input-group input-group-sm">
-					<div class="input-group-prepend">
-						<span class="input-group-text">Saved filters:</span>
+					<div class="btn-group">
+						<button type="button" class="btn-sm btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown">
+							<i class="fas fa-filter"></i>{{selectedFilter == null ? ' - Select - ' : selectedFilter.NAME}}
+						</button>
+						<div class="dropdown-menu">
+							<button ng-repeat="f in filters" ng-click="applySelectedFilter(f.ID)" type="button" class="dropdown-item btn btn-outline-secondary">
+								<i class="fas {{f.SHARED ? 'fa-user-friends text-danger' : 'fa-user-check'}}"></i>
+								{{f.NAME}}
+							</button>
+						</div>
 					</div>
-					<select id="selectedfltr" class="form-control" ng-change="applySelectedFilter()" ng-model="selectedFilter">
-						<option ng-repeat="f in filters" value="{{f.ID}}">{{f.NAME}}</option>
-					</select>
+
 					<div class="input-group-append btn-group">
-						<button ng-click="saveFilter()" data-toggle="tooltip" title="Save Filter" type="button" class="btn btn-outline-secondary"><i class="fas fa-save"></i></button>
+						<div class="btn-group">
+							<button type="button" class="btn-sm btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown">
+								<i class="fas fa-save"></i>
+							</button>
+							<div class="dropdown-menu">
+								<button ng-click="saveFilter(true)" type="button" class="dropdown-item btn btn-outline-secondary"><i class="fas fa-user-check"></i>Personal</button>
+								<button ng-click="saveFilter(false)" type="button" class="dropdown-item btn btn-outline-secondary"><i class="fas fa-user-friends text-danger"></i>Shared</button>
+							</div>
+						</div>
 						<button ng-click="resetFilter()" data-toggle="tooltip" title="Reset Filter" type="button" class="btn btn-outline-secondary"><i class="fas fa-home"></i></button>
 						<button ng-click="deleteFilter()" data-toggle="tooltip" title="Delete Filter" type="button" class="btn btn-outline-secondary"><i class="fas fa-trash-alt"></i></button>
 					</div>
@@ -385,9 +399,14 @@
 			</thead>
 			<tbody ng-cloak>
 				<tr ng-repeat="d in defects" ng-style="d.DISPO | getDispoColorById:this">
-					<td><input type="checkbox" ng-model="d.checked"></td>
-					<td><uc:defNum runat="server" /></td>
-					<td><uc:defEst runat="server" /></td>
+					<td>
+						<input type="checkbox" ng-model="d.checked"></td>
+					<td>
+						<uc:defNum runat="server" />
+					</td>
+					<td>
+						<uc:defEst runat="server" />
+					</td>
 					<td><a target="_blank" href="{{'editplan.aspx?userid='}}{{d.AUSER | getUserTRIDById:this}}">{{d.AUSER | getUserById:this}}</a></td>
 					<td>{{d.REFERENCE}}</td>
 					<td ng-bind-html="d.SUMMARY | sumFormat"></td>

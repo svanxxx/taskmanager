@@ -146,7 +146,7 @@
 			$scope.updateFilterObjects();
 		};
 		$scope.initFilters = function (filters) {
-			$scope.filters = [{ ID: 0, NAME: "<Select>" }];
+			$scope.filters = [{ ID: 0, NAME: " - Select - " }];
 			if (filters) {
 				filters.forEach(function (f) {
 					$scope.filters.push(f);
@@ -182,7 +182,7 @@
 		});
 
 		$scope.initFilters(JSON.parse(document.getElementById("filters").value));
-		$scope.selectedFilter = "0";
+		$scope.selectedFilter = null;
 		$scope.effort = "";
 		$scope.apply = {};
 		$scope.apply.disposition = { "use": false, "value": -1 };
@@ -213,51 +213,53 @@
 			window.history.pushState(o, "filter:" + localStorage.DefectsFilter, replaceUrlParam(location.href, "filter", localStorage.DefectsFilter));
 			$scope.loadData();
 		};
-		$scope.saveFilter = function () {
-			var name = prompt("Please enter filter name", "New Filter");
-			if (name === null) {
-				return;
-			}
-			var prg = StartProgress("Storing filter...");
-			$http.post("trservice.asmx/saveFilter", JSON.stringify({ "name": name, "filter": $scope.getServiceFilter() }))
-				.then(function (response) {
-					$scope.filters.push(response.data.d);
-					$scope.selectedFilter = "" + response.data.d.ID;
-					EndProgress(prg);
-				});
+		$scope.saveFilter = function (personal) {
+			msgBox("Please enter filter name", "New Filter", function (txt) {
+				var prg = StartProgress("Storing filter...");
+				$http.post("trservice.asmx/saveFilter", JSON.stringify({ "name": txt, "personal": personal, "filter": $scope.getServiceFilter() }))
+					.then(function (response) {
+						$scope.filters.push(response.data.d);
+						$scope.selectedFilter = response.data.d;
+						EndProgress(prg);
+					});
+			});
 		};
 		$scope.deleteFilter = function () {
-			if ($scope.selectedFilter === "0") {
+			if ($scope.selectedFilter === null) {
 				return;
 			}
-			var flt = $scope.filters.filter(function (f) { return f.ID == $scope.selectedFilter; })[0];
-			var name = flt.NAME;
-			var id = flt.ID;
-			var r = confirm("Are you sure you want to delete currently selected filter: " + name + " ?");
+			var r = confirm("Are you sure you want to delete currently selected filter: " + $scope.selectedFilter.NAME + " ?");
 			if (r === true) {
 				var prg = StartProgress("Deleting filter...");
-				$http.post("trservice.asmx/deleteFilter", JSON.stringify({ "id": id }))
+				$http.post("trservice.asmx/deleteFilter", JSON.stringify({ "id": $scope.selectedFilter.ID }))
 					.then(function () {
-						$scope.filters = $scope.filters.filter(function (f) { return f.ID !== id; });
-						$scope.selectedFilter = "0";
+						$scope.filters = $scope.filters.filter(function (f) { return f.ID !== $scope.selectedFilter.ID; });
+						$scope.selectedFilter = null;
 						EndProgress(prg);
 					});
 			}
 		};
 		$scope.resetFilter = function () {
 			$scope.DefectsFilter = {};
-			$scope.selectedFilter = "0";
+			$scope.selectedFilter = null;
 			createTasksFilter($scope.DefectsFilter);
 			$scope.applyfilter();
 		};
-		$scope.applySelectedFilter = function () {
-			if ($scope.selectedFilter !== "0") {
-				$http.post("trservice.asmx/savedFilterData", JSON.stringify({ "id": $scope.selectedFilter }))
+		$scope.applySelectedFilter = function (id) {
+			if (id === 0) {
+				$scope.selectedFilter = null;
+				return;
+			}
+			$scope.selectedFilter = $scope.filters.find(function (f) { return f.ID === id; });
+			if ($scope.selectedFilter) {
+				$http.post("trservice.asmx/savedFilterData", JSON.stringify({ "id": $scope.selectedFilter.ID }))
 					.then(function (response) {
 						$scope.DefectsFilter = response.data.d;
 						createTasksFilter($scope.DefectsFilter);
 						$scope.applyfilter();
 					});
+			} else {
+				$scope.selectedFilter = null;//not undefined
 			}
 		};
 		$scope.discardfilter = function () {

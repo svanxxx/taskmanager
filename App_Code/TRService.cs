@@ -242,9 +242,9 @@ public class TRService : WebService
 		}
 	}
 	[WebMethod(EnableSession = true)]
-	public StoredDefectsFilter saveFilter(string name, DefectsFilter filter)
+	public StoredDefectsFilter saveFilter(string name, bool personal, DefectsFilter filter)
 	{
-		return StoredDefectsFilter.NewFilter(name, filter, CurrentContext.TTUSERID);
+		return StoredDefectsFilter.NewFilter(name, personal, filter, CurrentContext.TTUSERID);
 	}
 	[WebMethod(EnableSession = true)]
 	public void deleteFilter(int id)

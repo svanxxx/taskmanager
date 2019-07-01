@@ -35,6 +35,11 @@ public class StoredDefectsFilter : IdBasedObject
 		get { return GetAsInt(_Usr); }
 		set { this[_Usr] = value; }
 	}
+	public bool SHARED
+	{
+		get { return GetAsBool(_Share); }
+		set { this[_Share] = value; }
+	}
 
 	public StoredDefectsFilter()
 	  : base(_Tabl, _allCols, 0.ToString(), _pid, false)
@@ -48,10 +53,10 @@ public class StoredDefectsFilter : IdBasedObject
 	{
 		return Newtonsoft.Json.JsonConvert.DeserializeObject<DefectsFilter>(DATA);
 	}
-	static public StoredDefectsFilter NewFilter(string name, DefectsFilter f, int user)
+	static public StoredDefectsFilter NewFilter(string name, bool personal, DefectsFilter f, int user)
 	{
 		string g = Guid.NewGuid().ToString();
-		SQLExecute(string.Format("INSERT INTO {0} ({1}, {2}) VALUES ('{3}', '{4}')", _Tabl, _Nam, _Usr, g, user));
+		SQLExecute($"INSERT INTO {_Tabl} ({_Nam}, {_Usr}, {_Share}) VALUES ('{g}', '{user}', {(personal ? 0 : 1)})");
 		int id = Convert.ToInt32(GetValue(string.Format("SELECT {0} FROM {1} WHERE {2} = '{3}'", _pid, _Tabl, _Nam, g)));
 		StoredDefectsFilter sf = new StoredDefectsFilter(id)
 		{
@@ -68,7 +73,7 @@ public class StoredDefectsFilter : IdBasedObject
 	static public List<StoredDefectsFilter> Enum(int user)
 	{
 		List<StoredDefectsFilter> res = new List<StoredDefectsFilter>();
-		foreach (DataRow r in (new StoredDefectsFilter()).GetRecords(String.Format("WHERE {0} = 1 OR {1} = {2} ORDER BY {3} asc", _Share, _Usr, user, _Nam)))
+		foreach (DataRow r in (new StoredDefectsFilter()).GetRecords($"WHERE {_Share} = 1 OR {_Usr} = {user} ORDER BY {_Share}, {_Nam} asc"))
 		{
 			StoredDefectsFilter d = new StoredDefectsFilter();
 			d.Load(r);
