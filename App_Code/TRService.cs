@@ -913,7 +913,7 @@ public class TRService : WebService
 			if (du.TRID > -1)
 			{
 				MPSUser worker = new MPSUser(du.TRID);
-				string mess2send = $"TT{ttid} update from {CurrentContext.UserName()}:  {message}{Settings.CurrentSettings.GetTTAnchor(int.Parse(ttid), img)}";
+				string mess2send = $"TT{ttid} update from {CurrentContext.UserName()}:  {message.Replace("<", "&#60;").Replace(">", "&#62;")}{Settings.CurrentSettings.GetTTAnchor(int.Parse(ttid), img)}";
 				TasksBot.SendMessage(worker.CHATID, mess2send);
 				if (alsoteam)
 				{
