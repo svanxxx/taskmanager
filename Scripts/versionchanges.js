@@ -11,7 +11,11 @@
 		$scope.copyurl = function (txt) {
 			copyurl(txt);
 		};
-		
+		$scope.isadmin = IsAdmin();
+		$scope.alertVersion = function () {
+			$http.post("BuildService.asmx/alertVersion", JSON.stringify({}))
+		};
+
 		var taskprg = StartProgress("Loading data..."); $scope["loaders"]++;
 		$http.post("trservice.asmx/getVersionLog", JSON.stringify({}))
 			.then(function (result) {

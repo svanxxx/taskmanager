@@ -175,7 +175,7 @@ public class VersionBuilder
 				{
 					if (d.StartsWith("+"))
 					{
-						string line = d.Substring(1).Trim();
+						string line = d.Substring(1).Replace("<", "&lt;").Replace(">", "&gt;").Trim();
 						if (line.StartsWith("=="))
 						{
 							version = line.Replace("=", "").Trim();
@@ -198,6 +198,9 @@ public class VersionBuilder
 			}
 		}
 		details = details.Trim();
-		SendAlarm(string.Format("📢<a href='{3}versionchanges.aspx'>{0}</a> has been setup.{1}List of changes:{1}{2}{1}The build will be started as soon as possible." + $"👤:{CurrentContext.UserLogin()}", version, Environment.NewLine, details, Settings.CurrentSettings.GLOBALSITEURL));
+		if (!string.IsNullOrEmpty(details))
+		{
+			SendAlarm(string.Format("📢<a href='{3}versionchanges.aspx'>{0}</a> has been setup.{1}List of changes:{1}{2}{1}The build will be started as soon as possible." + $"👤:{CurrentContext.UserLogin()}", version, Environment.NewLine, details, Settings.CurrentSettings.GLOBALSITEURL));
+		}
 	}
 }

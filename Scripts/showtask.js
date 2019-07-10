@@ -297,7 +297,7 @@
 					$scope.commented = false;
 					if (alarmfire) {
 						$scope.invite($scope.defect.AUSER);
-					};
+					}
 				});
 		};
 		$scope.changetab = function (event) {

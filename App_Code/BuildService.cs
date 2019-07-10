@@ -72,4 +72,10 @@ public class BuildService : WebService
 		CurrentContext.Validate();
 		return DefectBuild.EnumData(from, to);
 	}
+	[WebMethod(EnableSession = true)]
+	public void alertVersion()
+	{
+		CurrentContext.ValidateAdmin();
+		VersionBuilder.SendVersionAlarm();
+	}
 }

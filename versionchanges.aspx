@@ -32,10 +32,15 @@
 				</div>
 				<div class="alert alert-info">
 					<i class="fas fa-database"></i>
-					<strong>MS SQL server </strong> follow next link: 
+					<strong>MS SQL server </strong>follow next link: 
 					<span class="badge badge-info">
 						<a href="https://www.microsoft.com/en-us/sql-server/sql-server-downloads" target="_blank" class="badge badge-light">click here</a>
 					</span>.
+				</div>
+				<div class="alert alert-info" ng-show="isadmin" ng-click="alertVersion()">
+					<button type="button" class="btn btn-info btn-s">
+						<strong>Alert Version build</strong>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-bell"></i>
+					</button>
 				</div>
 			</div>
 			<div class="col-lg-8">
