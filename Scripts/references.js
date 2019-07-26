@@ -292,8 +292,15 @@ function killTooltips() {
 function copyurl(txt) {
 	var $temp = $("<input>");
 	$("body").append($temp);
+	var stamp = "timestamp=" + (new Date()).getTime();
 	if (txt === undefined) {
-		$temp.val(window.location.href).select();
+		var hr = window.location.href;
+		if (hr.includes("?")) {
+			hr += "&" + stamp;
+		} else {
+			hr += "?" + stamp;
+		}
+		$temp.val(hr).select();
 	} else {
 		$temp.val(txt).select();
 	}
