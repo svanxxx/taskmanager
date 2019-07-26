@@ -12,7 +12,7 @@
 		});
 		$scope.loadData = function (pushstate) {
 			var prg = StartProgress("Loading data...");
-			$http.post("trservice.asmx/enumbranches", JSON.stringify({ from: $scope.state.showby * ($scope.state.page - 1) + 1, to: $scope.state.showby * $scope.state.page, user: $scope.state.filter }))
+			$http.post("GitService.asmx/enumbranches", JSON.stringify({ from: $scope.state.showby * ($scope.state.page - 1) + 1, to: $scope.state.showby * $scope.state.page, user: $scope.state.filter }))
 				.then(function (result) {
 					$scope.state.branches = result.data.d;
 					EndProgress(prg);

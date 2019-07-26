@@ -44,8 +44,8 @@
 				</div>
 				<div ng-show="defect.FIRE" id="firealarm" class="alert alert-info mt-2" style="text-align: center; cursor: pointer" ng-click="gotoAlarm()">
 					<strong>The task is on fire<br />
-					It is urgently requested<br />
-					You can check alarm tab for deadline</strong>
+						It is urgently requested<br />
+						You can check alarm tab for deadline</strong>
 				</div>
 				<div class="alert alert-success mt-2" style="text-align: center" ng-show="commented">
 					<div class="custom-control custom-switch">
@@ -263,10 +263,10 @@
 								</ul>
 								<div class="tab-content">
 									<div id="batches" class="tab-pane active">
-										<textarea id="bstbatches" class="form-control form-control-sm" rows="28" ng-disabled="!canChangeDefect()" ng-model="defect.BSTBATCHES"></textarea>
+										<textarea id="bstbatches" class="form-control form-control-sm" rows="27" ng-disabled="!canChangeDefect()" ng-model="defect.BSTBATCHES"></textarea>
 									</div>
 									<div id="commands" class="tab-pane fade">
-										<textarea id="bstcommands" class="form-control form-control-sm" rows="28" ng-disabled="!canChangeDefect()" ng-model="defect.BSTCOMMANDS"></textarea>
+										<textarea id="bstcommands" class="form-control form-control-sm" rows="27" ng-disabled="!canChangeDefect()" ng-model="defect.BSTCOMMANDS"></textarea>
 									</div>
 									<div id="bsthistory" class="tab-pane fade">
 										<ul class="list-group">
@@ -339,94 +339,110 @@
 						</ul>
 					</div>
 					<div id="taskgit" class="tab-pane fade">
-						<div class="d-flex mb-1">
-							<div class="input-group input-group-sm">
-								<div class="input-group-prepend">
-									<span class="input-group-text">Branch:</span>
+						<ul class="nav nav-tabs" role="tablist">
+							<li class="nav-item">
+								<a class="nav-link active small" data-toggle="tab" href="#localbranch">Task branch</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link small" data-toggle="tab" href="#masterbranch">Master</a>
+							</li>
+						</ul>
+						<div class="tab-content">
+							<div id="localbranch" class="container tab-pane active">
+								<div class="d-flex mb-1">
+									<div class="input-group input-group-sm">
+										<div class="input-group-prepend">
+											<span class="input-group-text">Branch:</span>
+										</div>
+										<input type="text" class="form-control" ng-disabled="!canChangeDefect()" ng-model="defect.BRANCH">
+										<div class="input-group-append">
+											<button type="button" ng-show="!isrelease()" class="btn btn-success" ng-click="loadCommits()">Scan Branch</button>
+											<button type="button" ng-show="!isrelease()" class="btn btn-danger" ng-disabled="!gitbranchhash" ng-click="deleteBranch()">Delete Branch</button>
+											<a href="merger.aspx?branch={{defect.BRANCH}}&ttid={{defect.ID}}" ng-show="!isrelease()" class="btn btn-sm btn-outline-dark" ng-disabled="!gitbranchhash"><i class="fas fa-file-export"></i><i class="fab fa-joomla"></i></a>
+											<a href="builder.aspx" ng-show="isrelease()" class="btn btn-secondary" role="button">Release Marker</a>
+										</div>
+									</div>
 								</div>
-								<input type="text" class="form-control" ng-disabled="!canChangeDefect()" ng-model="defect.BRANCH">
-								<div class="input-group-append">
-									<button type="button" ng-show="!isrelease()" class="btn btn-success" ng-click="loadCommits()">Scan Branch</button>
-									<button type="button" ng-show="!isrelease()" class="btn btn-danger" ng-disabled="!gitbranchhash" ng-click="deleteBranch()">Delete Branch</button>
-									<a href="merger.aspx?branch={{defect.BRANCH}}&ttid={{defect.ID}}" ng-show="!isrelease()" class="btn btn-sm btn-outline-dark" ng-disabled="!gitbranchhash"><i class="fas fa-file-export"></i><i class="fab fa-joomla"></i></a>
-									<a href="builder.aspx" ng-show="isrelease()" class="btn btn-secondary" role="button">Release Marker</a>
-								</div>
+								<uc:commits runat="server" />
+							</div>
+							<div id="masterbranch" class="container tab-pane fade">
+								<button ng-click="loadMasterCommits()" type="button" class="btn btn-outline-dark btn-sm">Query Mater Branch</button>
+								<uc:commits dataset="mastercommits" hide="" runat="server" />
 							</div>
 						</div>
-						<uc:commits runat="server" />
 					</div>
-					<div id="taskbuilds" class="tab-pane fade">
-						<div class="input-group input-group-sm mb-1">
+				<div id="taskbuilds" class="tab-pane fade">
+					<div class="input-group input-group-sm mb-1">
+						<div class="input-group-prepend">
+							<span class="input-group-text">Test Priority</span>
+						</div>
+						<select class="form-control form-control-sm" ng-disabled="!canChangeDefect()" ng-model="defect.TESTPRIORITY">
+							<option value="{{t.ID}}" ng-repeat="t in buildpriorities">{{t.DESCR}}</option>
+						</select>
+						<button type="button" class="btn btn-sm btn-success btn-right-align" ng-disabled="!canBuild()" ng-click="testTask()">Build Version</button>
+						<button type="button" class="btn btn-sm btn-danger btn-right-align" ng-disabled="!canBuild()" ng-click="abortTest()">Abort Building</button>
+					</div>
+					<uc:builds runat="server" />
+					<div ng-show="!commits||commits.length<1" class="panel-footer"><strong>Info!</strong> Please commit your changes to git and push your branch named with TTxxxxxx where xxxxxx is the task number.</div>
+				</div>
+				<div id="alarm" class="tab-pane fade">
+					<div class="jumbotron">
+						<h5><i class="far fa-comment"></i>&nbsp;&nbsp;&nbsp;In order to receive messages from the system you have to:</h5>
+						<a class="btn btn-outline-secondary btn-sm" href="<%=Settings.CurrentSettings.TELEGRAMTASKSURL.ToString()%>">Subscribe To Telegram Tasks Bot</a>
+						<hr />
+						<h5><i class="fas fa-hourglass-start"></i>&nbsp;&nbsp;&nbsp;Set Fire alarm timer:</h5>
+						<div class="input-group input-group-sm">
 							<div class="input-group-prepend">
-								<span class="input-group-text">Test Priority</span>
+								<span class="input-group-text">Date time:</span>
 							</div>
-							<select class="form-control form-control-sm" ng-disabled="!canChangeDefect()" ng-model="defect.TESTPRIORITY">
-								<option value="{{t.ID}}" ng-repeat="t in buildpriorities">{{t.DESCR}}</option>
-							</select>
-							<button type="button" class="btn btn-sm btn-success btn-right-align" ng-disabled="!canBuild()" ng-click="testTask()">Build Version</button>
-							<button type="button" class="btn btn-sm btn-danger btn-right-align" ng-disabled="!canBuild()" ng-click="abortTest()">Abort Building</button>
-						</div>
-						<uc:builds runat="server" />
-						<div ng-show="!commits||commits.length<1" class="panel-footer"><strong>Info!</strong> Please commit your changes to git and push your branch named with TTxxxxxx where xxxxxx is the task number.</div>
-					</div>
-					<div id="alarm" class="tab-pane fade">
-						<div class="jumbotron">
-							<h5><i class="far fa-comment"></i>&nbsp;&nbsp;&nbsp;In order to receive messages from the system you have to:</h5>
-							<a class="btn btn-outline-secondary btn-sm" href="<%=Settings.CurrentSettings.TELEGRAMTASKSURL.ToString()%>">Subscribe To Telegram Tasks Bot</a>
-							<hr />
-							<h5><i class="fas fa-hourglass-start"></i>&nbsp;&nbsp;&nbsp;Set Fire alarm timer:</h5>
-							<div class="input-group input-group-sm">
-								<div class="input-group-prepend">
-									<span class="input-group-text">Date time:</span>
-								</div>
-								<input type="date" class="form-control" ng-disabled="!canChangeDefect()" ng-model="defect.TIMER">
-								<div class="input-group-append">
-									<button type="button" class="btn btn-sm btn-outline-secondary" ng-disabled="!canChangeDefect()" ng-click="defect.TIMER = today"><i class="fas fa-check"></i></button>
-									<button type="button" class="btn btn-sm btn-outline-secondary" ng-disabled="!canChangeDefect()" ng-click="defect.TIMER = null"><i class="fas fa-times"></i></button>
-								</div>
+							<input type="date" class="form-control" ng-disabled="!canChangeDefect()" ng-model="defect.TIMER">
+							<div class="input-group-append">
+								<button type="button" class="btn btn-sm btn-outline-secondary" ng-disabled="!canChangeDefect()" ng-click="defect.TIMER = today"><i class="fas fa-check"></i></button>
+								<button type="button" class="btn btn-sm btn-outline-secondary" ng-disabled="!canChangeDefect()" ng-click="defect.TIMER = null"><i class="fas fa-times"></i></button>
 							</div>
-							<hr />
-							<h3>Email will alarm all the persons indicated below</h3>
-							<h4 class="{{changed ? 'blink_me' : ''}}">Please save the task indicating your questions in the top of details section</h4>
-							<label for="emailaddr">Addresses (comma separated):</label>
-							<input type="text" class="form-control" id="emailaddr" ng-model="addresses">
-							<button ng-click="sendEmail()" ng-disabled="changed" type="button" class="btn btn-primary">Send Alarm Email</button>
 						</div>
+						<hr />
+						<h3>Email will alarm all the persons indicated below</h3>
+						<h4 class="{{changed ? 'blink_me' : ''}}">Please save the task indicating your questions in the top of details section</h4>
+						<label for="emailaddr">Addresses (comma separated):</label>
+						<input type="text" class="form-control" id="emailaddr" ng-model="addresses">
+						<button ng-click="sendEmail()" ng-disabled="changed" type="button" class="btn btn-primary">Send Alarm Email</button>
 					</div>
-				</div>
-			</div>
-			<div class="col-lg-2">
-				<div class="alert alert-warning" style="text-align: center">
-					<button data-toggle="tooltip" title="Invite person to see this task." type="button" class="btn btn-light btn-sm float-right" ng-click="invite(defect.CREATEDBY)"><i class="fas fa-bell"></i></button>
-					<a data-toggle="tooltip" title="Click to see full plan for the person" target="_blank" href="editplan.aspx?userid={{defect.CREATEDBY | getUserTRIDById:this}}">
-						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=60&ttid=' + defect.CREATEDBY}}" alt="Smile" height="60" width="60" />
-						<div>
-							<strong>{{defect.CREATEDBY | getUserById:this}}</strong>
-						</div>
-					</a>
-					<i class="fas fa-folder-plus"></i>
-				</div>
-				<div class="alert alert-success" style="text-align: center">
-					<button data-toggle="tooltip" title="Invite person to see this task." type="button" class="btn btn-light btn-sm float-right" ng-click="invite(defect.ESTIMBY)"><i class="fas fa-bell"></i></button>
-					<a data-toggle="tooltip" title="Click to see full plan for the person" target="_blank" href="editplan.aspx?userid={{defect.ESTIMBY | getUserTRIDById:this}}">
-						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=60&ttid=' + defect.ESTIMBY}}" alt="Smile" height="60" width="60" />
-						<div>
-							<strong>{{defect.ESTIMBY | getUserById:this}}</strong>
-						</div>
-					</a>
-					<i class="far fa-clock"></i><span>:{{defect.ESTIM}}</span>
-				</div>
-				<div class="alert alert-info" style="text-align: center">
-					<button data-toggle="tooltip" title="Invite person to see this task." type="button" class="btn btn-light btn-sm float-right" ng-click="invite(defect.AUSER)"><i class="fas fa-bell"></i></button>
-					<a data-toggle="tooltip" title="Click to see full plan for the person" target="_blank" href="editplan.aspx?userid={{defect.AUSER | getUserTRIDById:this}}">
-						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=60&ttid=' + defect.AUSER}}" alt="Smile" height="60" width="60" />
-						<div>
-							<strong>{{defect.AUSER | getUserById:this}}</strong>
-						</div>
-					</a>
-					<i class="fas fa-tools"></i>
 				</div>
 			</div>
 		</div>
+		<div class="col-lg-2">
+			<div class="alert alert-warning" style="text-align: center">
+				<button data-toggle="tooltip" title="Invite person to see this task." type="button" class="btn btn-light btn-sm float-right" ng-click="invite(defect.CREATEDBY)"><i class="fas fa-bell"></i></button>
+				<a data-toggle="tooltip" title="Click to see full plan for the person" target="_blank" href="editplan.aspx?userid={{defect.CREATEDBY | getUserTRIDById:this}}">
+					<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=60&ttid=' + defect.CREATEDBY}}" alt="Smile" height="60" width="60" />
+					<div>
+						<strong>{{defect.CREATEDBY | getUserById:this}}</strong>
+					</div>
+				</a>
+				<i class="fas fa-folder-plus"></i>
+			</div>
+			<div class="alert alert-success" style="text-align: center">
+				<button data-toggle="tooltip" title="Invite person to see this task." type="button" class="btn btn-light btn-sm float-right" ng-click="invite(defect.ESTIMBY)"><i class="fas fa-bell"></i></button>
+				<a data-toggle="tooltip" title="Click to see full plan for the person" target="_blank" href="editplan.aspx?userid={{defect.ESTIMBY | getUserTRIDById:this}}">
+					<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=60&ttid=' + defect.ESTIMBY}}" alt="Smile" height="60" width="60" />
+					<div>
+						<strong>{{defect.ESTIMBY | getUserById:this}}</strong>
+					</div>
+				</a>
+				<i class="far fa-clock"></i><span>:{{defect.ESTIM}}</span>
+			</div>
+			<div class="alert alert-info" style="text-align: center">
+				<button data-toggle="tooltip" title="Invite person to see this task." type="button" class="btn btn-light btn-sm float-right" ng-click="invite(defect.AUSER)"><i class="fas fa-bell"></i></button>
+				<a data-toggle="tooltip" title="Click to see full plan for the person" target="_blank" href="editplan.aspx?userid={{defect.AUSER | getUserTRIDById:this}}">
+					<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=60&ttid=' + defect.AUSER}}" alt="Smile" height="60" width="60" />
+					<div>
+						<strong>{{defect.AUSER | getUserById:this}}</strong>
+					</div>
+				</a>
+				<i class="fas fa-tools"></i>
+			</div>
+		</div>
+	</div>
 	</div>
 </asp:Content>

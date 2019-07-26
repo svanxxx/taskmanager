@@ -42,15 +42,25 @@
 		$scope.updatePercent = function () {
 			upadteBuildProgress($scope.builds, $scope.buildtime);
 		};
+		$scope.loadMasterCommits = function () {
+			$scope.mastercommits = [];
+			$http.post("GitService.asmx/QueryCommits", JSON.stringify({ "pattern": "TT" + ttid }))
+				.then(function (result) {
+					if (JSON.stringify($scope.mastercommits) !== JSON.stringify(result.data.d)) {
+						$scope.mastercommits = result.data.d;
+						reActivateTooltips();
+					}
+				});
+		};
 		$scope.loadCommits = function () {
 			$scope.commits = [];
 			$scope.gitbranchhash = "";
-			$http.post("trservice.asmx/BranchHash", JSON.stringify({ "branch": $scope.defect.BRANCH }))
+			$http.post("GitService.asmx/BranchHash", JSON.stringify({ "branch": $scope.defect.BRANCH }))
 				.then(function (result) {
 					$scope.gitbranchhash = result.data.d;
 				});
 
-			$http.post("trservice.asmx/EnumCommits", JSON.stringify({ "branch": $scope.defect.BRANCH, from: $scope.commitsstate.showby * ($scope.commitsstate.page - 1) + 1, to: $scope.commitsstate.showby * $scope.commitsstate.page }))
+			$http.post("GitService.asmx/EnumCommits", JSON.stringify({ "branch": $scope.defect.BRANCH, from: $scope.commitsstate.showby * ($scope.commitsstate.page - 1) + 1, to: $scope.commitsstate.showby * $scope.commitsstate.page }))
 				.then(function (result) {
 					if (JSON.stringify($scope.commits) !== JSON.stringify(result.data.d)) {
 						$scope.commits = result.data.d;
@@ -146,7 +156,7 @@
 					$scope.loadBuilds();
 				});
 		};
-		$scope.loadCommit = function (c) { loadCommit(c, $scope, $http); };
+		$scope.loadCommit = function (c, member) { loadCommit(c, $scope, $http, member); };
 		$scope.abortTest = function () {
 			for (var i = 0; i < $scope.builds.length; i++) {
 				if ($scope.builds[i].STATUS.indexOf("wait") > -1 || $scope.builds[i].STATUS.indexOf("progress") > -1) {
@@ -163,7 +173,7 @@
 			if (confirm("Are you sure you want to delete branch related to this task? The operation cannot be undone.")) {
 				var delprg = StartProgress("Deleting branch...");
 				$scope.commits = null;
-				$http.post("trservice.asmx/deleteBranch", JSON.stringify({ "branch": $scope.defect.BRANCH }))
+				$http.post("GitService.asmx/deleteBranch", JSON.stringify({ "branch": $scope.defect.BRANCH }))
 					.then(function () {
 						EndProgress(delprg);
 						$scope.loadCommits();
@@ -605,9 +615,17 @@
 		$scope.commitsstate.filter = "";
 		$scope.commitsstate.showbys = ["5", "10", "15"];
 
+		$scope.mastercommitsstate = {};
+		$scope.mastercommitsstate.page = 1;
+		$scope.mastercommitsstate.showby = "5";
+		$scope.mastercommitsstate.filter = "";
+		$scope.mastercommitsstate.showbys = ["5", "10", "15"];
+
 		$scope.loadonepage = function (state) {
 			if (state === "commitsstate") {
 				$scope.loadCommits();
+			} else if (state === "mastercommitsstate") {
+				$scope.loadMasterCommits();
 			} else {
 				$scope.loadBuilds();
 			}

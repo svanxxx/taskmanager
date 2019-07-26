@@ -642,16 +642,6 @@ public class TRService : WebService
 		return TRRecSignal.Enum(DateTime.ParseExact(from, defDateFormat, CultureInfo.InvariantCulture), DateTime.ParseExact(to, defDateFormat, CultureInfo.InvariantCulture));
 	}
 	[WebMethod(EnableSession = true)]
-	public List<string> getVersionLog()
-	{
-		if (!CurrentContext.Valid)
-		{
-			return new List<string>();
-		}
-		Git git = new Git(Settings.CurrentSettings.WORKGITLOCATION);
-		return git.RunCommand(@"show HEAD:""Projects.32/ChangeLog.txt""");
-	}
-	[WebMethod(EnableSession = true)]
 	public List<Statistic> getStatistics(string start, string days)
 	{
 		return Defect.EnumStatistics(DateTime.ParseExact(start, defDateFormat, CultureInfo.InvariantCulture), Convert.ToInt32(days));
@@ -737,40 +727,6 @@ public class TRService : WebService
 	public bool hasBuildRequest()
 	{
 		return DefectBuild.hasBuildRequest();
-	}
-	[WebMethod]
-	public List<Branch> enumbranches(int from, int to, string user)
-	{
-		Git git = new Git(Settings.CurrentSettings.WORKGITLOCATION);
-		return git.EnumBranches(from, to, user);
-	}
-	[WebMethod(EnableSession = true)]
-	public void deleteBranch(string branch)
-	{
-		if (string.IsNullOrEmpty(branch) || branch.ToUpper() == "MASTER" || branch.ToUpper() == "RELEASE")
-			return;
-		Git git = new Git(Settings.CurrentSettings.WORKGITLOCATION);
-		git.DeleteBranch(branch);
-	}
-	[WebMethod]
-	public List<Commit> EnumCommits(string branch, int from, int to)
-	{
-		Git git = new Git(Settings.CurrentSettings.WORKGITLOCATION);
-		return git.GetBranch(branch).EnumCommits(from, to);
-	}
-	[WebMethod]
-	public string BranchHash(string branch)
-	{
-		Git git = new Git(Settings.CurrentSettings.WORKGITLOCATION);
-		return git.GetBranch(branch).TopCommit();
-	}
-	[WebMethod]
-	public List<string> getCommitDiff(string commit)
-	{
-		Git git = new Git(Settings.CurrentSettings.WORKGITLOCATION);
-		Commit c = new Commit(git);
-		c.COMMIT = commit;
-		return Git.DiffFriendOutput(c.Diff());
 	}
 	[WebMethod]
 	public void CommentBuild(int id, string comment)

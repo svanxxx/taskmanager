@@ -13,11 +13,11 @@
 		};
 		$scope.isadmin = IsAdmin();
 		$scope.alertVersion = function () {
-			$http.post("BuildService.asmx/alertVersion", JSON.stringify({}))
+			$http.post("BuildService.asmx/alertVersion", JSON.stringify({}));
 		};
 
 		var taskprg = StartProgress("Loading data..."); $scope["loaders"]++;
-		$http.post("trservice.asmx/getVersionLog", JSON.stringify({}))
+		$http.post("GitService.asmx/getVersionLog", JSON.stringify({}))
 			.then(function (result) {
 				for (var i = 0; i < result.data.d.length; i++) {
 					var txt = result.data.d[i].trim();
@@ -42,4 +42,4 @@
 				EndProgress(taskprg); $scope["loaders"]--;
 			});
 	}]);
-})
+});

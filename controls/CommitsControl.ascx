@@ -4,18 +4,18 @@
 
 <label ng-show="!commits">Loading commits, please wait...</label>
 <div class="card" ng-cloak>
-	<div class="card-header p-1 d-flex">
+	<div class="card-header p-1 d-flex" ng-hide="<%=this.Hidden() %>"">
 		<div class="mt-1 mr-auto">
 			<h5 class="ml-2" style="display: inline"><i class="fas fa-code-branch"></i></h5>
 			<button type="button" class="btn btn-outline-light text-dark btn-sm" onclick="window.location='branches.aspx'">Current Branch: {{branch}}</button>
 		</div>
 		<div>
-			<uc:pagercontrol statename="commitsstate" runat="server" />
+			<uc:pagercontrol id="Pager" runat="server" />
 		</div>
 	</div>
 	<div class="card-body">
 		<div class="list-group">
-			<div class="list-group-item commit-item" ng-repeat="c in commits">
+			<div class="list-group-item commit-item" ng-repeat="c in <%= this.DatasetName() %>">
 				<div class="d-flex">
 					<div class="mr-auto">
 						<div class="d-flex" ng-show="c.TTID < 0">
@@ -27,7 +27,7 @@
 						</div>
 						<div class="d-flex">
 							<small>{{c.DATE}}</small>
-							<button data-toggle="tooltip" title="Click to see changes..." type="button" class="btn btn-outline-light text-dark btn-sm p-0" ng-click="loadCommit(c)"><i class="fas fa-ellipsis-h"></i></button>
+							<button data-toggle="tooltip" title="Click to see changes..." type="button" class="btn btn-outline-light text-dark btn-sm p-0" ng-click="loadCommit(c, '<%= this.DatasetName() %>')"><i class="fas fa-ellipsis-h"></i></button>
 						</div>
 					</div>
 					<div>

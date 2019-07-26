@@ -145,15 +145,18 @@ function getProducts($scope, member, $http) {
 function getComps($scope, member, $http) {
 	loadReference($scope, member, $http, "comps", "gettaskcomps");
 }
-function loadCommit(c, $scope, $http) {
+function loadCommit(c, $scope, $http, member) {
 	if (c.DIFF) {
 		c.DIFF = null;
 	} else {
 		var commdiff = StartProgress("Loading commit details...");
-		$http.post("trservice.asmx/getCommitDiff", JSON.stringify({ "commit": c.COMMIT }))
+		$http.post("GitService.asmx/getCommitDiff", JSON.stringify({ "commit": c.COMMIT }))
 			.then(function (result) {
 				EndProgress(commdiff);
-				$scope.commits.forEach(function (co) {
+				if (!member) {
+					member = "commits";
+				}
+				$scope[member].forEach(function (co) {
 					if (co.COMMIT === c.COMMIT) {
 						co.DIFF = result.data.d.join("<br/>");
 					}

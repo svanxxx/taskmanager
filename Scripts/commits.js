@@ -6,14 +6,14 @@
 		$scope.loadData = function () {
 			var prg = StartProgress("Loading data...");
 			$scope.branch = getParameterByName("branch");
-			$http.post("trservice.asmx/EnumCommits", JSON.stringify({ branch: $scope.branch, from: $scope.commitsstate.showby * ($scope.commitsstate.page - 1) + 1, to: $scope.commitsstate.showby * $scope.commitsstate.page }))
+			$http.post("GitService.asmx/EnumCommits", JSON.stringify({ branch: $scope.branch, from: $scope.commitsstate.showby * ($scope.commitsstate.page - 1) + 1, to: $scope.commitsstate.showby * $scope.commitsstate.page }))
 				.then(function (result) {
 					$scope.commits = result.data.d;
 					reActivateTooltips();
 					EndProgress(prg);
 				});
 		};
-		$scope.loadCommit = function (c) { loadCommit(c, $scope, $http); };
+		$scope.loadCommit = function (c, member) { loadCommit(c, $scope, $http, member); };
 		$scope.pushState = function () {
 			var url = replaceUrlParam(replaceUrlParam(location.href, "showby", $scope.commitsstate.showby), "page", $scope.commitsstate.page);
 			window.history.pushState({ showby: $scope.commitsstate.showby, page: $scope.commitsstate.page }, "page " + $scope.commitsstate.page + ", showby " + $scope.commitsstate.showby, url);
