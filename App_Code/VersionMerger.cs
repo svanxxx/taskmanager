@@ -80,8 +80,8 @@ public class VersionMerger
 		}
 		Git git = getGit();
 		List<string> res = new List<string>();
-		
-		git.ResetHard();
+
+		git.RunCommand("rebase --abort");
 		res.AddRange(git.Checkout("master"));
 		git.DeleteBranch(branch);
 		res.AddRange(git.ResetHard("origin/master"));
