@@ -65,7 +65,14 @@ public class OpenGraph : System.Web.UI.Page
 		string img = GetPageCustomImg();
 		if (!string.IsNullOrEmpty(img))
 			return basepath + $"/images/{img}";
-		return basepath + "/images/taskicon.png";
+
+		DefectBase d = getDefect();
+		int dispoid = -1;
+		if (d != null)
+		{
+			dispoid = int.Parse(d.DISPO);
+		}
+		return $"{basepath}/getTaskImg.ashx?id={dispoid}";
 	}
 	string GetPageCustomImg()
 	{
@@ -132,7 +139,7 @@ public class OpenGraph : System.Web.UI.Page
 			DefectBase d = getDefect();
 			if (d != null)
 			{
-				return $"Estimated: {d.ESTIM},  Assigned: {d.GetTaskUserName()}";
+				return $"{d.GetTaskUserName()} ({d.ESTIM} hrs) - {d.GetTaskDispoName()}";
 			}
 		}
 		else if (!string.IsNullOrEmpty(userid))

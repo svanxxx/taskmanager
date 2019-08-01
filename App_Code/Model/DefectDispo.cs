@@ -116,6 +116,15 @@ public class DefectDispo : Reference
 	{
 		return new List<DefectDispo>(Enum().Where(item => item.WORKING == true));
 	}
+	public static string GetDispColor(int id)
+	{
+		DefectDispo d = Enum().Find(x => x.ID == id);
+		if (d == null)
+		{
+			return "#FFFFFF";
+		}
+		return d.COLOR;
+	}
 
 	static int _WorkingRec = -1;
 	override public void Store()

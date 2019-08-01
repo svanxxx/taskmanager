@@ -520,6 +520,15 @@ public partial class DefectBase : IdBasedObject
 		DefectUser u = new DefectUser(AUSER);
 		return u.FULLNAME;
 	}
+	public string GetTaskDispoName()
+	{
+		if (DISPO == "")
+		{
+			return "";
+		}
+		DefectDispo d = new DefectDispo(int.Parse(DISPO));
+		return d.DESCR;
+	}
 	static DefectsFilter UnusedVacations()
 	{
 		DefectsFilter f = new DefectsFilter();

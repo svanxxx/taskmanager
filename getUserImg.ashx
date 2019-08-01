@@ -91,7 +91,7 @@ public class getUserImg : IHttpHandler
 	}
 	void LoadImageFile(HttpContext context, int id, int? size)
 	{
-		string dir = context.Server.MapPath($"images/cache/");
+		string dir = context.Server.MapPath($"images/cache/users/");
 		string prefix = ReferenceVersion.REFSVERSION();
 		string newfilename = $"{dir}{prefix}scaled-id-{size}-sz-{id}.jpg";
 		string origfilename = $"{dir}{prefix}orig-id-{id}.jpg";
