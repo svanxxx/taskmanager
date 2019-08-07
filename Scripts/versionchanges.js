@@ -9,7 +9,7 @@
 			window.open('getinstall.ashx?type=' + t + '&version=' + v.version);
 		};
 		$scope.copyurl = function (txt) {
-			copyurl(txt);
+			copyurl(window.location.href.split("#")[0] + "#" + txt);
 		};
 		$scope.isadmin = IsAdmin();
 		$scope.alertVersion = function () {
@@ -40,6 +40,11 @@
 				}
 				$scope.versions.reverse();
 				EndProgress(taskprg); $scope["loaders"]--;
+				var hash = window.location.hash;
+				if (hash !== "") {
+					window.location.hash = "";
+					setTimeout(function () { window.location.hash = hash; }, 10);
+				}
 			});
 	}]);
 });

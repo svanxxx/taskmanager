@@ -48,7 +48,7 @@
 					<div ng-repeat="v in versions" class="card">
 						<div class="card-header">
 							<div class="btn-group">
-								<button ng-click="copyurl(v.version)" type="button" class="btn bg-light"><i class="fas fa-tags"></i>&nbsp;{{v.version}}</button>
+								<button id="{{v.version}}" ng-click="copyurl(v.version)" type="button" class="btn bg-light"><i class="fas fa-tags"></i>&nbsp;{{v.version}}</button>
 								<button ng-click="GetFile(v, 'efip')" type="button" class="btn bg-light"><i class="fas fa-cloud-download-alt"></i>&nbsp;Fieldpro</button>
 								<button ng-click="GetFile(v, 'cx')" type="button" class="btn bg-light"><i class="fas fa-cloud-download-alt"></i>&nbsp;Models</button>
 								<button ng-click="GetFile(v, 'onsite')" type="button" class="btn bg-light"><i class="fas fa-cloud-download-alt"></i>&nbsp;Onsite</button>
