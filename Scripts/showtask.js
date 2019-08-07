@@ -234,6 +234,7 @@
 		$scope.saveDefect = function () {
 			//updating object to convert date
 			$scope.saving = true;
+			$scope.loadTasksources(true);
 			var alarmfire = !$scope.defect.FIRE;
 			$scope.defect.FIRE = $scope.defect.TIMER != null && $scope.today.getTime() <= $scope.defect.TIMER.getTime();
 			alarmfire = alarmfire && $scope.defect.FIRE;
@@ -595,6 +596,24 @@
 		$scope.isrelease = function () {
 			return $scope.defect !== undefined && document.getElementById("releasettid").value == $scope.defect.ID;
 		};
+
+		$scope.loadTasksources = function (save) {
+			if (!save) {
+				$scope.tasksources = [];
+				if (localStorage.tasksources) {
+					$scope.tasksources = JSON.parse(localStorage.tasksources);
+				}
+			} else {
+				if (!$scope.tasksources.includes($scope.defecteml)) {
+					if ($scope.tasksources.push($scope.defecteml) > 20) {
+						$scope.tasksources.shift();
+					}
+				}
+				localStorage.tasksources = JSON.stringify($scope.tasksources);
+			}
+		};
+		$scope.loadTasksources(false);
+
 		$scope.batchsearch = "";
 		$scope.commented = false;
 		$scope.commented_txt = "";

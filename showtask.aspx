@@ -19,6 +19,7 @@
 	<input type="hidden" id="releasettid" value="<%=Settings.CurrentSettings.RELEASETTID.ToString()%>" />
 	<input type="hidden" id="defectdefaults" value='<%=Newtonsoft.Json.JsonConvert.SerializeObject(DefectDefaults.CurrentDefaults)%>' />
 	<div ng-app="mpsapplication" ng-controller="mpscontroller" ng-cloak>
+		<button ng-show="false" type="submit">for autocomplete</button>
 		<div class="row">
 			<div class="col-lg-2">
 				<div class="btn-group-vertical btn-block" ng-cloak ng-show="changed">
@@ -64,7 +65,10 @@
 						<button title="Copy task label to clipboard" data-toggle="tooltip" class="btn btn-secondary btn-sm pr-1" type="button" ng-click="cliplabl()">TT{{defect.ID}}</button>
 					</div>
 					<input title="Task summary" data-toggle="tooltip" type="text" class="form-control" ng-disabled="!canChangeDefect()" ng-change="updateDefSum()" ng-model="defectsumm">
-					<input title="Task source: e.g. email subject" data-toggle="tooltip" type="text" class="form-control" ng-disabled="!canChangeDefect()" ng-change="updateDefEml()" ng-model="defecteml">
+					<input list="tasksourcelist" type="text" name="tasksource" id="tasksource" autocomplete="on" title="Task source: e.g. email subject" data-toggle="tooltip" class="form-control" ng-disabled="!canChangeDefect()" ng-change="updateDefEml()" ng-model="defecteml">
+					<datalist id="tasksourcelist">
+						<option ng-repeat="ts in tasksources">{{ts}}</option>
+					</datalist>
 				</div>
 				<div class="hidden-xs row toolbar mb-1" ng-style="defect.DISPO | getDispoColorById:this">
 					<div class="col-sm-3 pl-0">
@@ -371,78 +375,78 @@
 							</div>
 						</div>
 					</div>
-				<div id="taskbuilds" class="tab-pane fade">
-					<div class="input-group input-group-sm mb-1">
-						<div class="input-group-prepend">
-							<span class="input-group-text">Test Priority</span>
-						</div>
-						<select class="form-control form-control-sm" ng-disabled="!canChangeDefect()" ng-model="defect.TESTPRIORITY">
-							<option value="{{t.ID}}" ng-repeat="t in buildpriorities">{{t.DESCR}}</option>
-						</select>
-						<button type="button" class="btn btn-sm btn-success btn-right-align" ng-disabled="!canBuild()" ng-click="testTask()">Build Version</button>
-						<button type="button" class="btn btn-sm btn-danger btn-right-align" ng-disabled="!canBuild()" ng-click="abortTest()">Abort Building</button>
-					</div>
-					<uc:builds runat="server" />
-					<div ng-show="!commits||commits.length<1" class="panel-footer"><strong>Info!</strong> Please commit your changes to git and push your branch named with TTxxxxxx where xxxxxx is the task number.</div>
-				</div>
-				<div id="alarm" class="tab-pane fade">
-					<div class="jumbotron">
-						<h5><i class="far fa-comment"></i>&nbsp;&nbsp;&nbsp;In order to receive messages from the system you have to:</h5>
-						<a class="btn btn-outline-secondary btn-sm" href="<%=Settings.CurrentSettings.TELEGRAMTASKSURL.ToString()%>">Subscribe To Telegram Tasks Bot</a>
-						<hr />
-						<h5><i class="fas fa-hourglass-start"></i>&nbsp;&nbsp;&nbsp;Set Fire alarm timer:</h5>
-						<div class="input-group input-group-sm">
+					<div id="taskbuilds" class="tab-pane fade">
+						<div class="input-group input-group-sm mb-1">
 							<div class="input-group-prepend">
-								<span class="input-group-text">Date time:</span>
+								<span class="input-group-text">Test Priority</span>
 							</div>
-							<input type="date" class="form-control" ng-disabled="!canChangeDefect()" ng-model="defect.TIMER">
-							<div class="input-group-append">
-								<button type="button" class="btn btn-sm btn-outline-secondary" ng-disabled="!canChangeDefect()" ng-click="defect.TIMER = today"><i class="fas fa-check"></i></button>
-								<button type="button" class="btn btn-sm btn-outline-secondary" ng-disabled="!canChangeDefect()" ng-click="defect.TIMER = null"><i class="fas fa-times"></i></button>
-							</div>
+							<select class="form-control form-control-sm" ng-disabled="!canChangeDefect()" ng-model="defect.TESTPRIORITY">
+								<option value="{{t.ID}}" ng-repeat="t in buildpriorities">{{t.DESCR}}</option>
+							</select>
+							<button type="button" class="btn btn-sm btn-success btn-right-align" ng-disabled="!canBuild()" ng-click="testTask()">Build Version</button>
+							<button type="button" class="btn btn-sm btn-danger btn-right-align" ng-disabled="!canBuild()" ng-click="abortTest()">Abort Building</button>
 						</div>
-						<hr />
-						<h3>Email will alarm all the persons indicated below</h3>
-						<h4 class="{{changed ? 'blink_me' : ''}}">Please save the task indicating your questions in the top of details section</h4>
-						<label for="emailaddr">Addresses (comma separated):</label>
-						<input type="text" class="form-control" id="emailaddr" ng-model="addresses">
-						<button ng-click="sendEmail()" ng-disabled="changed" type="button" class="btn btn-primary">Send Alarm Email</button>
+						<uc:builds runat="server" />
+						<div ng-show="!commits||commits.length<1" class="panel-footer"><strong>Info!</strong> Please commit your changes to git and push your branch named with TTxxxxxx where xxxxxx is the task number.</div>
+					</div>
+					<div id="alarm" class="tab-pane fade">
+						<div class="jumbotron">
+							<h5><i class="far fa-comment"></i>&nbsp;&nbsp;&nbsp;In order to receive messages from the system you have to:</h5>
+							<a class="btn btn-outline-secondary btn-sm" href="<%=Settings.CurrentSettings.TELEGRAMTASKSURL.ToString()%>">Subscribe To Telegram Tasks Bot</a>
+							<hr />
+							<h5><i class="fas fa-hourglass-start"></i>&nbsp;&nbsp;&nbsp;Set Fire alarm timer:</h5>
+							<div class="input-group input-group-sm">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Date time:</span>
+								</div>
+								<input type="date" class="form-control" ng-disabled="!canChangeDefect()" ng-model="defect.TIMER">
+								<div class="input-group-append">
+									<button type="button" class="btn btn-sm btn-outline-secondary" ng-disabled="!canChangeDefect()" ng-click="defect.TIMER = today"><i class="fas fa-check"></i></button>
+									<button type="button" class="btn btn-sm btn-outline-secondary" ng-disabled="!canChangeDefect()" ng-click="defect.TIMER = null"><i class="fas fa-times"></i></button>
+								</div>
+							</div>
+							<hr />
+							<h3>Email will alarm all the persons indicated below</h3>
+							<h4 class="{{changed ? 'blink_me' : ''}}">Please save the task indicating your questions in the top of details section</h4>
+							<label for="emailaddr">Addresses (comma separated):</label>
+							<input type="text" class="form-control" id="emailaddr" ng-model="addresses">
+							<button ng-click="sendEmail()" ng-disabled="changed" type="button" class="btn btn-primary">Send Alarm Email</button>
+						</div>
 					</div>
 				</div>
 			</div>
+			<div class="col-lg-2">
+				<div class="alert alert-warning" style="text-align: center">
+					<button data-toggle="tooltip" title="Invite person to see this task." type="button" class="btn btn-light btn-sm float-right" ng-click="invite(defect.CREATEDBY)"><i class="fas fa-bell"></i></button>
+					<a data-toggle="tooltip" title="Click to see full plan for the person" target="_blank" href="editplan.aspx?userid={{defect.CREATEDBY | getUserTRIDById:this}}">
+						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=60&ttid=' + defect.CREATEDBY}}" alt="Smile" height="60" width="60" />
+						<div>
+							<strong>{{defect.CREATEDBY | getUserById:this}}</strong>
+						</div>
+					</a>
+					<i class="fas fa-folder-plus"></i>
+				</div>
+				<div class="alert alert-success" style="text-align: center">
+					<button data-toggle="tooltip" title="Invite person to see this task." type="button" class="btn btn-light btn-sm float-right" ng-click="invite(defect.ESTIMBY)"><i class="fas fa-bell"></i></button>
+					<a data-toggle="tooltip" title="Click to see full plan for the person" target="_blank" href="editplan.aspx?userid={{defect.ESTIMBY | getUserTRIDById:this}}">
+						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=60&ttid=' + defect.ESTIMBY}}" alt="Smile" height="60" width="60" />
+						<div>
+							<strong>{{defect.ESTIMBY | getUserById:this}}</strong>
+						</div>
+					</a>
+					<i class="far fa-clock"></i><span>:{{defect.ESTIM}}</span>
+				</div>
+				<div class="alert alert-info" style="text-align: center">
+					<button data-toggle="tooltip" title="Invite person to see this task." type="button" class="btn btn-light btn-sm float-right" ng-click="invite(defect.AUSER)"><i class="fas fa-bell"></i></button>
+					<a data-toggle="tooltip" title="Click to see full plan for the person" target="_blank" href="editplan.aspx?userid={{defect.AUSER | getUserTRIDById:this}}">
+						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=60&ttid=' + defect.AUSER}}" alt="Smile" height="60" width="60" />
+						<div>
+							<strong>{{defect.AUSER | getUserById:this}}</strong>
+						</div>
+					</a>
+					<i class="fas fa-tools"></i>
+				</div>
+			</div>
 		</div>
-		<div class="col-lg-2">
-			<div class="alert alert-warning" style="text-align: center">
-				<button data-toggle="tooltip" title="Invite person to see this task." type="button" class="btn btn-light btn-sm float-right" ng-click="invite(defect.CREATEDBY)"><i class="fas fa-bell"></i></button>
-				<a data-toggle="tooltip" title="Click to see full plan for the person" target="_blank" href="editplan.aspx?userid={{defect.CREATEDBY | getUserTRIDById:this}}">
-					<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=60&ttid=' + defect.CREATEDBY}}" alt="Smile" height="60" width="60" />
-					<div>
-						<strong>{{defect.CREATEDBY | getUserById:this}}</strong>
-					</div>
-				</a>
-				<i class="fas fa-folder-plus"></i>
-			</div>
-			<div class="alert alert-success" style="text-align: center">
-				<button data-toggle="tooltip" title="Invite person to see this task." type="button" class="btn btn-light btn-sm float-right" ng-click="invite(defect.ESTIMBY)"><i class="fas fa-bell"></i></button>
-				<a data-toggle="tooltip" title="Click to see full plan for the person" target="_blank" href="editplan.aspx?userid={{defect.ESTIMBY | getUserTRIDById:this}}">
-					<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=60&ttid=' + defect.ESTIMBY}}" alt="Smile" height="60" width="60" />
-					<div>
-						<strong>{{defect.ESTIMBY | getUserById:this}}</strong>
-					</div>
-				</a>
-				<i class="far fa-clock"></i><span>:{{defect.ESTIM}}</span>
-			</div>
-			<div class="alert alert-info" style="text-align: center">
-				<button data-toggle="tooltip" title="Invite person to see this task." type="button" class="btn btn-light btn-sm float-right" ng-click="invite(defect.AUSER)"><i class="fas fa-bell"></i></button>
-				<a data-toggle="tooltip" title="Click to see full plan for the person" target="_blank" href="editplan.aspx?userid={{defect.AUSER | getUserTRIDById:this}}">
-					<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=60&ttid=' + defect.AUSER}}" alt="Smile" height="60" width="60" />
-					<div>
-						<strong>{{defect.AUSER | getUserById:this}}</strong>
-					</div>
-				</a>
-				<i class="fas fa-tools"></i>
-			</div>
-		</div>
-	</div>
 	</div>
 </asp:Content>
