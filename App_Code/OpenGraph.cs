@@ -2,6 +2,29 @@
 
 public class OpenGraph : System.Web.UI.Page
 {
+	void getParam(string param, out string val)
+	{
+		if (HttpContext.Current == null || HttpContext.Current.Request == null)
+		{
+			val = "";
+			return;
+		}
+		object o = HttpContext.Current.Request.QueryString[SecurityPage.returl];
+		if (o == null)
+		{
+			val = "";
+			return;
+		}
+		string findstr = $"{param}=";
+		string s = o.ToString();
+		int ind = s.IndexOf(findstr);
+		if (ind < 0)
+		{
+			val = "";
+			return;
+		}
+		val = s.Substring(ind + findstr.Length);
+	}
 	string _ttid = null;
 	string GetPageTTID()
 	{
@@ -9,23 +32,18 @@ public class OpenGraph : System.Web.UI.Page
 		{
 			return _ttid;
 		}
-		if (HttpContext.Current == null || HttpContext.Current.Request == null)
+		getParam("ttid", out _ttid);
+		return _ttid;
+	}
+	string _version = null;
+	string GetPageVerson()
+	{
+		if (_version != null)
 		{
-			return _ttid = "";
+			return _version;
 		}
-		object o = HttpContext.Current.Request.QueryString[SecurityPage.returl];
-		if (o == null)
-		{
-			return _ttid = "";
-		}
-		string findstr = "ttid=";
-		string s = o.ToString();
-		int ind = s.IndexOf(findstr);
-		if (ind < 0)
-		{
-			return _ttid = "";
-		}
-		return _ttid = s.Substring(ind + findstr.Length);
+		getParam("version", out _version);
+		return _version;
 	}
 	DefectBase defectedURl = null;
 	DefectBase getDefect()
@@ -42,6 +60,10 @@ public class OpenGraph : System.Web.UI.Page
 	}
 	public string GetPageOgName()
 	{
+		if (!string.IsNullOrEmpty(GetPageVerson()))
+		{
+			return "Version: " + GetPageVerson();
+		}
 		string ttid = GetPageTTID();
 		if (!string.IsNullOrEmpty(ttid))
 		{
@@ -57,6 +79,10 @@ public class OpenGraph : System.Web.UI.Page
 			HttpContext.Current.Request.Url.Port.ToString() +
 			HttpContext.Current.Request.ApplicationPath;
 
+		if (!string.IsNullOrEmpty(GetPageVerson()))
+		{
+			return basepath + $"/images/vlog.png";
+		}
 		string userid = GetPageUserID();
 		if (userid != "")
 		{
@@ -127,6 +153,10 @@ public class OpenGraph : System.Web.UI.Page
 		else if (!string.IsNullOrEmpty(userid))
 		{
 			return (new MPSUser(userid)).LOGIN + "'s Live Plan";
+		}
+		else if (!string.IsNullOrEmpty(GetPageVerson()))
+		{
+			return "Change Log";
 		}
 		return "";
 	}
