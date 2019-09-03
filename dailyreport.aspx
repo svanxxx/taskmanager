@@ -69,7 +69,7 @@
 									<br>
 								</div>
 								<div class="list-group">
-									<div ng-repeat="e in u.TASKSEVENTS1" class="list-group-item p-1">
+									<div ng-repeat="e in u.TASKSEVENTS1" class="list-group-item p-1" ng-style="{{e.DEFECT.DISPO | getDispoColorById:this}}">
 										<uc:defSpent member="e" runat="server" />
 										<uc:defNum member="e.DEFECT" runat="server" />
 										<uc:defEst member="e.DEFECT" runat="server" />
@@ -98,7 +98,7 @@
 									<br>
 								</div>
 								<div class="list-group">
-									<div ng-repeat="e in u.TASKSEVENTS2" class="list-group-item p-1">
+									<div ng-repeat="e in u.TASKSEVENTS2" class="list-group-item p-1" ng-style="{{e.DEFECT.DISPO | getDispoColorById:this}}">
 										<uc:defSpent member="e" runat="server" />
 										<uc:defNum member="e.DEFECT" runat="server" />
 										<uc:defEst member="e.DEFECT" runat="server" />
