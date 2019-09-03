@@ -105,7 +105,7 @@
 				</div>
 				<div class="card-body dailyreport">
 					<div class="list-group">
-						<div ng-repeat="e in trrec.TASKSEVENTS" class="list-group-item p-1">
+						<div ng-repeat="e in trrec.TASKSEVENTS" class="list-group-item p-1" ng-style="{{e.DEFECT.DISPO | getDispoColorById:this}}">
 							<div class="dropdown float-left dropright">
 								<a class="dropdown-toggle" data-toggle="dropdown" href="#">
 									<uc:defSpent member="e" runat="server" />

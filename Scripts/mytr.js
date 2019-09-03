@@ -61,6 +61,10 @@ $(function () {
 			copy.IN = timeToString(copy.IN);
 			copy.OUT = timeToString(copy.OUT);
 			copy.BREAK = timeToString(copy.BREAK);
+			copy.TASKSEVENTS = [];
+			copy.MODIFIEDTASKS = [];
+			copy.CREATEDTASKS = [];
+			copy.SCHEDULEDTASKS = [];
 
 			var storeprg = StartProgress("Storing data...");
 			$scope.status = "Saving...";
@@ -151,13 +155,13 @@ $(function () {
 				.then(function (result) {
 					$scope.trrec.TASKSEVENTS = result.data.d;
 					EndProgress(prg);
+					reActivateTooltips();
 				});
 		};
 		$scope.spendEvent = function (id, hrs) {
 			var prg = StartProgress("Updating event...");
 			$http.post("DefectService.asmx/spendEvent", JSON.stringify({ "id": id, "hrs": hrs }))
 				.then(function () {
-					$scope.loadEvents();
 					EndProgress(prg);
 				});
 		};
@@ -165,7 +169,6 @@ $(function () {
 			var prg = StartProgress("Deleting event...");
 			$http.post("DefectService.asmx/delEvent", JSON.stringify({ "id": id }))
 				.then(function () {
-					$scope.loadEvents();
 					EndProgress(prg);
 				});
 		};
@@ -325,6 +328,7 @@ $(function () {
 		notifyHub.client.onPlanChanged = function (userid) {
 			if (userID() == userid) {
 				$scope.loadTasks();
+				$scope.loadEvents();
 				$scope.$apply();
 			}
 		};

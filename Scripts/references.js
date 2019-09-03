@@ -270,7 +270,7 @@ function createTT(summary) {
 	}
 }
 function reActivateTooltips() {
-	setTimeout(function () { $('[data-toggle="tooltip"]').tooltip({ html: true }); }, 1000);//when data loaded - activate tooltip.
+	setTimeout(function () { $('.tooltip').remove(); $('[data-toggle="tooltip"]').tooltip({ html: true }); }, 1000);//when data loaded - activate tooltip.
 }
 function sumFormat($sce) {
 	return function (val) {
