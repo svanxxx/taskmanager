@@ -1,5 +1,9 @@
 ﻿<%@ Page Title="Daily Reports Search" Language="C#" MasterPageFile="~/Master.Master" AutoEventWireup="true" CodeFile="dailysearch.aspx.cs" Inherits="DailySearch" %>
 
+<%@ Register Src="~/controls/DefectSpentControl.ascx" TagName="defSpent" TagPrefix="uc" %>
+<%@ Register Src="~/controls/DefectNumControl.ascx" TagName="defNum" TagPrefix="uc" %>
+<%@ Register Src="~/controls/DefectEstControl.ascx" TagName="defEst" TagPrefix="uc" %>
+
 <asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
 	<%=System.Web.Optimization.Styles.Render("~/bundles/dailysearch_css")%>
 	<%=System.Web.Optimization.Scripts.Render("~/bundles/dailysearch_js")%>
@@ -18,7 +22,7 @@
 			</div>
 			<div class="col-lg-8">
 				<div class="jumbotron p-1 mb-0 text-center">
-					<h2><i class="fas fa-search"></i> Daily Reports Search</h2>
+					<h2><i class="fas fa-search"></i>Daily Reports Search</h2>
 				</div>
 				<div class="card">
 					<div class="card-header">
@@ -58,6 +62,14 @@
 								<div class="media">
 									<div class="media-body">
 										<div ng-repeat="l in r.DONE track by $index" ng-bind-html="l | rawHtml"></div>
+										<div class="list-group">
+											<div ng-repeat="e in r.TASKSEVENTS" class="list-group-item p-1">
+												<uc:defSpent member="e" runat="server" />
+												<uc:defNum member="e.DEFECT" runat="server" />
+												<uc:defEst member="e.DEFECT" runat="server" />
+												<span data-toggle="tooltip" title="{{e.DEFECT.SUMMARY}}" ng-bind-html="e.DEFECT.SUMMARY | sumFormat | limitTo:135"></span>
+											</div>
+										</div>
 									</div>
 									<small><i>{{r.DATE}}</i></small>
 								</div>
