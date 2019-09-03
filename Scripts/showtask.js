@@ -467,7 +467,7 @@
 				});
 		};
 		$scope.loadEvents = function () {
-			$http.post("trservice.asmx/gettaskevents", JSON.stringify({ "ttid": ttid }))
+			$http.post("DefectService.asmx/gettaskevents", JSON.stringify({ "ttid": ttid }))
 				.then(function (result) {
 					$scope.events = result.data.d;
 				});

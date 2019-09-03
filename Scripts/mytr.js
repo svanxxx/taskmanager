@@ -125,6 +125,9 @@ $(function () {
 			}
 		}, 30000);
 
+		$scope.progress = function () {
+			return inProgress();
+		};
 		$scope.findRec = function () {
 			$scope.storeData();
 			$scope.loadData();
@@ -142,6 +145,30 @@ $(function () {
 			$scope.status = "Saved.";
 			$scope.datestring = $scope.date.toDateString();
 		};
+		$scope.loadEvents = function () {
+			var prg = StartProgress("Loading events...");
+			$http.post("DefectService.asmx/getDayEvents", JSON.stringify({ "date": DateToString($scope.date) }))
+				.then(function (result) {
+					$scope.trrec.TASKSEVENTS = result.data.d;
+					EndProgress(prg);
+				});
+		};
+		$scope.spendEvent = function (id, hrs) {
+			var prg = StartProgress("Updating event...");
+			$http.post("DefectService.asmx/spendEvent", JSON.stringify({ "id": id, "hrs": hrs }))
+				.then(function () {
+					$scope.loadEvents();
+					EndProgress(prg);
+				});
+		};
+		$scope.deleteEvent = function (id) {
+			var prg = StartProgress("Deleting event...");
+			$http.post("DefectService.asmx/delEvent", JSON.stringify({ "id": id }))
+				.then(function () {
+					$scope.loadEvents();
+					EndProgress(prg);
+				});
+		};
 		$scope.loadData = function () {
 			var taskprg = StartProgress("Loading data...");
 			$scope.status = "Loading...";
@@ -150,6 +177,7 @@ $(function () {
 					$scope.processTrRec(response.data.d);
 					EndProgress(taskprg);
 				});
+			$scope.loadEvents();
 		};
 		$scope.defects = [];
 		$scope.unscheduled = [];
@@ -164,9 +192,12 @@ $(function () {
 					$scope.unscheduled = response.data.d;
 				});
 		};
-		$scope.changeDispo = function (d, disp) {
+		$scope.changeDispo = function (d, disp, hrs) {
 			if ($scope.loaded()) {
-				$http.post("trservice.asmx/settaskdispo", JSON.stringify({ "ttid": d.ID, "disp": disp.ID })).then(function (response) {
+				var url = hrs > 0 ? "DefectService.asmx/startEvent" : "DefectService.asmx/setTaskDispo";
+				var par = hrs > 0 ? JSON.stringify({ "ttid": d.ID, "disp": disp.ID, "hrs": hrs, "date": DateToString($scope.date) }) : JSON.stringify({ "ttid": d.ID, "disp": disp.ID });
+				$http.post(url, par).then(function (response) {
+					$scope.loadEvents();
 					if (response.data.d) {
 						var idxDisp = $scope.dispos.findIndex(function (x) { return x.ID == disp.ID; });
 						if (!$scope.dispos[idxDisp].REQUIREWORK) {
@@ -195,8 +226,7 @@ $(function () {
 					var di = $scope.unscheduled.findIndex(function (x) { return x == d; });
 					$scope.unscheduled.splice(di, 1);
 					$scope.defects.unshift(d);
-					$scope.trrec.DONE = "TT" + d.ID + "(" + d.ESTIM + ") " + d.SUMMARY + "\n" + $scope.trrec.DONE;
-					$scope.changeDispo(d, $scope.dispos[index]);
+					$scope.changeDispo(d, $scope.dispos[index], 8);
 				}
 			}
 			killTooltips();
@@ -205,8 +235,7 @@ $(function () {
 			if ($scope.loaded()) {
 				for (var i = 0; i < $scope.dispos.length; i++) {
 					if ($scope.dispos[i].WORKING == 1) {
-						$scope.trrec.DONE = "TT" + d.ID + "(" + d.ESTIM + ") " + d.SUMMARY + "\n" + $scope.trrec.DONE;
-						$scope.changeDispo(d, $scope.dispos[i]);
+						$scope.changeDispo(d, $scope.dispos[i], 8);
 					}
 				}
 			}
@@ -222,6 +251,7 @@ $(function () {
 		});
 
 		$scope.loadTasks();
+
 		var defrec = document.getElementById("trrec").value;
 		if (defrec !== "") {
 			$scope.processTrRec(JSON.parse(defrec));

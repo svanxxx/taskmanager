@@ -313,13 +313,6 @@ public class TRService : WebService
 		DefectBuild.CancelRequestByTask(Convert.ToInt32(ttid));
 	}
 	[WebMethod(EnableSession = true)]
-	public List<DefectEvent> gettaskevents(string ttid)
-	{
-		if (string.IsNullOrEmpty(ttid))
-			return null;
-		return DefectEvent.GetEventsByTask(Convert.ToInt32(ttid));
-	}
-	[WebMethod(EnableSession = true)]
 	public List<DefectUser> gettaskusers()
 	{
 		return DefectUser.Enum();
@@ -415,23 +408,6 @@ public class TRService : WebService
 		{
 			TRRec.NewRec(d, CurrentContext.User.ID, lastday == "True");
 		}
-	}
-	[WebMethod(EnableSession = true)]
-	public DefectBase settaskdispo(string ttid, string disp)
-	{
-		if (Defect.Locked(ttid))
-			return null;
-		Defect d = new Defect(Convert.ToInt32(ttid));
-		d.DISPO = disp;
-		if (Convert.ToInt32(d.DISPO) == DefectDispo.GetWorkingRec())
-		{
-			if (d.ORDER < 1)
-			{
-				d.ORDER = 1;
-			}
-		}
-		d.Store();
-		return new DefectBase(Convert.ToInt32(ttid));
 	}
 	[WebMethod(EnableSession = true)]
 	public DefectBase scheduletask(string ttid, string date)

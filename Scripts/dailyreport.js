@@ -114,11 +114,13 @@ $(function () {
 									user.CREATEDTASKS2 = rec.CREATEDTASKS;
 									user.SCHEDULEDTASKS2 = rec.SCHEDULEDTASKS;
 									user.MODIFIEDTASKS2 = rec.MODIFIEDTASKS;
+									user.TASKSEVENTS2 = rec.TASKSEVENTS;
 								} else {
 									user.YESTERDAY = txts;
 									user.CREATEDTASKS1 = rec.CREATEDTASKS;
 									user.SCHEDULEDTASKS1 = rec.SCHEDULEDTASKS;
 									user.MODIFIEDTASKS1 = rec.MODIFIEDTASKS;
+									user.TASKSEVENTS1 = rec.TASKSEVENTS;
 								}
 							}
 						}

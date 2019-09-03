@@ -53,6 +53,10 @@ public class TRRecSignal : IdBasedObject
 		}
 		return ls;
 	}
+	public DateTime GetDate()
+	{
+		return Convert.ToDateTime(this[_dat]);
+	}
 }
 public partial class TRRec : TRRecSignal
 {
@@ -169,6 +173,21 @@ public partial class TRRec : TRRecSignal
 			foreach (var d in DefectBase.EnumModified(DATE, u.EMAIL))
 			{
 				res.Add(d.ID);
+			}
+			return res;
+		}
+	}
+	public List<DefectEventDefect> TASKSEVENTS
+	{
+		get
+		{
+			List<DefectEventDefect> res = new List<DefectEventDefect>();
+			if (!IsLoaded())
+				return res;
+			MPSUser mu = new MPSUser(USER);
+			foreach (var i in DefectEvent.GetEventsByDay(GetDate(), mu.TTUSERID))
+			{
+				res.Add(new DefectEventDefect(i));
 			}
 			return res;
 		}

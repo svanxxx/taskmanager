@@ -24,6 +24,28 @@ public class DefectEvent : IdBasedObject
 	private static string[] _allCols = new string[] { _ID, _Dat, _idUser, _Notes, _ParentID, _TimeSpent, _EvtDefID, _AsgndUsers, _Order };
 	private static string _Tabl = "[TT_RES].[DBO].[DEFECTEVTS]";
 
+	public int ID
+	{
+		get
+		{
+			return GetAsInt(_ID);
+		}
+		set
+		{
+			this[_ID] = value;
+		}
+	}
+	public int DEFECTID
+	{
+		get
+		{
+			return GetAsInt(_ParentID);
+		}
+		set
+		{
+			this[_ParentID] = value;
+		}
+	}
 	public string NOTES
 	{
 		get { return this[_Notes].ToString(); }
@@ -66,7 +88,8 @@ public class DefectEvent : IdBasedObject
 	public enum Eventtype
 	{
 		assigned = 1,
-		estimated = 2
+		estimated = 2,
+		worked = 11
 	}
 	public int ASSIGNUSERID
 	{
@@ -92,7 +115,7 @@ public class DefectEvent : IdBasedObject
 	{
 	}
 	public DefectEvent(int id)
-		: base(	_Tabl, _allCols, id.ToString(), _ID)
+		: base(_Tabl, _allCols, id.ToString(), _ID)
 	{
 	}
 	public static List<DefectEvent> GetEventsByTask(int ttid)
@@ -104,8 +127,22 @@ public class DefectEvent : IdBasedObject
 		}
 		return res;
 	}
-	public static void AddEventByTask(int id, Eventtype type, decimal usr, string notes, int estimation = -1, int assign = -1)
+	public static List<int> GetEventsByDay(DateTime dt, int iduser)
 	{
+		List<int> res = new List<int>();
+		foreach (int i in EnumRecords(_Tabl, _ID, new string[] { _idUser, _EvtDefID, _Dat }, new object[] { iduser, (int)Eventtype.worked, dt }))
+		{
+			res.Add(i);
+		}
+		return res;
+	}
+	public static void AddEventByTask(int id, Eventtype type, decimal usr, string notes, int estimation = -1, int assign = -1, DateTime? dt = null)
+	{
+		string eventdate = "GETUTCDATE()";
+		if (dt != null)
+		{
+			eventdate = $"'{dt.GetValueOrDefault().ToString(DBHelper.SQLDateFormat)}'";
+		}
 		notes = notes.Replace("'", "''");
 		string sql = string.Format(@"
 			INSERT INTO {0}
@@ -119,7 +156,7 @@ public class DefectEvent : IdBasedObject
 			 , {19}
 			 , 4294967295
 			 , {20}
-			 , GETUTCDATE()
+			 , {24}
 			 , ' '
 			 , {21}
 			 , 0
@@ -133,7 +170,7 @@ public class DefectEvent : IdBasedObject
 			)		
 		", _Tabl,
 			_Proj, _ID, _EvtDefID, _Order, _ParentID, _EvtMUParnt, _idUser, _Dat, _Notes, _TimeSpent, _RsltState, _RelVersion, _AsgndUsers, _GenByType, _CreatorID, _DefAsgEff, _OvrWF, _OvrWFUsrID,
-			id, usr, estimation, (int)type, assign == -1 ? "' '" : assign.ToString());
+			id, usr, estimation, (int)type, assign == -1 ? "' '" : assign.ToString(), eventdate);
 
 		SQLExecute(sql);
 	}
@@ -141,5 +178,9 @@ public class DefectEvent : IdBasedObject
 	{
 		string sql = string.Format(@"DELETE FROM {0} WHERE {1} = {2}", _Tabl, _ParentID, parentid);
 		SQLExecute(sql);
+	}
+	public static void Delete(int id)
+	{
+		SQLExecute($"DELETE FROM {_Tabl} WHERE {_ID} = {id}");
 	}
 }

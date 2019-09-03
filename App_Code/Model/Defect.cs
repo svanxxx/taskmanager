@@ -49,6 +49,7 @@ public partial class DefectBase : IdBasedObject
 	protected static string _StatI = "InitStatus";
 	protected static string _Disp = "idDisposit";
 	protected static string _Est = "Estim";
+	protected static string _Spent = "Spent";
 	protected static string _EstId = "idEstim";
 	protected static string _Order = "iOrder";
 	protected static string _BackOrder = "BackOrder";
@@ -76,8 +77,8 @@ public partial class DefectBase : IdBasedObject
 
 	public static string _Tabl = "[TT_RES].[DBO].[DEFECTS]";
 
-	protected static string[] _allBaseCols = new string[] { _ID, _Summ, _idRec, _Disp, _Est, _EstId, _Order, _AsUser, _Seve, _sMod, _BackOrder, _Comp, _Date, _Created, _DateT, _CreaBy, _Type, _Prod, _Ref, _Prio, _OrderDate, _ModDate, _ModBy, _sModTRID, _branch, _branchBST, _buildP };
-	protected static string[] _allBaseColsNames = new string[] { _ID, "Summary", _idRec, "Disposition", "Estimation", "Estimated by", "Schedule Order", "Assigned User", "Severity", "", "Schedule Order", "Component", "Date Entered", "Date Created", "Alarm", "Created By", "Type", "Product", "Reference", "Priority", "Schedule Date", "", "", "", "Branch", "BST Branch", "Test Priority" };
+	protected static string[] _allBaseCols = new string[] { _ID, _Summ, _idRec, _Disp, _Est, _Spent, _EstId, _Order, _AsUser, _Seve, _sMod, _BackOrder, _Comp, _Date, _Created, _DateT, _CreaBy, _Type, _Prod, _Ref, _Prio, _OrderDate, _ModDate, _ModBy, _sModTRID, _branch, _branchBST, _buildP };
+	protected static string[] _allBaseColsNames = new string[] { _ID, "Summary", _idRec, "Disposition", "Estimation", "", "Estimated by", "Schedule Order", "Assigned User", "Severity", "", "Schedule Order", "Component", "Date Entered", "Date Created", "Alarm", "Created By", "Type", "Product", "Reference", "Priority", "Schedule Date", "", "", "", "Branch", "BST Branch", "Test Priority" };
 
 	MPSUser _updater;
 	public MPSUser GetUpdater()
@@ -141,6 +142,21 @@ public partial class DefectBase : IdBasedObject
 			else
 			{
 				this[_Est] = value;
+			}
+		}
+	}
+	public int SPENT
+	{
+		get { return this[_Spent] == DBNull.Value ? 0 : Convert.ToInt32(this[_Spent]); }
+		set
+		{
+			if (value < 0 && this[_Spent] != DBNull.Value)
+			{
+				this[_Spent] = DBNull.Value;
+			}
+			else
+			{
+				this[_Spent] = value;
 			}
 		}
 	}

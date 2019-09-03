@@ -58,7 +58,7 @@
 							<table style="width: 100%">
 								<tr class="task alert {{d.orderchanged?'data-changed':''}}" ng-repeat="d in defects" ng-style="{{d.DISPO | getDispoColorById:this}}">
 									<td><uc:defNum runat="server" /></td>
-									<td><uc:defEst runat="server" /></td>
+									<td style="white-space: nowrap;"><uc:defEst runat="server" /></td>
 									<td><span data-toggle="tooltip" title="{{d.SUMMARY}}" ng-bind-html="d.SUMMARY | sumFormat | limitTo:135"></span></td>
 									<td>
 										<input class="taskselector" type="radio" name="optradio" ng-keydown="taskMove(d, $event)"></td>

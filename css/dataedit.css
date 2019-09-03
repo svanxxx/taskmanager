@@ -21,3 +21,45 @@
 		content: none !important;
 	}
 }
+
+.red-alarm {
+	-webkit-animation-name: animation;
+	-webkit-animation-duration: 5s;
+	-webkit-animation-timing-function: ease-in-out;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-play-state: running;
+	animation-name: red-alarm-animation;
+	animation-duration: 1s;
+	animation-timing-function: ease-in-out;
+	animation-iteration-count: infinite;
+	animation-play-state: running;
+	background-color: #f00;
+}
+
+@-webkit-keyframes red-alarm-animation {
+	0% {
+		background-color: red;
+	}
+
+	50.0% {
+		background-color: white;
+	}
+
+	100.0% {
+		background-color: red;
+	}
+}
+
+@keyframes red-alarm-animation {
+	0% {
+		background-color: red;
+	}
+
+	50.0% {
+		background-color: white;
+	}
+
+	100.0% {
+		background-color: red;
+	}
+}

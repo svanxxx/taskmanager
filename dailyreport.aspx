@@ -1,5 +1,9 @@
 ﻿<%@ Page Title="Daily Report" Language="C#" MasterPageFile="~/Master.Master" AutoEventWireup="true" CodeFile="dailyreport.aspx.cs" Inherits="DailyReport" %>
 
+<%@ Register Src="~/controls/DefectSpentControl.ascx" TagName="defSpent" TagPrefix="uc" %>
+<%@ Register Src="~/controls/DefectNumControl.ascx" TagName="defNum" TagPrefix="uc" %>
+<%@ Register Src="~/controls/DefectEstControl.ascx" TagName="defEst" TagPrefix="uc" %>
+
 <asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
 	<%=System.Web.Optimization.Styles.Render("~/bundles/dailyreport_css")%>
 	<%=System.Web.Optimization.Scripts.Render("~/bundles/dailyreport_js")%>
@@ -61,7 +65,16 @@
 									</a>
 								</div>
 								<div ng-repeat="l in u.YESTERDAY track by $index">
-									<span ng-bind-html="l | sumFormat | limitTo:150"></span><br>
+									<span ng-bind-html="l | sumFormat | limitTo:150"></span>
+									<br>
+								</div>
+								<div class="list-group">
+									<div ng-repeat="e in u.TASKSEVENTS1" class="list-group-item p-1">
+										<uc:defSpent member="e" runat="server" />
+										<uc:defNum member="e.DEFECT" runat="server" />
+										<uc:defEst member="e.DEFECT" runat="server" />
+										<span data-toggle="tooltip" title="{{e.DEFECT.SUMMARY}}" ng-bind-html="e.DEFECT.SUMMARY | sumFormat | limitTo:135"></span>
+									</div>
 								</div>
 								<hr>
 								<div ng-hide="u.CREATEDTASKS1.length < 1">
@@ -81,7 +94,16 @@
 									</a>
 								</div>
 								<div ng-repeat="l in u.TODAY track by $index">
-									<span ng-bind-html="l | sumFormat | limitTo:150"></span><br>
+									<span ng-bind-html="l | sumFormat | limitTo:150"></span>
+									<br>
+								</div>
+								<div class="list-group">
+									<div ng-repeat="e in u.TASKSEVENTS1" class="list-group-item p-1">
+										<uc:defSpent member="e" runat="server" />
+										<uc:defNum member="e.DEFECT" runat="server" />
+										<uc:defEst member="e.DEFECT" runat="server" />
+										<span data-toggle="tooltip" title="{{e.DEFECT.SUMMARY}}" ng-bind-html="e.DEFECT.SUMMARY | sumFormat | limitTo:135"></span>
+									</div>
 								</div>
 								<hr>
 								<div ng-hide="u.CREATEDTASKS2.length < 1">
@@ -95,7 +117,7 @@
 								</div>
 							</td>
 							<td>
-								<img src="IMAGES/process.gif" ng-hide="planLoaded(u.ID)" />
+								<div class="spinner-border" ng-hide="planLoaded(u.ID)"></div>
 								<div>
 									<a target='_blank' href='vacations.aspx'>
 										<h3 class="vacation-box">{{getUpcomingdays(u)}}</h3>
@@ -108,10 +130,8 @@
 									</a>
 								</div>
 								<div ng-repeat="d in u.PLAN track by $index" ng-style="{{d.DISPO | getDispoColorById:this}}" class="task {{$index < 10 ? 'task-first' : 'task-last'}}">
-									<a href="showtask.aspx?ttid={{d.ID}}" target="_blank">
-										<span class="badge badge-pill badge-secondary">{{d.ID}}</span>
-									</a>
-									<span class="badge badge-danger">{{d.ESTIM}}</span>
+									<uc:defNum runat="server" />
+									<uc:defEst runat="server" />
 									<span ng-bind-html="d.SUMMARY | sumFormat"></span>
 								</div>
 								<button data-toggle="tooltip" title="Click to see additional 10 items. Number of items is limited by 20. For more items click plan button near" onclick="moretasks(this)" type="button" class="btn btn-default btn-xs">...</button>

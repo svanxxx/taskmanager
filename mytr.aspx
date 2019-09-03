@@ -1,5 +1,6 @@
 ﻿<%@ Page Title="Tasks Report" Language="C#" MasterPageFile="~/Master.Master" AutoEventWireup="true" CodeFile="mytr.aspx.cs" Inherits="MyTR" %>
 
+<%@ Register Src="~/controls/DefectSpentControl.ascx" TagName="defSpent" TagPrefix="uc" %>
 <%@ Register Src="~/controls/DefectNumControl.ascx" TagName="defNum" TagPrefix="uc" %>
 <%@ Register Src="~/controls/DefectEstControl.ascx" TagName="defEst" TagPrefix="uc" %>
 
@@ -47,7 +48,7 @@
 							<div class="col-lg-2 col-xs-6">
 								<button ng-disabled="loaded()" ng-click="addRec()" type="button" class="btn btn-outline-success btn-block btn-sm">Add</button>
 								<button ng-disabled="!loaded()" ng-click="deleteRec()" type="button" class="btn btn-outline-danger btn-block btn-sm">Delete</button>
-								<input required ng-model="date" ng-change="findRec()" class="form-control date-input form-control-sm" type="date" aria-label="Find record"/>
+								<input required ng-model="date" ng-change="findRec()" class="form-control date-input form-control-sm" type="date" aria-label="Find record" />
 							</div>
 							<div class="col-lg-3 hidden-xs datelabel">
 								<h4>{{datestring}}</h4>
@@ -65,13 +66,13 @@
 									<div class="input-group-prepend w-25">
 										<span class="input-group-text">In:</span>
 									</div>
-									<input ng-disabled="!loaded()" id="timein" required type="time" class="input-sm form-control" ng-model="trrec.IN" aria-label="Time In"/>
+									<input ng-disabled="!loaded()" id="timein" required type="time" class="input-sm form-control" ng-model="trrec.IN" aria-label="Time In" />
 								</div>
 								<div class="input-group input-group-sm mb-1">
 									<div class="input-group-prepend w-25">
 										<button class="btn" type="button" ng-click="out()">Out:</button>
 									</div>
-									<input ng-disabled="!loaded()" id="timeou" required type="time" class="input-sm form-control" ng-model="trrec.OUT" aria-label="Time Out"/>
+									<input ng-disabled="!loaded()" id="timeou" required type="time" class="input-sm form-control" ng-model="trrec.OUT" aria-label="Time Out" />
 									<div class="input-group-append" data-toggle="tooltip" title="Automatically adjust Time-Out while page is kept open.">
 										<button ng-click="onChangeAutoTime()" type="button" class="btn btn-outline-secondary btn-sm" aria-label="Set Time Auto Adjust">
 											<span class="fas fa-check" ng-show="autotime"></span>
@@ -83,7 +84,7 @@
 									<div class="input-group-prepend w-25">
 										<span class="input-group-text">Break:</span>
 									</div>
-									<input ng-disabled="!loaded()" id="timebr" required type="time" class="input-sm form-control" ng-model="trrec.BREAK" aria-label="Break Time"/>
+									<input ng-disabled="!loaded()" id="timebr" required type="time" class="input-sm form-control" ng-model="trrec.BREAK" aria-label="Break Time" />
 								</div>
 							</div>
 							<div class="col-lg-2 col-xs-6">
@@ -103,6 +104,23 @@
 					</div>
 				</div>
 				<div class="card-body dailyreport">
+					<div class="list-group">
+						<div ng-repeat="e in trrec.TASKSEVENTS" class="list-group-item p-1">
+							<div class="dropdown float-left dropright">
+								<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+									<uc:defSpent member="e" runat="server" />
+								</a>
+								<div class="dropdown-menu">
+									<div class="dropdown-item" ng-repeat="t in [1,2,3,4,5,6,7,8]" style="cursor: pointer" ng-click="spendEvent(e.ID, t)">{{t}}</div>
+									<div class="dropdown-divider"></div>
+									<div class="dropdown-item" style="cursor: pointer" ng-click="deleteEvent(e.ID)">× - delete event</div>
+								</div>
+							</div>
+							<uc:defNum member="e.DEFECT" runat="server" />
+							<uc:defEst member="e.DEFECT" runat="server" />
+							<span data-toggle="tooltip" title="{{e.DEFECT.SUMMARY}}" ng-bind-html="e.DEFECT.SUMMARY | sumFormat | limitTo:135"></span>
+						</div>
+					</div>
 					<textarea ng-disabled="!loaded()" ng-model="trrec.DONE" class="form-control" rows="10" autofocus aria-label="Details"></textarea>
 				</div>
 				<ul class="nav nav-pills">
@@ -120,8 +138,12 @@
 					<div id="plan" class="tab-pane active">
 						<table style="width: 100%">
 							<tr class="task" ng-repeat="d in defects" ng-style="{{d.DISPO | getDispoColorById:this}}">
-								<td><uc:defNum runat="server" /></td>
-								<td><uc:defEst runat="server" /></td>
+								<td>
+									<uc:defNum runat="server" />
+								</td>
+								<td style="white-space: nowrap;">
+									<uc:defEst runat="server" />
+								</td>
 								<td><span data-toggle="tooltip" title="{{d.SUMMARY}}" ng-bind-html="d.SUMMARY | sumFormat | limitTo:135"></span></td>
 								<td>
 									<img class="rounded-circle" height="20" width="20" class="btn-workme" ng-src="{{'getUserImg.ashx?sz=20&id=' + d.SMODTRID}}" title="{{d.SMODIFIER}}" /></td>
@@ -132,7 +154,7 @@
 									<div class="dropdown btn-workme">
 										<button type="button" class="btn dropdown-toggle btn-xs" data-toggle="dropdown" aria-label="Change"></button>
 										<div class="dropdown-menu">
-											<a class="dropdown-item" ng-repeat="disp in dispos" ng-click="changeDispo(d, disp)" style="background-color: {{disp.COLOR}}" href>{{disp.DESCR}}</a>
+											<a class="dropdown-item" ng-repeat="disp in dispos" ng-click="changeDispo(d, disp, -1)" style="background-color: {{disp.COLOR}}" href>{{disp.DESCR}}</a>
 										</div>
 									</div>
 								</td>
@@ -142,8 +164,12 @@
 					<div id="unscheduled" class="tab-pane fade">
 						<table style="width: 100%">
 							<tr class="task" ng-repeat="d in unscheduled" ng-style="{{d.DISPO | getDispoColorById:this}}">
-								<td><uc:defNum runat="server" /></td>
-								<td><uc:defEst runat="server" /></td>
+								<td>
+									<uc:defNum runat="server" />
+								</td>
+								<td>
+									<uc:defEst runat="server" />
+								</td>
 								<td><span data-toggle="tooltip" title="{{d.SUMMARY}}" ng-bind-html="d.SUMMARY | sumFormat | limitTo:135"></span></td>
 								<td>
 									<button ng-click="workTaskUns(d)" data-toggle="tooltip" title="Start work on this task now!" type="button" class="btn btn-xs btn-workme"><i class="fas fa-arrow-alt-circle-up"></i></button>
