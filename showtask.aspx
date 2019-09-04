@@ -302,7 +302,7 @@
 								</div>
 								{{h.EVENT}}:
 								<img ng-show="h.ASSIGNUSERID > 0" class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=20&ttid=' + h.ASSIGNUSERID}}" alt="Smile" height="20" width="20" />
-								{{h.ASSIGNUSERID | getUserById:this}} <span class="badge badge-secondary">{{h.TIME}}</span>
+								{{h.ASSIGNUSERID | getUserById:this}} <span class="badge {{h.EVENT == 'worked' ? 'badge-warning' : 'badge-danger'}}">{{h.TIME}}</span>
 								{{h.NOTES}}	&nbsp;
 							</a>
 						</div>
@@ -426,7 +426,7 @@
 					</a>
 					<i class="fas fa-folder-plus"></i>
 				</div>
-				<div class="alert alert-success" style="text-align: center">
+				<div class="alert alert-danger" style="text-align: center">
 					<button data-toggle="tooltip" title="Invite person to see this task." type="button" class="btn btn-light btn-sm float-right" ng-click="invite(defect.ESTIMBY)"><i class="fas fa-bell"></i></button>
 					<a data-toggle="tooltip" title="Click to see full plan for the person" target="_blank" href="editplan.aspx?userid={{defect.ESTIMBY | getUserTRIDById:this}}">
 						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=60&ttid=' + defect.ESTIMBY}}" alt="Smile" height="60" width="60" />
@@ -445,6 +445,9 @@
 						</div>
 					</a>
 					<i class="fas fa-tools"></i>
+				</div>
+				<div class="alert alert-warning" style="text-align: center">
+					<span>Worked on: {{defect.SPENT}} hours</span>
 				</div>
 			</div>
 		</div>

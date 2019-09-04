@@ -147,19 +147,19 @@ public class DefectBuild : IdBasedObject
 				{
 					case BuildStatus.progress:
 						{
-							return "yellow";
+							return "#ffeeba";
 						}
 					case BuildStatus.finishedok:
 						{
-							return "#00ff001a";
+							return "#c3e6cb";
 						}
 					case BuildStatus.cancelled:
 						{
-							return "#cccccc96";
+							return "#d6d8db";
 						}
 					case BuildStatus.failed:
 						{
-							return "#ff000038";
+							return "#f5c6cb";
 						}
 					default:
 						{
