@@ -27,18 +27,34 @@ public class getUserImg : IHttpHandler
 			if (string.IsNullOrEmpty(sttid))
 			{
 				string eml = context.Request.QueryString["eml"];
-				if (string.IsNullOrEmpty(eml))
+				if (!string.IsNullOrEmpty(eml))
+				{
+					DefectUser du = DefectUser.FindByEmail(eml);
+					if (du == null)
+					{
+						error(context);
+						return;
+					}
+					sid = du.TRID.ToString();
+				}
+				if (string.IsNullOrEmpty(sid))
+				{
+					string pho = context.Request.QueryString["pho"];
+					if (!string.IsNullOrEmpty(pho))
+					{
+						MPSUser mu = MPSUser.FindUserbyPhone(pho);
+						if (mu != null)
+						{
+							sid = mu.ID.ToString();
+						}
+					}
+				}
+
+				if (string.IsNullOrEmpty(sid))
 				{
 					error(context);
 					return;
 				}
-				DefectUser du = DefectUser.FindByEmail(eml);
-				if (du == null)
-				{
-					error(context);
-					return;
-				}
-				sid = du.TRID.ToString();
 			}
 			else
 			{
@@ -83,7 +99,7 @@ public class getUserImg : IHttpHandler
 		foreach (var file in files)
 		{
 			string filename = Path.GetFileName(file);
-			if (!filename.StartsWith(validprefix))
+			if (!filename.StartsWith(validprefix) && !filename.ToUpper().Contains("GITIGNORE"))
 			{
 				File.Delete(file);
 			}

@@ -27,15 +27,20 @@ public class DefectService : WebService
 		}
 		return "OK";
 	}
-	[WebMethod(EnableSession = true)]
-	public DefectBase setTaskDispo(int ttid, string disp)
+	private DefectBase ChangeDispo(int ttid, int defectid, string disp)
 	{
-		CurrentContext.Validate();
-		int id = Defect.GetIDbyTT(ttid);
+		Defect d = new Defect(defectid);
+
+		if (d.DISPO == disp)//already set
+		{
+			return new DefectBase(defectid);
+		}
 
 		if (Defect.Locked(ttid.ToString()))
+		{
 			return null;
-		Defect d = new Defect(Convert.ToInt32(ttid));
+		}
+
 		d.DISPO = disp;
 		if (Convert.ToInt32(d.DISPO) == DefectDispo.GetWorkingRec())
 		{
@@ -46,6 +51,13 @@ public class DefectService : WebService
 		}
 		d.Store();
 		return new DefectBase(Convert.ToInt32(ttid));
+	}
+	[WebMethod(EnableSession = true)]
+	public DefectBase setTaskDispo(int ttid, string disp)
+	{
+		CurrentContext.Validate();
+		int id = Defect.GetIDbyTT(ttid);
+		return ChangeDispo(ttid, id, disp);
 	}
 	[WebMethod(EnableSession = true)]
 	public List<DefectEvent> gettaskevents(string ttid)
@@ -93,19 +105,6 @@ public class DefectService : WebService
 		int id = Defect.GetIDbyTT(ttid);
 		DefectEvent.AddEventByTask(id, DefectEvent.Eventtype.worked, CurrentContext.TTUSERID, "I have worked on this task", hrs, -1, dt);
 		NotifyHub.NotifyDefectChange(id);
-
-		if (Defect.Locked(ttid.ToString()))
-			return null;
-		Defect d = new Defect(Convert.ToInt32(ttid));
-		d.DISPO = disp;
-		if (Convert.ToInt32(d.DISPO) == DefectDispo.GetWorkingRec())
-		{
-			if (d.ORDER < 1)
-			{
-				d.ORDER = 1;
-			}
-		}
-		d.Store();
-		return new DefectBase(Convert.ToInt32(ttid));
+		return ChangeDispo(ttid, id, disp);
 	}
 }
