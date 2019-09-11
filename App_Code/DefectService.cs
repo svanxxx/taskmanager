@@ -27,13 +27,13 @@ public class DefectService : WebService
 		}
 		return "OK";
 	}
-	private DefectBase ChangeDispo(int ttid, int defectid, string disp)
+	private DefectBase ChangeDispo(int ttid, string disp)
 	{
-		Defect d = new Defect(defectid);
+		Defect d = new Defect(ttid);
 
 		if (d.DISPO == disp)//already set
 		{
-			return new DefectBase(defectid);
+			return new DefectBase(ttid);
 		}
 
 		if (Defect.Locked(ttid.ToString()))
@@ -56,8 +56,7 @@ public class DefectService : WebService
 	public DefectBase setTaskDispo(int ttid, string disp)
 	{
 		CurrentContext.Validate();
-		int id = Defect.GetIDbyTT(ttid);
-		return ChangeDispo(ttid, id, disp);
+		return ChangeDispo(ttid, disp);
 	}
 	[WebMethod(EnableSession = true)]
 	public List<DefectEvent> gettaskevents(string ttid)
@@ -105,6 +104,6 @@ public class DefectService : WebService
 		int id = Defect.GetIDbyTT(ttid);
 		DefectEvent.AddEventByTask(id, DefectEvent.Eventtype.worked, CurrentContext.TTUSERID, "I have worked on this task", hrs, -1, dt);
 		NotifyHub.NotifyDefectChange(id);
-		return ChangeDispo(ttid, id, disp);
+		return ChangeDispo(ttid, disp);
 	}
 }
