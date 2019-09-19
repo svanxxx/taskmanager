@@ -220,6 +220,19 @@ $(function () {
 				});
 			}
 		};
+		$scope.getOptimalHoursUsed = function (d) {
+			var total = 0;
+			$scope.trrec.TASKSEVENTS.forEach(function (e) {
+				total += parseInt(e.TIME);
+			});
+			if (total >= 7) {
+				return 1;
+			}
+			if (total < 1) {
+				return Math.min(8, parseInt(d.ESTIM));
+			}
+			return Math.min(8 - total, 8, d.ESTIM);
+		};
 		$scope.workTaskUns = function (d) {
 			if ($scope.loaded()) {
 				var index = $scope.dispos.findIndex(function (x) { return x.WORKING == 1; });
@@ -229,7 +242,7 @@ $(function () {
 					var di = $scope.unscheduled.findIndex(function (x) { return x == d; });
 					$scope.unscheduled.splice(di, 1);
 					$scope.defects.unshift(d);
-					$scope.changeDispo(d, $scope.dispos[index], 8);
+					$scope.changeDispo(d, $scope.dispos[index], $scope.getOptimalHoursUsed(d));
 				}
 			}
 			killTooltips();
@@ -238,7 +251,7 @@ $(function () {
 			if ($scope.loaded()) {
 				for (var i = 0; i < $scope.dispos.length; i++) {
 					if ($scope.dispos[i].WORKING == 1) {
-						$scope.changeDispo(d, $scope.dispos[i], 8);
+						$scope.changeDispo(d, $scope.dispos[i], $scope.getOptimalHoursUsed(d));
 					}
 				}
 			}
