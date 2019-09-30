@@ -125,8 +125,8 @@ public class VersionMerger
 		
 		DefectUser ttu = new DefectUser(d.AUSER);
 		MPSUser mpu = new MPSUser(ttu.TRID);
-		TasksBot.SendMessage(mpu.CHATID, $"ℹ️{CurrentContext.UserName()}: TT{d.ID} code was included into master.");
-
+		string mess = $"Task commit has been pushed to master by {CurrentContext.UserName()}{Settings.CurrentSettings.GetTTAnchor(d.ID, "git-pull-request.png")}";
+		TasksBot.SendMessage(mpu.CHATID, mess);
 		return string.Join(Environment.NewLine, res.ToArray()).Replace(Environment.NewLine, "<br/>");
 	}
 }

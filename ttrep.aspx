@@ -140,7 +140,7 @@
 			<div class="col-sm-3">
 				<div class="input-group input-group-sm">
 					<div class="input-group-prepend btn-group">
-						<button onclick="copyurl()" data-toggle="tooltip" title="Copy link to this report to clipboard" type="button" class="btn btn-outline-secondary btn-sm"><i class="fas fa-copy"></i></button>
+						<button onclick="copyurl()" data-toggle="tooltip" title="Copy link to this report to clipboard" type="button" class="btn btn-outline-secondary btn-sm"><i class="fas fa-link"></i></button>
 						<button ng-click="loadData()" data-toggle="tooltip" title="Reload Tasks" type="button" class="btn btn-outline-secondary btn-sm"><i class="fas fa-sync-alt"></i></button>
 						<button ng-disabled="!defectsselected" data-toggle="modal" data-target="#batchchanges" type="button" class="btn btn-outline-secondary btn-sm"><i data-toggle="tooltip" title="Apply bulk changes" class="fas fa-check-double"></i></button>
 						<button ng-click="duplicate()" ng-disabled="!defectsselected" type="button" class="btn btn-outline-secondary btn-sm"><i data-toggle="tooltip" title="Clone Selected" class="fas fa-clone"></i></button>
@@ -152,6 +152,7 @@
 			</div>
 			<div class="col-sm-3">
 				<div class="input-group input-group-sm">
+                    <button ng-click="filterCopyurl()" data-toggle="tooltip" title="Copy link to this filter to clipboard" type="button" class="btn btn-outline-secondary btn-sm"><i class="fas fa-link"></i></button>
 					<div class="btn-group">
 						<button type="button" class="btn-sm btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown">
 							<i class="fas fa-filter"></i>{{selectedFilter == null ? ' - Select - ' : selectedFilter.NAME}}
@@ -163,7 +164,6 @@
 							</button>
 						</div>
 					</div>
-
 					<div class="input-group-append btn-group">
 						<div class="btn-group">
 							<button type="button" class="btn-sm btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown">

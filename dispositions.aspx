@@ -29,6 +29,7 @@
 								<th>Cannot Start</th>
 								<th>TESTS Passed</th>
 								<th>TESTS Failed</th>
+								<th>TESTS Started</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -56,6 +57,9 @@
 								</td>
 								<td align="center">
 									<input ng-disabled="readonly()" type="checkbox" ng-model="r.TESTSFAIL" ng-change="itemchanged(r)">
+								</td>
+								<td align="center">
+									<input ng-disabled="readonly()" type="checkbox" ng-model="r.TESTSSTART" ng-change="itemchanged(r)">
 								</td>
 							</tr>
 						</tbody>

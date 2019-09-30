@@ -44,6 +44,12 @@ public class NotifyHub : Hub
 		MPSUser to = new MPSUser(toID);
 		TasksBot.SendMessage(to.CHATID, $"⚠️{from.PERSON_NAME}: {message}");
 	}
+	public void SendTaskMessage(int fromID, int toID, string message, int ttid, string image)
+	{
+		MPSUser from = new MPSUser(fromID);
+		MPSUser to = new MPSUser(toID);
+		TasksBot.SendMessage(to.CHATID, $"{from.PERSON_NAME}: {message}{Settings.CurrentSettings.GetTTAnchor(ttid, image)}");
+	}
 	public void LockTask(int ttid, string currentlock, int userid)
 	{
 		LockInfo li = Defect.Locktask(ttid.ToString(), currentlock, userid.ToString());

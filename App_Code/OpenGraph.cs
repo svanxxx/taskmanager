@@ -45,7 +45,17 @@ public class OpenGraph : System.Web.UI.Page
 		getParam("version", out _version);
 		return _version;
 	}
-	DefectBase defectedURl = null;
+    string _filter = null;
+    string GetPageFilter()
+    {
+        if (_filter != null)
+        {
+            return _filter;
+        }
+        getParam("filterid", out _filter);
+        return _filter;
+    }
+    DefectBase defectedURl = null;
 	DefectBase getDefect()
 	{
 		if (defectedURl == null)
@@ -69,7 +79,11 @@ public class OpenGraph : System.Web.UI.Page
 		{
 			return "TT" + ttid;
 		}
-		return "";
+        if (!string.IsNullOrEmpty(GetPageFilter()))
+        {
+            return "Tasks list";
+        }
+        return "";
 	}
 	public string GetPageOgImage()
 	{
@@ -83,6 +97,10 @@ public class OpenGraph : System.Web.UI.Page
 		{
 			return basepath + $"/images/vlog.png";
 		}
+        if (!string.IsNullOrEmpty(GetPageFilter()))
+        {
+            return basepath + $"/images/filter.png";
+        }
 		string userid = GetPageUserID();
 		if (userid != "")
 		{
@@ -158,6 +176,10 @@ public class OpenGraph : System.Web.UI.Page
 		{
 			return "Change Log";
 		}
+        else if (!string.IsNullOrEmpty(GetPageFilter()))
+        {
+            return StoredDefectsFilter.GetName(int.Parse(GetPageFilter()));
+        }
 		return "";
 	}
 	public string GetPageOgDesc()

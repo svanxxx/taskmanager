@@ -137,7 +137,7 @@
 			$scope.locktask();
 		}, 5000);
 		$scope.canBuild = function () {
-			return ($scope.defect && $scope.defect.BRANCH.toUpperCase() === 'RELEASE') || ($scope.commits && $scope.commits.length > 0);
+            return ($scope.defect && $scope.defect.BRANCH.toUpperCase() === 'RELEASE') || $scope.gitbranchhash;
 		};
 		$scope.testTask = function () {
 			for (var i = 0; i < $scope.builds.length; i++) {
@@ -493,10 +493,10 @@
 			}
 		});
 		$scope.releaseRequest = function () {
-			$scope.notifyHub.server.sendMessage(userID(), $scope.lockedby, "Please release TT" + $scope.defect.ID + "!!!");
+			$scope.notifyHub.server.sendTaskMessage(userID(), $scope.lockedby, "Please release the task!", $scope.defect.ID, "bell.png");
 		};
 		$scope.releaseForce = function () {
-			$scope.notifyHub.server.sendMessage(userID(), $scope.lockedby, "You was disconnected from TT" + $scope.defect.ID + " task!");
+			$scope.notifyHub.server.sendTaskMessage(userID(), $scope.lockedby, "You was disconnected from the task!", $scope.defect.ID, "disconnect.png");
 			$scope.notifyHub.server.lockTaskForce(ttid, $scope.currentlock, userID());
 		};
 		$scope.locktask = function () {

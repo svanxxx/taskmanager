@@ -10,9 +10,10 @@ public class DefectDispo : Reference
 	static string _CannotStart = "CannotStart";
 	static string _TestsPas = "TestsPassed";
 	static string _TestsRej = "TestsRejected";
+	static string _TestsSta = "TestsStarted";
 
 	public static string _Tabl = "[TT_RES].[DBO].[FLDDISPO]";
-	static string[] _allCols = _allBaseCols.Concat(new string[] { _Color, _ReqWork, _Working, _CannotStart, _TestsPas, _TestsRej }).ToArray();
+	static string[] _allCols = _allBaseCols.Concat(new string[] { _Color, _ReqWork, _Working, _CannotStart, _TestsPas, _TestsRej, _TestsSta }).ToArray();
 
 	public bool REQUIREWORK
 	{
@@ -28,6 +29,11 @@ public class DefectDispo : Reference
 	{
 		get { return Convert.ToBoolean(this[_TestsRej]); }
 		set { this[_TestsRej] = value ? 1 : 0; }
+	}
+	public bool TESTSSTART
+	{
+		get { return Convert.ToBoolean(this[_TestsSta]); }
+		set { this[_TestsSta] = value ? 1 : 0; }
 	}
 	public bool WORKING
 	{
@@ -103,6 +109,10 @@ public class DefectDispo : Reference
 	public static List<DefectDispo> EnumTestsFailed()
 	{
 		return new List<DefectDispo>(Enum().Where(item => item.TESTSFAIL == true));
+	}
+	public static List<DefectDispo> EnumTestsStarted()
+	{
+		return new List<DefectDispo>(Enum().Where(item => item.TESTSSTART == true));
 	}
 	public static List<DefectDispo> EnumCanStart()
 	{

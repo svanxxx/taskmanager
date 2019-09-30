@@ -70,7 +70,11 @@ public class StoredDefectsFilter : IdBasedObject
 	{
 		SQLExecute(string.Format("DELETE FROM {0} WHERE {1} = {2}", _Tabl, _pid, id));
 	}
-	static public List<StoredDefectsFilter> Enum(int user)
+    static public string GetName(int id)
+    {
+        return GetValue($"SELECT {_Nam} FROM {_Tabl} WHERE {_pid} = {id}").ToString();
+    }
+    static public List<StoredDefectsFilter> Enum(int user)
 	{
 		List<StoredDefectsFilter> res = new List<StoredDefectsFilter>();
 		foreach (DataRow r in (new StoredDefectsFilter()).GetRecords($"WHERE {_Share} = 1 OR {_Usr} = {user} ORDER BY {_Share}, {_Nam} asc"))

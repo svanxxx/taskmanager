@@ -727,6 +727,17 @@ public class TRService : WebService
 			b.Store();
 
 			Defect d = new Defect(b.TTID);
+			DefectUser u = new DefectUser(b.TTUSERID);
+			d.SetUpdater(new MPSUser(u.TRID));
+			List<DefectDispo> dsps = DefectDispo.EnumTestsStarted();
+			if (dsps.Count > 0)
+			{
+				string currentlock = Guid.NewGuid().ToString();
+				LockInfo li = Defect.Locktask(b.TTID.ToString(), currentlock, u.TRID.ToString(), true);
+				d.DISPO = dsps[0].ID.ToString();
+				d.Store();
+				Defect.UnLocktask(u.TRID.ToString(), currentlock);
+			}
 
 			if (Settings.CurrentSettings.RELEASETTID == b.TTID.ToString())
 			{
@@ -736,7 +747,6 @@ public class TRService : WebService
 			{
 				try
 				{
-					DefectUser u = new DefectUser(b.TTUSERID);
 					string mess = $"New task from {u.FULLNAME} is ready for tests!{Settings.CurrentSettings.GetTTAnchor(b.TTID, d.FIRE ? "taskfire.png" : "")}";
 					TestChannel.SendMessage(mess);
 				}
@@ -795,7 +805,7 @@ public class TRService : WebService
 			if (locked)
 			{
 				MPSUser lu = new MPSUser(lt.lockedby);
-				TasksBot.SendMessage(lu.CHATID, $"You was disconnected in task editor page - TT{ttid} by the testing system to update task status!");
+				TasksBot.SendMessage(lu.CHATID, $"You was disconnected from the task by the testing system to update task status!{Settings.CurrentSettings.GetTTAnchor(int.Parse(ttid), "disconnect.png")}");
 				NotifyHub.lockTaskForceUpdatePages(int.Parse(ttid), lockguid, bsu.ID);
 				lt = Defect.Locktask(ttid.ToString(), lockguid, bsu.ID.ToString());
 			}
@@ -810,19 +820,19 @@ public class TRService : WebService
 				if (du.TRID > -1)
 				{
 					MPSUser worker = new MPSUser(du.TRID);
-					string result = "Success!";
-					string emo = "✅";
+					string result = "Succeeded!";
+					string img = "taskokay.png";
 					if (testcancel)
 					{
-						result = "Cancel!";
-						emo = "🚮";
-					}
+						result = "Cancelled!";
+                        img = "bin.png";
+                    }
 					else if (testFail)
 					{
 						result = "Failed!";
-						emo = "❌";
-					}
-					TasksBot.SendMessage(worker.CHATID, $"{emo} Your task {ttid} was processed by BST by {bsu.PERSON_NAME}. Result: {result}");
+                        img = "taskfail.png";
+                    }
+					TasksBot.SendMessage(worker.CHATID, $"The task tests have been marked as BST {result} by {bsu.PERSON_NAME}{Settings.CurrentSettings.GetTTAnchor(int.Parse(ttid), img)}");
 				}
 			}
 		}
