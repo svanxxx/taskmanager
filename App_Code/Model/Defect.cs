@@ -74,11 +74,12 @@ public partial class DefectBase : IdBasedObject
 	protected static string _branch = "branch";
 	protected static string _branchBST = "branchBST";
 	protected static string _buildP = "iBuildPriority";
+    protected static string _vers = "Version";
 
-	public static string _Tabl = "[TT_RES].[DBO].[DEFECTS]";
+    public static string _Tabl = "[TT_RES].[DBO].[DEFECTS]";
 
-	protected static string[] _allBaseCols = new string[] { _ID, _Summ, _idRec, _Disp, _Est, _Spent, _EstId, _Order, _AsUser, _Seve, _sMod, _BackOrder, _Comp, _Date, _Created, _DateT, _CreaBy, _Type, _Prod, _Ref, _Prio, _OrderDate, _ModDate, _ModBy, _sModTRID, _branch, _branchBST, _buildP };
-	protected static string[] _allBaseColsNames = new string[] { _ID, "Summary", _idRec, "Disposition", "Estimation", "", "Estimated by", "Schedule Order", "Assigned User", "Severity", "", "Schedule Order", "Component", "Date Entered", "Date Created", "Alarm", "Created By", "Type", "Product", "Reference", "Priority", "Schedule Date", "", "", "", "Branch", "BST Branch", "Test Priority" };
+	protected static string[] _allBaseCols = new string[] { _ID, _Summ, _idRec, _Disp, _Est, _Spent, _EstId, _Order, _AsUser, _Seve, _sMod, _BackOrder, _Comp, _Date, _Created, _DateT, _CreaBy, _Type, _Prod, _Ref, _Prio, _OrderDate, _ModDate, _ModBy, _sModTRID, _branch, _branchBST, _buildP, _vers };
+	protected static string[] _allBaseColsNames = new string[] { _ID, "Summary", _idRec, "Disposition", "Estimation", "", "Estimated by", "Schedule Order", "Assigned User", "Severity", "", "Schedule Order", "Component", "Date Entered", "Date Created", "Alarm", "Created By", "Type", "Product", "Reference", "Priority", "Schedule Date", "", "", "", "Branch", "BST Branch", "Test Priority", "" };
 
 	MPSUser _updater;
 	public MPSUser GetUpdater()
@@ -341,6 +342,14 @@ public partial class DefectBase : IdBasedObject
 			}
 		}
 	}
+    public string VERSION
+    {
+        get
+        {
+            return GetAsString(_vers);
+        }
+        set{}
+    }
 	public string TESTPRIORITY
 	{
 		get { return GetAsInt(_buildP, 4).ToString(); }
@@ -883,7 +892,18 @@ public partial class Defect : DefectBase
 					_ID)
 	{
 	}
-	public static int GetIDbyTT(int tt)
+    public static bool GetIDbyTT(int tt, out int id)
+    {
+        id = -1;
+        object o = GetRecdata(_Tabl, _idRec, _ID, tt);
+        if (o == null)
+        {
+            return false;
+        }
+        id = Convert.ToInt32(o);
+        return true;
+    }
+    public static int GetIDbyTT(int tt)
 	{
 		return Convert.ToInt32(GetRecdata(_Tabl, _idRec, _ID, tt));
 	}

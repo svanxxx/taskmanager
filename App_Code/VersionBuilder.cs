@@ -189,8 +189,13 @@ public class VersionBuilder
 								{
 									string ttid = m.Value.Replace("TT", "");
 									line = string.Format("<a href='{0}{1}{2}'>{3}</a>", Settings.CurrentSettings.GLOBALSITEURL, StaticSettings.DefectUrl, ttid, line.Substring(0, Math.Min(line.Length, 120)));
-								}
-							}
+                                    int id;
+                                    if (Defect.GetIDbyTT(int.Parse(ttid), out id))
+                                    {
+                                        DefectEvent.AddEventByTask(id, DefectEvent.Eventtype.versionIncluded, CurrentContext.TTUSERID, version, -1, -1, null);
+                                    }
+                                }
+                            }
 							details += line + Environment.NewLine;
 						}
 					}

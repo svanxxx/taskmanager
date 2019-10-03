@@ -89,7 +89,8 @@ public class DefectEvent : IdBasedObject
 	{
 		assigned = 1,
 		estimated = 2,
-		worked = 11
+		worked = 11,
+        versionIncluded = 12,
 	}
 	public int ASSIGNUSERID
 	{
@@ -157,7 +158,7 @@ public class DefectEvent : IdBasedObject
 			 , 4294967295
 			 , {20}
 			 , {24}
-			 , ' '
+			 , '{25}'
 			 , {21}
 			 , 0
 			 , ' '
@@ -170,7 +171,7 @@ public class DefectEvent : IdBasedObject
 			)		
 		", _Tabl,
 			_Proj, _ID, _EvtDefID, _Order, _ParentID, _EvtMUParnt, _idUser, _Dat, _Notes, _TimeSpent, _RsltState, _RelVersion, _AsgndUsers, _GenByType, _CreatorID, _DefAsgEff, _OvrWF, _OvrWFUsrID,
-			id, usr, estimation, (int)type, assign == -1 ? "' '" : assign.ToString(), eventdate);
+			id, usr, estimation, (int)type, assign == -1 ? "' '" : assign.ToString(), eventdate, notes);
 
 		SQLExecute(sql);
 	}

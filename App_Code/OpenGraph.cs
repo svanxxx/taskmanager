@@ -191,7 +191,12 @@ public class OpenGraph : System.Web.UI.Page
 			DefectBase d = getDefect();
 			if (d != null)
 			{
-				return $"{d.GetTaskUserName()} ({d.ESTIM} hrs) - {d.GetTaskDispoName()}";
+                string add = "";
+                if (!string.IsNullOrEmpty(d.VERSION))
+                {
+                    add = $", inlcuded into {d.VERSION}";
+                }
+				return $"{d.GetTaskUserName()} ({d.ESTIM} hrs) - {d.GetTaskDispoName()}{add}";
 			}
 		}
 		else if (!string.IsNullOrEmpty(userid))

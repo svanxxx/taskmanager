@@ -106,4 +106,11 @@ public class DefectService : WebService
 		NotifyHub.NotifyDefectChange(id);
 		return ChangeDispo(ttid, disp);
 	}
+    [WebMethod]
+    public DefectBase versionChange(int ttid, string version)
+    {
+        int id = Defect.GetIDbyTT(ttid);
+        DefectEvent.AddEventByTask(id, DefectEvent.Eventtype.versionIncluded, CurrentContext.TTUSERID, version, -1, -1, null);
+        return new DefectBase(ttid);
+    }
 }
