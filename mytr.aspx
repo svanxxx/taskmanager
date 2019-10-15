@@ -16,8 +16,8 @@
 	<input type="hidden" id="trrec" value='<%=TRRec.GetRecString()%>' />
 	<div ng-cloak id="controllerholder" ng-app="mpsapplication" ng-controller="mpscontroller">
 		<div class="row">
-			<div class="col-lg-2 hidden-sm hidden-xs text-center">
-				<div class="btn-group-vertical">
+			<div class="col-lg-2 text-center">
+				<div class="d-flex flex-wrap">
 					<button type="button" class="btn btn-danger" ng-cloak ng-show="haveBirthday" ng-click="congratulate()">
 						<img class="rounded-circle" ng-src="{{haveBirthday ? ('getUserImg.ashx?sz=60&id=' + birthdayID) : ''}}" alt="Smile" height="60" width="60">
 						<span>&hArr;&nbsp;{{birthdayYears}}*</span>
@@ -25,12 +25,12 @@
 						<span>=</span>
 						<i class="fas fa-thumbs-up"></i>
 					</button>
-					<a id="mytasks" href="#" class="btn btn-outline-secondary" role="button" target="_blank"><i class="fas fa-compress-arrows-alt"></i>&nbsp;Tasks assigned to me</a>
-					<a id="metasks" href="#" class="btn btn-outline-secondary" role="button" target="_blank"><i class="fas fa-expand-arrows-alt"></i>&nbsp;Tasks created by me</a>
-					<a href="<%=Settings.CurrentSettings.BSTSITE.ToString()%>?showall=1&PROGABB=<%=CurrentContext.UserLogin()%>" class="btn btn-outline-secondary" role="button" target="_blank"><i class="fa fa-link"></i>&nbsp;My BST requests</a>
-					<a href="dailysearch.aspx" class="btn btn-outline-secondary" role="button" target="_blank"><i class="fas fa-sort-numeric-down"></i>&nbsp;My Records</a>
-					<button type="button" class="btn btn-outline-secondary" ng-click="addTask()"><i class="fas fa-wrench"></i>&nbsp;Start New Task</button>
-					<button type="button" class="btn btn-outline-secondary" ng-click="planTask()"><i class="far fa-calendar-check"></i>&nbsp;Plan New Task</button>
+					<a id="mytasks" href="#" class="btn btn-outline-secondary flex-fill" role="button" target="_blank"><i class="fas fa-compress-arrows-alt"></i>&nbsp;<span class="d-none d-md-inline">Tasks assigned to me<span></a>
+					<a id="metasks" href="#" class="btn btn-outline-secondary flex-fill" role="button" target="_blank"><i class="fas fa-expand-arrows-alt"></i>&nbsp;<span class="d-none d-md-inline">Tasks created by me</span></a>
+					<a href="<%=Settings.CurrentSettings.BSTSITE.ToString()%>?showall=1&PROGABB=<%=CurrentContext.UserLogin()%>" class="btn btn-outline-secondary flex-fill" role="button" target="_blank"><i class="fa fa-link"></i>&nbsp;<span class="d-none d-md-inline">My BST requests</span></a>
+					<a href="dailysearch.aspx" class="btn btn-outline-secondary flex-fill" role="button" target="_blank"><i class="fas fa-sort-numeric-down"></i>&nbsp;<span class="d-none d-md-inline">My Daily Records</span></a>
+					<button type="button" class="btn btn-outline-secondary flex-fill" ng-click="addTask()"><i class="fas fa-wrench"></i>&nbsp;<span class="d-none d-md-inline">Start New Task</span></button>
+					<button type="button" class="btn btn-outline-secondary flex-fill" ng-click="planTask()"><i class="far fa-calendar-check"></i>&nbsp;<span class="d-none d-md-inline">Plan New Task</span></button>
 				</div>
 			</div>
 			<div class="col-lg-8">
@@ -186,11 +186,11 @@
 					</div>
 				</div>
 			</div>
-			<div class="text-center col-lg-2 hidden-sm hidden-xs">
-				<div class="btn-group-vertical">
-					<a style="margin-bottom: 1px; background-color: {{u.STATUS == 1 ? '#0000ff3d' : '#ff000096'}}" href="editplan.aspx?userid={{u.ID}}" class="btn btn-info" role="button" target="_blank" ng-repeat="u in mpsusers">
+			<div class="text-center col-lg-2">
+				<div class="d-flex flex-wrap">
+					<a style="margin-bottom: 1px; background-color: {{u.STATUS == 1 ? '#0000ff3d' : '#ff000096'}}" href="editplan.aspx?userid={{u.ID}}" class="btn btn-info flex-fill" role="button" target="_blank" ng-repeat="u in mpsusers">
 						<img class="rounded-circle" style="float: left" ng-src="getUserImg.ashx?sz=20&id={{u.ID}}" alt="Smile" height="20" width="20">
-						{{u.LOGIN}}
+						<span class="d-none d-md-inline">{{u.LOGIN}}</span>
 					</a>
 				</div>
 			</div>
