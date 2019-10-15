@@ -316,12 +316,9 @@ $(function () {
                 }
             });
             if (confirm("Are you sure you want to change " + updated.length + " defects ?")) {
-                var updatingprg = StartProgress("Updating tasks...");
-                $http.post("trservice.asmx/settaskBase", JSON.stringify({ "defects": updated }))
-                    .then(function (response) {
-                        $scope.loadData();
-                        EndProgress(updatingprg);
-                    });
+                StartProgress("Updating tasks...");
+                $http.post("trservice.asmx/settaskBase", JSON.stringify({ "defects": updated }));
+                window.location.reload();
             } else {
                 // Do nothing!
             }

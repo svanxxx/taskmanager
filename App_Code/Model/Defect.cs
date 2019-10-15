@@ -492,8 +492,15 @@ public partial class DefectBase : IdBasedObject
 			w_where = string.Format(" AND  ({0} in ({1}))", _Disp, string.Join(",", wl));
 		}
 
-		List<DefectBase> ls = new List<DefectBase>();
-		string where = string.Format(" WHERE (({0} = {1}) AND ({2} is not null) {3}) ORDER BY {4}.{2} DESC", _AsUser, userid, _Order, w_where, _Tabl);
+        List<int> pl = DefectSeverity.EnumPlanable();
+        string w_where2 = "";
+        if (pl.Count > 0)
+        {
+            w_where2 = string.Format(" AND  ({0} in ({1}))", _Seve, string.Join(",", pl));
+        }
+
+        List<DefectBase> ls = new List<DefectBase>();
+		string where = string.Format(" WHERE (({0} = {1}) AND ({2} is not null) {3} {5}) ORDER BY {4}.{2} DESC", _AsUser, userid, _Order, w_where, _Tabl, w_where2);
 		foreach (DataRow r in GetRecords(where, max))
 		{
 			DefectBase d = new DefectBase();

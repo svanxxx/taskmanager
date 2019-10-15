@@ -25,17 +25,17 @@
 		</div>
 		<div class="row mt-2">
 			<div class="col-xl-1 col-lg-2">
-				<div class="btn-group-vertical btn-group-sm d-flex">
-					<button onclick="copyurl()" data-toggle="tooltip" title="Copy link to this page to clipboard" type="button" class="btn btn-outline-secondary btn-sm mb-1">
+				<div class="d-flex flex-wrap">
+					<button onclick="copyurl()" data-toggle="tooltip" title="Copy link to this page to clipboard" type="button" class="btn btn-outline-secondary btn-sm flex-fill">
 						<i class="fas fa-copy"></i>Page link
 					</button>
-					<button type="button" class="btn btn-sm btn-outline-secondary mb-1" ng-click="add2Plan()" data-toggle="tooltip" title="Add Task To Currently Selected User On The Top Of The Plan">
+					<button type="button" class="btn btn-sm btn-outline-secondary flex-fill" ng-click="add2Plan()" data-toggle="tooltip" title="Add Task To Currently Selected User On The Top Of The Plan">
 						<i class="fas fa-plus-circle"></i>Task
 					</button>
-					<button ng-show="isadmin" type="button" class="btn btn-sm btn-outline-secondary mb-1" ng-click="addVacs()" data-toggle="tooltip" title="Add vacations to current user">
+					<button ng-show="isadmin" type="button" class="btn btn-sm btn-outline-secondary flex-fill" ng-click="addVacs()" data-toggle="tooltip" title="Add vacations to current user">
 						<i style="color: green" class="fas fa-plane"></i>Vacations
 					</button>
-					<button ng-show="isadmin" type="button" class="btn btn-sm btn-outline-secondary" ng-click="addSickness()" data-toggle="tooltip" title="Add sickness (today) to current user and send alarm to everyone">
+					<button ng-show="isadmin" type="button" class="btn btn-sm btn-outline-secondary flex-fill" ng-click="addSickness()" data-toggle="tooltip" title="Add sickness (today) to current user and send alarm to everyone">
 						<i class="fas fa-temperature-high text-danger"></i>Sickness
 					</button>
 				</div>
@@ -44,13 +44,13 @@
 				<div>
 					<ul class="nav nav-pills nav-justified p-0">
 						<li class="nav-item p-0">
-							<a class="nav-link active" data-toggle="pill" href="#plan">
+							<a class="nav-link active p-1" data-toggle="pill" href="#plan">
 								<span>Plan </span>
 								<span class="badge badge-light">{{defects.length}}</span>
 							</a>
 						</li>
 						<li class="nav-item p-0">
-							<a class="nav-link" data-toggle="pill" href="#unscheduled">Unscheduled <span class="badge badge-light">{{unscheduled.length}}</span></a>
+							<a class="nav-link p-1" data-toggle="pill" href="#unscheduled">Unscheduled <span class="badge badge-light">{{unscheduled.length}}</span></a>
 						</li>
 					</ul>
 					<div class="tab-content panel panel-default">

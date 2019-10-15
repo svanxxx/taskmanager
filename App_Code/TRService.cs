@@ -1039,8 +1039,10 @@ public class TRService : WebService
 		{
 			case RefType.disposition:
 				return DefectDispo.New(desc).ToString();
-		}
-		return "Unsupported";
+            case RefType.severity:
+                return DefectSeverity.New(desc).ToString();
+        }
+        return "Unsupported";
 	}
 	[WebMethod(EnableSession = true)]
 	public string getLog(int from, int to)
