@@ -99,7 +99,21 @@ $(function () {
 			$http.post("trservice.asmx/getreports", JSON.stringify({ "dates": [DateToString($scope.today), DateToString($scope.yesterday)] }))
 				.then(function (result) {
 					var d1 = DateToString($scope.today);
-					var recs = result.data.d;
+                    var recs = result.data.d;
+                    $scope.mpsusers.forEach(function (u) {
+                        u.TODAY = undefined;
+                        u.TODAYIN = undefined;
+                        u.TODAYOUT = undefined;
+                        u.CREATEDTASKS2 = undefined;
+                        u.SCHEDULEDTASKS2 = undefined;
+                        u.MODIFIEDTASKS2 = undefined;
+                        u.TASKSEVENTS2 = undefined;
+                        u.YESTERDAY = undefined;
+                        u.CREATEDTASKS1 = undefined;
+                        u.SCHEDULEDTASKS1 = undefined;
+                        u.MODIFIEDTASKS1 = undefined;
+                        u.TASKSEVENTS1 = undefined;
+                    });
 					for (var r = 0; r < recs.length; r++) {
 						var rec = recs[r];
 						for (var u = 0; u < $scope.mpsusers.length; u++) {
