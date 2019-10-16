@@ -575,7 +575,16 @@
 		$scope.addresses = document.getElementById("deflist").value;
 
 		$scope.today = new Date();
-		$scope.today.setHours(0, 0, 0, 0)
+        $scope.today.setHours(0, 0, 0, 0);
+        $scope.defdetailsclass = $.cookie("defdetailsclass");
+        $scope.toggleDisplay = function () {
+            if ($scope.defdetailsclass === "") {
+                $scope.defdetailsclass = "d-none";
+            } else {
+                $scope.defdetailsclass = "";
+            }
+            $.cookie("defdetailsclass", $scope.defdetailsclass, { expires: 365 });
+        };
 		$scope.defectsumm = "";
 		$scope.defecteml = "";
 		$scope.bsttab_bat = "bsttabs-batches";

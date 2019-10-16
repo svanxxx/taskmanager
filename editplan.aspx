@@ -25,9 +25,9 @@
 		</div>
 		<div class="row mt-2">
 			<div class="col-xl-1 col-lg-2">
-				<div class="d-flex flex-wrap">
+				<div class="d-flex flex-wrap shadow">
 					<button onclick="copyurl()" data-toggle="tooltip" title="Copy link to this page to clipboard" type="button" class="btn btn-outline-secondary btn-sm flex-fill">
-						<i class="fas fa-copy"></i>Page link
+						<i class="fas fa-link"></i>Page link
 					</button>
 					<button type="button" class="btn btn-sm btn-outline-secondary flex-fill" ng-click="add2Plan()" data-toggle="tooltip" title="Add Task To Currently Selected User On The Top Of The Plan">
 						<i class="fas fa-plus-circle"></i>Task
@@ -89,7 +89,7 @@
 				</div>
 			</div>
 			<div class="col-xl-2 d-none d-xl-block">
-				<div class="alert alert-primary">
+				<div class="alert alert-primary shadow">
 					<p>To schedule the task: click on radio button for the task! Then holding <strong>Ctrl</strong> key press <strong>move up</strong> or <strong>move down</strong> to move the task in list correspondingly.</p>
 					<p>
 						Click
