@@ -248,8 +248,18 @@ public class RawSettings
 	{
 		get { return GetVal("TELEGRAMTASKSURL"); }
 		set { values["TELEGRAMTASKSURL"] = value; }
-	}
-	public string TESTSGIT
+    }
+    public string TELEGRAMSUPPORTTOKEN
+    {
+        get { return GetVal("TELEGRAMSUPPORTTOKEN"); }
+        set { values["TELEGRAMSUPPORTTOKEN"] = value; }
+    }
+    public string TELEGRAMSUPPORTGROUP
+    {
+        get { return GetVal("TELEGRAMSUPPORTGROUP"); }
+        set { values["TELEGRAMSUPPORTGROUP"] = value; }
+    }
+    public string TESTSGIT
 	{
 		get { return GetVal("TESTSGIT"); }
 		set { values["TESTSGIT"] = value; }

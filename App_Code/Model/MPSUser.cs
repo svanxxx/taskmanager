@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
 using System.DirectoryServices.AccountManagement;
+using System.Linq;
 
 public class MPSUser : IdBasedObject
 {
@@ -22,8 +23,10 @@ public class MPSUser : IdBasedObject
 	const string _imgTransfer = "IMAGETRANSFER";
 	const string _birth = "PERSON_BIRTHDAY";
 	const string _chat = "CHATID";
+    const string _schat = "SUPPCHATID";
+    const string _sclientchat = "SUPPCLIENTCHATID";
 
-	static string[] _allcols = new string[] { _pid, _pname, _email, _ttuser, _addr, _login, _pass, _isAdm, _phone, _work, _ret, _imgTransfer, _birth, _lvl, _chat };
+    static string[] _allcols = new string[] { _pid, _pname, _email, _ttuser, _addr, _login, _pass, _isAdm, _phone, _work, _ret, _imgTransfer, _birth, _lvl, _chat, _schat, _sclientchat };
 	public static string _Tabl = "[PERSONS]";
 
 	public string CHATID
@@ -31,7 +34,17 @@ public class MPSUser : IdBasedObject
 		get { return this[_chat].ToString(); }
 		set { this[_chat] = value; }
 	}
-	public string PHONE
+    public string SUPCHATID
+    {
+        get { return this[_schat].ToString(); }
+        set { this[_schat] = value; }
+    }
+    public string SUPCHATCLIENTID
+    {
+        get { return this[_sclientchat].ToString(); }
+        set { this[_sclientchat] = value; }
+    }
+    public string PHONE
 	{
 		get { return this[_phone].ToString(); }
 		set { this[_phone] = value; }
@@ -201,7 +214,11 @@ public class MPSUser : IdBasedObject
 		}
 		return ls;
 	}
-	public static MPSUser FindUser(string name, string pass)
+    public static List<MPSUser> EnumAllSupporters()
+    {
+        return new List<MPSUser>(EnumAllUsers(true).Where(item => !string.IsNullOrEmpty(item.SUPCHATID)));
+    }
+    public static MPSUser FindUser(string name, string pass)
 	{
 		bool domain = name.Contains("@");
 		if (domain)
