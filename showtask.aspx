@@ -10,6 +10,7 @@
     <script src="<%=Settings.CurrentSettings.ANGULARCDN.ToString()%>angular.min.js"></script>
     <script src="scripts/jquery.signalR-2.3.0.min.js"></script>
     <script src="signalr/hubs"></script>
+    <script src="Scripts/taskmessage.js"></script>
 </asp:Content>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
@@ -31,8 +32,9 @@
                     <button ng-click="duplicate()" type="button" class="btn btn-outline-secondary btn-sm flex-fill"><span class="d-none d-md-inline">Duplicate</span>&nbsp;<i class="fas fa-clone"></i></button>
                     <button ng-click="resettask()" ng-disabled="!canChangeDefect()" type="button" class="btn btn-outline-secondary btn-sm flex-fill"><span class="d-none d-md-inline">Reset To Re-Use</span>&nbsp;<i class="fas fa-recycle"></i></button>
                     <button ng-click="normtext()" ng-disabled="!canChangeDefect()" type="button" class="btn btn-outline-secondary btn-sm flex-fill"><span class="d-none d-md-inline">Normalize Details Text</span>&nbsp;<i class="fab fa-wpforms"></i></button>
-                    <button ng-click="adddesc('Tested', 'taskokay.png')" ng-disabled="!canChangeDefect()" type="button" class="btn btn-outline-secondary btn-sm flex-fill"><span class="d-none d-md-inline">Add Tested Comment</span>&nbsp;<i class="fas fa-check"></i></button>
-                    <button ng-click="adddesc('Rejected', 'taskfail.png')" ng-disabled="!canChangeDefect()" type="button" class="btn btn-outline-secondary btn-sm flex-fill"><span class="d-none d-md-inline">Add Rejected Comment</span>&nbsp;<i class="fas fa-window-close"></i></button>
+                    <button ng-click="adddesc('Comment', '', '')" ng-disabled="!canChangeDefect()" type="button" class="btn btn-outline-secondary btn-sm flex-fill"><span class="d-none d-md-inline">Add Comment</span>&nbsp;<i class="fas fa-comments"></i></button>
+                    <button ng-click="adddesc('Tested', 'taskokay.png', 'green')" ng-disabled="!canChangeDefect()" type="button" class="btn btn-outline-secondary btn-sm flex-fill"><span class="d-none d-md-inline">Add Tested Comment</span>&nbsp;<i class="fas fa-check"></i></button>
+                    <button ng-click="adddesc('Rejected', 'taskfail.png', 'red')" ng-disabled="!canChangeDefect()" type="button" class="btn btn-outline-secondary btn-sm flex-fill"><span class="d-none d-md-inline">Add Rejected Comment</span>&nbsp;<i class="fas fa-window-close"></i></button>
                 </div>
                 <div class="alert alert-info mt-2 shadow" style="text-align: center" ng-show="!canChangeDefect()">
                     <button data-toggle="tooltip" title="Ask to release!" type="button" class="btn btn-light btn-sm float-left" ng-click="releaseRequest()"><i class="fas fa-bell text-info"></i></button>
@@ -219,6 +221,7 @@
                 <ul id="tasktabs" class="nav nav-tabs nav-justified" role="tablist">
                     <li class="{{specsStyle()}} nav-item"><a class="nav-link small active" data-toggle="tab" href="#specification"><i class="far fa-list-alt"></i>{{tab_specs}}</a></li>
                     <li class="nav-item"><a class="nav-link small" data-toggle="tab" href="#detail"><i class="fas fa-search-plus"></i>&nbsp;Details</a></li>
+                    <li class="nav-item" ng-click="changetab($event)"><a class="nav-link small" data-toggle="tab" href="#messages"><i class="fas fa-comments"></i>{{tab_mess}}</a></li>
                     <li class="nav-item" ng-click="changetab($event)"><a class="nav-link small" data-toggle="tab" href="#workflow"><i class="fas fa-sync"></i>{{tab_workflow}}</a></li>
                     <li class="nav-item" ng-click="changetab($event)"><a class="nav-link small" data-toggle="tab" href="#history"><i class="fas fa-history"></i>{{tab_history}}</a></li>
                     <li class="nav-item" ng-click="changetab($event)"><a class="nav-link small" data-toggle="tab" href="#attachments"><i class="fas fa-paperclip"></i>{{tab_attachs}}</a></li>
@@ -233,6 +236,23 @@
                     </div>
                     <div id="detail" class="tab-pane fade">
                         <textarea class="form-control form-control-sm" id="Description" rows="30" ng-disabled="!canChangeDefect()" ng-model="defect.DESCR"></textarea>
+                    </div>
+                    <div id="messages" class="tab-pane fade">
+                        <div class="d-flex">
+                            <textarea class="form-control form-control-sm flex-grow-1" id="msgcurr" rows="{{messrows}}" ng-disabled="!canChangeDefect()" ng-model="currMessage" ng-keyup="messageKey($event)"></textarea>
+                            <div class="btn-group">
+                                <div ng-click="messageSubmit()" class="btn btn-sm btn-outline-secondary"><i class="fas fa-paper-plane"></i></div>
+                                <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <div ng-click="messageSubmit('green', 'taskokay.png')" class="dropdown-item" style="cursor: pointer"><span class="text-success"><i class="fas fa-paper-plane"></i>Tested</span></div>
+                                    <div ng-click="messageSubmit('red', 'taskfail.png')" class="dropdown-item" style="cursor: pointer"><span class="text-danger"><i class="fas fa-paper-plane"></i>Rejected</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-bind-html="defect.DESCR | rawHtml">
+                        </div>
                     </div>
                     <div id="bst" class="tab-pane fade">
                         <div class="input-group input-group-sm mb-1">
