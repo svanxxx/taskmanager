@@ -7,7 +7,7 @@
 
 <html lang="en">
 <head runat="server">
-	<title>MPS tasks system</title>
+	<title><%= Settings.CurrentSettings.COMPANYNAME.ToString()%> tasks system</title>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta name="Description" content="<%Settings.CurrentSettings.COMPANYNAME.ToString()%> Task Management System">
@@ -65,7 +65,7 @@
 					</a>
 					<div class="dropdown-menu">
 						<a class="dropdown-item" target="_blank" href="<%= Settings.CurrentSettings.WIKISITE.ToString()%>"><i class="fas fa-info-circle"></i>FiP Wiki</a>
-						<a class="dropdown-item" target="_blank" href="<%= Settings.CurrentSettings.MPSWIKISITE.ToString()%>"><i class="fas fa-info-circle"></i>MPS Wiki</a>
+						<a class="dropdown-item" target="_blank" href="<%= Settings.CurrentSettings.MPSWIKISITE.ToString()%>"><i class="fas fa-info-circle"></i><%= Settings.CurrentSettings.COMPANYNAME.ToString()%> Wiki</a>
 						<a class="dropdown-item" target="_blank" href="<%= Settings.CurrentSettings.METASITE.ToString()%>"><i class="fas fa-info-circle"></i>Metadata</a>
 					</div>
 				</li>

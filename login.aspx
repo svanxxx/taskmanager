@@ -12,8 +12,8 @@
 	<div class="row">
 		<div class="col-sm-4"></div>
 		<div class="col-sm-4">
-			<h2>MPS tasks handling and reporing system</h2>
-			<p>Please enter user name and password (you can use domain format: user@mps and password)</p>
+			<h2><%= Settings.CurrentSettings.COMPANYNAME.ToString()%> tasks handling and reporing system</h2>
+			<p>Please enter user name and password (you can use domain format: user@<%= Settings.CurrentSettings.COMPANYDOMAIN.ToString()%> and password)</p>
 			<div class="row">
 				<div class="col-sm-3"></div>
 				<div class="col-sm-6">

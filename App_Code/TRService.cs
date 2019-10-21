@@ -523,7 +523,7 @@ public class TRService : WebService
 	{
 		List<string> ComputerNames = new List<string>();
 
-		DirectoryEntry entry = new DirectoryEntry("LDAP://mps");
+		DirectoryEntry entry = new DirectoryEntry("LDAP://" + Settings.CurrentSettings.COMPANYDOMAIN);
 		DirectorySearcher mySearcher = new DirectorySearcher(entry);
 		mySearcher.Filter = ("(objectClass=computer)");
 		mySearcher.SizeLimit = int.MaxValue;

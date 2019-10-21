@@ -154,7 +154,12 @@ public class RawSettings
 		get { return GetVal("COMPANYNAME"); }
 		set { values["COMPANYNAME"] = value; }
 	}
-	public string BUILDLOGSDIR
+    public string COMPANYDOMAIN
+    {
+        get { return GetVal("COMPANYDOMAIN"); }
+        set { values["COMPANYDOMAIN"] = value; }
+    }
+    public string BUILDLOGSDIR
 	{
 		get { return GetVal("BUILDLOGSDIR"); }
 		set { values["BUILDLOGSDIR"] = value; }

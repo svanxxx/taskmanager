@@ -225,7 +225,7 @@ public class MPSUser : IdBasedObject
 		{
 			bool valid = false;
 			string dispUserName = name;
-			using (PrincipalContext context = new PrincipalContext(ContextType.Domain, "mps"))
+			using (PrincipalContext context = new PrincipalContext(ContextType.Domain, Settings.CurrentSettings.COMPANYDOMAIN))
 			{
 				valid = context.ValidateCredentials(name, pass);
 				if (valid)

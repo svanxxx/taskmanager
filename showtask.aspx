@@ -106,7 +106,7 @@
                                 <span class="input-group-text w-100"><a href="dispositions.aspx" target="_blank">Dispo</a></span>
                             </div>
                             <select class="form-control" id="dispo" ng-disabled="!canChangeDefect()" ng-model="defect.DISPO">
-                                <option ng-repeat="d in dispos | orderBy:'FORDER'" value="{{d.ID}}" style="background-color: {{d .COLOR}}">{{d.DESCR}}</option>
+                                <option ng-repeat="d in dispos | orderBy:'FORDER'" value="{{d.ID}}" style="background-color: {{d.COLOR}}">{{d.DESCR}}</option>
                             </select>
                         </div>
                         <div class="input-group input-group-sm">

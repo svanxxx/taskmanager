@@ -15,7 +15,7 @@
 		$('#addtask').on('shown.bs.modal', function () {
 			$('#tttext').focus();
 		});
-		$('#footerp').html("&copy; " + (new Date().getFullYear()) + " MPS tasks control system");
+		$('#footerp').html("&copy; " + (new Date().getFullYear()) + " <%= Settings.CurrentSettings.COMPANYNAME.ToString()%> tasks control system");
 		$('a').each(function () {
 			if (window.location.href.toUpperCase().indexOf($(this).prop('href').toUpperCase()) != -1) {
 				$(this).addClass('active'); $(this).parents('li').addClass('active');
