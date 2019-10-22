@@ -167,7 +167,7 @@ $(function () {
 			}
 		};
 		$scope.reloadTasks = function (prgtasks) {
-			$http.post("trservice.asmx/getplanned", JSON.stringify({ "userid": $scope.currentuser.TTUSERID }))
+            $http.post("PlanService.asmx/getplanned", JSON.stringify({ "userid": $scope.currentuser.TTUSERID }))
 				.then(function (result) {
 					$scope.defects = result.data.d;
 					if (prgtasks) {
@@ -176,7 +176,7 @@ $(function () {
 					$scope.changed = false;
 					reActivateTooltips();
 				});
-			$http.post("trservice.asmx/getunplanned", JSON.stringify({ "userid": $scope.currentuser.TTUSERID }))
+            $http.post("PlanService.asmx/getunplanned", JSON.stringify({ "userid": $scope.currentuser.TTUSERID }))
 				.then(function (response) {
 					$scope.unscheduled = response.data.d;
 					reActivateTooltips();

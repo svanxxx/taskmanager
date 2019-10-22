@@ -140,6 +140,14 @@
             return ($scope.defect && $scope.defect.BRANCH.toUpperCase() === 'RELEASE') || $scope.gitbranchhash;
         };
         $scope.testTask = function () {
+            if ($scope.changed) {
+                alert("Please save the task first!");
+                return;
+            }
+            if ($scope.defect.AUSER == "") {
+                alert("Please assign the task first!");
+                return;
+            }
             for (var i = 0; i < $scope.builds.length; i++) {
                 if ($scope.builds[i].STATUS.indexOf("wait") > -1) {
                     alert("Already waiting for build!");

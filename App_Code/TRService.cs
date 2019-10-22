@@ -104,33 +104,6 @@ public class TRService : WebService
 	//================================================================================================
 	//================================================================================================
 	[WebMethod(EnableSession = true)]
-	public List<DefectBase> getplanned(string userid)
-	{
-		if (!CurrentContext.Valid && string.IsNullOrEmpty(userid))
-			return null;
-
-		DefectBase d = new DefectBase();
-		return d.EnumPlan(string.IsNullOrEmpty(userid) ? CurrentContext.User.TTUSERID : Convert.ToInt32(userid));
-	}
-	[WebMethod(EnableSession = true)]
-	public List<DefectBase> getplannedShort(string userid)
-	{
-		if (!CurrentContext.Valid && string.IsNullOrEmpty(userid))
-			return null;
-
-		DefectBase d = new DefectBase();
-		return d.EnumPlanShort(string.IsNullOrEmpty(userid) ? CurrentContext.User.TTUSERID : Convert.ToInt32(userid));
-	}
-	[WebMethod(EnableSession = true)]
-	public List<DefectBase> getunplanned(string userid)
-	{
-		if (!CurrentContext.Valid && string.IsNullOrEmpty(userid))
-			return null;
-
-		DefectBase d = new DefectBase();
-		return d.EnumUnPlan(string.IsNullOrEmpty(userid) ? CurrentContext.User.TTUSERID : Convert.ToInt32(userid));
-	}
-	[WebMethod(EnableSession = true)]
 	public int newTask4MeNow(string summary)
 	{
 		if (string.IsNullOrEmpty(summary))
@@ -476,9 +449,12 @@ public class TRService : WebService
 			{
 				d = new DefectBase(ttid.ttid);
 			}
-			d.BACKORDER = Convert.ToInt32(ttid.backorder);
-			d.Store();
-		}
+            if (d.BACKORDER != ttid.backorder)
+            {
+                d.BACKORDER = ttid.backorder;
+                d.Store();
+            }
+        }
 	}
 	[WebMethod(EnableSession = true)]
 	public List<TRRec> getreports(List<string> dates)

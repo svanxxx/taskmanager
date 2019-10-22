@@ -151,7 +151,7 @@ $(function () {
 				user.MODIFIEDTASKS2 = [];
 				var user4proc = user;
 				var newuserprog = StartProgress("Loading plan for " + user4proc.PERSON_NAME + "..."); $scope["loaders"]++;
-				$http.post("trservice.asmx/getplannedShort", JSON.stringify({ "userid": user4proc.TTUSERID }))
+                $http.post("PlanService.asmx/getplannedShort", JSON.stringify({ "userid": user4proc.TTUSERID }))
 					.then(function (result) {
 						user4proc.PLAN = result.data.d;
 						EndProgress(newuserprog); $scope["loaders"]--;

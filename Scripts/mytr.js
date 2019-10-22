@@ -185,12 +185,12 @@ $(function () {
 		$scope.defects = [];
 		$scope.unscheduled = [];
 		$scope.loadTasks = function () {
-			$http.post("trservice.asmx/getplanned", JSON.stringify({ "userid": "" }))
+            $http.post("PlanService.asmx/getplannedShort", JSON.stringify({ "userid": "" }))
 				.then(function (response) {
 					$scope.defects = response.data.d;
 					reActivateTooltips();
 				});
-			$http.post("trservice.asmx/getunplanned", JSON.stringify({ "userid": "" }))
+            $http.post("PlanService.asmx/getunplanned", JSON.stringify({ "userid": "" }))
 				.then(function (response) {
 					$scope.unscheduled = response.data.d;
 				});
