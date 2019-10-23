@@ -53,6 +53,10 @@ public class StoredDefectsFilter : IdBasedObject
 	{
 		return Newtonsoft.Json.JsonConvert.DeserializeObject<DefectsFilter>(DATA);
 	}
+	public void SetFilter(DefectsFilter f)
+	{
+		DATA = Newtonsoft.Json.JsonConvert.SerializeObject(f);
+	}
 	static public StoredDefectsFilter NewFilter(string name, bool personal, DefectsFilter f, int user)
 	{
 		string g = Guid.NewGuid().ToString();
@@ -264,5 +268,11 @@ public partial class DefectBase : IdBasedObject
 			ls.Add(d);
 		}
 		return ls;
+	}
+	public DateTime ModTime(DefectsFilter f)
+	{
+		string where = PrepareQueryForEnum(f, false);
+		object o = GetValue($"SELECT MAX({_ModDate}) FROM {_Tabl} {where}");
+		return Convert.ToDateTime(o);
 	}
 }

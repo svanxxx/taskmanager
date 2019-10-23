@@ -57,6 +57,18 @@ function getDispoColorById() {
 		return { "background-color": res[0].COLOR };
 	};
 }
+function getDispoNameById() {
+	return function (id, $scope) {
+		if ($scope.dispos.length < 1) {
+			return "Disposition Undefined";
+		}
+		var res = $scope.dispos.filter(function (x) { return x.ID == id; });
+		if (res.length < 1) {
+			return "Disposition Undefined";
+		}
+		return res[0].DESCR;
+	};
+}
 function rawHtml($sce) {
 	return function (val) {
 		return $sce.trustAsHtml(val);

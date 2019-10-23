@@ -23,10 +23,11 @@ public class MPSUser : IdBasedObject
 	const string _imgTransfer = "IMAGETRANSFER";
 	const string _birth = "PERSON_BIRTHDAY";
 	const string _chat = "CHATID";
-    const string _schat = "SUPPCHATID";
-    const string _sclientchat = "SUPPCLIENTCHATID";
+	const string _schat = "SUPPCHATID";
+	const string _sclientchat = "SUPPCLIENTCHATID";
+	const string _cli = "CLIENT";
 
-    static string[] _allcols = new string[] { _pid, _pname, _email, _ttuser, _addr, _login, _pass, _isAdm, _phone, _work, _ret, _imgTransfer, _birth, _lvl, _chat, _schat, _sclientchat };
+	static string[] _allcols = new string[] { _pid, _pname, _email, _ttuser, _addr, _login, _pass, _isAdm, _phone, _work, _ret, _imgTransfer, _birth, _lvl, _chat, _schat, _sclientchat, _cli };
 	public static string _Tabl = "[PERSONS]";
 
 	public string CHATID
@@ -34,20 +35,25 @@ public class MPSUser : IdBasedObject
 		get { return this[_chat].ToString(); }
 		set { this[_chat] = value; }
 	}
-    public string SUPCHATID
-    {
-        get { return this[_schat].ToString(); }
-        set { this[_schat] = value; }
-    }
-    public string SUPCHATCLIENTID
-    {
-        get { return this[_sclientchat].ToString(); }
-        set { this[_sclientchat] = value; }
-    }
-    public string PHONE
+	public string SUPCHATID
+	{
+		get { return this[_schat].ToString(); }
+		set { this[_schat] = value; }
+	}
+	public string SUPCHATCLIENTID
+	{
+		get { return this[_sclientchat].ToString(); }
+		set { this[_sclientchat] = value; }
+	}
+	public string PHONE
 	{
 		get { return this[_phone].ToString(); }
 		set { this[_phone] = value; }
+	}
+	public bool ISCLIENT
+	{
+		get { return GetAsBool(_cli, false); }
+		set { this[_cli] = value; }
 	}
 	public bool ISADMIN
 	{
@@ -163,7 +169,7 @@ public class MPSUser : IdBasedObject
 	}
 	protected override void OnChangeColumn(string col, string val)
 	{
-		if (col ==_pname && TTUSERID > -1)
+		if (col == _pname && TTUSERID > -1)
 		{
 			string[] vals = val.Replace("\'", "").Split(' ');
 			if (vals.Length == 2)
@@ -214,11 +220,11 @@ public class MPSUser : IdBasedObject
 		}
 		return ls;
 	}
-    public static List<MPSUser> EnumAllSupporters()
-    {
-        return new List<MPSUser>(EnumAllUsers(true).Where(item => !string.IsNullOrEmpty(item.SUPCHATID)));
-    }
-    public static MPSUser FindUser(string name, string pass)
+	public static List<MPSUser> EnumAllSupporters()
+	{
+		return new List<MPSUser>(EnumAllUsers(true).Where(item => !string.IsNullOrEmpty(item.SUPCHATID)));
+	}
+	public static MPSUser FindUser(string name, string pass)
 	{
 		bool domain = name.Contains("@");
 		if (domain)

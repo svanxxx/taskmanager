@@ -6,13 +6,18 @@ public class SecurityPage : System.Web.UI.Page
 {
 	public static string returl = "ReturnUrl";
 	public static string loginpage = "login.aspx";
+	public static string clientpage = "tracker.aspx";
 
-
-	void CheckRetired()
+	void CheckPermissions()
 	{
 		if (CurrentContext.Valid && CurrentContext.User.RETIRED)
 		{
 			Response.Redirect(string.Format("{0}?{1}=1", loginpage, CurrentContext.retiredURL), false);
+			Context.ApplicationInstance.CompleteRequest();
+		}
+		if (CurrentContext.Valid && CurrentContext.User.ISCLIENT && Request.Url.Segments.Last().ToUpper() != clientpage.ToUpper())
+		{
+			Response.Redirect(clientpage, false);
 			Context.ApplicationInstance.CompleteRequest();
 		}
 	}
@@ -24,7 +29,7 @@ public class SecurityPage : System.Web.UI.Page
 		}
 		if (CurrentContext.Valid)
 		{
-			CheckRetired();
+			CheckPermissions();
 			return;
 		}
 		else
@@ -32,7 +37,7 @@ public class SecurityPage : System.Web.UI.Page
 			Response.Redirect(loginpage + "?" + returl + "=" + Request.Url.PathAndQuery, false);
 			Context.ApplicationInstance.CompleteRequest();
 		}
-		CheckRetired();
+		CheckPermissions();
 		return;
 	}
 }

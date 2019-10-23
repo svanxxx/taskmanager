@@ -74,9 +74,9 @@ public partial class DefectBase : IdBasedObject
 	protected static string _branch = "branch";
 	protected static string _branchBST = "branchBST";
 	protected static string _buildP = "iBuildPriority";
-    protected static string _vers = "Version";
+	protected static string _vers = "Version";
 
-    public static string _Tabl = "[TT_RES].[DBO].[DEFECTS]";
+	public static string _Tabl = "[TT_RES].[DBO].[DEFECTS]";
 
 	protected static string[] _allBaseCols = new string[] { _ID, _Summ, _idRec, _Disp, _Est, _Spent, _EstId, _Order, _AsUser, _Seve, _sMod, _BackOrder, _Comp, _Date, _Created, _DateT, _CreaBy, _Type, _Prod, _Ref, _Prio, _OrderDate, _ModDate, _ModBy, _sModTRID, _branch, _branchBST, _buildP, _vers };
 	protected static string[] _allBaseColsNames = new string[] { _ID, "Summary", _idRec, "Disposition", "Estimation", "", "Estimated by", "Schedule Order", "Assigned User", "Severity", "", "Schedule Order", "Component", "Date Entered", "Date Created", "Alarm", "Created By", "Type", "Product", "Reference", "Priority", "Schedule Date", "", "", "", "Branch", "BST Branch", "Test Priority", "" };
@@ -342,14 +342,14 @@ public partial class DefectBase : IdBasedObject
 			}
 		}
 	}
-    public string VERSION
-    {
-        get
-        {
-            return GetAsString(_vers);
-        }
-        set{}
-    }
+	public string VERSION
+	{
+		get
+		{
+			return GetAsString(_vers);
+		}
+		set { }
+	}
 	public string TESTPRIORITY
 	{
 		get { return GetAsInt(_buildP, 4).ToString(); }
@@ -454,25 +454,25 @@ public partial class DefectBase : IdBasedObject
 	}
 
 	public DefectBase()
-		: base(_Tabl, _allBaseCols, "0", _ID, false)
+		 : base(_Tabl, _allBaseCols, "0", _ID, false)
 	{
 	}
 	public DefectBase(int ttid)
-		: base(_Tabl,
-					_allBaseCols,
-					ttid.ToString(),
-					_ID)
+		 : base(_Tabl,
+						 _allBaseCols,
+						 ttid.ToString(),
+						 _ID)
 	{
 	}
 	public DefectBase(string ttid)
-		: base(_Tabl,
-					_allBaseCols,
-					ttid,
-					_ID)
+		 : base(_Tabl,
+						 _allBaseCols,
+						 ttid,
+						 _ID)
 	{
 	}
 	public DefectBase(string table, string[] columns, string id, string pcname = "ID", bool doload = true)
-		: base(table, columns, id, pcname, doload)
+		 : base(table, columns, id, pcname, doload)
 	{
 	}
 	public List<DefectBase> EnumPlanShort(int userid)
@@ -492,14 +492,14 @@ public partial class DefectBase : IdBasedObject
 			w_where = string.Format(" AND  ({0} in ({1}))", _Disp, string.Join(",", wl));
 		}
 
-        List<int> pl = DefectSeverity.EnumPlanable();
-        string w_where2 = "";
-        if (pl.Count > 0)
-        {
-            w_where2 = string.Format(" AND  ({0} in ({1}))", _Seve, string.Join(",", pl));
-        }
+		List<int> pl = DefectSeverity.EnumPlanable();
+		string w_where2 = "";
+		if (pl.Count > 0)
+		{
+			w_where2 = string.Format(" AND  ({0} in ({1}))", _Seve, string.Join(",", pl));
+		}
 
-        List<DefectBase> ls = new List<DefectBase>();
+		List<DefectBase> ls = new List<DefectBase>();
 		string where = string.Format(" WHERE (({0} = {1}) AND ({2} is not null) {3} {5}) ORDER BY {4}.{2} DESC", _AsUser, userid, _Order, w_where, _Tabl, w_where2);
 		foreach (DataRow r in GetRecords(where, max))
 		{
@@ -882,35 +882,35 @@ public partial class Defect : DefectBase
 		BSTCOMMANDS = d.BSTCOMMANDS;
 	}
 	public Defect()
-		: base(_Tabl, _allcols, "0", _ID, false)
+		 : base(_Tabl, _allcols, "0", _ID, false)
 	{
 	}
 	public Defect(int ttid)
-		: base(_Tabl,
-					_allcols,
-					ttid.ToString(),
-					_ID)
+		 : base(_Tabl,
+						 _allcols,
+						 ttid.ToString(),
+						 _ID)
 	{
 	}
 	public Defect(string ttid)
-		: base(_Tabl,
-					_allcols,
-					ttid,
-					_ID)
+		 : base(_Tabl,
+						 _allcols,
+						 ttid,
+						 _ID)
 	{
 	}
-    public static bool GetIDbyTT(int tt, out int id)
-    {
-        id = -1;
-        object o = GetRecdata(_Tabl, _idRec, _ID, tt);
-        if (o == null)
-        {
-            return false;
-        }
-        id = Convert.ToInt32(o);
-        return true;
-    }
-    public static int GetIDbyTT(int tt)
+	public static bool GetIDbyTT(int tt, out int id)
+	{
+		id = -1;
+		object o = GetRecdata(_Tabl, _idRec, _ID, tt);
+		if (o == null)
+		{
+			return false;
+		}
+		id = Convert.ToInt32(o);
+		return true;
+	}
+	public static int GetIDbyTT(int tt)
 	{
 		return Convert.ToInt32(GetRecdata(_Tabl, _idRec, _ID, tt));
 	}
@@ -982,5 +982,41 @@ public partial class Defect : DefectBase
 
 			return ttid;
 		}
+	}
+}
+public class DefectPlan
+{
+	public DefectPlan() { }
+	public DefectPlan(DefectBase db)
+	{
+		this.ID = db.ID;
+		this.SUMMARY = db.SUMMARY;
+		this.SMODTRID = db.SMODTRID;
+		this.SMODIFIER = db.SMODIFIER;
+		this.DISPO = int.Parse(db.DISPO);
+		this.SPENT = db.SPENT;
+		this.IDREC = db.IDREC;
+		this.ESTIM = db.ESTIM;
+		this.FIRE = db.FIRE;
+		this.VERSION = db.VERSION;
+	}
+	public bool FIRE { get; set; }
+	public int ESTIM { get; set; }
+	public int IDREC { get; set; }
+	public int SPENT { get; set; }
+	public int SMODTRID { get; set; }
+	public string SMODIFIER { get; set; }
+	public int DISPO { get; set; }
+	public int ID { get; set; }
+	public string SUMMARY { get; set; }
+	public string VERSION { get; set; }
+	static public List<DefectPlan> Convert2Plan(List<DefectBase> ls)
+	{
+		List<DefectPlan> lsout = new List<DefectPlan>();
+		foreach (var def in ls)
+		{
+			lsout.Add(new DefectPlan(def));
+		}
+		return lsout;
 	}
 }

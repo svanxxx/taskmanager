@@ -27,6 +27,7 @@
 						<th>Admin</th>
 						<th>WORKFLOW</th>
 						<th>RETIRED</th>
+						<th>CLIENT</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -54,6 +55,8 @@
 							<input class="form-check-input" ng-disabled="readonly" type="checkbox" ng-model="u.INWORK" ng-change="itemchanged(u)"></td>
 						<td align="center">
 							<input class="form-check-input" ng-disabled="readonly" type="checkbox" ng-model="u.RETIRED" ng-change="itemchanged(u)"></td>
+						<td align="center">
+							<input class="form-check-input" ng-disabled="readonly" type="checkbox" ng-model="u.ISCLIENT" ng-change="itemchanged(u)"></td>
 					</tr>
 				</tbody>
 			</table>

@@ -1,3 +1,3 @@
-﻿public partial class Tracker : SecurityPage
+﻿public partial class TrackerPage : SecurityPage
 {
 }

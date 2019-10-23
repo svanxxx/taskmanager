@@ -217,7 +217,17 @@ public class TRService : WebService
 	[WebMethod(EnableSession = true)]
 	public StoredDefectsFilter saveFilter(string name, bool personal, DefectsFilter filter)
 	{
+		CurrentContext.Validate();
 		return StoredDefectsFilter.NewFilter(name, personal, filter, CurrentContext.TTUSERID);
+	}
+	[WebMethod(EnableSession = true)]
+	public StoredDefectsFilter udpateFilter(int id, DefectsFilter filter)
+	{
+		CurrentContext.Validate();
+		StoredDefectsFilter stf = new StoredDefectsFilter(id);
+		stf.SetFilter(filter);
+		stf.Store();
+		return stf;
 	}
 	[WebMethod(EnableSession = true)]
 	public void deleteFilter(int id)
