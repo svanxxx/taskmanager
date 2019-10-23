@@ -65,8 +65,15 @@ public class Tracker : IdBasedObject
 	}
 	static public List<Tracker> Enum(int user)
 	{
+		if (user < 0)
+		{
+			return new List<Tracker>();
+		}
+		DefectUser usr = new DefectUser(user);
+		MPSUser mpu = new MPSUser(usr.TRID);
+		string filter = mpu.ISCLIENT ? $"WHERE {_Own} = {user} OR {_Cli} = {user} ORDER BY {_Nam} asc" : $"WHERE {_Own} = {user} OR {_Cli} is not null ORDER BY {_Nam} asc";
 		List<Tracker> res = new List<Tracker>();
-		foreach (DataRow r in (new Tracker()).GetRecords($"WHERE {_Own} = {user} OR {_Cli} = {user} ORDER BY {_Nam} asc"))
+		foreach (DataRow r in (new Tracker()).GetRecords(filter))
 		{
 			Tracker d = new Tracker();
 			d.Load(r);
