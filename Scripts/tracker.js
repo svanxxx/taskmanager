@@ -155,6 +155,9 @@ $(function () {
 					});
 				
 			}, 5000);
+			$interval(function () {
+				$scope.loadData();
+			}, 300000);
 		}
 	}]);
 });
