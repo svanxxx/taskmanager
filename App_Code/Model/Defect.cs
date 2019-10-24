@@ -79,7 +79,7 @@ public partial class DefectBase : IdBasedObject
 	public static string _Tabl = "[TT_RES].[DBO].[DEFECTS]";
 
 	protected static string[] _allBaseCols = new string[] { _ID, _Summ, _idRec, _Disp, _Est, _Spent, _EstId, _Order, _AsUser, _Seve, _sMod, _BackOrder, _Comp, _Date, _Created, _DateT, _CreaBy, _Type, _Prod, _Ref, _Prio, _OrderDate, _ModDate, _ModBy, _sModTRID, _branch, _branchBST, _buildP, _vers };
-	protected static string[] _allBaseColsNames = new string[] { _ID, "Summary", _idRec, "Disposition", "Estimation", "", "Estimated by", "Schedule Order", "Assigned User", "Severity", "", "Schedule Order", "Component", "Date Entered", "Date Created", "Alarm", "Created By", "Type", "Product", "Reference", "Priority", "Schedule Date", "", "", "", "Branch", "BST Branch", "Test Priority", "" };
+	protected static string[] _allBaseColsNames = new string[] { _ID, "Summary", _idRec, "Disposition", "Estimation", "", "Estimated by", "Schedule Order", "Assigned User", "Severity", "", "Schedule Order", "Component", "Date Entered", "Date Created", "Alarm", "Created By", "Type", "Product", "Reference", "Priority", "Schedule Date", "", "", "", "Branch", "BST Branch", "Test Priority", "Version" };
 
 	MPSUser _updater;
 	public MPSUser GetUpdater()
@@ -348,7 +348,10 @@ public partial class DefectBase : IdBasedObject
 		{
 			return GetAsString(_vers);
 		}
-		set { }
+		set
+		{
+			this[_vers] = value;
+		}
 	}
 	public string TESTPRIORITY
 	{

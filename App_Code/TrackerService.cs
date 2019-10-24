@@ -23,12 +23,13 @@ public class TrackerService : WebService
 		return (new DefectBase()).ModTime(flt).ToString();
 	}
 	[WebMethod(EnableSession = true)]
-	public void assignTracker(int id, int userid)
+	public List<Tracker> assignTracker(int id, int userid)
 	{
 		CurrentContext.Validate();
 		Tracker t = new Tracker(id);
 		t.IDCLIENT = userid;
 		t.Store();
+		return Tracker.Enum(CurrentContext.TTUSERID);
 	}
 	[WebMethod(EnableSession = true)]
 	public void delTracker(int id)

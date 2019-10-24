@@ -5,7 +5,7 @@
 			datasets: [{
 				data: [],
 				backgroundColor: [],
-				label: "Completion chart"
+				label: "Completion chart (hours)"
 			}],
 			labels: []
 		},
@@ -14,7 +14,7 @@
 			title: {
 				display: true,
 				position: "bottom",
-				text: "Completion chart"
+				text: "Completion chart (hours)"
 			}
 		}
 	};
@@ -39,7 +39,7 @@ function DrawChart($scope) {
 	var newDataset = {
 		backgroundColor: [],
 		data: [],
-		label: "Completion chart",
+		label: "Completion chart (hours)",
 	};
 	var labels = [];
 
@@ -90,13 +90,8 @@ $(function () {
 		$scope.assignToClient = function (track, user) {
 			var prgass = StartProgress("Assigning...");
 			$http.post("TrackerService.asmx/assignTracker", JSON.stringify({ "id": track, "userid": user }))
-				.then(function () {
-					for (var i = 0; i < $scope.trackers.length; i++) {
-						if ($scope.trackers[i].ID == track) {
-							$scope.trackers[i].IDCLIENT = user
-							break;
-						}
-					}
+				.then(function (res) {
+					$scope.trackers = res.data.d;
 					EndProgress(prgass);
 				});
 		};
@@ -137,6 +132,14 @@ $(function () {
 				EndProgress(taskprg);
 			}
 		};
+		$scope.pageName = function () {
+			if ($scope.id == "") {
+				return "Task Tracker";
+			} else {
+				return $scope.trackers.find(function (item) { return item.ID == $scope.id }).NAME + " Tracker";
+			}
+		};
+
 		$scope.loadData();
 		$scope.lastloaded = "";
 		if ($scope.id != "") {
