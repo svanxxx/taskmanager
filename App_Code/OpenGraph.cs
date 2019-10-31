@@ -23,7 +23,7 @@ public class OpenGraph : System.Web.UI.Page
 			val = "";
 			return;
 		}
-		val = s.Substring(ind + findstr.Length);
+		val = s.Substring(ind + findstr.Length).Split('&')[0];
 	}
 	string _ttid = null;
 	string GetPageTTID()
@@ -45,17 +45,28 @@ public class OpenGraph : System.Web.UI.Page
 		getParam("version", out _version);
 		return _version;
 	}
-    string _filter = null;
-    string GetPageFilter()
-    {
-        if (_filter != null)
-        {
-            return _filter;
-        }
-        getParam("filterid", out _filter);
-        return _filter;
-    }
-    DefectBase defectedURl = null;
+	string _filter = null;
+	string GetPageFilter()
+	{
+		if (_filter != null)
+		{
+			return _filter;
+		}
+		getParam("filterid", out _filter);
+		return _filter;
+	}
+	string _tracker = null;
+	string GetPageTracker()
+	{
+		if (_tracker != null)
+		{
+			return _tracker;
+		}
+		getParam("tracker.aspx?id", out _tracker);
+		return _tracker;
+	}
+
+	DefectBase defectedURl = null;
 	DefectBase getDefect()
 	{
 		if (defectedURl == null)
@@ -79,11 +90,15 @@ public class OpenGraph : System.Web.UI.Page
 		{
 			return "TT" + ttid;
 		}
-        if (!string.IsNullOrEmpty(GetPageFilter()))
-        {
-            return "Tasks list";
-        }
-        return "";
+		if (!string.IsNullOrEmpty(GetPageFilter()))
+		{
+			return "Tasks list";
+		}
+		if (!string.IsNullOrEmpty(GetPageTracker()))
+		{
+			return "Tasks Tracker";
+		}
+		return "";
 	}
 	public string GetPageOgImage()
 	{
@@ -97,10 +112,19 @@ public class OpenGraph : System.Web.UI.Page
 		{
 			return basepath + $"/images/vlog.png";
 		}
-        if (!string.IsNullOrEmpty(GetPageFilter()))
-        {
-            return basepath + $"/images/filter.png";
-        }
+		if (!string.IsNullOrEmpty(GetPageFilter()))
+		{
+			return basepath + $"/images/filter.png";
+		}
+		if (!string.IsNullOrEmpty(GetPageTracker()))
+		{
+			int idcl = (new Tracker(int.Parse(GetPageTracker()))).IDCLIENT;
+			if (idcl > 0)
+			{
+				return basepath + "/getUserImg.ashx?ttid=" + idcl.ToString();
+			}
+			return basepath + $"/images/tracker.png";
+		}
 		string userid = GetPageUserID();
 		if (userid != "")
 		{
@@ -176,10 +200,14 @@ public class OpenGraph : System.Web.UI.Page
 		{
 			return "Change Log";
 		}
-        else if (!string.IsNullOrEmpty(GetPageFilter()))
-        {
-            return StoredDefectsFilter.GetName(int.Parse(GetPageFilter()));
-        }
+		else if (!string.IsNullOrEmpty(GetPageFilter()))
+		{
+			return StoredDefectsFilter.GetName(int.Parse(GetPageFilter()));
+		}
+		else if (!string.IsNullOrEmpty(GetPageTracker()))
+		{
+			return (new Tracker(int.Parse(GetPageTracker()))).NAME;
+		}
 		return "";
 	}
 	public string GetPageOgDesc()
@@ -191,11 +219,11 @@ public class OpenGraph : System.Web.UI.Page
 			DefectBase d = getDefect();
 			if (d != null)
 			{
-                string add = "";
-                if (!string.IsNullOrEmpty(d.VERSION))
-                {
-                    add = $", inlcuded into {d.VERSION}";
-                }
+				string add = "";
+				if (!string.IsNullOrEmpty(d.VERSION))
+				{
+					add = $", inlcuded into {d.VERSION}";
+				}
 				return $"{d.GetTaskUserName()} ({d.ESTIM} hrs) - {d.GetTaskDispoName()}{add}";
 			}
 		}
