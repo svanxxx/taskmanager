@@ -24,7 +24,7 @@ $(function () {
 		});
 
 		$scope.currentuserid = -1;
-		if (getParameterByName("userid") != "") {
+		if (getParameterByName("userid") !== "") {
 			$scope.currentuserid = parseInt(getParameterByName("userid"));
 		}
 

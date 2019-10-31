@@ -36,17 +36,17 @@ public class VersionBuilder
 			return _UserID;
 		}
 	}
-	static bool Lock()
+	static bool Lock(bool auto)
 	{
 		lock (_lock)
 		{
 			if (_UserID == null)
 			{
 				_lockTime = DateTime.Now;
-				_UserID = CurrentContext.UserID;
+				_UserID = auto ? -1 : CurrentContext.UserID;
 				return true;
 			}
-			if (_UserID == CurrentContext.UserID)
+			if (_UserID == (auto ? -1 : CurrentContext.UserID))
 			{
 				_lockTime = DateTime.Now;
 				return true;
@@ -54,15 +54,15 @@ public class VersionBuilder
 			if (TimedOut())
 			{
 				_lockTime = DateTime.Now;
-				_UserID = CurrentContext.UserID;
+				_UserID = (auto ? -1 : CurrentContext.UserID);
 				return true;
 			}
 			return false;
 		}
 	}
-	static public string PrepareGit()
+	static public string PrepareGit(bool auto = false)
 	{
-		if (!Lock())
+		if (!Lock(auto))
 		{
 			return "Locked by another user!";
 		}
@@ -87,9 +87,9 @@ public class VersionBuilder
 		res.AddRange(git.Status());
 		return string.Join(Environment.NewLine, res.ToArray()).Replace(Environment.NewLine, "<br/>");
 	}
-	static public string VersionIncrement()
+	static public string VersionIncrement(bool auto = false)
 	{
-		if (!Lock())
+		if (!Lock(auto))
 		{
 			return "Locked by another user!";
 		}
@@ -124,9 +124,9 @@ public class VersionBuilder
 			return string.Join("<br/>", res.ToArray());
 		}
 	}
-	static public string PushRelease()
+	static public string PushRelease(bool auto = false)
 	{
-		if (!Lock())
+		if (!Lock(auto))
 		{
 			return "Locked by another user!";
 		}

@@ -60,6 +60,7 @@ public class TrackerService : WebService
 		public PublicFilter() { }
 		public string NAME { get; set; }
 		public int ID { get; set; }
+		public bool SHARED { get; set; }
 	}
 	[WebMethod(EnableSession = true)]
 	public List<PublicFilter> getFilters(int user)
@@ -69,7 +70,7 @@ public class TrackerService : WebService
 		List<PublicFilter> lsout = new List<PublicFilter>();
 		foreach (var f in sdf)
 		{
-			lsout.Add(new PublicFilter() { NAME = f.NAME, ID = f.ID });
+			lsout.Add(new PublicFilter() { NAME = f.NAME, ID = f.ID, SHARED = f.SHARED });
 		}
 		return lsout;
 	}

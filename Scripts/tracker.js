@@ -81,7 +81,7 @@ $(function () {
 
 		if ($scope.isadmin) {
 			var prgfltr = StartProgress("Loading filters...");
-			$http.post("TrackerService.asmx/getFilters", JSON.stringify({ "user": userID() }))
+			$http.post("TrackerService.asmx/getFilters", JSON.stringify({ "user": ttUserID() }))
 				.then(function (res) {
 					$scope.filters = res.data.d;
 					EndProgress(prgfltr);
@@ -139,8 +139,21 @@ $(function () {
 				return $scope.trackers.find(function (item) { return item.ID == $scope.id }).NAME + " Tracker";
 			}
 		};
+		$scope.pageLogo = function () {
+			if ($scope.id == "") {
+				return "Task Tracker";
+			} else {
+				return $scope.trackers.find(function (item) { return item.ID == $scope.id }).IDCLIENT;
+			}
+		};
 
-		$scope.loadData();
+		var references = $interval(function () {
+			if (!inProgress()) {
+				$scope.loadData();
+				$interval.cancel(references);
+			}
+		}, 200);
+		
 		$scope.lastloaded = "";
 		if ($scope.id != "") {
 			$interval(function () {
@@ -162,5 +175,6 @@ $(function () {
 				$scope.loadData();
 			}, 300000);
 		}
+		$('.toast').toast('show');
 	}]);
 });

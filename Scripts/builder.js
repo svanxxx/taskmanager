@@ -51,5 +51,19 @@
 					EndProgress(prg);
 				});
 		};
+		$scope.applySchedule = function () {
+			var prg = StartProgress("Applying schedule...");
+			$http.post("BuildService.asmx/setSchedule", JSON.stringify({ sb: $scope.scheduledBuild }))
+				.then(function (result) {
+					$scope.scheduledBuild = result.data.d;
+					EndProgress(prg);
+				});
+		};
+		$scope.scheduledBuild = [];
+		$http.post("BuildService.asmx/getSchedule", JSON.stringify({}))
+			.then(function (result) {
+				$scope.scheduledBuild = result.data.d;
+				$('.toast').toast('show');
+			});
 	}]);
 });

@@ -31,7 +31,29 @@
 				<button ng-show="psStatus.length > 0" ng-click="push2Master()" ng-disabled="readonly || progress()" type="button" class="btn btn-block btn-success">Push To mater.<img ng-show="progress()" height="20" width="20" src="images/process.gif" /></button>
 				<div ng-show="pushStatus.length > 0" class="well well-sm" ng-bind-html="pushStatus | rawHtml"></div>
 			</div>
-			<div class="col-md-3"></div>
+			<div class="col-md-3">
+				<div class="toast" data-autohide="false">
+					<div class="toast-header">
+						<strong class="mr-auto text-primary">Scheduled Builds</strong>
+					</div>
+					<div class="toast-body">
+						<div class="custom-control custom-switch">
+							<input type="checkbox" class="custom-control-input" id="sched" ng-model="scheduledBuild.ENABLED">
+							<label class="custom-control-label" for="sched">Scheduled Build Enabled</label>
+						</div>
+						<span>Recur on:</span>
+						<ul class="list-group">
+							<li class="list-group-item list-group-item-light" ng-repeat="d in scheduledBuild.DAYS">
+								<div class="custom-control custom-switch">
+									<input type="checkbox" class="custom-control-input" id="day{{d}}" ng-model="d.USE" ng-disabled="!scheduledBuild.ENABLED">
+									<label class="custom-control-label" for="day{{d}}">{{d.DAYNAME}}</label>
+								</div>
+							</li>
+						</ul>
+						<button type="button" class="btn btn-outline-secondary btn-sm" ng-click="applySchedule()">Apply Settings</button>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </asp:Content>

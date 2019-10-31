@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Win32.TaskScheduler;
+using System;
+using System.Collections.Generic;
+using System.Web;
 using System.Web.Services;
 
 [WebService(Namespace = "http://tempuri.org/")]
@@ -77,5 +80,127 @@ public class BuildService : WebService
 	{
 		CurrentContext.ValidateAdmin();
 		VersionBuilder.SendVersionAlarm();
+	}
+	[WebMethod]
+	public string scheduledBuild()
+	{
+		return "OK";
+		VersionBuilder.PrepareGit();
+		VersionBuilder.VersionIncrement();
+		VersionBuilder.PushRelease();
+		VersionBuilder.SendVersionAlarm();
+
+	}
+	static string _tname = "TaskManagerBuilder";	static WeeklyTrigger getDefTrigger()
+	{
+		WeeklyTrigger wt = new WeeklyTrigger();
+		wt.StartBoundary = DateTime.Today.Date;
+		wt.StartBoundary = wt.StartBoundary.AddHours(20);
+		wt.WeeksInterval = 1;
+		wt.DaysOfWeek = DaysOfTheWeek.Monday | DaysOfTheWeek.Tuesday | DaysOfTheWeek.Wednesday | DaysOfTheWeek.Thursday | DaysOfTheWeek.Friday;
+		return wt;
+	}
+	static ExecAction getDefAction()
+	{
+		return new ExecAction("powershell.exe", HttpContext.Current.Server.MapPath("scripts/builder.ps1"), null);
+	}
+	static Task getSchedTask()
+	{
+		using (TaskService ts = new TaskService())
+		{
+			Task task = ts.FindTask(_tname);
+			if (task != null)
+			{
+				return task;
+			}
+		}
+		return CreateNewTask(getDefTrigger());
+	}
+	static Task CreateNewTask(WeeklyTrigger wt, bool enabled = false)
+	{
+		using (TaskService ts = new TaskService())
+		{
+			TaskDefinition td = ts.NewTask();
+			td.RegistrationInfo.Description = _tname;
+			td.Triggers.Add(wt);
+			td.Actions.Add(getDefAction());
+			ts.RootFolder.RegisterTaskDefinition(_tname, td);
+			Task t = ts.FindTask(_tname);
+			t.Enabled = enabled;
+			t.Dispose();
+			return ts.FindTask(_tname);
+		}
+	}
+	public class Day
+	{
+		public Day() { }
+		public DaysOfTheWeek DAY { get; set; }
+		public bool USE { get; set; }
+		public string DAYNAME
+		{
+			get
+			{
+				return DAY.ToString();
+			}
+		}
+	}
+	public class ScheduledBuild
+	{
+		public ScheduledBuild()
+		{
+			this.DAYS = new List<Day>();
+		}
+		public void Load()
+		{
+			using (Task t = getSchedTask())
+			{
+				this.ENABLED = t.Enabled;
+				WeeklyTrigger wt = (WeeklyTrigger)t.Definition.Triggers[0];
+				this.DAYS.Add(new Day() { DAY = DaysOfTheWeek.Monday, USE = (wt.DaysOfWeek & DaysOfTheWeek.Monday) == DaysOfTheWeek.Monday });
+				this.DAYS.Add(new Day() { DAY = DaysOfTheWeek.Tuesday, USE = (wt.DaysOfWeek & DaysOfTheWeek.Tuesday) == DaysOfTheWeek.Tuesday });
+				this.DAYS.Add(new Day() { DAY = DaysOfTheWeek.Wednesday, USE = (wt.DaysOfWeek & DaysOfTheWeek.Wednesday) == DaysOfTheWeek.Wednesday });
+				this.DAYS.Add(new Day() { DAY = DaysOfTheWeek.Thursday, USE = (wt.DaysOfWeek & DaysOfTheWeek.Thursday) == DaysOfTheWeek.Thursday });
+				this.DAYS.Add(new Day() { DAY = DaysOfTheWeek.Friday, USE = (wt.DaysOfWeek & DaysOfTheWeek.Friday) == DaysOfTheWeek.Friday });
+				this.DAYS.Add(new Day() { DAY = DaysOfTheWeek.Saturday, USE = (wt.DaysOfWeek & DaysOfTheWeek.Saturday) == DaysOfTheWeek.Saturday });
+				this.DAYS.Add(new Day() { DAY = DaysOfTheWeek.Sunday, USE = (wt.DaysOfWeek & DaysOfTheWeek.Sunday) == DaysOfTheWeek.Sunday });
+			}
+		}
+		public void Store()
+		{
+			using (TaskService ts = new TaskService())
+			{
+				ts.RootFolder.DeleteTask(_tname);
+			}
+			WeeklyTrigger wt = getDefTrigger();
+			foreach (var d in DAYS)
+			{
+				if (d.USE)
+				{
+					wt.DaysOfWeek |= d.DAY;
+				}
+				else
+				{
+					wt.DaysOfWeek &= ~d.DAY;
+				}
+			}
+			CreateNewTask(wt, this.ENABLED).Dispose();
+		}
+		public bool ENABLED { get; set; }
+		public List<Day> DAYS;
+	}
+	[WebMethod(EnableSession = true)]
+	public ScheduledBuild getSchedule()
+	{
+		CurrentContext.ValidateAdmin();
+		ScheduledBuild sb = new ScheduledBuild();
+		sb.Load();
+		return sb;
+	}
+	[WebMethod(EnableSession = true)]
+	public ScheduledBuild setSchedule(ScheduledBuild sb)
+	{
+		CurrentContext.ValidateAdmin();
+		sb.Store();
+		return sb;
 	}
 }
