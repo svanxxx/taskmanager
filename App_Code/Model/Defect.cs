@@ -1002,11 +1002,13 @@ public class DefectPlan
 		this.ESTIM = db.ESTIM;
 		this.FIRE = db.FIRE;
 		this.VERSION = db.VERSION;
+		this.AUSER = db.AUSER;
 	}
 	public bool FIRE { get; set; }
 	public int ESTIM { get; set; }
 	public int IDREC { get; set; }
 	public int SPENT { get; set; }
+	public string AUSER { get; set; }
 	public int SMODTRID { get; set; }
 	public string SMODIFIER { get; set; }
 	public int DISPO { get; set; }
