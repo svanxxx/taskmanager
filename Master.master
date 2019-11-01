@@ -97,7 +97,7 @@
 		</div>
 	</nav>
 	<br>
-	<form id="form1" runat="server">
+	<form id="form1" runat="server" onSubmit="return false;">
 		<div class="container-fluid body-content">
 			<asp:ContentPlaceHolder ID="MainContent" runat="server">
 			</asp:ContentPlaceHolder>

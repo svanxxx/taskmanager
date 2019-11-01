@@ -10,7 +10,8 @@ public class Tracker : IdBasedObject
 	private static string _Own = "idOwner";
 	private static string _Flt = "idFilter";
 	private static string _Cli = "idClient";
-	private static string[] _allCols = new string[] { _pid, _Nam, _Own, _Flt, _Cli };
+	private static string _Cre = "dateCreated";
+	private static string[] _allCols = new string[] { _pid, _Nam, _Own, _Flt, _Cli, _Cre };
 	private static string _Tabl = "[TT_RES].[DBO].[DefectTracker]";
 
 	public int ID
@@ -22,6 +23,11 @@ public class Tracker : IdBasedObject
 	{
 		get { return GetAsString(_Nam); }
 		set { this[_Nam] = value; }
+	}
+	public string CREATED
+	{
+		get { return GetAsDateTime(_Cre); }
+		set { SetAsDate(_Cre, value); }
 	}
 	public int OWNER
 	{
@@ -46,6 +52,18 @@ public class Tracker : IdBasedObject
 	public Tracker(int id)
 	  : base(_Tabl, _allCols, id.ToString(), _pid, true)
 	{
+	}
+	public string GetTag()
+	{
+		return "tag_" + NAME.Replace(" ", "_");
+	}
+	public DefectsFilter GetFilter()
+	{
+		if (IDFILTER < 0)
+		{
+			return new DefectsFilter() { text = GetTag() };
+		}
+		return new StoredDefectsFilter(IDFILTER).GetFilter();
 	}
 	static public Tracker New(string name, int user, int filter)
 	{

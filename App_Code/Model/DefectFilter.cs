@@ -269,10 +269,14 @@ public partial class DefectBase : IdBasedObject
 		}
 		return ls;
 	}
-	public DateTime ModTime(DefectsFilter f)
+	public DateTime? ModTime(DefectsFilter f)
 	{
 		string where = PrepareQueryForEnum(f, false);
 		object o = GetValue($"SELECT MAX({_ModDate}) FROM {_Tabl} {where}");
+		if (o == DBNull.Value)
+		{
+			return null;
+		}
 		return Convert.ToDateTime(o);
 	}
 }

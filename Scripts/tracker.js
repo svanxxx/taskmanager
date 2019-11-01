@@ -110,8 +110,16 @@ $(function () {
 				});
 		};
 		$scope.addTracker = function (id, inputname) {
+			if (!inputname) {
+				var date = new Date();
+				var uname = userLogin();
+				inputname = uname.charAt(0).toUpperCase() + uname.slice(1) + " Requests " + date.toLocaleString();
+			}
 			var name = prompt("Please enter the name", inputname);
 			if (name !== "" && name !== null) {
+				if (!id) {
+					id = -1;
+				}
 				$http.post("TrackerService.asmx/newTracker", JSON.stringify({ "name": name, "user": ttUserID(), "filter": id }))
 					.then(function (res) {
 						$scope.trackers.push(res.data.d);
@@ -123,20 +131,14 @@ $(function () {
 			if ($scope.id !== "") {
 				var taskprg = StartProgress("Loading data...");
 				var tr = $scope.trackers.find(function (item) { return item.ID == $scope.id });
-				$http.post("TrackerService.asmx/getItems", JSON.stringify({ "filterid": tr.IDFILTER }))
+				$http.post("TrackerService.asmx/getItems", JSON.stringify({ "trackerid": tr.ID }))
 					.then(function (res) {
 						$scope.defects = res.data.d;
 						EndProgress(prgfltr);
 						DrawChart($scope);
 					});
 				EndProgress(taskprg);
-			}
-		};
-		$scope.pageName = function () {
-			if ($scope.id == "") {
-				return "Task Tracker";
-			} else {
-				return $scope.trackers.find(function (item) { return item.ID == $scope.id }).NAME + " Tracker";
+				reActivateTooltips();
 			}
 		};
 		$scope.pageLogo = function () {
@@ -146,6 +148,15 @@ $(function () {
 				return $scope.trackers.find(function (item) { return item.ID == $scope.id }).IDCLIENT;
 			}
 		};
+		$scope.messageKey = function (event) {
+			if (event.keyCode === 13) {
+				$http.post("TrackerService.asmx/newTask", JSON.stringify({ summary: $scope.newtask, trackerid: $scope.id }))
+					.then(function (res) {
+						$scope.defects.unshift(res.data.d);
+					});
+				$scope.newtask = "";
+			}
+		};
 
 		var references = $interval(function () {
 			if (!inProgress()) {
@@ -153,19 +164,26 @@ $(function () {
 				$interval.cancel(references);
 			}
 		}, 200);
-		
+
+		$scope.pageName = "Task Tracker";
+		$scope.simpleTracker = false;
 		$scope.lastloaded = "";
 		if ($scope.id != "") {
+
+			var tracker = $scope.trackers.find(function (item) { return item.ID == $scope.id });
+			$scope.pageName = tracker.NAME + " Tracker";
+			$scope.simpleTracker = tracker.IDFILTER < 0;
+
 			$interval(function () {
-				var tr = $scope.trackers.find(function (item) { return item.ID == $scope.id });
-				$http.post("TrackerService.asmx/getTrackerModified", JSON.stringify({ "id": tr.IDFILTER }))
+				$http.post("TrackerService.asmx/getTrackerModified", JSON.stringify({ "id": $scope.id }))
 					.then(function (res) {
-						if ($scope.lastloaded == "") {
-							$scope.lastloaded = res.data.d;
+						console.log(res.data.d);
+						if ($scope.lastloaded === "") {
+							$scope.lastloaded = "" + res.data.d;
 							return;
 						}
-						if ($scope.lastloaded != res.data.d) {
-							$scope.lastloaded = res.data.d;
+						if ($scope.lastloaded !== res.data.d) {
+							$scope.lastloaded = "" + res.data.d;
 							$scope.loadData();
 						}
 					});

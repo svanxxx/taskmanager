@@ -20,7 +20,7 @@
 		<div class="row">
 			<div class="btn-group mx-auto">
 				<button type="button" class="btn btn-outline-light text-dark" data-toggle="dropdown">
-					<h2><i class="fas fa-file-contract"></i>&nbsp;{{pageName()}}</h2>
+					<h2><i class="fas fa-file-contract"></i>&nbsp;{{pageName}}</h2>
 				</button>
 				<div class="dropdown-menu">
 					<a ng-repeat="t in trackers" href="?id={{t.ID}}" class="dropdown-item">{{t.NAME}}</a>
@@ -34,12 +34,13 @@
 				</div>
 			</div>
 			<div class="col-md-6 mb-2">
+				<input ng-model="newtask" type="text" class="form-control form-control-sm" ng-keyup="messageKey($event)" ng-show="isadmin && simpleTracker">
 				<div class="list-group shadow">
 					<div ng-repeat="d in defects" class="list-group-item p-1" ng-style="{{d.DISPO | getDispoColorById:this}}">
 						<uc:defNum runat="server" />
 						<uc:defEst runat="server" />
 						<span data-toggle="tooltip" title="{{d.SUMMARY}}" ng-bind-html="d.SUMMARY | sumFormat | limitTo:135"></span>
-						<uc:defUsr ng-show="isadmin" runat="server" class="float-right"/>
+						<uc:defUsr ng-show="isadmin" runat="server" class="float-right" />
 						<uc:defVer runat="server" />
 					</div>
 				</div>
@@ -67,17 +68,20 @@
 							</div>
 							<button ng-show="isadmin" type="button" class="close" ng-click="delTracker(t.ID)">&times;</button>
 						</div>
-						<div class="btn-group" ng-show="isadmin">
-							<button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown">
-								Add new track list
-							</button>
-							<div class="dropdown-menu">
-								<a class="dropdown-item" href ng-repeat="f in filters" ng-click="addTracker(f.ID, f.NAME)" style="cursor: pointer">
-									<i class="fas fa-user-friends text-danger" ng-show="f.SHARED"></i>
-									<i class="fas fa-user" ng-hide="f.SHARED"></i>
-									{{f.NAME}}
-								</a>
+						<div class="d-flex">
+							<div class="btn-group flex-fill" ng-show="isadmin">
+								<button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown">
+									Add new track list
+								</button>
+								<div class="dropdown-menu">
+									<a class="dropdown-item" href ng-repeat="f in filters" ng-click="addTracker(f.ID, f.NAME)" style="cursor: pointer">
+										<i class="fas fa-user-friends text-danger" ng-show="f.SHARED"></i>
+										<i class="fas fa-user" ng-hide="f.SHARED"></i>
+										{{f.NAME}}
+									</a>
+								</div>
 							</div>
+							<button type="button" class="btn btn-outline-secondary flex-fill" ng-click="addTracker()">Simple Tracker</button>
 						</div>
 					</div>
 				</div>

@@ -8,7 +8,7 @@ using System.Web.Services;
 [System.Web.Script.Services.ScriptService]
 public class DefectService : WebService
 {
-	public DefectService(){}
+	public DefectService() { }
 	[WebMethod(EnableSession = true)]
 	public string settask(Defect d)
 	{
@@ -74,7 +74,7 @@ public class DefectService : WebService
 		if (string.IsNullOrEmpty(date))
 			return res;
 		DateTime dt = DateTime.ParseExact(date, IdBasedObject.defDateFormat, CultureInfo.InvariantCulture);
-		foreach(var i in DefectEvent.GetEventsByDay(dt, CurrentContext.TTUSERID))
+		foreach (var i in DefectEvent.GetEventsByDay(dt, CurrentContext.TTUSERID))
 		{
 			res.Add(new DefectEventDefect(i));
 		}
@@ -106,11 +106,11 @@ public class DefectService : WebService
 		NotifyHub.NotifyDefectChange(id);
 		return ChangeDispo(ttid, disp);
 	}
-    [WebMethod]
-    public DefectBase versionChange(int ttid, string version)
-    {
-        int id = Defect.GetIDbyTT(ttid);
-        DefectEvent.AddEventByTask(id, DefectEvent.Eventtype.versionIncluded, CurrentContext.TTUSERID, version, -1, -1, null);
-        return new DefectBase(ttid);
-    }
+	[WebMethod]
+	public DefectBase versionChange(int ttid, string version)
+	{
+		int id = Defect.GetIDbyTT(ttid);
+		DefectEvent.AddEventByTask(id, DefectEvent.Eventtype.versionIncluded, CurrentContext.TTUSERID, version, -1, -1, null);
+		return new DefectBase(ttid);
+	}
 }

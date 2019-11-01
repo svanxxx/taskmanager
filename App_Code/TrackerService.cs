@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Web.Services;
 
 [WebService(Namespace = "http://tempuri.org/")]
@@ -19,8 +20,13 @@ public class TrackerService : WebService
 	public string getTrackerModified(int id)
 	{
 		CurrentContext.Validate();
-		DefectsFilter flt = new StoredDefectsFilter(id).GetFilter();
-		return (new DefectBase()).ModTime(flt).ToString();
+		Tracker t = new Tracker(id);
+		DateTime? dt = (new DefectBase()).ModTime(t.GetFilter());
+		if (dt != null)
+		{
+			return dt.Value.ToString(IdBasedObject.defDateTimeFormat, CultureInfo.InvariantCulture);
+		};
+		return t.CREATED;
 	}
 	[WebMethod(EnableSession = true)]
 	public List<Tracker> assignTracker(int id, int userid)
@@ -38,11 +44,10 @@ public class TrackerService : WebService
 		Tracker.Delete(id);
 	}
 	[WebMethod(EnableSession = true)]
-	public List<DefectPlan> getItems(int filterid)
+	public List<DefectPlan> getItems(int trackerid)
 	{
 		CurrentContext.Validate();
-		DefectsFilter flt = new StoredDefectsFilter(filterid).GetFilter();
-		List<DefectBase> defs = (new DefectBase()).Enum(flt);
+		List<DefectBase> defs = (new DefectBase()).Enum(new Tracker(trackerid).GetFilter());
 		return DefectPlan.Convert2Plan(defs);
 	}
 	[WebMethod(EnableSession = true)]
@@ -73,5 +78,23 @@ public class TrackerService : WebService
 			lsout.Add(new PublicFilter() { NAME = f.NAME, ID = f.ID, SHARED = f.SHARED });
 		}
 		return lsout;
+	}
+	[WebMethod(EnableSession = true)]
+	public DefectPlan newTask(string summary, int trackerid)
+	{
+		CurrentContext.ValidateAdmin();
+		if (string.IsNullOrEmpty(summary) || trackerid < 0)
+			return null;
+		Tracker t = new Tracker(trackerid);
+		summary += "@" + t.NAME;
+		Defect d = new Defect(Defect.New(summary));
+		d.DESCR = $@"
+<task-message clr='undefined'  userid='{CurrentContext.UserID}' user='{CurrentContext.UserLogin()}' time='{DateTime.Now.ToString()}'>
+tag:{t.GetTag()}
+</task-message>
+";
+		d.ESTIM = 1;
+		d.Store();
+		return new DefectPlan(d);
 	}
 }
