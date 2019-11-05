@@ -126,4 +126,22 @@ public class DefectService : WebService
 		d.Store();
 		return d.ESTIM;
 	}
+	[WebMethod(EnableSession = true)]
+	public string assignDefect(int ttid, int userid)
+	{
+		CurrentContext.Validate();
+		Defect d = new Defect(ttid);
+		if (Defect.Locked(ttid.ToString()))
+		{
+			return "";
+		}
+		d.AUSER = userid.ToString();
+		if (d.DISPO ==  DefectDispo.EnumCannotStartIDs()[0].ToString())
+		{
+			d.DISPO = DefectDispo.EnumWorkable()[0].ID.ToString();
+		}
+		d.ORDER = 1;
+		d.Store();
+		return d.AUSER;
+	}
 }
