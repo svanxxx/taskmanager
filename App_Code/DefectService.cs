@@ -113,4 +113,17 @@ public class DefectService : WebService
 		DefectEvent.AddEventByTask(id, DefectEvent.Eventtype.versionIncluded, CurrentContext.TTUSERID, version, -1, -1, null);
 		return new DefectBase(ttid);
 	}
+	[WebMethod(EnableSession = true)]
+	public int estimateDefect(int ttid, int estim)
+	{
+		CurrentContext.Validate();
+		Defect d = new Defect(ttid);
+		if (Defect.Locked(ttid.ToString()))
+		{
+			return d.ESTIM;
+		}
+		d.ESTIM = estim;
+		d.Store();
+		return d.ESTIM;
+	}
 }

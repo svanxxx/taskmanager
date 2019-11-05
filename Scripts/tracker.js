@@ -10,6 +10,7 @@
 			labels: []
 		},
 		options: {
+			animation: false,
 			responsive: true,
 			title: {
 				display: true,
@@ -68,13 +69,33 @@ $(function () {
 		$scope.filters = [];
 		$scope.defects = [];
 		$scope.id = getParameterByName("id");
+		if ($scope.id != "") {
+			$.cookie("trackerid", $scope.id, { expires: 365 });
+		}
 		var tmp = document.getElementById("trackers").value;
 		if (tmp === "") {
 			$scope.trackers = [];
 		} else {
 			$scope.trackers = JSON.parse(tmp);
-			if ($scope.id == "" && $scope.trackers.length > 0) {
-				$scope.id = $scope.trackers[0].ID;
+			if ($scope.id == "") {
+				$scope.id = $.cookie("trackerid");
+			}
+			if ($scope.trackers.length > 0) {
+				if ($scope.id != "") {
+					var exist = false;
+					for (var i = 0; i < $scope.trackers.length; i++) {
+						if ($scope.id == $scope.trackers[i].ID) {
+							exist = true;
+							break;
+						}
+					}
+					if (!exist) {
+						$scope.id = "";
+					}
+				}
+				if ($scope.id == "") {
+					$scope.id = $scope.trackers[0].ID;
+				}
 				window.history.pushState(null, "", replaceUrlParam(location.href, "id", $scope.id));
 			}
 		}
@@ -113,7 +134,8 @@ $(function () {
 			if (!inputname) {
 				var date = new Date();
 				var uname = userLogin();
-				inputname = uname.charAt(0).toUpperCase() + uname.slice(1) + " Requests " + date.toLocaleString();
+				var sdate = monthNames[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear();
+				inputname = uname.charAt(0).toUpperCase() + uname.slice(1) + " Requests " + sdate;
 			}
 			var name = prompt("Please enter the name", inputname);
 			if (name !== "" && name !== null) {
@@ -150,9 +172,14 @@ $(function () {
 		};
 		$scope.messageKey = function (event) {
 			if (event.keyCode === 13) {
+				if (!$scope.newtask) {
+					return;
+				}
+				$scope.lasttaskinput = new Date().getTime();
 				$http.post("TrackerService.asmx/newTask", JSON.stringify({ summary: $scope.newtask, trackerid: $scope.id }))
 					.then(function (res) {
 						$scope.defects.unshift(res.data.d);
+						$scope.lastloaded = "internal event";
 					});
 				$scope.newtask = "";
 			}
@@ -168,13 +195,30 @@ $(function () {
 		$scope.pageName = "Task Tracker";
 		$scope.simpleTracker = false;
 		$scope.lastloaded = "";
+		var dt = new Date();
+		dt.setHours(dt.getHours() - 1);
+		$scope.lasttaskinput = dt.getTime();
+		$scope.requireSynch = function () {
+			var timeout = new Date().getTime() - $scope.lasttaskinput;
+			if (timeout < 1000 * 20) { //ask for updates only after delay to allow sql server update text indexes
+				return false;
+			}
+			return true;
+		};
 		if ($scope.id != "") {
-
 			var tracker = $scope.trackers.find(function (item) { return item.ID == $scope.id });
 			$scope.pageName = tracker.NAME + " Tracker";
 			$scope.simpleTracker = tracker.IDFILTER < 0;
+			$http.post("TrackerService.asmx/getTrackerModified", JSON.stringify({ "id": $scope.id }))
+				.then(function (res) {
+					$scope.lastloaded = res.data.d;
+					console.log("fist loaded " + $scope.lastloaded);
+				});
 
 			$interval(function () {
+				if (!$scope.requireSynch()) {
+					return;
+				}
 				$http.post("TrackerService.asmx/getTrackerModified", JSON.stringify({ "id": $scope.id }))
 					.then(function (res) {
 						console.log(res.data.d);
@@ -187,9 +231,12 @@ $(function () {
 							$scope.loadData();
 						}
 					});
-				
+
 			}, 5000);
 			$interval(function () {
+				if (!$scope.requireSynch()) {
+					return;
+				}
 				$scope.loadData();
 			}, 300000);
 		}

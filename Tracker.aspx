@@ -34,13 +34,13 @@
 				</div>
 			</div>
 			<div class="col-md-6 mb-2">
-				<input ng-model="newtask" type="text" class="form-control form-control-sm" ng-keyup="messageKey($event)" ng-show="isadmin && simpleTracker">
+				<input ng-model="newtask" type="text" class="form-control form-control-sm" onkeydown="return event.key != 'Enter';" ng-keyup="messageKey($event)" ng-show="isadmin && simpleTracker">
 				<div class="list-group shadow">
 					<div ng-repeat="d in defects" class="list-group-item p-1" ng-style="{{d.DISPO | getDispoColorById:this}}">
 						<uc:defNum runat="server" />
 						<uc:defEst runat="server" />
 						<span data-toggle="tooltip" title="{{d.SUMMARY}}" ng-bind-html="d.SUMMARY | sumFormat | limitTo:135"></span>
-						<uc:defUsr ng-show="isadmin" runat="server" class="float-right" />
+						<uc:defUsr onchange="console.log('ddd')" ng-show="isadmin" runat="server" class="float-right" />
 						<uc:defVer runat="server" />
 					</div>
 				</div>

@@ -10,6 +10,7 @@
 		{
 			System.Web.Optimization.BundleTable.Bundles.Add(new System.Web.Optimization.ScriptBundle(string.Format("~/bundles/{0}_js", file)).Include(
 				string.Format("~/scripts/references.js", file)
+				, string.Format("~/scripts/defecthandlers.js", file)
 				, string.Format("~/scripts/commonrefeditor.js", file)
 				, string.Format("~/scripts/tables.js", file)
 				, string.Format("~/scripts/{0}.js", file)
@@ -19,15 +20,15 @@
 				, string.Format("~/css/{0}.css", file)
 				));
 		}
-		string[] customscripts = new string[] { "buildshelper"};
+		string[] customscripts = new string[] { "buildshelper" };
 		foreach (string file in customscripts)
 		{
 			System.Web.Optimization.BundleTable.Bundles.Add(new System.Web.Optimization.ScriptBundle(string.Format("~/bundles/{0}_js", file)).Include(
-			string.Format("~/scripts/{0}.js", file)	
+			string.Format("~/scripts/{0}.js", file)
 			));
 		}
 		TasksBot.StartConnection();
-        //SupportBot.StartConnection();
+		//SupportBot.StartConnection();
 	}
 	void Application_End(object sender, EventArgs e)
 	{
