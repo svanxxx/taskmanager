@@ -53,7 +53,10 @@
 				</div>
 				<div class="shadow">
 					<div class="list-group mb-2">
-						<div ng-repeat="t in trackers" class="d-flex mb-2 ">
+						<div ng-repeat="t in trackers" class="d-flex mb-2">
+							<svg width="10" height="3em">
+								<rect ng-repeat="c in t.Completes" ng-attr-y="{{c.Y+'%'}}" width="100%" ng-attr-height="{{c.PERCENT+'%'}}" style="fill: {{c.COLOR}}; stroke-width: 1; stroke: rgb(0,0,0)" />
+							</svg>
 							<a href="?id={{t.ID}}" class="list-group-item list-group-item-action shadow">{{t.NAME}}</a>
 							<div class="btn-group" ng-show="isadmin">
 								<button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-toggle="dropdown">
@@ -81,7 +84,7 @@
 									</a>
 								</div>
 							</div>
-							<button type="button" class="btn btn-outline-secondary flex-fill" ng-click="addTracker()">Simple Tracker</button>
+							<button ng-show="isadmin" type="button" class="btn btn-outline-secondary flex-fill" ng-click="addTracker()">Simple Tracker</button>
 						</div>
 					</div>
 				</div>

@@ -3,6 +3,13 @@ using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 
+public class Complete
+{
+	public Complete() { }
+	public string COLOR { get; set; }
+	public double PERCENT { get; set; }
+	public double Y { get; set; }
+}
 public class Tracker : IdBasedObject
 {
 	private static string _pid = "idRecord";
@@ -11,7 +18,8 @@ public class Tracker : IdBasedObject
 	private static string _Flt = "idFilter";
 	private static string _Cli = "idClient";
 	private static string _Cre = "dateCreated";
-	private static string[] _allCols = new string[] { _pid, _Nam, _Own, _Flt, _Cli, _Cre };
+	private static string _Col = "COLORDEF";
+	private static string[] _allCols = new string[] { _pid, _Nam, _Own, _Flt, _Cli, _Cre, _Col };
 	private static string _Tabl = "[TT_RES].[DBO].[DefectTracker]";
 
 	public int ID
@@ -19,10 +27,45 @@ public class Tracker : IdBasedObject
 		get { return GetAsInt(_pid); }
 		set { this[_pid] = value; }
 	}
+	public List<Complete> Completes
+	{
+		get
+		{
+			double total = 0;
+			List<Complete> res = new List<Complete>();
+			foreach(var s in COLORDEFS.Split(';'))
+			{
+				if (string.IsNullOrEmpty(s))
+				{
+					continue;
+				}
+				string[] items = s.Split(':');
+				if (items.Length > 1)
+				{
+					double val = double.Parse(items[0]);
+					total += val;
+					res.Add(new Complete() { PERCENT = val , COLOR = items[1] });
+				}
+			}
+			double dy = 0;
+			foreach(var p in res)
+			{
+				p.PERCENT = p.PERCENT * 100.0 / total;
+				p.Y = dy;
+				dy += p.PERCENT;
+			}
+			return res;
+		}
+	}
 	public string NAME
 	{
 		get { return GetAsString(_Nam); }
 		set { this[_Nam] = value; }
+	}
+	public string COLORDEFS
+	{
+		get { return GetAsString(_Col); }
+		set { this[_Col] = value; }
 	}
 	public string CREATED
 	{

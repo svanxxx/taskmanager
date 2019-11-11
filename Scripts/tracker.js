@@ -79,6 +79,9 @@ $(function () {
 			$scope.trackers = JSON.parse(tmp);
 			if ($scope.id == "") {
 				$scope.id = $.cookie("trackerid");
+				if ($scope.id == undefined) {
+					$scope.id = "";
+				}
 			}
 			if ($scope.trackers.length > 0) {
 				if ($scope.id != "") {
@@ -155,7 +158,8 @@ $(function () {
 				var tr = $scope.trackers.find(function (item) { return item.ID == $scope.id });
 				$http.post("TrackerService.asmx/getItems", JSON.stringify({ "trackerid": tr.ID }))
 					.then(function (res) {
-						$scope.defects = res.data.d;
+						$scope.defects = res.data.d.ITEMS;
+						tr.Completes = res.data.d.TRACKER.Completes;
 						EndProgress(prgfltr);
 						DrawChart($scope);
 					});
@@ -207,8 +211,13 @@ $(function () {
 		};
 		if ($scope.id != "") {
 			var tracker = $scope.trackers.find(function (item) { return item.ID == $scope.id });
-			$scope.pageName = tracker.NAME + " Tracker";
-			$scope.simpleTracker = tracker.IDFILTER < 0;
+			if (tracker) {
+				$scope.pageName = tracker.NAME + " Tracker";
+				$scope.simpleTracker = tracker.IDFILTER < 0;
+			} else {
+				$scope.pageName = "There are no trackers assigned to this user";
+				$scope.simpleTracker = false;
+			}
 			$http.post("TrackerService.asmx/getTrackerModified", JSON.stringify({ "id": $scope.id }))
 				.then(function (res) {
 					$scope.lastloaded = res.data.d;

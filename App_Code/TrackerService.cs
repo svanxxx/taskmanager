@@ -43,12 +43,42 @@ public class TrackerService : WebService
 		CurrentContext.Validate();
 		Tracker.Delete(id);
 	}
+	public class TrackerResults
+	{
+		public TrackerResults() { }
+		public List<DefectPlan> ITEMS;
+		public Tracker TRACKER;
+	}
 	[WebMethod(EnableSession = true)]
-	public List<DefectPlan> getItems(int trackerid)
+	public TrackerResults getItems(int trackerid)
 	{
 		CurrentContext.Validate();
-		List<DefectBase> defs = (new DefectBase()).Enum(new Tracker(trackerid).GetFilter());
-		return DefectPlan.Convert2Plan(defs);
+		TrackerResults res = new TrackerResults();
+		res.TRACKER = new Tracker(trackerid);
+		List<DefectBase> defs = (new DefectBase()).Enum(res.TRACKER.GetFilter());
+		string COLORDEFS = "";
+		foreach (var disp in DefectDispo.Enum())
+		{
+			int estim = 0;
+			foreach(var def in defs)
+			{
+				if (def.DISPO == disp.ID.ToString())
+				{
+					estim += def.ESTIM;
+				}
+			}
+			if (estim > 0)
+			{
+				COLORDEFS += $"{estim}:{disp.COLOR};"; 
+			}
+		}
+		if (res.TRACKER.COLORDEFS != COLORDEFS)
+		{
+			res.TRACKER.COLORDEFS = COLORDEFS;
+			res.TRACKER.Store();
+		}
+		res.ITEMS = DefectPlan.Convert2Plan(defs);
+		return res;
 	}
 	[WebMethod(EnableSession = true)]
 	public Tracker newTracker(string name, int user, int filter)

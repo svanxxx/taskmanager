@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Web.Services;
 
 [WebService(Namespace = "http://tempuri.org/")]
@@ -143,5 +144,6 @@ public class DefectService : WebService
 		d.ORDER = 1;
 		d.Store();
 		return d.AUSER;
+
 	}
 }
