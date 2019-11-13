@@ -5,6 +5,7 @@
 <%@ Register Src="~/controls/DefectEstControl.ascx" TagName="defEst" TagPrefix="uc" %>
 <%@ Register Src="~/controls/DefectVerControl.ascx" TagName="defVer" TagPrefix="uc" %>
 <%@ Register Src="~/controls/DefectUsrControl.ascx" TagName="defUsr" TagPrefix="uc" %>
+<%@ Register Src="~/controls/DefectOrdControl.ascx" TagName="defOrd" TagPrefix="uc" %>
 
 <asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
 	<%=System.Web.Optimization.Styles.Render("~/bundles/tracker_css")%>
@@ -40,6 +41,7 @@
 						<uc:defNum runat="server" />
 						<uc:defEst runat="server" />
 						<span data-toggle="tooltip" title="{{d.SUMMARY}}" ng-bind-html="d.SUMMARY | sumFormat | limitTo:135"></span>
+						<uc:defOrd runat="server" class="float-right" ng-show="isadmin" />
 						<uc:defUsr onchange="console.log('ddd')" ng-show="isadmin" runat="server" class="float-right" />
 						<uc:defVer runat="server" />
 					</div>

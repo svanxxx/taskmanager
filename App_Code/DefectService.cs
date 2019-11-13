@@ -128,6 +128,19 @@ public class DefectService : WebService
 		return d.ESTIM;
 	}
 	[WebMethod(EnableSession = true)]
+	public int orderDefect(int ttid, int order)
+	{
+		CurrentContext.Validate();
+		Defect d = new Defect(ttid);
+		if (Defect.Locked(ttid.ToString()))
+		{
+			return d.ORDER;
+		}
+		d.ORDER = order;
+		d.Store();
+		return d.ORDER;
+	}
+	[WebMethod(EnableSession = true)]
 	public string assignDefect(int ttid, int userid)
 	{
 		CurrentContext.Validate();
