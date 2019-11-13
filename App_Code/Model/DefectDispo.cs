@@ -60,11 +60,28 @@ public class DefectDispo : Reference
 	{
 	}
 
-	static Object thisLock = new Object();
+	static Object _lock = new Object();
 	static List<DefectDispo> _gDispos;
+	static string _planwhere = null;
+	public static string PlanableDefectFilter()
+	{
+		lock (_lock)
+		{
+			if (_planwhere != null)
+			{
+				return _planwhere;
+			}
+			List<int> pl = EnumWorkableIDs();
+			if (pl.Count > 0)
+			{
+				_planwhere = string.Format(" AND  ({0} in ({1}))", Defect._Disp, string.Join(",", pl));
+			}
+			return _planwhere;
+		}
+	}
 	public static List<DefectDispo> Enum()
 	{
-		lock (thisLock)
+		lock (_lock)
 		{
 			if (_gDispos == null)
 			{
@@ -77,13 +94,18 @@ public class DefectDispo : Reference
 			return new List<DefectDispo>(_gDispos);
 		}
 	}
+	public static void ClearCache()
+	{
+		lock (_lock)
+		{
+			_gDispos = null;
+			_planwhere = null;
+		}
+	}
 	public static int New(string desc)
 	{
 		int res = Reference.New(_Tabl, desc);
-		lock (thisLock)
-		{
-			_gDispos = null;
-		}
+		ClearCache();
 		return res;
 	}
 	public static List<DefectDispo> EnumWorkable()
@@ -139,10 +161,8 @@ public class DefectDispo : Reference
 	static int _WorkingRec = -1;
 	override public void Store()
 	{
-		lock (thisLock)
-		{
-			_gDispos = null;
-		}
+		ClearCache();
+		ClearCache();
 		_WorkingRec = -1;
 		base.Store();
 	}

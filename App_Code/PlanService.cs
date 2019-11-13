@@ -8,32 +8,26 @@ using System.Web.Services;
 
 public class PlanService : WebService
 {
-    public PlanService() { }
-    [WebMethod(EnableSession = true)]
-    public List<DefectPlan> getplanned(string userid)
-    {
-        if (!CurrentContext.Valid && string.IsNullOrEmpty(userid))
-            return null;
-
-        DefectBase d = new DefectBase();
-        return DefectPlan.Convert2Plan(d.EnumPlan(string.IsNullOrEmpty(userid) ? CurrentContext.User.TTUSERID : Convert.ToInt32(userid)));
-    }
-    [WebMethod(EnableSession = true)]
-    public List<DefectPlan> getplannedShort(string userid)
-    {
-        if (!CurrentContext.Valid && string.IsNullOrEmpty(userid))
-            return null;
-
-        DefectBase d = new DefectBase();
-        return DefectPlan.Convert2Plan(d.EnumPlanShort(string.IsNullOrEmpty(userid) ? CurrentContext.User.TTUSERID : Convert.ToInt32(userid)));
-    }
-    [WebMethod(EnableSession = true)]
-    public List<DefectPlan> getunplanned(string userid)
-    {
-        if (!CurrentContext.Valid && string.IsNullOrEmpty(userid))
-            return null;
-
-        DefectBase d = new DefectBase();
-        return DefectPlan.Convert2Plan(d.EnumUnPlan(string.IsNullOrEmpty(userid) ? CurrentContext.User.TTUSERID : Convert.ToInt32(userid)));
-    }
+	public PlanService() { }
+	[WebMethod(EnableSession = true)]
+	public List<DefectPlan> getplanned(string userid)
+	{
+		CurrentContext.Validate();
+		DefectBase d = new DefectBase();
+		return DefectPlan.Convert2Plan(d.EnumPlan(string.IsNullOrEmpty(userid) ? CurrentContext.User.TTUSERID : Convert.ToInt32(userid)));
+	}
+	[WebMethod(EnableSession = true)]
+	public List<DefectPlan> getplannedShort(string userid)
+	{
+		CurrentContext.Validate();
+		DefectBase d = new DefectBase();
+		return DefectPlan.Convert2Plan(d.EnumPlanShort(string.IsNullOrEmpty(userid) ? CurrentContext.User.TTUSERID : Convert.ToInt32(userid)));
+	}
+	[WebMethod(EnableSession = true)]
+	public List<DefectPlan> getunplanned(string userid)
+	{
+		CurrentContext.Validate();
+		DefectBase d = new DefectBase();
+		return DefectPlan.Convert2Plan(d.EnumUnPlan(string.IsNullOrEmpty(userid) ? CurrentContext.User.TTUSERID : Convert.ToInt32(userid)));
+	}
 }

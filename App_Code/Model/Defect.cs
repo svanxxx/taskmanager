@@ -47,7 +47,7 @@ public partial class DefectBase : IdBasedObject
 	protected static string _Summ = "Summary";
 	protected static string _Stat = "Status";
 	protected static string _StatI = "InitStatus";
-	protected static string _Disp = "idDisposit";
+	public static string _Disp = "idDisposit";
 	protected static string _Est = "Estim";
 	protected static string _Spent = "Spent";
 	protected static string _EstId = "idEstim";
@@ -55,7 +55,7 @@ public partial class DefectBase : IdBasedObject
 	protected static string _BackOrder = "BackOrder";
 	protected static string _AsUser = "idUsr";
 	protected static string _AdLoc = "AddLocat";
-	protected static string _Seve = "idSeverity";
+	public static string _Seve = "idSeverity";
 	protected static string _sMod = "sModifier";
 	protected static string _sModTRID = "sModifierTRID";
 	protected static string _Comp = "idCompon";
@@ -389,22 +389,20 @@ public partial class DefectBase : IdBasedObject
 			else
 			{
 				int ord = Convert.ToInt32(val);
-
-				List<int> wl = DefectDispo.EnumWorkableIDs();
-				string ids = string.Join(",", wl);
-
+				string where1 = DefectDispo.PlanableDefectFilter();
+				string where2 = DefectSeverity.PlanableDefectFilter();
 				string sql = $@"
 				SELECT MIN({_Order}) FROM
 				(
 					SELECT TOP {ord} * FROM 
-					(SELECT {_Order} FROM {_Tabl} WHERE {_AsUser} = {AUSER} AND {_Order} IS NOT NULL AND {_Disp} IN ({ids}) AND {_idRec} <> {IDREC} GROUP BY {_Order}) T
+					(SELECT {_Order} FROM {_Tabl} WHERE {_AsUser} = {AUSER} AND {_Order} IS NOT NULL {where1} {where2} AND {_idRec} <> {IDREC} GROUP BY {_Order}) T
 					ORDER BY 1 DESC
 				) A";
 
 				object o = GetValue(sql);
 				if (o != DBNull.Value)
 				{
-					string sqlupdate = string.Format("UPDATE {0} SET {1} = {1} + 1 WHERE {1} > {2} AND {3} = {4} AND {5} IN ({6})", _Tabl, _Order, Convert.ToInt32(o), _AsUser, AUSER, _Disp, ids);
+					string sqlupdate = $"UPDATE {_Tabl} SET {_Order} = {_Order} + 1 WHERE {_Order} > {Convert.ToInt32(o)} AND {_AsUser} = {AUSER} {where1} {where2}";
 					SQLExecute(sqlupdate);
 					sqlupdate = string.Format("UPDATE {0} SET {1} = {2} WHERE {3} = {4}", _Tabl, _Order, Convert.ToInt32(o) + 1, _idRec, IDREC);
 					SQLExecute(sqlupdate);
@@ -431,8 +429,9 @@ public partial class DefectBase : IdBasedObject
 		}
 		else if (col == _Order)
 		{
-			List<int> wl = DefectDispo.EnumWorkableIDs();
-			return string.Format("(CASE WHEN {1}.{0} IS NULL THEN NULL ELSE (SELECT COUNT(*) + 1 FROM {1} D2 WHERE D2.IDUSR = {1}.IDUSR AND D2.{0} > {1}.{0} AND {3} in ({4}))END) {2}", _Order, _Tabl, _Order, _Disp, string.Join(",", wl));
+			string where1 = DefectDispo.PlanableDefectFilter();
+			string where2 = DefectSeverity.PlanableDefectFilter();
+			return $"(CASE WHEN {_Tabl}.{_Order} IS NULL THEN NULL ELSE (SELECT COUNT(*) + 1 FROM {_Tabl} D2 WHERE D2.IDUSR = {_Tabl}.IDUSR AND D2.{_Order} > {_Tabl}.{_Order} {where1} {where2})END) {_Order}";
 		}
 		else if (col == _BackOrder)
 		{
@@ -488,20 +487,8 @@ public partial class DefectBase : IdBasedObject
 	}
 	public List<DefectBase> EnumPlanLim(int userid, int max) //zero for unlimited number
 	{
-		List<int> wl = DefectDispo.EnumWorkableIDs();
-		string w_where = "";
-		if (wl.Count > 0)
-		{
-			w_where = string.Format(" AND  ({0} in ({1}))", _Disp, string.Join(",", wl));
-		}
-
-		List<int> pl = DefectSeverity.EnumPlanable();
-		string w_where2 = "";
-		if (pl.Count > 0)
-		{
-			w_where2 = string.Format(" AND  ({0} in ({1}))", _Seve, string.Join(",", pl));
-		}
-
+		string w_where = DefectDispo.PlanableDefectFilter();
+		string w_where2 = DefectSeverity.PlanableDefectFilter();
 		List<DefectBase> ls = new List<DefectBase>();
 		string where = string.Format(" WHERE (({0} = {1}) AND ({2} is not null) {3} {5}) ORDER BY {4}.{2} DESC", _AsUser, userid, _Order, w_where, _Tabl, w_where2);
 		foreach (DataRow r in GetRecords(where, max))
@@ -514,20 +501,8 @@ public partial class DefectBase : IdBasedObject
 	}
 	public List<DefectBase> EnumUnPlan(int userid)
 	{
-		List<int> wl = DefectDispo.EnumWorkableIDs();
-		string w_where1 = "";
-		if (wl.Count > 0)
-		{
-			w_where1 = string.Format(" AND  ({0} in ({1}))", _Disp, string.Join(",", wl));
-		}
-
-		List<int> pl = DefectSeverity.EnumPlanable();
-		string w_where2 = "";
-		if (pl.Count > 0)
-		{
-			w_where2 = string.Format(" AND  ({0} in ({1}))", _Seve, string.Join(",", pl));
-		}
-
+		string w_where1 = DefectDispo.PlanableDefectFilter();
+		string w_where2 = DefectSeverity.PlanableDefectFilter();
 		List<DefectBase> ls = new List<DefectBase>();
 		string where = string.Format(" WHERE (({0} = {1}) AND ({2} is null) {3} {4}) ORDER BY {5} DESC", _AsUser, userid, _Order, w_where1, w_where2, _ID);
 		foreach (DataRow r in GetRecords(where))
@@ -1003,6 +978,7 @@ public class DefectPlan
 		this.FIRE = db.FIRE;
 		this.VERSION = db.VERSION;
 		this.AUSER = db.AUSER;
+		this.ORDER = db.ORDER;
 	}
 	public bool FIRE { get; set; }
 	public int ESTIM { get; set; }
@@ -1015,6 +991,7 @@ public class DefectPlan
 	public int ID { get; set; }
 	public string SUMMARY { get; set; }
 	public string VERSION { get; set; }
+	public int ORDER { get; set; }
 	static public List<DefectPlan> Convert2Plan(List<DefectBase> ls)
 	{
 		List<DefectPlan> lsout = new List<DefectPlan>();
