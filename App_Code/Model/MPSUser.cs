@@ -169,16 +169,27 @@ public class MPSUser : IdBasedObject
 	}
 	protected override void OnChangeColumn(string col, string val)
 	{
-		if (col == _pname && TTUSERID > -1)
+		if ((col == _pname || col == _cli) && TTUSERID > -1)
 		{
-			string[] vals = val.Replace("\'", "").Split(' ');
-			if (vals.Length == 2)
+			DefectUser du = new DefectUser(TTUSERID);
+			if (col == _pname)
 			{
-				DefectUser du = new DefectUser(TTUSERID);
-				du.FIRSTNAME = vals[0];
-				du.LASTNAME = vals[1];
-				du.Store();
+				string[] vals = val.Replace("\'", "").Split(' ');
+				if (vals.Length == 2)
+				{
+					du.FIRSTNAME = vals[0];
+					du.LASTNAME = vals[1];
+				}
+				else
+				{
+					du.FIRSTNAME = val;
+				}
 			}
+			else if (col == _cli)
+			{
+				du.CUSTOMER = (val != "0");
+			}
+			du.Store();
 		}
 		else if (col == _ret && TTUSERID > -1)
 		{

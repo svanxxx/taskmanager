@@ -4,7 +4,7 @@
 		<div class="modal-content">
 			<div class="modal-body">
 				<div class="list-group">
-					<div userid="{{u.ID}}" style="cursor:pointer" onclick="assignDefectUser(this)" href class="list-group-item list-group-item-action p-1" ng-repeat="u in users |  filter : {ACTIVE: true} | orderBy:'FULLNAME'">
+					<div userid="{{u.ID}}" style="cursor:pointer" onclick="assignDefectUser(this)" href class="list-group-item list-group-item-action p-1 shadow" ng-repeat="u in users |  filter : {ACTIVE: true, CUSTOMER: false} | orderBy:'FULLNAME'">
 						<img class="rounded-circle" height="30" width="30" ng-src="{{'getUserImg.ashx?sz=30&ttid='+u.ID}}" />
 						<span>{{u.FULLNAME}}</span>
 					</div>

@@ -9,8 +9,9 @@ public class DefectUser : IdBasedObject
 	static string _Emai = "EMailAddr";
 	static string _Atci = "Active";
 	static string _trID = "TRID";
+	static string _cust = "IsCustomer";
 
-	static string[] _Allcols = new string[] { _ID, _Firn, _Lasn, _Emai, _Atci, _trID };
+	static string[] _Allcols = new string[] { _ID, _Firn, _Lasn, _Emai, _Atci, _trID, _cust };
 	static string _Tabl = "[TT_RES].[DBO].[USERS]";
 
 	public int ID
@@ -22,6 +23,11 @@ public class DefectUser : IdBasedObject
 	{
 		get { return Convert.ToBoolean(this[_Atci]); }
 		set { this[_Atci] = value; }
+	}
+	public bool CUSTOMER
+	{
+		get { return GetAsInt(_cust) == 1; }
+		set { this[_cust] = value ? 1 : 0; }
 	}
 	public string EMAIL
 	{
