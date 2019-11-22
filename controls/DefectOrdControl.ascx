@@ -1,2 +1,2 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="DefectOrdControl.ascx.cs" Inherits="DefectOrdControl" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="DefectControl" %>
 <span <%= this.Attrs() %> style="cursor:pointer" ttid="{{<%= this.Member() %>.ID}}" onclick="orderDefect(this)" data-toggle="tooltip" title="Order in execution plan: {{<%= this.Member() %>.ORDER}}	" class="badge badge-light <%= this.Class() %>">{{<%= this.Member() %>.ORDER}}</span>

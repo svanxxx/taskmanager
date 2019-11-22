@@ -325,6 +325,12 @@ function copyurl(txt) {
 	var n = new Notification("The link has been copied to clipboard.", options);
 	setTimeout(n.close.bind(n), 2000);
 }
+function waitForProcess() {
+	$("#modalprogress").modal("show");
+}
+function waitForProcessEnd() {
+	$("#modalprogress").modal("hide");
+}
 $(function () {
 	$(document).bind("keydown", function (e) {
 		if (e.keyCode === 188 && event.ctrlKey) {

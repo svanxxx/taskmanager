@@ -1,2 +1,2 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="DefectVerControl.ascx.cs" Inherits="DefectVerControl" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="DefectControl" %>
 <span class="badge badge-pill badge-light float-right">{{<%= this.Member() %>.VERSION}}</span>

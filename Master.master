@@ -2,6 +2,7 @@
 
 <%@ Register Src="~/controls/AddTask.ascx" TagName="addtask" TagPrefix="uc" %>
 <%@ Register Src="~/controls/MsgBox.ascx" TagName="msgBox" TagPrefix="uc" %>
+<%@ Register Src="~/controls/ModalProgress.ascx" TagName="progress" TagPrefix="uc" %>
 
 <!DOCTYPE html>
 
@@ -30,6 +31,7 @@
 	<input type="hidden" id="userlogin" value="<%=CurrentContext.UserLogin()%>" />
 	<uc:addtask runat="server" />
 	<uc:msgBox runat="server" />
+	<uc:progress runat="server" />
 
 	<nav class="navbar navbar-expand-md bg-dark navbar-dark">
 		<a class="navbar-brand" href="<%= Settings.CurrentSettings.COMPANYSITE.ToString()%>"><%= Settings.CurrentSettings.COMPANYNAME.ToString()%></a>

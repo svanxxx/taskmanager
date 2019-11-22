@@ -6,6 +6,7 @@
 	if (!estim || estim === element.innerHTML) {
 		return;
 	}
+	waitForProcess();
 	$.ajax({
 		type: "POST",
 		url: GetSitePath() + "DefectService.asmx/estimateDefect",
@@ -13,6 +14,7 @@
 		contentType: "application/json; charset=utf-8",
 		dataType: "json",
 		success: function (mess) {
+			waitForProcessEnd();
 			if (mess.d != element.innerHTML) {
 				element.innerHTML = mess.d;
 			} else {
@@ -32,6 +34,7 @@ function orderDefect(element) {
 	if (!order || order === element.innerHTML) {
 		return;
 	}
+	waitForProcess();
 	$.ajax({
 		type: "POST",
 		url: GetSitePath() + "DefectService.asmx/orderDefect",
@@ -39,6 +42,7 @@ function orderDefect(element) {
 		contentType: "application/json; charset=utf-8",
 		dataType: "json",
 		success: function (mess) {
+			waitForProcessEnd();
 			if (mess.d != element.innerHTML) {
 				element.innerHTML = mess.d;
 			} else {
@@ -54,17 +58,25 @@ function assignDefect(element) {
 	if (!IsAdmin()) {
 		return;
 	}
-	var r = confirm("Are you sure you want to assign this task?");
-	if (r !== true) {
+	var ttid = element.getAttribute("ttid");
+	$("#selectuser")[0].setAttribute("ttid", ttid);
+	$("#selectuser").modal("show");
+	return;
+}
+function assignDefectUser(element) {
+	if (!IsAdmin()) {
 		return;
 	}
+	$("#selectuser").modal("hide");
+	waitForProcess();
 	$.ajax({
 		type: "POST",
 		url: GetSitePath() + "DefectService.asmx/assignDefect",
-		data: JSON.stringify({ "ttid": element.getAttribute("ttid"), "userid": element.getAttribute("userid") }),
+		data: JSON.stringify({ "ttid": $("#selectuser")[0].getAttribute("ttid"), "userid": element.getAttribute("userid") }),
 		contentType: "application/json; charset=utf-8",
 		dataType: "json",
 		success: function (mess) {
+			waitForProcessEnd();
 			if (mess.d == "") {
 				var prg = StartProgress("Task is locked!");
 				setTimeout(function () {

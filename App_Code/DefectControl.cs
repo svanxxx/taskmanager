@@ -1,4 +1,4 @@
-﻿public partial class DefectOrdControl : System.Web.UI.UserControl
+﻿public class DefectControl : System.Web.UI.UserControl
 {
 	public string Member()
 	{

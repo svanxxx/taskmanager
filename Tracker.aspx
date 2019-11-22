@@ -6,6 +6,7 @@
 <%@ Register Src="~/controls/DefectVerControl.ascx" TagName="defVer" TagPrefix="uc" %>
 <%@ Register Src="~/controls/DefectUsrControl.ascx" TagName="defUsr" TagPrefix="uc" %>
 <%@ Register Src="~/controls/DefectOrdControl.ascx" TagName="defOrd" TagPrefix="uc" %>
+<%@ Register Src="~/controls/SelectUser.ascx" TagName="usrlist" TagPrefix="uc" %>
 
 <asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
 	<%=System.Web.Optimization.Styles.Render("~/bundles/tracker_css")%>
@@ -18,6 +19,7 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
 	<input type="hidden" id="trackers" value='<%=Newtonsoft.Json.JsonConvert.SerializeObject(Tracker.Enum(CurrentContext.TTUSERID))%>' />
 	<div ng-app="mpsapplication" ng-controller="mpscontroller" ng-cloak>
+		<uc:usrlist runat="server" />
 		<div class="row">
 			<div class="btn-group mx-auto">
 				<button type="button" class="btn btn-outline-light text-dark" data-toggle="dropdown">
