@@ -60,6 +60,8 @@
 					</tr>
 				</tbody>
 			</table>
+			<button type="button" class="btn btn btn-outline-secondary btn-sm" ng-show="!readonly" ng-click="newUser()">Add New User</button>
+			<button type="button" class="btn btn btn-outline-secondary btn-sm" ng-show="!readonly" ng-click="filter = !filter">Toggle Active Users</button>
 		</div>
 	</div>
 </asp:Content>

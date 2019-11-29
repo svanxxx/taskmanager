@@ -235,6 +235,19 @@ public class MPSUser : IdBasedObject
 	{
 		return new List<MPSUser>(EnumAllUsers(true).Where(item => !string.IsNullOrEmpty(item.SUPCHATID)));
 	}
+	public static MPSUser NewUser()
+	{
+		string name = DateTime.Now.Ticks.ToString();
+		string email = name + "@domain.com";
+		AddObject(_Tabl, new string[] { _login, _pname, _pass, _isAdm, _ret, _birth, _lvl, _email }, new object[] { name, name, "", 0, 0, DateTime.Now, 3, email }, "");
+		DefectUser.NewUser(name, "", email);
+		ReferenceVersion.Updatekey();
+		foreach (int i in EnumRecords(_Tabl, _pid, new string[] { _login }, new object[] { name }))
+		{
+			return new MPSUser(i);
+		}
+		return null;
+	}
 	public static MPSUser FindUser(string name, string pass)
 	{
 		bool domain = name.Contains("@");

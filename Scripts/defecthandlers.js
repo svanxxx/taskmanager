@@ -86,8 +86,63 @@ function assignDefectUser(element) {
 				var prgdone = StartProgress("Task updated! Synchronizing data... Keep continue your work.");
 				setTimeout(function () {
 					EndProgress(prgdone);
-				}, 2000);
+				}, 1500);
 			}
 		}
 	});
+}
+function tooltipImg(e) {
+	var element = document.getElementById("tooltipImg");
+	if (element) {
+		return;
+	}
+	element = document.createElement("div");
+	element.id = "tooltipImg";
+	element.style.position = "fixed";
+	element.style.opacity = 0.8;
+	element.style.left = e.clientX + "px";
+	element.style.top = e.clientY + "px";
+	element.style.width = "150px";
+	element.style.color = "white";
+
+	var id = e.target.getAttribute("userid");
+
+	var img = document.createElement("img");
+	img.style.width = "150px";
+	img.style.height = "150px";
+	img.style.padding = "2px";
+	img.src = "getUserImg.ashx?sz=150&ttid=" + id;
+
+	element.appendChild(img);
+
+	var span = document.createElement("div");
+	span.style.backgroundColor = "blue";
+	span.style.textAlign = "center";
+	span.innerHTML = "Loading...";
+
+	fetch("UsersService.asmx/getUser", {
+		method: "post",
+		headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({
+			id: id
+		})
+	}).then(function (response) {
+		return response.json();
+		}).then(function (json) {
+			span.innerHTML = json.d.FULLNAME;
+	});
+
+	element.appendChild(span);
+
+	document.body.appendChild(element);
+}
+
+function tooltipImgOut() {
+	var element = document.getElementById("tooltipImg");
+	if (element) {
+		element.remove();
+	}
 }

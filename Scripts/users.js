@@ -53,6 +53,7 @@
 		};
 
 		var taskprg = StartProgress("Loading data...");
+		$scope.filter = true;
 		$scope.users = [];
 		$http.post("trservice.asmx/getMPSUsers", JSON.stringify({ "active": false }))
 			.then(function (result) {
@@ -66,6 +67,18 @@
 					}
 				});
 			});
+		$scope.newUser = function () {
+			$http.post("UsersService.asmx/newUser", JSON.stringify({}))
+				.then(function (result) {
+					var u = result.data.d;
+					if (u) {
+						if (u.BIRTHDAY !== "") {
+							u.BIRTHDAY = StringToDate(u.BIRTHDAY);
+						}
+						$scope.users.unshift(u);
+					}
+				});
+		};
 		$scope.changed = false;
 		$scope.itemchanged = function (r) {
 			r.changed = true;

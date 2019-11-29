@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
+public class DisplayUser
+{
+	public DisplayUser() { }
+	public string FULLNAME { get; set; }
+}
 public class DefectUser : IdBasedObject
 {
 	static string _ID = "idRecord";
