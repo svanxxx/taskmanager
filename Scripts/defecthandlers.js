@@ -92,20 +92,28 @@ function assignDefectUser(element) {
 	});
 }
 function tooltipImg(e) {
-	var element = document.getElementById("tooltipImg");
+	var id = e.target.getAttribute("userid");
+	var ttid = e.target.getAttribute("ttid");
+
+	var element = document.getElementById("tooltipImgCntrl");
 	if (element) {
-		return;
+		if (element.getAttribute("ttid") == ttid) {
+			return;
+		}
+		element.remove();
 	}
 	element = document.createElement("div");
-	element.id = "tooltipImg";
+	element.setAttribute("ttid", ttid);
+	element.id = "tooltipImgCntrl";
 	element.style.position = "fixed";
-	element.style.opacity = 0.8;
+	element.style.opacity = 0.9;
 	element.style.left = e.clientX + "px";
 	element.style.top = e.clientY + "px";
 	element.style.width = "150px";
 	element.style.color = "white";
-
-	var id = e.target.getAttribute("userid");
+	element.style.zIndex = 9999;
+	element.style.padding = 10;
+	element.style.backgroundColor = "black";
 
 	var img = document.createElement("img");
 	img.style.width = "150px";
@@ -116,7 +124,7 @@ function tooltipImg(e) {
 	element.appendChild(img);
 
 	var span = document.createElement("div");
-	span.style.backgroundColor = "blue";
+	span.style.backgroundColor = "black";
 	span.style.textAlign = "center";
 	span.innerHTML = "Loading...";
 
@@ -131,18 +139,28 @@ function tooltipImg(e) {
 		})
 	}).then(function (response) {
 		return response.json();
-		}).then(function (json) {
-			span.innerHTML = json.d.FULLNAME;
+	}).then(function (json) {
+		span.innerHTML = json.d.FULLNAME;
 	});
 
 	element.appendChild(span);
 
 	document.body.appendChild(element);
+	document.tooltipImgCntrlDate = new Date();
 }
 
 function tooltipImgOut() {
-	var element = document.getElementById("tooltipImg");
-	if (element) {
-		element.remove();
-	}
+	setTimeout(function () {
+		if (document.tooltipImgCntrlDate) {
+			var diff = (new Date()) - document.tooltipImgCntrlDate;
+			var element = document.getElementById("tooltipImgCntrl");
+			if (element) {
+				if (diff > 1000) {
+					element.remove();
+				} else {
+					tooltipImgOut();
+				}
+			}
+		}
+	}, 1000);
 }
