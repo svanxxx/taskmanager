@@ -335,7 +335,24 @@ $(function () {
 	$(document).bind("keydown", function (e) {
 		if (e.keyCode === 188 && event.ctrlKey) {
 			enterTT();
+		} else if (e.keyCode === 191 && event.ctrlKey) {
+			let el = document.getElementById("tttextsearch");
+			if (el) {
+				el.focus();
+			}
 		}
 	});
+	let input = document.getElementById("tttextsearch");
+	if (input) {
+		input.addEventListener("keyup", function (event) {
+			if (event.keyCode === 13) {
+				event.preventDefault();
+				var filter = {};
+				createTasksFilter(filter);
+				filter.text = input.value;
+				window.open(replaceUrlParam("ttrep.aspx", "filter", JSON.stringify(filter)));
+			}
+		});
+	}
 	reActivateTooltips();
 });

@@ -60,7 +60,7 @@ $(function () {
 			$scope.yesterdaystring = DateToString($scope.yesterday);
 
 			var vacationprg = StartProgress("Loading vacations..."); $scope["loaders"]++;
-			$http.post("trservice.asmx/enumCloseVacations", JSON.stringify({ "start": DateToString($scope.yesterday), "days": 15 }))
+			$http.post("trservice.asmx/enumCloseVacations", JSON.stringify({ "start": DateToString($scope.yesterday), "days": 31 }))
 				.then(function (result) {
 					var today = new Date();
 					$scope.vacations = result.data.d;

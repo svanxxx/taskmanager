@@ -1,5 +1,9 @@
 ﻿public class DefectControl : System.Web.UI.UserControl
 {
+	public string ProxiAttribute(string att)
+	{
+		return Attributes[att];
+	}
 	public string Member()
 	{
 		string st = Attributes["member"];
@@ -23,9 +27,10 @@
 		string outstr = "";
 		foreach (var k in Attributes.Keys)
 		{
-			if (k.ToString() == "ng-show")
+			string key = k.ToString();
+			if (key == "ng-show" || key == "style")
 			{
-				outstr += $" {k.ToString()}='{Attributes[k.ToString()]}' ";
+				outstr += $" {key}='{Attributes[key]}' ";
 			}
 		}
 		return outstr;

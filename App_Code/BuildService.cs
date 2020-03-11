@@ -203,4 +203,44 @@ public class BuildService : WebService
 		sb.Store();
 		return sb;
 	}
+	[WebMethod(EnableSession = true)]
+	public void addBuildByTask(string ttid, string notes, string btype)
+	{
+		if (string.IsNullOrEmpty(ttid))
+			return;
+		if (btype == "both" || btype == "test")
+		{
+			DefectBuild.AddRequestByTask(Convert.ToInt32(ttid), notes == null ? "" : notes, DefectBuild.BuildType.testbuild);
+		}
+		if (btype == "both" || btype == "inst")
+		{
+			DefectBuild.AddRequestByTask(Convert.ToInt32(ttid), "Public Release", DefectBuild.BuildType.releasebuild);
+		}
+	}
+	[WebMethod]
+	public BuildRequest getInstallRequest(string machine)
+	{
+		DefectBuild b = DefectBuild.GetTask2Build(machine, DefectBuild.BuildType.releasebuild);
+		BuildRequest r = new BuildRequest();
+		if (b != null)
+		{
+			DefectBase def = new DefectBase(Defect.GetTTbyID(b.DEFID));
+			DefectUser user = new DefectUser(int.Parse(def.AUSER));
+			r.ID = b.ID;
+			r.TTID = def.ID;
+			r.COMM = b.NOTES;
+			string em = user.EMAIL.Trim();
+			if (string.IsNullOrEmpty(em))
+			{
+				r.USER = "ADMIN";
+			}
+			else
+			{
+				r.USER = em.Substring(0, em.IndexOf("@")).ToUpper();
+			}
+			r.SUMMARY = def.SUMMARY;
+			r.BRANCH = def.BRANCH;
+		}
+		return r;
+	}
 }

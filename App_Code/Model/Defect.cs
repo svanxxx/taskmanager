@@ -554,7 +554,7 @@ public partial class DefectBase : IdBasedObject
 	{
 		return (new DefectBase()).EnumCount(UnusedVacations());
 	}
-	public static List<DefectBase> EnumCloseVacations(string startdate, int days = 15)
+	public static List<DefectBase> EnumCloseVacations(string startdate, int days = 31)
 	{
 		DefectsFilter f = new DefectsFilter();
 		f.components = new List<int>(DefectComp.GetVacationRec());
@@ -838,6 +838,15 @@ public partial class Defect : DefectBase
 			}
 			this[_workar] = string.Join(_bstsep, vals.ToArray());
 		}
+	}
+	public void AddMessage(string mess, int userid)
+	{
+		MPSUser u = new MPSUser(userid);
+		DESCR = $@"
+<task-message clr='undefined'  userid='{userid}' user='{u.LOGIN}' time='{DateTime.Now.ToString()}'>
+{mess}
+</task-message>
+" + DESCR.Trim();
 	}
 	protected override void OnBackOrderChanged()
 	{

@@ -22,7 +22,7 @@
 				r.attfilename = this.files[0].name;
 				r.onloadend = function (e) {
 					for (var i = 0; i < $scope.users.length; i++) {
-						if ($scope.users[i].ID == id) {
+						if ($scope.users[i].ID === id) {
 							$scope.users[i].IMGTRANSFER = e.target.result;
 							$scope.users[i].changed = true;
 							$scope.changed = true;
@@ -39,10 +39,13 @@
 			var prg = StartProgress("Saving data...");
 			var users = [];
 			for (var i = 0; i < $scope.users.length; i++) {
-				var ch = $scope.users[i].changed;
+				var u = $scope.users[i];
+				var ch = u.changed;
 				if (ch) {
-					delete $scope.users[i].changed;
-					users.push($scope.users[i])
+					delete u.changed;
+					var uexport = Object.assign({}, u);
+					uexport.BIRTHDAY = DateToString(uexport.BIRTHDAY);
+					users.push(uexport);
 				}
 			}
 			$http.post("trservice.asmx/setusers", angular.toJson({ "users": users }))

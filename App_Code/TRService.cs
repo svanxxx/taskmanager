@@ -282,13 +282,6 @@ public class TRService : WebService
 		return DefectAttach.GetAttachsByTask(Convert.ToInt32(ttid));
 	}
 	[WebMethod(EnableSession = true)]
-	public void addBuildByTask(string ttid, string notes)
-	{
-		if (string.IsNullOrEmpty(ttid))
-			return;
-		DefectBuild.AddRequestByTask(Convert.ToInt32(ttid), notes == null ? "" : notes);
-	}
-	[WebMethod(EnableSession = true)]
 	public void cancelBuildByTask(string ttid)
 	{
 		if (string.IsNullOrEmpty(ttid))
@@ -416,6 +409,7 @@ public class TRService : WebService
 	[WebMethod(EnableSession = true)]
 	public string setusers(List<MPSUser> users)
 	{
+		CurrentContext.ValidateAdmin();
 		foreach (MPSUser u in users)
 		{
 			MPSUser ustore = new MPSUser(u.ID);
@@ -459,12 +453,12 @@ public class TRService : WebService
 			{
 				d = new DefectBase(ttid.ttid);
 			}
-            if (d.BACKORDER != ttid.backorder)
-            {
-                d.BACKORDER = ttid.backorder;
-                d.Store();
-            }
-        }
+			if (d.BACKORDER != ttid.backorder)
+			{
+				d.BACKORDER = ttid.backorder;
+				d.Store();
+			}
+		}
 	}
 	[WebMethod(EnableSession = true)]
 	public List<TRRec> getreports(List<string> dates)
@@ -650,19 +644,10 @@ public class TRService : WebService
 		}
 		DefectDefaults.CurrentDefaults = d;
 	}
-	public class BuildRequest
-	{
-		public int ID { get; set; }
-		public int TTID { get; set; }
-		public string SUMMARY { get; set; }
-		public string USER { get; set; }
-		public string COMM { get; set; }
-		public string BRANCH { get; set; }
-	}
 	[WebMethod]
 	public BuildRequest getBuildRequest(string machine)
 	{
-		DefectBuild b = DefectBuild.GetTask2Build(machine);
+		DefectBuild b = DefectBuild.GetTask2Build(machine, DefectBuild.BuildType.testbuild);
 		BuildRequest r = new BuildRequest();
 		if (b != null)
 		{
@@ -798,27 +783,37 @@ public class TRService : WebService
 			List<DefectDispo> disp = (testcancel || testFail) ? DefectDispo.EnumTestsFailed() : DefectDispo.EnumTestsPassed();
 			if (disp.Count > 0)
 			{
-				d.DISPO = disp[0].ID.ToString();
+				if (!testcancel)
+				{
+					d.DISPO = disp[0].ID.ToString();
+				}
+				else
+				{
+					d.AddMessage("Test request have been ignored", bsu.ID);
+				}
 				d.Store();
 				Defect.UnLocktask(ttid, lt.globallock);
 
-				DefectUser du = new DefectUser(d.AUSER);
-				if (du.TRID > -1)
+				if (!testcancel)
 				{
-					MPSUser worker = new MPSUser(du.TRID);
-					string result = "Succeeded!";
-					string img = "taskokay.png";
-					if (testcancel)
+					DefectUser du = new DefectUser(d.AUSER);
+					if (du.TRID > -1)
 					{
-						result = "Cancelled!";
-                        img = "bin.png";
-                    }
-					else if (testFail)
-					{
-						result = "Failed!";
-                        img = "taskfail.png";
-                    }
-					TasksBot.SendMessage(worker.CHATID, $"The task tests have been marked as BST {result} by {bsu.PERSON_NAME}{Settings.CurrentSettings.GetTTAnchor(int.Parse(ttid), img)}");
+						MPSUser worker = new MPSUser(du.TRID);
+						string result = "Succeeded!";
+						string img = "taskokay.png";
+						if (testcancel)
+						{
+							result = "Cancelled!";
+							img = "bin.png";
+						}
+						else if (testFail)
+						{
+							result = "Failed!";
+							img = "taskfail.png";
+						}
+						TasksBot.SendMessage(worker.CHATID, $"The task tests have been marked as BST {result} by {bsu.PERSON_NAME}{Settings.CurrentSettings.GetTTAnchor(int.Parse(ttid), img)}");
+					}
 				}
 			}
 		}
@@ -1025,10 +1020,10 @@ public class TRService : WebService
 		{
 			case RefType.disposition:
 				return DefectDispo.New(desc).ToString();
-            case RefType.severity:
-                return DefectSeverity.New(desc).ToString();
-        }
-        return "Unsupported";
+			case RefType.severity:
+				return DefectSeverity.New(desc).ToString();
+		}
+		return "Unsupported";
 	}
 	[WebMethod(EnableSession = true)]
 	public string getLog(int from, int to)

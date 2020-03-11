@@ -88,6 +88,11 @@
 					</div>
 				</li>
 			</ul>
+			<ul class="navbar-nav pr-2">
+				<li>
+					<input id="tttextsearch" class="form-control-sm form-control my-2 my-lg-0 mr-sm-2" type="text" placeholder="Search">
+				</li>
+			</ul>
 			<ul class="navbar-nav">
 				<li>
 					<a class="bstusername" href="<%=SecurityPage.loginpage.ToString()%>">
@@ -109,5 +114,12 @@
 			</footer>
 		</div>
 	</form>
+	<script>
+		if ('serviceWorker' in navigator) {
+			window.addEventListener('load', function () {
+				navigator.serviceWorker.register('service-worker.js');
+			});
+		}
+	</script>
 </body>
 </html>

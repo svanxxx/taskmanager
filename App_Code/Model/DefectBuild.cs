@@ -2,6 +2,16 @@
 using System.Collections.Generic;
 using System.Data;
 
+public class BuildRequest
+{
+	public int ID { get; set; }
+	public int TTID { get; set; }
+	public string SUMMARY { get; set; }
+	public string USER { get; set; }
+	public string COMM { get; set; }
+	public string BRANCH { get; set; }
+}
+
 public class DefectBuild : IdBasedObject
 {
 	protected static string _pid = "idRecord";
@@ -17,8 +27,9 @@ public class DefectBuild : IdBasedObject
 	protected static string _TTID = "TTID";
 	protected static string _User = "UserID";
 	protected static string _tguid = "TestGUID";
+	protected static string _type = "BuildType";
 	protected static string _Tabl = "[TT_RES].[dbo].[DefectBuild]";
-	protected static string[] _allBasecols = new string[] { _pid, _par, _date, _stat, _dateUp, _mach, _not, _stText, _TTID, _User, _dateB, _tguid };
+	protected static string[] _allBasecols = new string[] { _pid, _par, _date, _stat, _dateUp, _mach, _not, _stText, _TTID, _User, _dateB, _tguid, _type };
 
 	public int ID
 	{
@@ -61,6 +72,19 @@ public class DefectBuild : IdBasedObject
 			return (int)(d2 - d1).TotalMinutes;
 		}
 		set { }
+	}
+	public enum BuildType
+	{
+		testbuild = 1,
+		releasebuild = 2
+	}
+	public int TYPE
+	{
+		get
+		{
+			return GetAsInt(_type, (int)BuildType.testbuild);
+		}
+		set { this[_type] = value; }
 	}
 	public string DATEUP
 	{
@@ -253,20 +277,20 @@ public class DefectBuild : IdBasedObject
 		}
 		return res;
 	}
-	public static void AddRequestByTask(int ttid, string notes)
+	public static void AddRequestByTask(int ttid, string notes, BuildType type)
 	{
-		AddObject(_Tabl, new string[] { _par, _not, _User, _dateB }, new object[] { Defect.GetIDbyTT(ttid), notes, CurrentContext.User.TTUSERID, DateTime.Now }, _pid);
+		AddObject(_Tabl, new string[] { _par, _not, _User, _dateB, _type }, new object[] { Defect.GetIDbyTT(ttid), notes, CurrentContext.User.TTUSERID, DateTime.Now, (int)type }, _pid);
 	}
 	public static void CancelRequestByTask(int ttid)
 	{
 		string sql = $"UPDATE {_Tabl} SET {_stat} = {(int)BuildStatus.cancelled} WHERE {_par} = {Defect.GetIDbyTT(ttid)} AND ({_stat} = {(int)BuildStatus.progress} OR {_stat} = {(int)BuildStatus.notstarted} OR {_stat} IS NULL)";
 		SQLExecute(sql);
 	}
-	public static DefectBuild GetTask2Build(string machine)
+	public static DefectBuild GetTask2Build(string machine, BuildType type)
 	{
 		string g = Guid.NewGuid().ToString();
 
-		SQLExecute(string.Format("UPDATE TOP (1) {0} SET [{1}] = {2}, [{3}] = '{4}', [{5}] = '{6}' WHERE [{1}] is NULL", _Tabl, _stat, (int)BuildStatus.progress, _mach, machine, _gui, g));
+		SQLExecute(string.Format("UPDATE TOP (1) {0} SET [{1}] = {2}, [{3}] = '{4}', [{5}] = '{6}' WHERE [{1}] is NULL AND {7} = {8}", _Tabl, _stat, (int)BuildStatus.progress, _mach, machine, _gui, g, _type, (int)type));
 
 		var o = DBHelper.GetValue(string.Format("SELECT [{0}] FROM {1} WHERE [{2}] = '{3}'", _pid, _Tabl, _gui, g));
 		if (o == DBNull.Value || o == null)

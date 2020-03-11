@@ -14,11 +14,16 @@
 	<script src="<%=Settings.CurrentSettings.ANGULARCDN.ToString()%>angular.min.js"></script>
 	<script <%="src='" + Settings.CurrentSettings.CHARTSJSCDN.ToString() + "Chart.bundle.min.js'" %>></script>
 	<script src="scripts/userimg.js"></script>
+	<link rel="manifest" href="manifest.json">
 </asp:Content>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
 	<input type="hidden" id="trackers" value='<%=Newtonsoft.Json.JsonConvert.SerializeObject(Tracker.Enum(CurrentContext.TTUSERID))%>' />
 	<div ng-app="mpsapplication" ng-controller="mpscontroller" ng-cloak>
+		<div class="dropdown-menu dropdown-menu-sm" id="context-menu">
+			<a class="dropdown-item" href="#">Fire</a>
+			<a class="dropdown-item" href="#">Close</a>
+		</div>
 		<uc:usrlist runat="server" />
 		<div class="row">
 			<div class="btn-group mx-auto">
@@ -39,10 +44,10 @@
 			<div class="col-md-6 mb-2">
 				<input ng-model="newtask" type="text" class="form-control form-control-sm" onkeydown="return event.key != 'Enter';" ng-keyup="messageKey($event)" ng-show="isadmin && simpleTracker">
 				<div class="list-group shadow">
-					<div ng-repeat="d in defects" class="list-group-item p-1" ng-style="{{d.DISPO | getDispoColorById:this}}">
+					<div ng-right-click="taskActions()" ng-repeat="d in defects" class="list-group-item p-1" ng-style="{{d.DISPO | getDispoColorById:this}}">
 						<uc:defNum runat="server" />
 						<uc:defEst runat="server" />
-						<span data-toggle="tooltip" title="{{d.SUMMARY}}" ng-bind-html="d.SUMMARY | sumFormat | limitTo:135"></span>
+						<span class="taskrect" data-toggle="tooltip" title="{{d.SUMMARY}}" ng-bind-html="d.SUMMARY | sumFormat | limitTo:135"></span>
 						<uc:defOrd runat="server" class="float-right" ng-show="isadmin" />
 						<uc:defUsr onchange="console.log('ddd')" ng-show="isadmin" runat="server" class="float-right" />
 						<uc:defVer runat="server" />

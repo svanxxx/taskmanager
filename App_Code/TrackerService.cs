@@ -60,7 +60,7 @@ public class TrackerService : WebService
 		foreach (var disp in DefectDispo.Enum())
 		{
 			int estim = 0;
-			foreach(var def in defs)
+			foreach (var def in defs)
 			{
 				if (def.DISPO == disp.ID.ToString())
 				{
@@ -69,7 +69,7 @@ public class TrackerService : WebService
 			}
 			if (estim > 0)
 			{
-				COLORDEFS += $"{estim}:{disp.COLOR};"; 
+				COLORDEFS += $"{estim}:{disp.COLOR};";
 			}
 		}
 		if (res.TRACKER.COLORDEFS != COLORDEFS)
@@ -118,11 +118,7 @@ public class TrackerService : WebService
 		Tracker t = new Tracker(trackerid);
 		summary += "@" + t.NAME;
 		Defect d = new Defect(Defect.New(summary));
-		d.DESCR = $@"
-<task-message clr='undefined'  userid='{CurrentContext.UserID}' user='{CurrentContext.UserLogin()}' time='{DateTime.Now.ToString()}'>
-tag:{t.GetTag()}
-</task-message>
-";
+		d.AddMessage("tag:" + t.GetTag(), CurrentContext.UserID);
 		d.ESTIM = 1;
 		d.Store();
 		return new DefectPlan(d);

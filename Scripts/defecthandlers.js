@@ -58,7 +58,7 @@ function assignDefect(element) {
 	if (!IsAdmin()) {
 		return;
 	}
-	var ttid = element.getAttribute("ttid");
+	var ttid = element.getAttribute("uniqueid");
 	$("#selectuser")[0].setAttribute("ttid", ttid);
 	$("#selectuser").modal("show");
 	return;
@@ -93,17 +93,17 @@ function assignDefectUser(element) {
 }
 function tooltipImg(e) {
 	var id = e.target.getAttribute("userid");
-	var ttid = e.target.getAttribute("ttid");
+	var ttid = e.target.getAttribute("uniqueid");
 
 	var element = document.getElementById("tooltipImgCntrl");
 	if (element) {
-		if (element.getAttribute("ttid") == ttid) {
+		if (element.getAttribute("uniqueid") == ttid) {
 			return;
 		}
 		element.remove();
 	}
 	element = document.createElement("div");
-	element.setAttribute("ttid", ttid);
+	element.setAttribute("uniqueid", ttid);
 	element.id = "tooltipImgCntrl";
 	element.style.position = "fixed";
 	element.style.opacity = 0.9;

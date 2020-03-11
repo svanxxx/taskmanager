@@ -61,6 +61,17 @@ $(function () {
 	var app = angular.module('mpsapplication', []);
 	app.filter('getDispoColorById', getDispoColorById);
 	app.filter("sumFormat", ["$sce", sumFormat]);
+	app.directive('ngRightClick', function ($parse) {
+		return function (scope, element, attrs) {
+			var fn = $parse(attrs.ngRightClick);
+			element.bind('contextmenu', function (event) {
+				scope.$apply(function () {
+					event.preventDefault();
+					fn(scope, { $event: event });
+				});
+			});
+		};
+	});
 
 	app.controller('mpscontroller', ["$scope", "$http", "$interval", function ($scope, $http, $interval) {
 		$scope.isadmin = IsAdmin();
@@ -111,6 +122,28 @@ $(function () {
 					EndProgress(prgfltr);
 				});
 		}
+		$scope.taskActions = function (ttid) {
+			if (!$scope.isadmin) {
+				return;
+			}
+			$('.taskrect').on('contextmenu', function (e) {
+				let ttid = e.target.getAttribute("ttid");
+				var top = e.pageY - 10;
+				var left = e.pageX - 90;
+				$("#context-menu").css({
+					display: "block",
+					top: top,
+					left: left
+				}).addClass("show");
+				return false; //blocks default Webbrowser right click menu
+			}).on("click", function () {
+				$("#context-menu").removeClass("show").hide();
+			});
+
+			$("#context-menu a").on("click", function () {
+				$(this).parent().removeClass("show").hide();
+			});
+		};
 		$scope.assignToClient = function (track, user) {
 			var prgass = StartProgress("Assigning...");
 			$http.post("TrackerService.asmx/assignTracker", JSON.stringify({ "id": track, "userid": user }))

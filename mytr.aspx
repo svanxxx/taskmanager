@@ -3,6 +3,7 @@
 <%@ Register Src="~/controls/DefectSpentControl.ascx" TagName="defSpent" TagPrefix="uc" %>
 <%@ Register Src="~/controls/DefectNumControl.ascx" TagName="defNum" TagPrefix="uc" %>
 <%@ Register Src="~/controls/DefectEstControl.ascx" TagName="defEst" TagPrefix="uc" %>
+<%@ Register Src="~/controls/UsrControl.ascx" TagName="usr" TagPrefix="uc" %>
 
 <asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
 	<%=System.Web.Optimization.Styles.Render("~/bundles/mytr_css")%>
@@ -187,11 +188,18 @@
 				</div>
 			</div>
 			<div class="text-center col-lg-2">
-				<div class="d-flex flex-wrap">
-					<a style="margin-bottom: 1px; background-color: {{u.STATUS == 1 ? '#0000ff3d' : '#ff000096'}}" href="editplan.aspx?userid={{u.ID}}" class="btn btn-info flex-fill" role="button" target="_blank" ng-repeat="u in mpsusers">
-						<img class="rounded-circle" style="float: left" ng-src="getUserImg.ashx?sz=20&id={{u.ID}}" alt="Smile" height="20" width="20">
-						<span class="d-none d-md-inline">{{u.LOGIN}}</span>
-					</a>
+				<div class="toast" data-autohide="false">
+					<div class="toast-header">
+						<strong class="mr-auto text-primary">Team:</strong>
+					</div>
+					<div class="toast-body">
+						<div class="d-flex flex-wrap">
+							<a style="margin-bottom: 1px;margin-right: 1px;" href="editplan.aspx?userid={{u.ID}}" class="btn {{u.STATUS == 1 ? 'btn-light' : 'btn-danger'}}  flex-fill" role="button" target="_blank" ng-repeat="u in mpsusers">
+								<uc:usr size="20" runat="server" userid="u.TTUSERID" style="float: left" />
+								<span class="d-none d-md-inline">{{u.LOGIN}}</span>
+							</a>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

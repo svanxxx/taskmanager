@@ -2,6 +2,7 @@
 
 <%@ Register Src="~/controls/DefectNumControl.ascx" TagName="defNum" TagPrefix="uc" %>
 <%@ Register Src="~/controls/DefectEstControl.ascx" TagName="defEst" TagPrefix="uc" %>
+<%@ Register Src="~/controls/UsrControl.ascx" TagName="usr" TagPrefix="uc" %>
 
 <asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
 	<%=System.Web.Optimization.Styles.Render("~/bundles/editplan_css")%>
@@ -19,7 +20,7 @@
 		</div>
 		<div class="d-flex flex-wrap">
 			<button type="button" class="flex-fill btn btn-sm {{currentuserid===u.ID?'btn-secondary':'btn-outline-secondary'}}" ng-click="changeuser(u, true)" ng-repeat="u in filtered = (users | filter:{ INWORK: true })" data-toggle="tooltip" title="{{u.PERSON_NAME}}">
-				<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=20&id=' + u.ID}}" alt="Smile" height="20" width="20" style="margin: auto;" />
+				<uc:usr size="20" runat="server" userid="u.TTUSERID" style="float: left"/>
 				{{u.LOGIN}}
 			</button>
 		</div>

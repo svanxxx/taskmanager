@@ -257,7 +257,7 @@ public partial class DefectBase : IdBasedObject
 		string sql = string.Format("select count({0}) from {1} {2}", _ID, _Tabl, where);
 		return Convert.ToInt32(DBHelper.GetValue(sql));
 	}
-	public List<DefectBase> Enum(DefectsFilter f, int maxrecs = 200)
+	public List<DefectBase> Enum(DefectsFilter f, int maxrecs = 400)
 	{
 		string where = PrepareQueryForEnum(f, true);
 		List<DefectBase> ls = new List<DefectBase>();

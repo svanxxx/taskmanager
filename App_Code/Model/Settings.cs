@@ -84,6 +84,11 @@ public class RawSettings
 		get { return GetVal("ANGULARCDN"); }
 		set { values["ANGULARCDN"] = value; }
 	}
+	public string MD2HTML
+	{
+		get { return GetVal("MD2HTML"); }
+		set { values["MD2HTML"] = value; }
+	}
 	public string DEFECTATTACHDIR
 	{
 		get { return GetVal("DEFECTATTACHDIR"); }

@@ -11,6 +11,10 @@
 	<script src="scripts/jquery.signalR-2.3.0.min.js"></script>
 	<script src="signalr/hubs"></script>
 	<script src="Scripts/taskmessage.js"></script>
+	<link rel="stylesheet" href="<%=Settings.CurrentSettings.MD2HTML.ToString()%>css/editormd.preview.css" />
+	<script src="<%=Settings.CurrentSettings.MD2HTML.ToString()%>editormd.js"></script>
+	<script src="<%=Settings.CurrentSettings.MD2HTML.ToString()%>lib/marked.min.js"></script>
+	<script src="<%=Settings.CurrentSettings.MD2HTML.ToString()%>lib/prettify.min.js"></script>
 </asp:Content>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
@@ -232,7 +236,21 @@
 				</ul>
 				<div class="tab-content">
 					<div id="specification" class="tab-pane active">
-						<textarea class="form-control form-control-sm" id="spec" rows="30" ng-disabled="!canChangeDefect()" ng-model="defect.SPECS"></textarea>
+						<ul class="nav nav-tabs">
+							<li class="nav-item">
+								<a class="nav-link small" data-toggle="tab" href="#sptab">Edit</a>
+							</li>
+							<li class="nav-item" ng-click="changetab($event)">
+								<a class="nav-link active small" data-toggle="tab" href="#sptab2">{{tab_preview}}</a>
+							</li>
+						</ul>
+						<div class="tab-content">
+							<div class="tab-pane container m-0 p-0" id="sptab">
+								<textarea class="form-control form-control-sm" id="spec" rows="30" ng-disabled="!canChangeDefect()" ng-model="defect.SPECS"></textarea>
+							</div>
+							<div class="tab-pane container active m-0 p-0" id="sptab2">
+							</div>
+						</div>
 					</div>
 					<div id="detail" class="tab-pane fade">
 						<textarea class="form-control form-control-sm" id="Description" rows="30" ng-disabled="!canChangeDefect()" ng-model="defect.DESCR"></textarea>
@@ -409,7 +427,9 @@
 							<select class="form-control form-control-sm" ng-disabled="!canChangeDefect()" ng-model="defect.TESTPRIORITY">
 								<option value="{{t.ID}}" ng-repeat="t in buildpriorities">{{t.DESCR}}</option>
 							</select>
-							<button type="button" class="btn btn-sm btn-success btn-right-align" ng-disabled="!canBuild()" ng-click="testTask()">Build Version</button>
+							<button type="button" class="btn btn-sm btn-info btn-right-align" ng-disabled="!canBuild()" ng-click="buildVersion('both')" ng-show="isrelease()">Build Both</button>
+							<button type="button" class="btn btn-sm btn-warning btn-right-align" ng-disabled="!canBuild()" ng-click="buildVersion('inst')" ng-show="isrelease()">Build Installation</button>
+							<button type="button" class="btn btn-sm btn-success btn-right-align" ng-disabled="!canBuild()" ng-click="buildVersion('test')">Build Version</button>
 							<button type="button" class="btn btn-sm btn-danger btn-right-align" ng-disabled="!canBuild()" ng-click="abortTest()">Abort Building</button>
 						</div>
 						<uc:builds runat="server" />

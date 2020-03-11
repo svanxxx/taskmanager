@@ -29,7 +29,37 @@ $(function () {
 	filter.createdUsers.push(ttUserID());
 	$("#metasks").attr("href", replaceUrlParam("ttrep.aspx", "filter", JSON.stringify(filter)));
 
+	$('.toast').toast('show');
+
 	app.controller('mpscontroller', ["$scope", "$http", "$interval", function ($scope, $http, $interval) {
+
+		/*var loc = window.location, new_uri;
+		if (loc.protocol === "https:") {
+			new_uri = "wss:";
+		} else {
+			new_uri = "ws:";
+		}
+		new_uri += "//" + loc.host;
+		new_uri += loc.pathname + "/Events.ashx";
+
+		if (typeof (WebSocket) !== 'undefined') {
+			$scope.socket = new WebSocket(new_uri);
+		} else {
+			$scope.socket = new MozWebSocket(new_uri);
+		}
+
+		$scope.socket.onmessage = function (msg) {
+			console.log(msg.data);
+		};
+		$scope.socket.onclose = function (event) {
+			alert('Socket Cloesd!');
+		};
+
+		$interval(function () {
+			if ($scope.socket.readyState === WebSocket.OPEN) {
+				$scope.socket.send(new Date());
+			}
+		}, 2000);*/
 
 		getDispos($scope, "dispos", $http);
 
@@ -153,7 +183,9 @@ $(function () {
 			var prg = StartProgress("Loading events...");
 			$http.post("DefectService.asmx/getDayEvents", JSON.stringify({ "date": DateToString($scope.date) }))
 				.then(function (result) {
-					$scope.trrec.TASKSEVENTS = result.data.d;
+					if ($scope.trrec) {
+						$scope.trrec.TASKSEVENTS = result.data.d;
+					}
 					EndProgress(prg);
 					reActivateTooltips();
 				});

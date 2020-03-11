@@ -145,7 +145,7 @@
 				$scope.defect.VERSION = v;
 			}
 		};
-		$scope.testTask = function () {
+		$scope.buildVersion = function (type) {
 			if ($scope.changed) {
 				alert("Please save the task first!");
 				return;
@@ -165,7 +165,7 @@
 			if (comments === null) {
 				return;
 			}
-			$http.post("trservice.asmx/addBuildByTask", JSON.stringify({ "ttid": ttid, "notes": comments }))
+			$http.post("BuildService.asmx/addBuildByTask", JSON.stringify({ "ttid": ttid, "notes": comments, btype: type }))
 				.then(function (result) {
 					$scope.loadBuilds();
 				});
@@ -196,6 +196,11 @@
 		};
 		$scope.gotoAlarm = function () {
 			$('[href="#alarm"]')[0].click();
+		};
+		$scope.generateHTMLSpecs = function () {
+			document.getElementById("sptab2").innerHTML = "<textarea id='datacopy' style='display:none;'></textarea>";
+			document.getElementById("datacopy").value = $scope.defect.SPECS;
+			htmlPreviewSpecs = editormd.markdownToHTML("sptab2", {});
 		};
 		$scope.addFile = function () {
 			var file = $('<input type="file" name="filefor" style="display: none;" />');
@@ -359,6 +364,8 @@
 				}
 			} else if (tab === $scope.tab_mess) {
 				$('.toast').toast('show');
+			} else if (tab === $scope.tab_preview) {
+				$scope.generateHTMLSpecs();
 			}
 		};
 		$scope.add2Bst = function (batch) {
@@ -438,6 +445,7 @@
 						if ($scope.defect.ORDER == -1) {
 							$scope.defect.ORDER = null;
 						}
+						$scope.generateHTMLSpecs();
 					}
 					document.title = "Task: #" + ttid;
 					document.getElementById("firealarm").style.backgroundImage = "url('images/fire.gif')";
@@ -651,6 +659,7 @@
 		$scope.tab_bst = "BST";
 		$scope.tab_workflow = "Workflow";
 		$scope.tab_mess = "Messages";
+		$scope.tab_preview = "Preview";
 		$scope.tab_specs = "Specs";
 		$scope.buildpriorities = [{ ID: 1, DESCR: "1 (Low)" }, { ID: 2, DESCR: "2 (Programmer big release)" }, { ID: 3, DESCR: "3 (Release)" }, { ID: 4, DESCR: "4 (Programmer)" }, { ID: 5, DESCR: "5 (High)" }];
 		$scope.globallock = "";

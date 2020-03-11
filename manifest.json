@@ -1,0 +1,16 @@
+{
+	"short_name": "Tracker",
+	"name": "Task Tracker",
+	"icons": [
+		{
+			"src": "images/tracker.png",
+			"type": "image/png",
+			"sizes": "200x200"
+		}
+	],
+	"start_url": "./tracker.aspx",
+	"background_color": "black",
+	"display": "standalone",
+	"scope": ".",
+	"theme_color": "black"
+}
