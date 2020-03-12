@@ -330,6 +330,19 @@
 					}
 				});
 		};
+		$scope.insertIMG = function (a) {
+			var txtControl = document.getElementById("spec");
+			if (typeof txtControl.selectionStart === 'number' && typeof txtControl.selectionEnd === 'number') {
+				var start = txtControl.selectionStart;
+				var end = txtControl.selectionEnd;
+
+				var before = txtControl.value.slice(0, start);
+				var after = txtControl.value.slice(end);
+
+				var text = before + "![](getTaskAttachment.ashx?idrecord=" + a.ID + "&ext=png)" + after;
+				$scope.defect.SPECS = text;
+			}
+		};
 		$scope.changetab = function (event) {
 			var tab = event.target.tagName === "A" ? event.target.innerText : event.target.parentElement.innerText;
 			if (tab === $scope.tab_builds) {
@@ -366,6 +379,8 @@
 				$('.toast').toast('show');
 			} else if (tab === $scope.tab_preview) {
 				$scope.generateHTMLSpecs();
+			} else if (tab === $scope.tab_edit) {
+				$scope.loadAttachments();
 			}
 		};
 		$scope.add2Bst = function (batch) {
@@ -660,6 +675,7 @@
 		$scope.tab_workflow = "Workflow";
 		$scope.tab_mess = "Messages";
 		$scope.tab_preview = "Preview";
+		$scope.tab_edit = "Edit";
 		$scope.tab_specs = "Specs";
 		$scope.buildpriorities = [{ ID: 1, DESCR: "1 (Low)" }, { ID: 2, DESCR: "2 (Programmer big release)" }, { ID: 3, DESCR: "3 (Release)" }, { ID: 4, DESCR: "4 (Programmer)" }, { ID: 5, DESCR: "5 (High)" }];
 		$scope.globallock = "";

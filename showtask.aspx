@@ -237,16 +237,32 @@
 				<div class="tab-content">
 					<div id="specification" class="tab-pane active">
 						<ul class="nav nav-tabs">
-							<li class="nav-item">
-								<a class="nav-link small" data-toggle="tab" href="#sptab">Edit</a>
+							<li class="nav-item" ng-click="changetab($event)">
+								<a class="nav-link small" data-toggle="tab" href="#sptab">{{tab_edit}}</a>
 							</li>
 							<li class="nav-item" ng-click="changetab($event)">
 								<a class="nav-link active small" data-toggle="tab" href="#sptab2">{{tab_preview}}</a>
 							</li>
 						</ul>
 						<div class="tab-content">
-							<div class="tab-pane container m-0 p-0" id="sptab">
-								<textarea class="form-control form-control-sm" id="spec" rows="30" ng-disabled="!canChangeDefect()" ng-model="defect.SPECS"></textarea>
+							<div class="tab-pane m-0 p-0" id="sptab">
+								<div class="d-flex">
+									<div class="flex-grow-1">
+										<textarea class="form-control form-control-sm" id="spec" rows="30" ng-disabled="!canChangeDefect()" ng-model="defect.SPECS"></textarea>
+									</div>
+									<div class="">
+										<div class="btn-group-vertical">
+											<div class="btn-group">
+												<button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-toggle="dropdown">
+													IMG
+												</button>
+												<div class="dropdown-menu">
+													<a ng-repeat="a in attachs" class="dropdown-item" href ng-click="insertIMG(a)">{{a.FILENAME}}</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
 							<div class="tab-pane container active m-0 p-0" id="sptab2">
 							</div>
