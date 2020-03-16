@@ -330,7 +330,21 @@
 					}
 				});
 		};
-		$scope.insertIMG = function (a) {
+		$scope.editSurround = function (txt) {
+			var txtControl = document.getElementById("spec");
+			if (typeof txtControl.selectionStart === 'number' && typeof txtControl.selectionEnd === 'number') {
+				var start = txtControl.selectionStart;
+				var end = txtControl.selectionEnd;
+
+				var before = txtControl.value.slice(0, start);
+				var inside = txtControl.value.slice(start, end);
+				var after = txtControl.value.slice(end);
+
+				var text = before + txt + inside + txt + after;
+				$scope.defect.SPECS = text;
+			}
+		};
+		$scope.insertIMG = function () {
 			var txtControl = document.getElementById("spec");
 			if (typeof txtControl.selectionStart === 'number' && typeof txtControl.selectionEnd === 'number') {
 				var start = txtControl.selectionStart;

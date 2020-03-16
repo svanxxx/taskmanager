@@ -252,14 +252,21 @@
 									</div>
 									<div class="">
 										<div class="btn-group-vertical">
+											<button type="button" class="btn btn-sm btn-outline-secondary" ng-click="editSurround('**')">
+												<i class="fas fa-bold"></i>
+											</button>
+											<button type="button" class="btn btn-sm btn-outline-secondary" ng-click="editSurround('*')">
+												<i class="fas fa-italic"></i>
+											</button>
 											<div class="btn-group">
 												<button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-toggle="dropdown">
-													IMG
+													<i class="far fa-image"></i>
 												</button>
 												<div class="dropdown-menu">
-													<a ng-repeat="a in attachs" class="dropdown-item" href ng-click="insertIMG(a)">{{a.FILENAME}}</a>
+													<a ng-repeat="a in attachs" class="dropdown-item" href ng-click="insertIMG()">{{a.FILENAME}}</a>
 												</div>
 											</div>
+											<a href="https://www.markdownguide.org/basic-syntax/" class="btn btn-sm btn-outline-secondary" target="_blank"><i class="far fa-question-circle"></i></a>
 										</div>
 									</div>
 								</div>
