@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Text.RegularExpressions;
 using Telegram.Bot;
 using Telegram.Bot.Args;
@@ -35,6 +36,9 @@ public class TasksBot
 			{
 				try
 				{
+					ServicePointManager.Expect100Continue = true;
+					ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
 					_client = new TelegramBotClient(Settings.CurrentSettings.TELEGRAMTASKSTOKEN);
 					_client.GetMeAsync().Wait();
 					_client.OnUpdate += BotOnUpdateReceived;

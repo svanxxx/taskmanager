@@ -4,6 +4,7 @@ using System.Management.Automation;
 using Telegram.Bot;
 using GitHelper;
 using System.Text.RegularExpressions;
+using System.Net;
 
 public class VersionBuilder
 {
@@ -153,6 +154,9 @@ public class VersionBuilder
 	{
 		try
 		{
+			ServicePointManager.Expect100Continue = true;
+			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
 			TelegramBotClient client = new TelegramBotClient(Settings.CurrentSettings.TELEGRAMBUILDTOKEN);
 			client.GetMeAsync().Wait();
 			client.SendTextMessageAsync(Settings.CurrentSettings.TELEGRAMBUILDCHANNEL, message, Telegram.Bot.Types.Enums.ParseMode.Html, true).Wait();
