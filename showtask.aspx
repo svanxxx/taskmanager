@@ -258,12 +258,18 @@
 											<button type="button" class="btn btn-sm btn-outline-secondary" ng-click="editSurround('*')">
 												<i class="fas fa-italic"></i>
 											</button>
+											<button type="button" class="btn btn-sm btn-outline-secondary" ng-click="insertText('\n|head1|head2|\n|---|---|\n|data1|data2|\n')">
+												<i class="fas fa-table"></i>
+											</button>
+											<button type="button" class="btn btn-sm btn-outline-secondary" ng-click="replaceText('\n', '\n> ')">
+												<i class="fas fa-chevron-right"></i>
+											</button>
 											<div class="btn-group">
 												<button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-toggle="dropdown">
 													<i class="far fa-image"></i>
 												</button>
 												<div class="dropdown-menu">
-													<a ng-repeat="a in attachs" class="dropdown-item" href ng-click="insertIMG()">{{a.FILENAME}}</a>
+													<a ng-repeat="a in attachs" class="dropdown-item" href ng-click="insertText('![](getTaskAttachment.ashx?idrecord=' + a.ID + '&ext=png)')">{{a.FILENAME}}</a>
 												</div>
 											</div>
 											<a href="https://www.markdownguide.org/basic-syntax/" class="btn btn-sm btn-outline-secondary" target="_blank"><i class="far fa-question-circle"></i></a>
