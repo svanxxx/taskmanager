@@ -264,6 +264,9 @@
 											<button type="button" class="btn btn-sm btn-outline-secondary" ng-click="replaceText('\n', '\n> ')">
 												<i class="fas fa-chevron-right"></i>
 											</button>
+											<button type="button" class="btn btn-sm btn-outline-secondary" ng-click="insertText('\n---\n')">
+												<i class="far fa-window-minimize"></i>
+											</button>
 											<div class="btn-group">
 												<button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-toggle="dropdown">
 													<i class="far fa-image"></i>

@@ -353,8 +353,14 @@
 				var before = txtControl.value.slice(0, start);
 				var after = txtControl.value.slice(end);
 
-				var text = before + txt + after;
+				var pref1 = before + txt;
+				var text = pref1 + after;
 				$scope.defect.SPECS = text;
+
+				setTimeout(function () {
+					txtControl.focus();
+					txtControl.setSelectionRange(pref1.length, pref1.length);
+				}, 200);
 			}
 		};
 		$scope.replaceText = function (a, b) {
