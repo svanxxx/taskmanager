@@ -270,6 +270,9 @@
 											<button type="button" class="btn btn-sm btn-outline-secondary" ng-click="replaceText('\n', '\n    ')">
 												<i class="far fa-file-code"></i>
 											</button>
+											<button type="button" class="btn btn-sm btn-outline-secondary" ng-click="editSurround('[TT$sel](showtask.aspx?ttid=',')')">
+												TT
+											</button>
 											<div class="btn-group">
 												<button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-toggle="dropdown">
 													<i class="far fa-image"></i>

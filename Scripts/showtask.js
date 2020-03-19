@@ -330,7 +330,10 @@
 					}
 				});
 		};
-		$scope.editSurround = function (txt) {
+		$scope.editSurround = function (txt1, txt2) {
+			if (txt2 === undefined) {
+				txt2 = txt1;
+			}
 			var txtControl = document.getElementById("spec");
 			if (typeof txtControl.selectionStart === 'number' && typeof txtControl.selectionEnd === 'number') {
 				var start = txtControl.selectionStart;
@@ -340,7 +343,9 @@
 				var inside = txtControl.value.slice(start, end);
 				var after = txtControl.value.slice(end);
 
-				var text = before + txt + inside + txt + after;
+				txt1 = txt1.replace("$sel", inside);
+				txt2 = txt2.replace("$sel", inside);
+				var text = before + txt1 + inside + txt2 + after;
 				$scope.defect.SPECS = text;
 			}
 		};
