@@ -281,6 +281,14 @@
 													<a ng-repeat="a in attachs" class="dropdown-item" href ng-click="insertText('![](getTaskAttachment.ashx?idrecord=' + a.ID + '&ext=png)')">{{a.FILENAME}}</a>
 												</div>
 											</div>
+											<div class="btn-group">
+												<button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-toggle="dropdown">
+													<i class="fas fa-link"></i>
+												</button>
+												<div class="dropdown-menu">
+													<a ng-repeat="a in attachs" class="dropdown-item" href ng-click="insertText('['+a.FILENAME+'](getTaskAttachment.ashx?idrecord=' + a.ID+')')">{{a.FILENAME}}</a>
+												</div>
+											</div>
 											<a href="https://www.markdownguide.org/basic-syntax/" class="btn btn-sm btn-outline-secondary" target="_blank"><i class="far fa-question-circle"></i></a>
 										</div>
 									</div>
