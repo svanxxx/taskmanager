@@ -236,22 +236,18 @@
 				</ul>
 				<div class="tab-content">
 					<div id="specification" class="tab-pane active">
-						<ul class="nav nav-tabs">
-							<li class="nav-item" ng-click="changetab($event)">
-								<a class="nav-link small" data-toggle="tab" href="#sptab">{{tab_edit}}</a>
-							</li>
-							<li class="nav-item" ng-click="changetab($event)">
-								<a class="nav-link active small" data-toggle="tab" href="#sptab2">{{tab_preview}}</a>
-							</li>
-						</ul>
-						<div class="tab-content">
-							<div class="tab-pane m-0 p-0" id="sptab">
+						<div class="custom-control custom-switch" style="position: absolute;right: 0; z-index:100;">
+							<input type="checkbox" class="custom-control-input" id="showSpecEditor" ng-model="showSpecEditor" ng-change="generateHTMLSpecs()">
+							<label class="custom-control-label" for="showSpecEditor">Edit</label>
+						</div>
+						<div class="m-0 p-0">
+							<div ng-show="showSpecEditor" class="m-0 p-0" id="sptab">
 								<div class="d-flex">
 									<div class="flex-grow-1">
 										<textarea class="form-control form-control-sm" id="spec" rows="30" ng-disabled="!canChangeDefect()" ng-model="defect.SPECS"></textarea>
 									</div>
 									<div class="">
-										<div class="btn-group-vertical">
+										<div class="btn-group-vertical pt-5">
 											<button type="button" class="btn btn-sm btn-outline-secondary" ng-click="editSurround('**')">
 												<i class="fas fa-bold"></i>
 											</button>
@@ -294,7 +290,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="tab-pane container active m-0 p-0" id="sptab2">
+							<div ng-show="!showSpecEditor" class="active m-0 p-0" id="sptab2">
 							</div>
 						</div>
 					</div>
@@ -508,42 +504,45 @@
 				</div>
 			</div>
 			<div class="col-lg-2">
-				<div class="alert alert-warning shadow" style="text-align: center">
-					<button data-toggle="tooltip" title="Invite person to see this task." type="button" class="btn btn-light btn-sm float-right" ng-click="invite(defect.CREATEDBY)"><i class="fas fa-bell"></i></button>
-					<a data-toggle="tooltip" title="Click to see full plan for the person" target="_blank" href="editplan.aspx?userid={{defect.CREATEDBY | getUserTRIDById:this}}">
-						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=60&ttid=' + defect.CREATEDBY}}" alt="Smile" height="60" width="60" />
-						<div>
-							<strong>{{defect.CREATEDBY | getUserById:this}}</strong>
-						</div>
-					</a>
-					<i class="fas fa-folder-plus"></i>
+				<div class="toast" data-autohide="false">
+					<div class="toast-header">
+						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=60&ttid=' + defect.CREATEDBY}}" alt="Smile" height="20" width="20" />
+						<strong class="mr-auto">&nbsp;Creator</strong>
+						<button data-toggle="tooltip" title="Invite person to see this task." type="button" class="btn btn-light btn-sm float-right" ng-click="invite(defect.CREATEDBY)"><i class="fas fa-bell"></i></button>
+					</div>
+					<div class="toast-body text-center">
+						<h4>{{defect.CREATEDBY | getUserById:this}}</h4>
+						<a data-toggle="tooltip" title="Click to see full plan for the person" target="_blank" href="editplan.aspx?userid={{defect.CREATEDBY | getUserTRIDById:this}}"></a>
+					</div>
 				</div>
-				<div class="alert alert-danger shadow" style="text-align: center">
-					<button data-toggle="tooltip" title="Invite person to see this task." type="button" class="btn btn-light btn-sm float-right" ng-click="invite(defect.ESTIMBY)"><i class="fas fa-bell"></i></button>
-					<a data-toggle="tooltip" title="Click to see full plan for the person" target="_blank" href="editplan.aspx?userid={{defect.ESTIMBY | getUserTRIDById:this}}">
-						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=60&ttid=' + defect.ESTIMBY}}" alt="Smile" height="60" width="60" />
-						<div>
-							<strong>{{defect.ESTIMBY | getUserById:this}}</strong>
-						</div>
-					</a>
-					<i class="far fa-clock"></i><span>:{{defect.ESTIM}}</span>
+				<div class="toast" data-autohide="false">
+					<div class="toast-header">
+						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=60&ttid=' + defect.ESTIMBY}}" alt="Smile" height="20" width="20" />
+						<strong class="mr-auto">&nbsp;Estimated by {{defect.ESTIMBY | getUserById:this}}</strong>
+						<button data-toggle="tooltip" title="Invite person to see this task." type="button" class="btn btn-light btn-sm float-right" ng-click="invite(defect.ESTIMBY)"><i class="fas fa-bell"></i></button>
+					</div>
+					<div class="toast-body text-center">
+						<h4 class="float-center">{{defect.ESTIM}} hours</h4>
+					</div>
 				</div>
-				<div class="alert alert-info shadow" style="text-align: center">
-					<button data-toggle="tooltip" title="Invite person to see this task." type="button" class="btn btn-light btn-sm float-right" ng-click="invite(defect.AUSER)"><i class="fas fa-bell"></i></button>
-					<a data-toggle="tooltip" title="Click to see full plan for the person" target="_blank" href="editplan.aspx?userid={{defect.AUSER | getUserTRIDById:this}}">
-						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=60&ttid=' + defect.AUSER}}" alt="Smile" height="60" width="60" />
-						<div>
-							<strong>{{defect.AUSER | getUserById:this}}</strong>
-						</div>
-					</a>
-					<i class="fas fa-tools"></i>
+				<div class="toast" data-autohide="false">
+					<div class="toast-header">
+						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=60&ttid=' + defect.AUSER}}" alt="Smile" height="20" width="20" />
+						<strong class="mr-auto">&nbsp;{{defect.AUSER | getUserById:this}} worked on</strong>
+						<button data-toggle="tooltip" title="Invite person to see this task." type="button" class="btn btn-light btn-sm float-right" ng-click="invite(defect.AUSER)"><i class="fas fa-bell"></i></button>
+					</div>
+					<div class="toast-body text-center">
+						<h4 class="float-center">{{defect.SPENT}} hours</h4>
+					</div>
 				</div>
-				<div class="alert alert-warning shadow" style="text-align: center">
-					<span>Worked on: {{defect.SPENT}} hours</span>
-				</div>
-				<div class="alert alert-light shadow" style="text-align: center">
-					<span>Version: <a href="versionchanges.aspx?version={{defect.VERSION}}"><span class="badge badge-light">{{defect.VERSION}}</span></a></span>
-					<button ng-disabled="!canChangeDefect()" type="button" class="btn btn btn-outline-light text-dark btn-sm" ng-click="setVersion()">...</button>
+				<div class="toast" data-autohide="false">
+					<div class="toast-header">
+						<strong class="mr-auto">Included into version</strong>
+					</div>
+					<div class="toast-body text-center">
+						<h4 class="float-center"><a href="versionchanges.aspx?version={{defect.VERSION}}"><span class="badge badge-light">{{defect.VERSION}}</span></a></h4>
+						<button ng-disabled="!canChangeDefect()" type="button" class="btn btn btn-outline-light text-dark btn-sm" ng-click="setVersion()">...</button>
+					</div>
 				</div>
 			</div>
 		</div>

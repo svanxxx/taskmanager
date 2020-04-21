@@ -198,9 +198,13 @@
 			$('[href="#alarm"]')[0].click();
 		};
 		$scope.generateHTMLSpecs = function () {
-			document.getElementById("sptab2").innerHTML = "<textarea id='datacopy' style='display:none;'></textarea>";
-			document.getElementById("datacopy").value = $scope.defect.SPECS;
-			htmlPreviewSpecs = editormd.markdownToHTML("sptab2", {});
+			if (!$scope.showSpecEditor) {
+				document.getElementById("sptab2").innerHTML = "<textarea id='datacopy' style='display:none;'></textarea>";
+				document.getElementById("datacopy").value = $scope.defect.SPECS;
+				htmlPreviewSpecs = editormd.markdownToHTML("sptab2", {});
+			} else {
+				$scope.loadAttachments();
+			}
 		};
 		$scope.addFile = function () {
 			var file = $('<input type="file" name="filefor" style="display: none;" />');
@@ -429,10 +433,6 @@
 				}
 			} else if (tab === $scope.tab_mess) {
 				$('.toast').toast('show');
-			} else if (tab === $scope.tab_preview) {
-				$scope.generateHTMLSpecs();
-			} else if (tab === $scope.tab_edit) {
-				$scope.loadAttachments();
 			}
 		};
 		$scope.add2Bst = function (batch) {
@@ -515,6 +515,7 @@
 						$scope.generateHTMLSpecs();
 					}
 					document.title = "Task: #" + ttid;
+					$scope.showSpecEditor = $scope.defect.SPECS.length === 0;
 					document.getElementById("firealarm").style.backgroundImage = "url('images/fire.gif')";
 					EndProgress(taskprg);
 				});
@@ -726,8 +727,6 @@
 		$scope.tab_bst = "BST";
 		$scope.tab_workflow = "Workflow";
 		$scope.tab_mess = "Messages";
-		$scope.tab_preview = "Preview";
-		$scope.tab_edit = "Edit";
 		$scope.tab_specs = "Specs";
 		$scope.buildpriorities = [{ ID: 1, DESCR: "1 (Low)" }, { ID: 2, DESCR: "2 (Programmer big release)" }, { ID: 3, DESCR: "3 (Release)" }, { ID: 4, DESCR: "4 (Programmer)" }, { ID: 5, DESCR: "5 (High)" }];
 		$scope.globallock = "";
