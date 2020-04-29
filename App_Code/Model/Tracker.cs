@@ -1,8 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Globalization;
+using System.Linq;
 
+public class SimpleTrackWrapper
+{
+	static List<SimpleTrackWrapper> _tracks;
+	static object _lock = new object();
+
+	public int USER;
+	public string NAME;
+	public string HASH;
+	public static string Name2tag(string name)
+	{
+		return "tag_" + name.Replace(" ", "_");
+	}
+	static List<SimpleTrackWrapper> Enum()
+	{
+		List<SimpleTrackWrapper> res = new List<SimpleTrackWrapper>();
+		using (var db = new tt_resEntities())
+		{
+			foreach (var t in db.DefectTrackers.Where(tracker => tracker.idFilter == -1))
+			{
+				res.Add(new SimpleTrackWrapper() { NAME = t.Name, HASH = Name2tag(t.Name), USER = t.idClient.GetValueOrDefault(-1) });
+			}
+		}
+		return res;
+	}
+	public static List<SimpleTrackWrapper> GetSimpleTrackers()
+	{
+		lock (_lock)
+		{
+			if (_tracks == null)
+			{
+				_tracks = Enum();
+			}
+			return _tracks.ToList(); //copy
+		}
+	}
+	public static void ResetSimpleTrackers()
+	{
+		lock (_lock)
+		{
+			_tracks = null;
+		}
+	}
+}
 public class Complete
 {
 	public Complete() { }
@@ -33,7 +76,7 @@ public class Tracker : IdBasedObject
 		{
 			double total = 0;
 			List<Complete> res = new List<Complete>();
-			foreach(var s in COLORDEFS.Split(';'))
+			foreach (var s in COLORDEFS.Split(';'))
 			{
 				if (string.IsNullOrEmpty(s))
 				{
@@ -44,11 +87,11 @@ public class Tracker : IdBasedObject
 				{
 					double val = double.Parse(items[0]);
 					total += val;
-					res.Add(new Complete() { PERCENT = val , COLOR = items[1] });
+					res.Add(new Complete() { PERCENT = val, COLOR = items[1] });
 				}
 			}
 			double dy = 0;
-			foreach(var p in res)
+			foreach (var p in res)
 			{
 				p.PERCENT = p.PERCENT * 100.0 / total;
 				p.Y = dy;
@@ -87,7 +130,10 @@ public class Tracker : IdBasedObject
 		get { return GetAsInt(_Cli); }
 		set { this[_Cli] = value; }
 	}
-
+	protected override void PostStore() 
+	{
+		SimpleTrackWrapper.ResetSimpleTrackers();
+	}
 	public Tracker()
 	 : base(_Tabl, _allCols, 0.ToString(), _pid, false)
 	{
@@ -108,6 +154,7 @@ public class Tracker : IdBasedObject
 		}
 		return new StoredDefectsFilter(IDFILTER).GetFilter();
 	}
+	static List<Tracker> _TaskTracks = new List<Tracker>();
 	static public Tracker New(string name, int user, int filter)
 	{
 		string g = Guid.NewGuid().ToString();
@@ -118,11 +165,13 @@ public class Tracker : IdBasedObject
 			NAME = name
 		};
 		tr.Store();
+		SimpleTrackWrapper.ResetSimpleTrackers();
 		return tr;
 	}
 	static public void Delete(int id)
 	{
 		SQLExecute(string.Format("DELETE FROM {0} WHERE {1} = {2}", _Tabl, _pid, id));
+		SimpleTrackWrapper.ResetSimpleTrackers();
 	}
 	static public List<Tracker> Enum(int user)
 	{

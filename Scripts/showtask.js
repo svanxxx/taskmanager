@@ -585,10 +585,10 @@
 			}
 		});
 		$scope.releaseRequest = function () {
-			$scope.notifyHub.server.sendTaskMessage(userID(), $scope.lockedby, "Please release the task!", $scope.defect.ID, "bell.png");
+			$scope.notifyHub.server.sendTaskMessage(userID(), $scope.lockedby, "Please release TT" + ttid + "!", $scope.defect.ID, "bell.png");
 		};
 		$scope.releaseForce = function () {
-			$scope.notifyHub.server.sendTaskMessage(userID(), $scope.lockedby, "You was disconnected from the task!", $scope.defect.ID, "disconnect.png");
+			$scope.notifyHub.server.sendTaskMessage(userID(), $scope.lockedby, "You was disconnected from TT" + ttid + "!", $scope.defect.ID, "disconnect.png");
 			$scope.notifyHub.server.lockTaskForce(ttid, $scope.currentlock, userID());
 		};
 		$scope.locktask = function () {
@@ -703,6 +703,7 @@
 		$scope.buildtime = parseInt(document.getElementById("buildtime").value);
 		$scope.testlink = document.getElementById("testlink").value;
 		$scope.addresses = document.getElementById("deflist").value;
+		$scope.trackers = JSON.parse(document.getElementById("trackers").value);
 
 		$scope.today = new Date();
 		$scope.today.setHours(0, 0, 0, 0);

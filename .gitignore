@@ -1,16 +1,35 @@
 /.vs/TR_SOURCE/v15/*
 /.vs/taskmanager/v15
+/.vs/taskmanager/v16
+/.vs/taskmanager/config
 /UTest/bin/Debug/*
 /UTest/obj/Debug/*
+/UTest/obj/Release
 /bin/GitHelper.dll
 /bin/GitHelper.pdb
-# Ignore NuGet Packages
-*.nupkg
-/UTest/obj/Release
 /bin/roslyn
 /bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
 /bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll.refresh
 /bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 /App_Data/PublishProfiles/sirius beta beta.pubxml
-/.vs/taskmanager/v16
-/.vs/taskmanager/config
+# Ignore NuGet Packages
+*.nupkg
+
+# The packages folder can be ignored because of Package Restore
+**/[Pp]ackages/*
+
+# except build/, which is used as an MSBuild target.
+!**/[Pp]ackages/build/
+
+# Uncomment if necessary however generally it will be regenerated when needed
+#!**/[Pp]ackages/repositories.config
+
+# NuGet v3's project.json files produces more ignorable files
+*.nuget.props
+*.nuget.targets
+
+# Ignore other intermediate files that NuGet might create. project.lock.json is used in conjunction
+# with project.json (NuGet v3); project.assets.json is used in conjunction with the PackageReference
+# format (NuGet v4 and .NET Core).
+project.lock.json
+project.assets.json

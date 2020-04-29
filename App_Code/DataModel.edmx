@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DataModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="DefectTracker">
+          <Key>
+            <PropertyRef Name="idRecord" />
+          </Key>
+          <Property Name="idRecord" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="idOwner" Type="int" Nullable="false" />
+          <Property Name="idFilter" Type="int" />
+          <Property Name="idClient" Type="int" />
+          <Property Name="dateCreated" Type="datetime" />
+          <Property Name="COLORDEF" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityContainer Name="DataModelStoreContainer">
+          <EntitySet Name="DefectTracker" EntityType="Self.DefectTracker" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DataModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="DefectTracker">
+          <Key>
+            <PropertyRef Name="idRecord" />
+          </Key>
+          <Property Name="idRecord" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="idOwner" Type="Int32" Nullable="false" />
+          <Property Name="idFilter" Type="Int32" />
+          <Property Name="idClient" Type="Int32" />
+          <Property Name="dateCreated" Type="DateTime" Precision="3" />
+          <Property Name="COLORDEF" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityContainer Name="tt_resEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="DefectTrackers" EntityType="Self.DefectTracker" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DataModelStoreContainer" CdmEntityContainer="tt_resEntities">
+          <EntitySetMapping Name="DefectTrackers">
+            <EntityTypeMapping TypeName="DataModel.DefectTracker">
+              <MappingFragment StoreEntitySet="DefectTracker">
+                <ScalarProperty Name="idRecord" ColumnName="idRecord" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="idOwner" ColumnName="idOwner" />
+                <ScalarProperty Name="idFilter" ColumnName="idFilter" />
+                <ScalarProperty Name="idClient" ColumnName="idClient" />
+                <ScalarProperty Name="dateCreated" ColumnName="dateCreated" />
+                <ScalarProperty Name="COLORDEF" ColumnName="COLORDEF" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

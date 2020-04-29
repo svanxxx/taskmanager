@@ -23,10 +23,11 @@
 	<input type="hidden" id="testlink" value="<%=Settings.CurrentSettings.TESTREQUESTLINK.ToString()%>" />
 	<input type="hidden" id="releasettid" value="<%=Settings.CurrentSettings.RELEASETTID.ToString()%>" />
 	<input type="hidden" id="defectdefaults" value='<%=Newtonsoft.Json.JsonConvert.SerializeObject(DefectDefaults.CurrentDefaults)%>' />
+	<input type="hidden" id="trackers" value='<%=Newtonsoft.Json.JsonConvert.SerializeObject(SimpleTrackWrapper.GetSimpleTrackers())%>' />
 	<div ng-app="mpsapplication" ng-controller="mpscontroller" ng-cloak>
 		<button ng-show="false" type="submit">for autocomplete</button>
 		<div class="row">
-			<div class="col-lg-2">
+			<div class="col-lg-2 text-center">
 				<div class="btn-group-vertical btn-block" ng-cloak ng-show="changed">
 					<button type="button" class="btn btn-success" ng-click="saveDefect()">Save</button>
 					<button type="button" class="btn btn-danger" ng-click="discardDefect()">Discard</button>
@@ -36,9 +37,20 @@
 					<button ng-click="duplicate()" type="button" class="btn btn-outline-secondary btn-sm flex-fill"><span class="d-none d-md-inline">Duplicate</span>&nbsp;<i class="fas fa-clone"></i></button>
 					<button ng-click="resettask()" ng-disabled="!canChangeDefect()" type="button" class="btn btn-outline-secondary btn-sm flex-fill"><span class="d-none d-md-inline">Reset To Re-Use</span>&nbsp;<i class="fas fa-recycle"></i></button>
 					<button ng-click="normtext()" ng-disabled="!canChangeDefect()" type="button" class="btn btn-outline-secondary btn-sm flex-fill"><span class="d-none d-md-inline">Normalize Details Text</span>&nbsp;<i class="fab fa-wpforms"></i></button>
+				</div>
+				<div class="d-flex flex-wrap shadow">
 					<button ng-click="adddesc('Comment', '', '')" ng-disabled="!canChangeDefect()" type="button" class="btn btn-outline-secondary btn-sm flex-fill"><span class="d-none d-md-inline">Add Comment</span>&nbsp;<i class="fas fa-comments"></i></button>
 					<button ng-click="adddesc('Tested', 'taskokay.png', 'green')" ng-disabled="!canChangeDefect()" type="button" class="btn btn-outline-secondary btn-sm flex-fill"><span class="d-none d-md-inline">Add Tested Comment</span>&nbsp;<i class="fas fa-check"></i></button>
 					<button ng-click="adddesc('Rejected', 'taskfail.png', 'red')" ng-disabled="!canChangeDefect()" type="button" class="btn btn-outline-secondary btn-sm flex-fill"><span class="d-none d-md-inline">Add Rejected Comment</span>&nbsp;<i class="fas fa-window-close"></i></button>
+					<button type="button" class="btn btn-outline-secondary btn-sm flex-fill dropdown-toggle" data-toggle="dropdown">
+						Add Tracker Tag
+					</button>
+					<div class="dropdown-menu" style="height: auto !important; position: relative !important; transform: translate3d(0,0,10px) !important;">
+						<div ng-disabled="!canChangeDefect()" class="dropdown-item" style="cursor: pointer" ng-repeat="t in trackers" ng-click="addComment(t.HASH, false, '')">
+							<img data-toggle="tooltip" title="<img src='{{'getUserImg.ashx?sz=50&ttid=' + t.USER}}' />" class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=25&ttid=' + t.USER}}" alt="Smile" height="25" width="25" />
+							{{t.NAME}}
+						</div>
+					</div>
 				</div>
 				<div class="alert alert-info mt-2 shadow" style="text-align: center" ng-show="!canChangeDefect()">
 					<button data-toggle="tooltip" title="Ask to release!" type="button" class="btn btn-light btn-sm float-left" ng-click="releaseRequest()"><i class="fas fa-bell text-info"></i></button>
@@ -236,7 +248,7 @@
 				</ul>
 				<div class="tab-content">
 					<div id="specification" class="tab-pane active">
-						<div class="custom-control custom-switch" style="position: absolute;right: 0; z-index:100;">
+						<div class="custom-control custom-switch" style="position: absolute; right: 0; z-index: 100;">
 							<input type="checkbox" class="custom-control-input" id="showSpecEditor" ng-model="showSpecEditor" ng-change="generateHTMLSpecs()">
 							<label class="custom-control-label" for="showSpecEditor">Edit</label>
 						</div>
