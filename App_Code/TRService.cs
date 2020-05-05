@@ -1022,6 +1022,8 @@ public class TRService : WebService
 				return DefectDispo.New(desc).ToString();
 			case RefType.severity:
 				return DefectSeverity.New(desc).ToString();
+			case RefType.component:
+				return DefectComp.New(desc).ToString();
 		}
 		return "Unsupported";
 	}

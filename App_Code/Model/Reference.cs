@@ -29,7 +29,8 @@ public class ReferenceVersion
 public enum RefType
 {
 	disposition,
-    severity
+	severity,
+	component
 }
 public class Reference : IdBasedObject
 {

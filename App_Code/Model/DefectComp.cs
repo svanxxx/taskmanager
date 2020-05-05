@@ -39,19 +39,16 @@ public class DefectComp : Reference
 		return res;
 	}
 
-	static object _lockobject = new object();
+	static object _lock = new object();
 	static List<int> _VacationRec = new List<int>();
 	override public void Store()
 	{
-		lock(_lockobject)
-		{
-			_VacationRec.Clear();
-		}
+		ClearCache();
 		base.Store();
 	}
 	public static List<int> GetVacationRec()
 	{
-		lock (_lockobject)
+		lock (_lock)
 		{
 			if (_VacationRec.Count < 1)
 			{
@@ -62,5 +59,18 @@ public class DefectComp : Reference
 			}
 			return new List<int>(_VacationRec);
 		}
+	}
+	static void ClearCache()
+	{
+		lock (_lock)
+		{
+			_VacationRec.Clear();
+		}
+	}
+	public static int New(string desc)
+	{
+		int res = Reference.New(_Tabl, desc);
+		ClearCache();
+		return res;
 	}
 }
