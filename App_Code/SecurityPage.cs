@@ -6,7 +6,7 @@ public class SecurityPage : System.Web.UI.Page
 {
 	public static string returl = "ReturnUrl";
 	public static string loginpage = "login.aspx";
-	public static string clientpage = "tracker.aspx";
+	public static readonly string[] _clientpages = { "tracker.aspx", "versionchanges.aspx" };
 
 	void CheckPermissions()
 	{
@@ -15,9 +15,9 @@ public class SecurityPage : System.Web.UI.Page
 			Response.Redirect(string.Format("{0}?{1}=1", loginpage, CurrentContext.retiredURL), false);
 			Context.ApplicationInstance.CompleteRequest();
 		}
-		if (CurrentContext.Valid && CurrentContext.User.ISCLIENT && Request.Url.Segments.Last().ToUpper() != clientpage.ToUpper())
+		if (CurrentContext.Valid && CurrentContext.User.ISCLIENT && Array.FindIndex(_clientpages, x=>x.ToUpper()==Request.Url.Segments.Last().ToUpper()) < 0)
 		{
-			Response.Redirect(clientpage, false);
+			Response.Redirect(_clientpages[0], false);
 			Context.ApplicationInstance.CompleteRequest();
 		}
 	}
