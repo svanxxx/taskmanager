@@ -89,4 +89,12 @@ public class GitService : WebService
 
 		return _TodayCommits;
 	}
+	[WebMethod(EnableSession = true, CacheDuration = 300)]
+	public GitTag LastTag()
+	{
+		CurrentContext.Validate();
+
+		Git git = new Git(Settings.CurrentSettings.WORKGITLOCATION);
+		return git.LastTag();
+	}
 }

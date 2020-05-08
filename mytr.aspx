@@ -33,6 +33,17 @@
 					<button type="button" class="btn btn-outline-secondary flex-fill" ng-click="addTask()"><i class="fas fa-wrench"></i>&nbsp;<span class="d-none d-md-inline">Start New Task</span></button>
 					<button type="button" class="btn btn-outline-secondary flex-fill" ng-click="planTask()"><i class="far fa-calendar-check"></i>&nbsp;<span class="d-none d-md-inline">Plan New Task</span></button>
 				</div>
+				<div class="toast" data-autohide="false">
+					<div class="toast-header">
+						<strong class="mr-auto text-primary">The Latest Version: {{versionTag.NAME}}</strong>
+					</div>
+					<div class="toast-body">
+						<button ng-click="GetFile(versionTag.NAME, 'efip')" type="button" class="btn btn-outline-light text-dark btn-sm"><i class="fas fa-cloud-download-alt"></i>&nbsp;Fieldpro</button>
+						<button ng-click="GetFile(versionTag.NAME, 'cx')" type="button" class="btn btn-outline-light text-dark btn-sm"><i class="fas fa-cloud-download-alt"></i>&nbsp;Models</button>
+						<button ng-click="GetFile(versionTag.NAME, 'onsite')" type="button" class="btn btn-outline-light text-dark btn-sm"><i class="fas fa-cloud-download-alt"></i>&nbsp;Onsite</button>
+						<button ng-click="GetFile(versionTag.NAME, 'demo')" type="button" class="btn btn-outline-light text-dark btn-sm"><i class="fas fa-cloud-download-alt"></i>&nbsp;Demo</button>
+					</div>
+				</div>
 			</div>
 			<div class="col-lg-8">
 				<div class="card person-box person-bar">

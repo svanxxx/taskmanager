@@ -158,6 +158,7 @@ $(function () {
 				$scope.out();
 			}
 		}, 30000);
+
 		$scope.todayCommits = [];
 		$scope.LoadTodayCommits = function () {
 			$http.post("GitService.asmx/TodayCommits", JSON.stringify({}))
@@ -172,6 +173,22 @@ $(function () {
 			$scope.LoadTodayCommits();
 		}, 60000);
 		$scope.LoadTodayCommits();
+
+		$scope.versionTag = "";
+		$scope.LoadversionTag = function () {
+			$http.post("GitService.asmx/LastTag", JSON.stringify({}))
+				.then(function (result) {
+					$scope.versionTag = result.data.d;
+				});
+		}
+		$interval(function () {
+			$scope.LoadversionTag();
+		}, 60000);
+		$scope.LoadversionTag();
+
+		$scope.GetFile = function (v, t) {
+			window.open('getinstall.ashx?type=' + t + '&version=' + v);
+		};
 
 		$scope.progress = function () {
 			return inProgress();
