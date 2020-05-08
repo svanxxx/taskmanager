@@ -1,4 +1,5 @@
 ﻿using GitHelper;
+using System;
 using System.Collections.Generic;
 using System.Web.Services;
 
@@ -61,5 +62,31 @@ public class GitService : WebService
 		Git git = new Git(Settings.CurrentSettings.WORKGITLOCATION);
 		Branch b = new Branch(git);
 		return b.QueryCommits(pattern);
+	}
+	static object _lockTodayCommits = new object();
+	static List<Commit> _TodayCommits = null;
+	static DateTime _dtOut = DateTime.Now.AddDays(-1);
+	[WebMethod(EnableSession = true, CacheDuration = 60)]
+	public List<Commit> TodayCommits()
+	{
+		CurrentContext.Validate();
+
+		lock (_lockTodayCommits)
+		{
+			DateTime now = DateTime.Now;
+			if ((now - _dtOut).TotalSeconds > 60)
+			{
+				Git git = new Git(Settings.CurrentSettings.WORKGITLOCATION);
+				Branch b = new Branch(git);
+				_TodayCommits = b.TodayCommits();
+				foreach (var c in _TodayCommits)
+				{
+					c.TTSUMMARY = Defect.GetTaskDispName(c.TTID);
+				}
+				_dtOut = now;
+			}
+		}
+
+		return _TodayCommits;
 	}
 }

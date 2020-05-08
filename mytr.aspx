@@ -190,7 +190,7 @@
 			<div class="text-center col-lg-2">
 				<div class="toast" data-autohide="false">
 					<div class="toast-header">
-						<strong class="mr-auto text-primary">Team:</strong>
+						<strong class="mr-auto text-primary">Team</strong>
 					</div>
 					<div class="toast-body">
 						<div class="d-flex flex-wrap">
@@ -198,6 +198,20 @@
 								<uc:usr size="20" runat="server" userid="u.TTUSERID" style="float: left" />
 								<span class="d-none d-md-inline">{{u.LOGIN}}</span>
 							</a>
+						</div>
+					</div>
+				</div>
+				<div class="toast" data-autohide="false">
+					<div class="toast-header">
+						<strong class="mr-auto text-primary">Git Activity</strong>
+					</div>
+					<div class="toast-body">
+						<div ng-repeat="c in todayCommits">
+							<img class="rep-img rounded-circle" ng-src="getUserImg.ashx?sz=20&amp;eml={{c.AUTHOREML}}" alt="Smile" height="20" width="20" style="float:left">
+							<div style="float:left">
+								<uc:defNum member="c" runat="server" style="float:left" />
+							</div>
+							<span>{{c.TTSUMMARY}}</span>
 						</div>
 					</div>
 				</div>

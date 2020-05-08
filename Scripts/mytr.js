@@ -158,6 +158,20 @@ $(function () {
 				$scope.out();
 			}
 		}, 30000);
+		$scope.todayCommits = [];
+		$scope.LoadTodayCommits = function () {
+			$http.post("GitService.asmx/TodayCommits", JSON.stringify({}))
+				.then(function (result) {
+					$scope.todayCommits = result.data.d;
+					$scope.todayCommits.forEach(function (c) {
+						c.ID = c.TTID;
+					});
+				});
+		}
+		$interval(function () {
+			$scope.LoadTodayCommits();
+		}, 60000);
+		$scope.LoadTodayCommits();
 
 		$scope.progress = function () {
 			return inProgress();
@@ -217,12 +231,12 @@ $(function () {
 		$scope.defects = [];
 		$scope.unscheduled = [];
 		$scope.loadTasks = function () {
-            $http.post("PlanService.asmx/getplannedShort", JSON.stringify({ "userid": "" }))
+			$http.post("PlanService.asmx/getplannedShort", JSON.stringify({ "userid": "" }))
 				.then(function (response) {
 					$scope.defects = response.data.d;
 					reActivateTooltips();
 				});
-            $http.post("PlanService.asmx/getunplanned", JSON.stringify({ "userid": "" }))
+			$http.post("PlanService.asmx/getunplanned", JSON.stringify({ "userid": "" }))
 				.then(function (response) {
 					$scope.unscheduled = response.data.d;
 				});
