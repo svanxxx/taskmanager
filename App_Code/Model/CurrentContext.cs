@@ -36,6 +36,13 @@ public static class CurrentContext
 			return User != null && User.ISADMIN;
 		}
 	}
+	public static bool Client
+	{
+		get
+		{
+			return User != null && User.ISCLIENT;
+		}
+	}
 	public static int UserID
 	{
 		get
