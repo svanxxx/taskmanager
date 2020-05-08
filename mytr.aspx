@@ -35,7 +35,7 @@
 				</div>
 				<div class="toast" data-autohide="false">
 					<div class="toast-header">
-						<strong class="mr-auto text-primary">The Latest Version: {{versionTag.NAME}}</strong>
+						<a href="versionchanges.aspx">The Latest Version: {{versionTag.NAME}}</a>
 					</div>
 					<div class="toast-body">
 						<button ng-click="GetFile(versionTag.NAME, 'efip')" type="button" class="btn btn-outline-light text-dark btn-sm"><i class="fas fa-cloud-download-alt"></i>&nbsp;Fieldpro</button>
@@ -219,10 +219,10 @@
 					<div class="toast-body">
 						<div ng-repeat="c in todayCommits">
 							<img class="rep-img rounded-circle" ng-src="getUserImg.ashx?sz=20&amp;eml={{c.AUTHOREML}}" alt="Smile" height="20" width="20" style="float:left">
-							<div style="float:left">
+							<div style="float:left" ng-show="c.TTID > 0">
 								<uc:defNum member="c" runat="server" style="float:left" />
 							</div>
-							<span>{{c.TTSUMMARY}}</span>
+							<span class="{{c.TTID > 0 ? '' : 'badge badge-success'}}">{{c.TTSUMMARY}}</span>
 						</div>
 					</div>
 				</div>

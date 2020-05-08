@@ -82,6 +82,10 @@ public class GitService : WebService
 				foreach (var c in _TodayCommits)
 				{
 					c.TTSUMMARY = Defect.GetTaskDispName(c.TTID);
+					if (string.IsNullOrEmpty(c.TTSUMMARY))
+					{
+						c.TTSUMMARY = c.NOTES;
+					}
 				}
 				_dtOut = now;
 			}

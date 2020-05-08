@@ -515,6 +515,10 @@ public partial class DefectBase : IdBasedObject
 	}
 	public static string GetTaskDispName(int ttid)
 	{
+		if (ttid <= 0)
+		{
+			return "";
+		}
 		return DBHelper.GetValue(string.Format("SELECT {0} FROM {1} WHERE {2} = {3}", _Summ, _Tabl, _ID, ttid)).ToString();
 	}
 	public static string GetTaskEstim(int ttid)
