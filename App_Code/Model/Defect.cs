@@ -105,10 +105,14 @@ public partial class DefectBase : IdBasedObject
 		get { return this[_idRec] == DBNull.Value ? 0 : Convert.ToInt32(this[_idRec]); }
 		set { this[_idRec] = Convert.ToInt32(value); }
 	}
+	static string NormalizeText(string text)
+	{
+		return text.Trim().Replace("\n", String.Empty).Replace("\r", String.Empty).Replace("“", "\"");
+	}
 	public string SUMMARY
 	{
-		get { return this[_Summ].ToString().Replace("\n", String.Empty).Replace("\r", String.Empty); }
-		set { this[_Summ] = value; }
+		get { return NormalizeText(this[_Summ].ToString()); }
+		set { this[_Summ] = NormalizeText(value); }
 	}
 	public bool SICK
 	{
