@@ -9,18 +9,27 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
 	<div ng-app="mpsapplication" ng-controller="mpscontroller">
 		<div ng-cloak class="row">
-			<div class="col-lg-2"></div>
+			<div class="col-lg-2 text-center">
+				<div class="btn-group-vertical">
+					<button ng-click="scanAllMachines()" type="button" class="btn btn-outline-secondary">Scan all network hosts</button>
+					<button ng-click="reScanMachines()" type="button" class="btn btn-outline-secondary">Rescan hosts</button>
+				</div>
+			</div>
 			<div class="col-lg-8">
 				<div ng-show="!searchMachine && !hasMachine()">
 					<h1 class="label-center">Select machine to process</h1>
-					<div class="flex-container">
-						<div title="{{m.DETAILS}}" data-toggle="tooltip" ng-style="m | mcol:this" ng-click="setMachine(m)" class="p-1 btn btn-info button-server" ng-repeat="m in machines | orderBy : 'NAME'">
-							<i ng-show="m.ping" class="fas fa-thumbs-up"></i>
-							<i ng-show="!m.ping" class="fas fa-power-off"></i>
-							<img src="images/server.png"></img>
-							<img ng-show="unpinged(m)" class="ping" src="images/process.gif" />
+					<div class="d-flex flex-wrap button-server">
+						<div title="{{m.DETAILS}}" data-toggle="tooltip" ng-style="m | mcol:this" ng-click="setMachine(m)" class="m-2 card text-center" style="width: 9em" ng-repeat="m in machines | orderBy : 'PCNAMENAME'">
 							<div>
-								<p class="label-server">{{m.NAME}}</p>
+								<img class="mt-1" src="images/server.png">
+							</div>
+							<div class="card-body">
+								<div class="row">
+									<h6 class="m-auto">{{m.PCNAME}}</h6>
+								</div>
+								<div class="row m-auto small">
+									<small class="m-auto small">{{m.IP}}</small>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -29,14 +38,14 @@
 				<div ng-show="searchMachine && !hasMachine()">
 					<h1 class="label-center">Select domain computer</h1>
 					<div class="flex-container">
-						<div ng-click="setMachine({NAME:c, DETAILS:''})" class="btn btn-info button-server" ng-repeat="c in domainComputers">
+						<div ng-click="setMachine({PCNAME:c, DETAILS:''})" class="btn btn-info button-server" ng-repeat="c in domainComputers">
 							<img src="images/server.png"></img><p class="label-server">{{c}}</p>
 						</div>
 					</div>
 					<button ng-click="searchMachine=false" type='button' class='btn btn-block btn-primary btn-lg'>Back</button>
 				</div>
 				<div ng-show="hasMachine()">
-					<h1 class="label-center">{{workmachine.NAME}}</h1>
+					<h1 class="label-center">{{workmachine.PCNAME}}</h1>
 					<div style="text-align: center;" class="alert alert-light small p-0" ng-bind-html="workmachine.DETAILS | rawHtml">
 					</div>
 					<button ng-click="wakeMachine()" type='button' class='btn btn-block btn-success btn-lg' id='wake'>Wake Up</button>

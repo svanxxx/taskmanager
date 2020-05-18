@@ -20,3 +20,11 @@ public partial class DefectTracker
     public Nullable<System.DateTime> dateCreated { get; set; }
     public string COLORDEF { get; set; }
 }
+
+public partial class Machine
+{
+    public string PCNAME { get; set; }
+    public string IP { get; set; }
+    public string MAC { get; set; }
+    public string DETAILS { get; set; }
+}

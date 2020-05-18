@@ -1,20 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Web;
 using System.Web.Services;
 using System.Net.Mail;
 using System.Globalization;
-using System.DirectoryServices;
-using System.Diagnostics;
-using System.Management;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Collections.Specialized;
 using System.Xml.Serialization;
 using System.IO;
 using System.Text;
-using GitHelper;
-using System.Linq;
 
 [WebService(Namespace = "http://tempuri.org/")]
 [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
@@ -475,15 +469,6 @@ public class TRService : WebService
 		return TRRec.Enum(datetimes.ToArray());
 	}
 	[WebMethod(EnableSession = true)]
-	public List<Machine> getMachines()
-	{
-		if (!CurrentContext.Valid)
-		{
-			return new List<Machine>();
-		}
-		return Machine.Enum();
-	}
-	[WebMethod(EnableSession = true)]
 	public List<DefectBase> enumCloseVacations(string start, int days)
 	{
 		return DefectBase.EnumCloseVacations(start, days);
@@ -492,96 +477,6 @@ public class TRService : WebService
 	public List<DefectBase> enumUnusedVacations()
 	{
 		return DefectBase.EnumUnusedVacations();
-	}
-	[WebMethod(EnableSession = true)]
-	public void remMachine(string m)
-	{
-		Machine.Delete(m);
-	}
-	[WebMethod(EnableSession = true, CacheDuration = 600)]
-	public List<string> getDomainComputers()
-	{
-		List<string> ComputerNames = new List<string>();
-
-		DirectoryEntry entry = new DirectoryEntry("LDAP://" + Settings.CurrentSettings.COMPANYDOMAIN);
-		DirectorySearcher mySearcher = new DirectorySearcher(entry);
-		mySearcher.Filter = ("(objectClass=computer)");
-		mySearcher.SizeLimit = int.MaxValue;
-		mySearcher.PageSize = int.MaxValue;
-		foreach (SearchResult resEnt in mySearcher.FindAll())
-		{
-			string ComputerName = resEnt.GetDirectoryEntry().Name;
-			if (ComputerName.StartsWith("CN="))
-				ComputerName = ComputerName.Remove(0, "CN=".Length);
-			ComputerNames.Add(ComputerName);
-		}
-		mySearcher.Dispose();
-		entry.Dispose();
-		return ComputerNames;
-	}
-	[WebMethod(EnableSession = true)]
-	public void wakeMachine(string m)
-	{
-		Machine mach = Machine.FindOrCreate(m);
-		string[] macs = mach.MAC.Split(' ');
-		foreach (var mac in macs)
-		{
-			Process process = new Process();
-			process.StartInfo.RedirectStandardOutput = true;
-			process.StartInfo.UseShellExecute = false;
-			process.StartInfo.CreateNoWindow = true;
-			process.StartInfo.FileName = HttpRuntime.AppDomainAppPath + "bin\\WolCmd.exe";
-			process.StartInfo.Arguments = mac + " 192.168.0.1 255.255.255.0 3";
-			process.Start();
-		}
-	}
-	[WebMethod(EnableSession = true)]
-	public void shutMachine(string m)
-	{
-		Machine ma = Machine.FindOrCreate(m);
-		Process process = new Process();
-		process.StartInfo.RedirectStandardOutput = true;
-		process.StartInfo.UseShellExecute = false;
-		process.StartInfo.CreateNoWindow = true;
-		process.StartInfo.FileName = "shutdown";
-		process.StartInfo.Arguments = string.Format(@"/s /m \\{0} /t 0", ma.NAME);
-		process.Start();
-	}
-	[WebMethod(EnableSession = true)]
-	public void scanMachine(string m)
-	{
-		try
-		{
-			Machine ma = Machine.FindOrCreate(m);
-			string scope = string.Format("\\\\{0}\\root\\CIMV2", ma.NAME);
-			ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, "SELECT * FROM Win32_NetworkAdapterConfiguration");
-			string newmac = "";
-			foreach (ManagementObject queryObj in searcher.Get())
-			{
-				object o = queryObj["MACAddress"];
-				if (o == null)
-				{
-					continue;
-				}
-				if (string.IsNullOrEmpty(newmac))
-					newmac = o.ToString().Replace(":", "");
-				else
-					newmac += " " + o.ToString().Replace(":", "");
-			}
-			var cpu = new ManagementObjectSearcher(scope, "select * from Win32_Processor").Get().Cast<ManagementObject>().First();
-			var wmi = new ManagementObjectSearcher(scope, "select * from Win32_OperatingSystem").Get().Cast<ManagementObject>().First();
-			if (!string.IsNullOrEmpty(newmac))
-			{
-				int memory = Convert.ToInt32(wmi["TotalVisibleMemorySize"]) / 1024;
-				ma.DETAILS = wmi["Caption"].ToString() + "<br/>" + cpu["Name"].ToString() + "<br/>" + memory.ToString() + "Mb";
-				ma.MAC = newmac;
-				ma.Store();
-			}
-		}
-		catch (Exception e)
-		{
-			Logger.Log(e);
-		}
 	}
 	[WebMethod(EnableSession = true)]
 	public void pageLoadedComplete(int id)

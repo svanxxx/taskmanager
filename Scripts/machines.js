@@ -4,7 +4,7 @@
 	app.filter('mcol', function () {
 		return function (m, $scope) {
 			if (m.ping == true) {
-				return { "background-color": "#337ab7" };				
+				return { "background-color": "#337ab7" };
 			} else {
 				return { "background-color": "gray" };
 			}
@@ -20,13 +20,13 @@
 			return (typeof m.ping === "undefined");
 		};
 
-		$http.post("trservice.asmx/getMachines", JSON.stringify({}))
+		$http.post("MachinesService.asmx/getMachines", JSON.stringify({}))
 			.then(function (result) {
 				$scope.machines = result.data.d;
 				EndProgress(taskprg);
 			});
 		var dompckprg = StartProgress("Loading domain computers...");
-		$http.post("trservice.asmx/getDomainComputers", JSON.stringify({}))
+		$http.post("MachinesService.asmx/getDomainComputers", JSON.stringify({}))
 			.then(function (result) {
 				$scope.domainComputers = result.data.d;
 				EndProgress(dompckprg);
@@ -45,7 +45,7 @@
 			var data = e.data.split("-");
 			if (data.length > 1) {
 				for (var i = 0; i < $scope.machines.length; i++) {
-					if ($scope.machines[i].NAME == data[0]) {
+					if ($scope.machines[i].PCNAME == data[0]) {
 						var val = (data[1] == "Success");
 						if ($scope.machines[i].ping !== val) {
 							$scope.machines[i].ping = val;
@@ -59,34 +59,50 @@
 
 		$scope.shutMachine = function () {
 			StartProgress("Shutting down...");
-			$http.post("trservice.asmx/shutMachine", JSON.stringify({ "m": $scope.workmachine.NAME }))
+			$http.post("MachinesService.asmx/shutMachine", JSON.stringify({ "m": $scope.workmachine.PCNAME }))
 				.then(function () {
 					window.location.reload();
 				});
 		};
 		$scope.wakeMachine = function () {
 			StartProgress("Waking up...");
-			$http.post("trservice.asmx/wakeMachine", JSON.stringify({ "m": $scope.workmachine.NAME }))
+			$http.post("MachinesService.asmx/wakeMachine", JSON.stringify({ "m": $scope.workmachine.PCNAME }))
 				.then(function () {
 					window.location.reload();
 				});
 		};
 		$scope.scanMachine = function () {
 			StartProgress("Scanning...");
-			$http.post("trservice.asmx/scanMachine", JSON.stringify({ "m": $scope.workmachine.NAME }))
+			$http.post("MachinesService.asmx/scanMachine", JSON.stringify({ "m": $scope.workmachine.PCNAME }))
 				.then(function () {
 					window.location.reload();
 				});
 		};
 		$scope.remMachine = function () {
 			StartProgress("Removing...");
-			$http.post("trservice.asmx/remMachine", JSON.stringify({ "m": $scope.workmachine.NAME }))
+			$http.post("MachinesService.asmx/remMachine", JSON.stringify({ "m": $scope.workmachine.PCNAME }))
 				.then(function () {
 					window.location.reload();
 				});
 		};
 		$scope.hasMachine = function () {
 			return typeof $scope.workmachine !== "undefined";
+		};
+		$scope.scanAllMachines = function () {
+			waitForProcess();
+			$http.post("MachinesService.asmx/scanAllMachines", JSON.stringify({}))
+				.then(function (result) {
+					$scope.machines = result.data.d;
+					waitForProcessEnd();
+				});
+		};
+		$scope.reScanMachines = function () {
+			waitForProcess();
+			$http.post("MachinesService.asmx/reScanMachines", JSON.stringify({}))
+				.then(function (result) {
+					$scope.machines = result.data.d;
+					waitForProcessEnd();
+				});
 		};
 	}]);
 })

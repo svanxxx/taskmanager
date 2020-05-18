@@ -1,70 +1,57 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Collections.Generic;
+using System.Linq;
 
-public class Machine : IdBasedObject
+public class MachineWrapper
 {
-	static string _ID = "ID";
-	static string _Name = "PCNAME";
-	static string _Mac = "MAC";
-	static string _Det = "DETAILS";
-
-	static string _Tabl = "[TASKS].[dbo].[PCS]";
-	static string[] _allCols = new string[] { _ID, _Name, _Mac, _Det };
-
-	public int ID
+	public static void Delete(string name)
 	{
-		get { return Convert.ToInt32(this[_ID]); }
-		set { this[_ID] = value; }
-	}
-	public string NAME
-	{
-		get { return this[_Name].ToString(); }
-		set { this[_Name] = value; }
-	}
-	public string MAC
-	{
-		get { return this[_Mac].ToString(); }
-		set { this[_Mac] = value; }
-	}
-	public string DETAILS
-	{
-		get { return this[_Det].ToString(); }
-		set { this[_Det] = value; }
-	}
-
-	public Machine()
-		: base(_Tabl, _allCols, 1.ToString(), _ID, false)
-	{
-	}
-	public Machine(int id)
-		: base(_Tabl, _allCols, id.ToString(), _ID)
-	{
-	}
-
-	public static void Delete(string machine)
-	{
-		DeleteObject(_Tabl, string.Format("'{0}'", machine), _Name);
+		using (var db = new tt_resEntities())
+		{
+			var m = db.Machines.First(machine => machine.PCNAME == name);
+			if (m != null)
+			{
+				db.Machines.Remove(m);
+				db.SaveChanges();
+			}
+		}
 	}
 	public static List<Machine> Enum()
 	{
-		Machine temp = new Machine();
 		List<Machine> ls = new List<Machine>();
-		foreach(DataRow r in temp.GetRecords(""))
+		using (var db = new tt_resEntities())
 		{
-			Machine m = new Machine();
-			m.Load(r);
-			ls.Add(m);
+			return db.Machines.ToList();
 		}
-		return ls;
 	}
-	public static Machine FindOrCreate(string m)
+	public static Machine FindOrCreate(string name)
 	{
-		foreach (var id in EnumRecords(_Tabl, _ID, new string[] { _Name }, new object[] { m }))
+		using (var db = new tt_resEntities())
 		{
-			return new Machine(id);
+			var m = db.Machines.Find(name);
+			if (m == null)
+			{
+				m = db.Machines.Create();
+				m.PCNAME = name;
+				db.Machines.Add(m);
+				db.SaveChanges();
+			}
+			return m;
 		}
-		var newid = AddObject(_Tabl, new string[] { _Name }, new object[] { m });
-		return new Machine(newid);
+	}
+	public static Machine Find(string name)
+	{
+		using (var db = new tt_resEntities())
+		{
+			return db.Machines.Find(name);
+		}
+	}
+	public static void Update(Machine m)
+	{
+		using (var db = new tt_resEntities())
+		{
+			db.Machines.Attach(m);
+			db.Entry(m).State = System.Data.Entity.EntityState.Modified;
+			db.SaveChanges();
+		}
 	}
 }

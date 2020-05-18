@@ -14,7 +14,7 @@ public class machinesping : IHttpHandler
 		context.Response.ContentType = "text/event-stream";
 		context.Response.CacheControl = "no-cache";
 		context.Response.Flush();
-		List<Machine> mls = Machine.Enum();
+		List<Machine> mls = MachineWrapper.Enum();
 		while (context.Response.IsClientConnected)
 		{
 			Parallel.ForEach(mls, (machine) =>
@@ -23,7 +23,7 @@ public class machinesping : IHttpHandler
 				IPStatus status = IPStatus.Unknown;
 				try
 				{
-					status = ping.Send(machine.NAME).Status;
+					status = ping.Send(machine.PCNAME).Status;
 				}
 				catch (Exception /*e*/)
 				{
@@ -33,7 +33,7 @@ public class machinesping : IHttpHandler
 				{
 					try
 					{
-						context.Response.Write(string.Format("event: machine\ndata: {0}\n\n", machine.NAME + "-" + status.ToString()));
+						context.Response.Write(string.Format("event: machine\ndata: {0}\n\n", machine.PCNAME + "-" + status.ToString()));
 						context.Response.Flush();
 					}
 					catch (Exception /*e*/) //connection is closed

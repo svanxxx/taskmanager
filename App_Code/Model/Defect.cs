@@ -107,7 +107,7 @@ public partial class DefectBase : IdBasedObject
 	}
 	static string NormalizeText(string text)
 	{
-		return text.Trim().Replace("\n", String.Empty).Replace("\r", String.Empty).Replace("“", "\"");
+		return text.Trim().Replace("\n", String.Empty).Replace("\r", String.Empty).Replace("“", "\"").Replace("”", "\"");
 	}
 	public string SUMMARY
 	{

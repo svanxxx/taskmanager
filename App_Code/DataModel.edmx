@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="DataModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="DataModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="DefectTracker">
           <Key>
             <PropertyRef Name="idRecord" />
@@ -17,11 +17,20 @@
           <Property Name="dateCreated" Type="datetime" />
           <Property Name="COLORDEF" Type="nvarchar(max)" />
         </EntityType>
+        <EntityType Name="Machines">
+          <Key>
+            <PropertyRef Name="PCNAME" />
+          </Key>
+          <Property Name="PCNAME" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="IP" Type="nvarchar" MaxLength="255" />
+          <Property Name="MAC" Type="nvarchar(max)" />
+          <Property Name="DETAILS" Type="nvarchar(max)" />
+        </EntityType>
         <EntityContainer Name="DataModelStoreContainer">
           <EntitySet Name="DefectTracker" EntityType="Self.DefectTracker" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Machines" EntityType="Self.Machines" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DataModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -39,7 +48,17 @@
         </EntityType>
         <EntityContainer Name="tt_resEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="DefectTrackers" EntityType="Self.DefectTracker" />
+          <EntitySet Name="Machines" EntityType="DataModel.Machine" />
         </EntityContainer>
+        <EntityType Name="Machine">
+          <Key>
+            <PropertyRef Name="PCNAME" />
+          </Key>
+          <Property Name="PCNAME" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="IP" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MAC" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DETAILS" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -56,6 +75,16 @@
                 <ScalarProperty Name="idClient" ColumnName="idClient" />
                 <ScalarProperty Name="dateCreated" ColumnName="dateCreated" />
                 <ScalarProperty Name="COLORDEF" ColumnName="COLORDEF" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Machines">
+            <EntityTypeMapping TypeName="DataModel.Machine">
+              <MappingFragment StoreEntitySet="Machines">
+                <ScalarProperty Name="DETAILS" ColumnName="DETAILS" />
+                <ScalarProperty Name="MAC" ColumnName="MAC" />
+                <ScalarProperty Name="IP" ColumnName="IP" />
+                <ScalarProperty Name="PCNAME" ColumnName="PCNAME" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
