@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-public class MachineWrapper
+public class MachineFactory
 {
 	public static void Delete(string name)
 	{

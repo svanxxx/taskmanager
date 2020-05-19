@@ -17,7 +17,7 @@ public class MachinesService : WebService
 	public List<Machine> getMachines()
 	{
 		CurrentContext.Validate();
-		return MachineWrapper.Enum();
+		return MachineFactory.Enum();
 	}
 	[WebMethod(EnableSession = true, CacheDuration = 120)]
 	public List<string> getDomainComputers()
@@ -46,7 +46,7 @@ public class MachinesService : WebService
 	public void shutMachine(string m)
 	{
 		CurrentContext.Validate();
-		Machine ma = MachineWrapper.FindOrCreate(m);
+		Machine ma = MachineFactory.FindOrCreate(m);
 		Process process = new Process();
 		process.StartInfo.RedirectStandardOutput = true;
 		process.StartInfo.UseShellExecute = false;
@@ -59,7 +59,7 @@ public class MachinesService : WebService
 	public void wakeMachine(string m)
 	{
 		CurrentContext.Validate();
-		Machine mach = MachineWrapper.FindOrCreate(m);
+		Machine mach = MachineFactory.FindOrCreate(m);
 		if (string.IsNullOrEmpty(mach.MAC))
 		{
 			return;
@@ -82,7 +82,7 @@ public class MachinesService : WebService
 		CurrentContext.Validate();
 		try
 		{
-			Machine ma = MachineWrapper.FindOrCreate(m);
+			Machine ma = MachineFactory.FindOrCreate(m);
 			string scope = string.Format("\\\\{0}\\root\\CIMV2", ma.PCNAME);
 			ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, "SELECT * FROM Win32_NetworkAdapterConfiguration");
 			string newmac = "";
@@ -105,7 +105,7 @@ public class MachinesService : WebService
 				int memory = Convert.ToInt32(wmi["TotalVisibleMemorySize"]) / 1024;
 				ma.DETAILS = wmi["Caption"].ToString() + "<br/>" + cpu["Name"].ToString() + "<br/>" + memory.ToString() + "Mb";
 				ma.MAC = newmac;
-				MachineWrapper.Update(ma);
+				MachineFactory.Update(ma);
 			}
 		}
 		catch (Exception e)
@@ -114,10 +114,22 @@ public class MachinesService : WebService
 		}
 	}
 	[WebMethod(EnableSession = true)]
+	public void catMachine(string m, string category)
+	{
+		if (string.IsNullOrEmpty(m))
+		{
+			return;
+		}
+		CurrentContext.Validate();
+		Machine ms = MachineFactory.FindOrCreate(m);
+		ms.CATEGORY = category;
+		MachineFactory.Update(ms);
+	}
+	[WebMethod(EnableSession = true)]
 	public void remMachine(string m)
 	{
 		CurrentContext.Validate();
-		MachineWrapper.Delete(m);
+		MachineFactory.Delete(m);
 	}
 	[WebMethod(EnableSession = true, CacheDuration = 30)]
 	public List<Machine> scanAllMachines()
@@ -131,7 +143,7 @@ public class MachinesService : WebService
 			{
 				continue;
 			}
-			var m = MachineWrapper.FindOrCreate(ip.Name.ToUpper());
+			var m = MachineFactory.FindOrCreate(ip.Name.ToUpper());
 			bool bchange = false;
 			if (m.IP != ip.IpAddress)
 			{
@@ -145,7 +157,7 @@ public class MachinesService : WebService
 			}
 			if (bchange)
 			{
-				MachineWrapper.Update(m);
+				MachineFactory.Update(m);
 			}
 		}
 		return getMachines();
@@ -162,7 +174,7 @@ public class MachinesService : WebService
 			{
 				continue;
 			}
-			var m = MachineWrapper.Find(ip.Name.ToUpper());
+			var m = MachineFactory.Find(ip.Name.ToUpper());
 			if (m != null)
 			{
 				bool bchange = false;
@@ -178,7 +190,7 @@ public class MachinesService : WebService
 				}
 				if (bchange)
 				{
-					MachineWrapper.Update(m);
+					MachineFactory.Update(m);
 				}
 			}
 		}

@@ -14,7 +14,7 @@ public class machinesping : IHttpHandler
 		context.Response.ContentType = "text/event-stream";
 		context.Response.CacheControl = "no-cache";
 		context.Response.Flush();
-		List<Machine> mls = MachineWrapper.Enum();
+		List<Machine> mls = MachineFactory.Enum();
 		while (context.Response.IsClientConnected)
 		{
 			Parallel.ForEach(mls, (machine) =>

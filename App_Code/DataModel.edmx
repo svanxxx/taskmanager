@@ -25,6 +25,7 @@
           <Property Name="IP" Type="nvarchar" MaxLength="255" />
           <Property Name="MAC" Type="nvarchar(max)" />
           <Property Name="DETAILS" Type="nvarchar(max)" />
+          <Property Name="CATEGORY" Type="nvarchar(max)" />
         </EntityType>
         <EntityContainer Name="DataModelStoreContainer">
           <EntitySet Name="DefectTracker" EntityType="Self.DefectTracker" Schema="dbo" store:Type="Tables" />
@@ -58,6 +59,7 @@
           <Property Name="IP" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="MAC" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="DETAILS" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CATEGORY" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -81,6 +83,7 @@
           <EntitySetMapping Name="Machines">
             <EntityTypeMapping TypeName="DataModel.Machine">
               <MappingFragment StoreEntitySet="Machines">
+                <ScalarProperty Name="CATEGORY" ColumnName="CATEGORY" />
                 <ScalarProperty Name="DETAILS" ColumnName="DETAILS" />
                 <ScalarProperty Name="MAC" ColumnName="MAC" />
                 <ScalarProperty Name="IP" ColumnName="IP" />

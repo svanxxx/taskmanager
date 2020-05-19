@@ -3,11 +3,16 @@
 	app.filter('rawHtml', ['$sce', rawHtml]);
 	app.filter('mcol', function () {
 		return function (m, $scope) {
-			if (m.ping == true) {
-				return { "background-color": "#337ab7" };
-			} else {
-				return { "background-color": "gray" };
+			var style = {};
+			if ($scope.userLogin.toUpperCase() === m.PCNAME.toUpperCase()) {
+				style["border"] = "solid 4px black";
 			}
+			if (m.ping == true) {
+				style["background-color"] = "#337ab7";
+			} else {
+				style["background-color"] = "gray";
+			}
+			return style;
 		};
 	});
 	app.controller('mpscontroller', ["$scope", "$http", function ($scope, $http) {
@@ -15,14 +20,15 @@
 		$scope.workmachine = undefined;
 		$scope.searchMachine = false;
 		$scope.machines = [];
-
+		$scope.categories = [];
+		$scope.userLogin = userLogin();
 		$scope.unpinged = function (m) {
 			return (typeof m.ping === "undefined");
 		};
 
 		$http.post("MachinesService.asmx/getMachines", JSON.stringify({}))
 			.then(function (result) {
-				$scope.machines = result.data.d;
+				$scope.loadMachines(result.data.d);
 				EndProgress(taskprg);
 			});
 		var dompckprg = StartProgress("Loading domain computers...");
@@ -57,6 +63,21 @@
 			}
 		}, false);
 
+		$scope.loadMachines = function (ms) {
+			$scope.machines = ms;
+			$scope.categories = [""];
+			ms.forEach(function (m) {
+				if (m.CATEGORY) {
+					var uc = m.CATEGORY.toUpperCase();
+					if ($scope.categories.indexOf(uc) < 0) {
+						$scope.categories.push(uc);
+					}
+				} else {
+					m.CATEGORY = "";
+				}
+			});
+			$scope.categories.sort();
+		};
 		$scope.shutMachine = function () {
 			StartProgress("Shutting down...");
 			$http.post("MachinesService.asmx/shutMachine", JSON.stringify({ "m": $scope.workmachine.PCNAME }))
@@ -78,6 +99,16 @@
 					window.location.reload();
 				});
 		};
+		$scope.catMachine = function () {
+			var cat = prompt("Please enter category", "");
+			if (cat !== null) {
+				StartProgress("Updating...");
+				$http.post("MachinesService.asmx/catMachine", JSON.stringify({ "m": $scope.workmachine.PCNAME, "category": cat }))
+					.then(function () {
+						window.location.reload();
+					});
+			}
+		};
 		$scope.remMachine = function () {
 			StartProgress("Removing...");
 			$http.post("MachinesService.asmx/remMachine", JSON.stringify({ "m": $scope.workmachine.PCNAME }))
@@ -92,7 +123,7 @@
 			waitForProcess();
 			$http.post("MachinesService.asmx/scanAllMachines", JSON.stringify({}))
 				.then(function (result) {
-					$scope.machines = result.data.d;
+					$scope.loadMachines(result.data.d);
 					waitForProcessEnd();
 				});
 		};
@@ -100,7 +131,7 @@
 			waitForProcess();
 			$http.post("MachinesService.asmx/reScanMachines", JSON.stringify({}))
 				.then(function (result) {
-					$scope.machines = result.data.d;
+					$scope.loadMachines(result.data.d);
 					waitForProcessEnd();
 				});
 		};

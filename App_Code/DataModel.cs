@@ -27,4 +27,5 @@ public partial class Machine
     public string IP { get; set; }
     public string MAC { get; set; }
     public string DETAILS { get; set; }
+    public string CATEGORY { get; set; }
 }
