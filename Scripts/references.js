@@ -254,14 +254,14 @@ function enterTT() {
 }
 function allowPosNumbers(e) {
 	if (!(
-				(e.keyCode > 95 && e.keyCode < 106) //numpad numbers
-			|| (e.keyCode > 47 && e.keyCode < 58)  //numbers
-			|| (e.keyCode === 8)							//backspace
-			|| (e.keyCode === 9)							//tab
-			|| (e.keyCode === 13)						//enter
-			|| (e.keyCode === 45)						//insert - for pasting
-			|| (e.keyCode > 36 && e.keyCode < 41)	//left right up and down
-		)) {
+		(e.keyCode > 95 && e.keyCode < 106) //numpad numbers
+		|| (e.keyCode > 47 && e.keyCode < 58)  //numbers
+		|| (e.keyCode === 8)							//backspace
+		|| (e.keyCode === 9)							//tab
+		|| (e.keyCode === 13)						//enter
+		|| (e.keyCode === 45)						//insert - for pasting
+		|| (e.keyCode > 36 && e.keyCode < 41)	//left right up and down
+	)) {
 		e.preventDefault();
 		console.log(e.keyCode);
 		return false;

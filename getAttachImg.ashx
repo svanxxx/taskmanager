@@ -10,7 +10,7 @@ public class getAttachImg : IHttpHandler
 	static bool IsImage(string ext)
 	{
 		ext = ext.ToUpper();
-		return ext == "PNG" || ext == "JPG" || ext == "JPEG";
+		return ext == "PNG" || ext == "JPG" || ext == "JPEG" || ext == "GIF";
 	}
 	static bool IsStandardImg(HttpContext context, string ext)
 	{
