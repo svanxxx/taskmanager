@@ -205,6 +205,12 @@ $(function () {
 				$scope.trrec.IN = stringToTime($scope.trrec.IN);
 				$scope.trrec.OUT = stringToTime($scope.trrec.OUT);
 				$scope.trrec.BREAK = stringToTime($scope.trrec.BREAK);
+				if ($scope.trrec.TASKSEVENTS) {
+					$scope.trrec.TASKSEVENTS.forEach(function (e) {
+						e.DEFECT.SUMMARY = decodeURIComponent(e.DEFECT.SUMMARY);
+					});
+				}
+
 				$scope.recalcPercent();
 			}
 			$scope.status = "Saved.";

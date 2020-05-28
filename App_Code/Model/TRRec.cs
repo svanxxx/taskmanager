@@ -177,19 +177,24 @@ public partial class TRRec : TRRecSignal
 			return res;
 		}
 	}
+	List<DefectEventDefect> _defEvents;
 	public List<DefectEventDefect> TASKSEVENTS
 	{
 		get
 		{
-			List<DefectEventDefect> res = new List<DefectEventDefect>();
-			if (!IsLoaded())
-				return res;
-			MPSUser mu = new MPSUser(USER);
-			foreach (var i in DefectEvent.GetEventsByDay(GetDate(), mu.TTUSERID))
+			if (_defEvents == null)
 			{
-				res.Add(new DefectEventDefect(i));
+				if (!IsLoaded())
+					return new List<DefectEventDefect>();
+
+				_defEvents = new List<DefectEventDefect>();
+				MPSUser mu = new MPSUser(USER);
+				foreach (var i in DefectEvent.GetEventsByDay(GetDate(), mu.TTUSERID))
+				{
+					_defEvents.Add(new DefectEventDefect(i));
+				}
 			}
-			return res;
+			return _defEvents;
 		}
 	}
 	public TRRec()
@@ -219,6 +224,10 @@ public partial class TRRec : TRRecSignal
 		if (r != null)
 		{
 			r.DONE = Uri.EscapeDataString(r.DONE);
+		}
+		for (int i = 0; i < r.TASKSEVENTS.Count; i++)
+		{
+			r.TASKSEVENTS[i].DEFECT.SUMMARY = Uri.EscapeDataString(r.TASKSEVENTS[i].DEFECT.SUMMARY);
 		}
 		return JsonConvert.SerializeObject(r);
 	}
