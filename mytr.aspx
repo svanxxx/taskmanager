@@ -26,12 +26,19 @@
 						<span>=</span>
 						<i class="fas fa-thumbs-up"></i>
 					</button>
-					<a id="mytasks" href="#" class="btn btn-outline-secondary flex-fill" role="button" target="_blank"><i class="fas fa-compress-arrows-alt"></i>&nbsp;<span class="d-none d-md-inline">Tasks assigned to me<span></a>
-					<a id="metasks" href="#" class="btn btn-outline-secondary flex-fill" role="button" target="_blank"><i class="fas fa-expand-arrows-alt"></i>&nbsp;<span class="d-none d-md-inline">Tasks created by me</span></a>
-					<a href="<%=Settings.CurrentSettings.BSTSITE.ToString()%>?showall=1&PROGABB=<%=CurrentContext.UserLogin()%>" class="btn btn-outline-secondary flex-fill" role="button" target="_blank"><i class="fa fa-link"></i>&nbsp;<span class="d-none d-md-inline">My BST requests</span></a>
-					<a href="dailysearch.aspx" class="btn btn-outline-secondary flex-fill" role="button" target="_blank"><i class="fas fa-sort-numeric-down"></i>&nbsp;<span class="d-none d-md-inline">My Daily Records</span></a>
-					<button type="button" class="btn btn-outline-secondary flex-fill" ng-click="addTask()"><i class="fas fa-wrench"></i>&nbsp;<span class="d-none d-md-inline">Start New Task</span></button>
-					<button type="button" class="btn btn-outline-secondary flex-fill" ng-click="planTask()"><i class="far fa-calendar-check"></i>&nbsp;<span class="d-none d-md-inline">Plan New Task</span></button>
+				</div>
+				<div class="toast" data-autohide="false">
+					<div class="toast-header">
+						<strong class="mr-auto text-primary">Reports</strong>
+					</div>
+					<div class="toast-body">
+						<div class="btn-group-vertical">
+							<a class="btn btn-sm btn-outline-secondary" id="mytasks" href="#" role="button" target="_blank"><i class="fas fa-compress-arrows-alt"></i>&nbsp;<span class="d-none d-md-inline">Tasks assigned<span></a>
+							<a class="btn btn-sm btn-outline-secondary" id="metasks" href="#" role="button" target="_blank"><i class="fas fa-expand-arrows-alt"></i>&nbsp;<span class="d-none d-md-inline">Tasks created</span></a>
+							<a class="btn btn-sm btn-outline-secondary" href="<%=Settings.CurrentSettings.BSTSITE.ToString()%>?showall=1&PROGABB=<%=CurrentContext.UserLogin()%>" role="button" target="_blank"><i class="fa fa-link"></i>&nbsp;<span class="d-none d-md-inline">My BST</span></a>
+							<a class="btn btn-sm btn-outline-secondary" href="dailysearch.aspx" role="button" target="_blank"><i class="fas fa-sort-numeric-down"></i>&nbsp;<span class="d-none d-md-inline">My Records</span></a>
+						</div>
+					</div>
 				</div>
 				<div class="toast" data-autohide="false">
 					<div class="toast-header">
@@ -133,19 +140,27 @@
 							<span data-toggle="tooltip" title="{{e.DEFECT.SUMMARY}}" ng-bind-html="e.DEFECT.SUMMARY | sumFormat | limitTo:135"></span>
 						</div>
 					</div>
-					<textarea ng-disabled="!loaded()" ng-model="trrec.DONE" class="form-control" rows="10" autofocus aria-label="Details"></textarea>
+					<textarea ng-show="showTextRep" ng-disabled="!loaded()" ng-model="trrec.DONE" class="form-control" rows="10" autofocus aria-label="Details"></textarea>
 				</div>
-				<ul class="nav nav-pills">
-					<li class="nav-item">
-						<a class="nav-link active" data-toggle="tab" href="#plan">Plan&nbsp;<span class="badge badge-light">{{defects.length}}</span></a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" data-toggle="tab" href="#unscheduled">Unscheduled&nbsp;<span class="badge badge-light">{{unscheduled.length}}</span></a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" data-toggle="tab" href="#activity">Tasks Activity</a>
-					</li>
-				</ul>
+				<div class="d-flex justify-content-between">
+					<ul class="nav nav-pills">
+						<li class="nav-item">
+							<a class="nav-link active" data-toggle="tab" href="#plan">Plan&nbsp;<span class="badge badge-light">{{defects.length}}</span></a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" data-toggle="tab" href="#unscheduled">Unscheduled&nbsp;<span class="badge badge-light">{{unscheduled.length}}</span></a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" data-toggle="tab" href="#activity">Tasks Activity</a>
+						</li>
+					</ul>
+					<div>
+						<button type="button" class="btn btn-sm btn-outline-secondary flex-fill" ng-click="addTask()"><i class="fas fa-wrench"></i>&nbsp;<span class="d-none d-md-inline">Start New Task</span></button>
+						<button type="button" class="btn btn-sm btn-outline-secondary flex-fill" ng-click="planTask()"><i class="far fa-calendar-check"></i>&nbsp;<span class="d-none d-md-inline">Plan New Task</span></button>
+						<button type="button" class="btn btn-sm btn-outline-secondary flex-fill" ng-click="changeShowTextRep();"><i class="fas {{showTextRep?'fa-chevron-up':'fa-chevron-down'}}"></i>&nbsp;<span class="d-none d-md-inline">{{showTextRep?'Hide text':'Show text'}}</span></button>
+					</div>
+				</div>
+
 				<div class="tab-content">
 					<div id="plan" class="tab-pane active">
 						<table style="width: 100%">
@@ -205,7 +220,7 @@
 					</div>
 					<div class="toast-body">
 						<div class="d-flex flex-wrap">
-							<a style="margin-bottom: 1px;margin-right: 1px;" href="editplan.aspx?userid={{u.ID}}" class="btn {{u.STATUS == 1 ? 'btn-light' : 'btn-danger'}}  flex-fill" role="button" target="_blank" ng-repeat="u in mpsusers">
+							<a style="margin-bottom: 1px; margin-right: 1px;" href="editplan.aspx?userid={{u.ID}}" class="btn {{u.STATUS == 1 ? 'btn-light' : 'btn-danger'}}  flex-fill" role="button" target="_blank" ng-repeat="u in mpsusers">
 								<uc:usr size="20" runat="server" userid="u.TTUSERID" style="float: left" />
 								<span class="d-none d-md-inline">{{u.LOGIN}}</span>
 							</a>
@@ -218,9 +233,9 @@
 					</div>
 					<div class="toast-body">
 						<div ng-repeat="c in todayCommits">
-							<img class="rep-img rounded-circle" ng-src="getUserImg.ashx?sz=20&amp;eml={{c.AUTHOREML}}" alt="Smile" height="20" width="20" style="float:left">
-							<div style="float:left" ng-show="c.TTID > 0">
-								<uc:defNum member="c" runat="server" style="float:left" />
+							<img class="rep-img rounded-circle" ng-src="getUserImg.ashx?sz=20&amp;eml={{c.AUTHOREML}}" alt="Smile" height="20" width="20" style="float: left">
+							<div style="float: left" ng-show="c.TTID > 0">
+								<uc:defNum member="c" runat="server" style="float: left" />
 							</div>
 							<span class="{{c.TTID > 0 ? '' : 'badge badge-success'}}">{{c.TTSUMMARY}}</span>
 						</div>

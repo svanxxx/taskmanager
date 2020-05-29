@@ -81,7 +81,12 @@ $(function () {
 		d.setHours(0, 0, 0, 0);
 		$scope.date = d;
 		$scope.status = "Working...";
-
+		$scope.showTextRep = !($.cookie("showTextRep") === "false");
+		
+		$scope.changeShowTextRep = function () {
+			$scope.showTextRep = !$scope.showTextRep;
+			$.cookie("showTextRep", $scope.showTextRep, { expires: 365 });
+		};
 		$scope.storeData = function () {
 			if (!($scope.trrec)) {
 				return;
