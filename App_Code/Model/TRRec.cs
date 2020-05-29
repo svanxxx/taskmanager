@@ -224,10 +224,10 @@ public partial class TRRec : TRRecSignal
 		if (r != null)
 		{
 			r.DONE = Uri.EscapeDataString(r.DONE);
-		}
-		for (int i = 0; i < r.TASKSEVENTS.Count; i++)
-		{
-			r.TASKSEVENTS[i].DEFECT.SUMMARY = Uri.EscapeDataString(r.TASKSEVENTS[i].DEFECT.SUMMARY);
+			for (int i = 0; i < r.TASKSEVENTS.Count; i++)
+			{
+				r.TASKSEVENTS[i].DEFECT.SUMMARY = Uri.EscapeDataString(r.TASKSEVENTS[i].DEFECT.SUMMARY);
+			}
 		}
 		return JsonConvert.SerializeObject(r);
 	}
