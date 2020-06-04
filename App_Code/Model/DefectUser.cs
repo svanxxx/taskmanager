@@ -5,6 +5,7 @@ public class DisplayUser
 {
 	public DisplayUser() { }
 	public string FULLNAME { get; set; }
+	public int TRID { get; set; }
 }
 public class DefectUser : IdBasedObject
 {

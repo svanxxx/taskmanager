@@ -2,6 +2,7 @@
 
 <%@ Register Src="~/controls/CommitsControl.ascx" TagName="commits" TagPrefix="uc" %>
 <%@ Register Src="~/controls/BuildsControl.ascx" TagName="builds" TagPrefix="uc" %>
+<%@ Register Src="~/controls/UsrControl.ascx" TagName="usr" TagPrefix="uc" %>
 
 <asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
 	<%=System.Web.Optimization.Styles.Render("~/bundles/showtask_css")%>
@@ -518,7 +519,7 @@
 			<div class="col-lg-2">
 				<div class="toast" data-autohide="false">
 					<div class="toast-header">
-						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=60&ttid=' + defect.CREATEDBY}}" alt="Smile" height="20" width="20" />
+						<uc:usr size="20" runat="server" userid="defect.CREATEDBY" style="float: left"/>
 						<strong class="mr-auto">&nbsp;Creator</strong>
 						<button data-toggle="tooltip" title="Invite person to see this task." type="button" class="btn btn-light btn-sm float-right" ng-click="invite(defect.CREATEDBY)"><i class="fas fa-bell"></i></button>
 					</div>
@@ -529,7 +530,7 @@
 				</div>
 				<div class="toast" data-autohide="false">
 					<div class="toast-header">
-						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=60&ttid=' + defect.ESTIMBY}}" alt="Smile" height="20" width="20" />
+						<uc:usr size="20" runat="server" userid="defect.ESTIMBY" style="float: left"/>
 						<strong class="mr-auto">&nbsp;Estimated by {{defect.ESTIMBY | getUserById:this}}</strong>
 						<button data-toggle="tooltip" title="Invite person to see this task." type="button" class="btn btn-light btn-sm float-right" ng-click="invite(defect.ESTIMBY)"><i class="fas fa-bell"></i></button>
 					</div>
@@ -539,7 +540,7 @@
 				</div>
 				<div class="toast" data-autohide="false">
 					<div class="toast-header">
-						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=60&ttid=' + defect.AUSER}}" alt="Smile" height="20" width="20" />
+						<uc:usr size="20" runat="server" userid="defect.AUSER" style="float: left"/>
 						<strong class="mr-auto">&nbsp;{{defect.AUSER | getUserById:this}} worked on</strong>
 						<button data-toggle="tooltip" title="Invite person to see this task." type="button" class="btn btn-light btn-sm float-right" ng-click="invite(defect.AUSER)"><i class="fas fa-bell"></i></button>
 					</div>

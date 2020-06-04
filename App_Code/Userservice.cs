@@ -17,6 +17,6 @@ public class Userservice : WebService
 	{
 		CurrentContext.Validate();
 		DefectUser u = new DefectUser(id);
-		return new DisplayUser() { FULLNAME = u.FULLNAME };
+		return new DisplayUser() { FULLNAME = u.FULLNAME, TRID = u.TRID };
 	}
 }

@@ -115,18 +115,11 @@ function tooltipImg(e) {
 	element.style.padding = 10;
 	element.style.backgroundColor = "black";
 
-	var img = document.createElement("img");
-	img.style.width = "150px";
-	img.style.height = "150px";
-	img.style.padding = "2px";
-	img.src = "getUserImg.ashx?sz=150&ttid=" + id;
 
-	element.appendChild(img);
-
-	var span = document.createElement("div");
-	span.style.backgroundColor = "black";
-	span.style.textAlign = "center";
-	span.innerHTML = "Loading...";
+	var a = document.createElement("a");
+	a.href = "editplan.aspx";
+	a.title = "Click to see the plan";
+	a.innerHTML = "Loading...";
 
 	fetch("UsersService.asmx/getUser", {
 		method: "post",
@@ -140,10 +133,20 @@ function tooltipImg(e) {
 	}).then(function (response) {
 		return response.json();
 	}).then(function (json) {
-		span.innerHTML = json.d.FULLNAME;
+		a.innerHTML = json.d.FULLNAME;
+		a.href = "editplan.aspx?userid=" + json.d.TRID;
 	});
 
-	element.appendChild(span);
+	element.appendChild(a);
+
+	var img = document.createElement("img");
+	img.style.width = "150px";
+	img.style.height = "150px";
+	img.style.padding = "2px";
+	img.src = "getUserImg.ashx?sz=150&ttid=" + id;
+
+	element.appendChild(img);
+
 
 	document.body.appendChild(element);
 	document.tooltipImgCntrlDate = new Date();
@@ -162,5 +165,5 @@ function tooltipImgOut() {
 				}
 			}
 		}
-	}, 1000);
+	}, 2000);
 }
