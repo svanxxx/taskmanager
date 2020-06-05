@@ -60,18 +60,8 @@ $(function () {
 	CreateChart();
 	var app = angular.module('mpsapplication', []);
 	app.filter('getDispoColorById', getDispoColorById);
+	app.filter('getUserById', getUserById);
 	app.filter("sumFormat", ["$sce", sumFormat]);
-	app.directive('ngRightClick', function ($parse) {
-		return function (scope, element, attrs) {
-			var fn = $parse(attrs.ngRightClick);
-			element.bind('contextmenu', function (event) {
-				scope.$apply(function () {
-					event.preventDefault();
-					fn(scope, { $event: event });
-				});
-			});
-		};
-	});
 
 	app.controller('mpscontroller', ["$scope", "$http", "$interval", function ($scope, $http, $interval) {
 		$scope.isadmin = IsAdmin();
@@ -200,9 +190,17 @@ $(function () {
 				reActivateTooltips();
 			}
 		};
-		$scope.pageLogo = function () {
+		$scope.trackUserID = function () {
 			if ($scope.id == "") {
-				return "Task Tracker";
+				return -1;
+			} else {
+				return $scope.trackers.find(function (item) { return item.ID == $scope.id }).IDCLIENT;
+			}
+		};
+		$scope.trackUserName = function () {
+			var id = $scope.trackUserID();
+			if (id < 0) {
+				return "";
 			} else {
 				return $scope.trackers.find(function (item) { return item.ID == $scope.id }).IDCLIENT;
 			}
@@ -245,7 +243,7 @@ $(function () {
 		if ($scope.id != "") {
 			var tracker = $scope.trackers.find(function (item) { return item.ID == $scope.id });
 			if (tracker) {
-				$scope.pageName = tracker.NAME + " Tracker";
+				$scope.pageName = tracker.NAME;
 				$scope.simpleTracker = tracker.IDFILTER < 0;
 			} else {
 				$scope.pageName = "There are no trackers assigned to this user";
@@ -284,4 +282,15 @@ $(function () {
 		}
 		$('.toast').toast('show');
 	}]);
+	app.directive('ngRightClick', function ($parse) {
+		return function (scope, element, attrs) {
+			var fn = $parse(attrs.ngRightClick);
+			element.bind('contextmenu', function (event) {
+				scope.$apply(function () {
+					event.preventDefault();
+					fn(scope, { $event: event });
+				});
+			});
+		};
+	});
 });

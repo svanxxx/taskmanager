@@ -1,5 +1,7 @@
 ﻿<%@ Page Title="Users" Language="C#" MasterPageFile="~/Master.Master" AutoEventWireup="true" CodeFile="users.aspx.cs" Inherits="Users" %>
 
+<%@ Register Src="~/controls/UsrControl.ascx" TagName="usr" TagPrefix="uc" %>
+
 <asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
 	<%=System.Web.Optimization.Styles.Render("~/bundles/users_css")%>
 	<%=System.Web.Optimization.Scripts.Render("~/bundles/users_js")%>
@@ -34,7 +36,7 @@
 					<tr ng-repeat="u in users" class="{{(u.changed?'data-changed':'')+(u.RETIRED ? 'table-secondary':'')}}">
 						<td>
 							<button ng-click="changeImg(u.ID)" type="button" class="btn btn-info p-0">
-								<img class="rep-img" ng-src="{{'getUserImg.ashx?sz=25&id='+u.ID}}" alt=" " height="25" width="25"></button></td>
+								<uc:usr size="30" runat="server" userid="u.TTUSERID" style="float: left"/>
 						<td>
 							<input class="form-control form-control-sm border-0" ng-disabled="readonly" class="intable-data-input" type="text" ng-model="u.PERSON_NAME" ng-change="itemchanged(u)"></td>
 						<td align="center">

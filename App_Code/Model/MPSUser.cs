@@ -174,7 +174,8 @@ public class MPSUser : IdBasedObject
 			DefectUser du = new DefectUser(TTUSERID);
 			if (col == _pname)
 			{
-				string[] vals = val.Replace("\'", "").Split(' ');
+				val = val.Replace("\'", "");
+				string[] vals = val.Split(' ');
 				if (vals.Length == 2)
 				{
 					du.FIRSTNAME = vals[0];
