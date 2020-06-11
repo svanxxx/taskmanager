@@ -145,6 +145,14 @@
 				$scope.defect.VERSION = v;
 			}
 		};
+		$scope.estimateTask = function () {
+			var est = prompt("Please enter new estimation", $scope.defect.ESTIM);
+			est = parseInt(est);
+			if (est !== null && !isNaN(parseInt(est))) {
+				$scope.defect.ESTIM = est;
+				$scope.defect.ESTIMBY = ttUserID();
+			}
+		};
 		$scope.buildVersion = function (type) {
 			if ($scope.changed) {
 				alert("Please save the task first!");

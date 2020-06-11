@@ -3,6 +3,7 @@
 <%@ Register Src="~/controls/CommitsControl.ascx" TagName="commits" TagPrefix="uc" %>
 <%@ Register Src="~/controls/BuildsControl.ascx" TagName="builds" TagPrefix="uc" %>
 <%@ Register Src="~/controls/UsrControl.ascx" TagName="usr" TagPrefix="uc" %>
+<%@ Register Src="~/controls/SelectUser.ascx" TagName="usrlist" TagPrefix="uc" %>
 
 <asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
 	<%=System.Web.Optimization.Styles.Render("~/bundles/showtask_css")%>
@@ -26,6 +27,7 @@
 	<input type="hidden" id="defectdefaults" value='<%=Newtonsoft.Json.JsonConvert.SerializeObject(DefectDefaults.CurrentDefaults)%>' />
 	<input type="hidden" id="trackers" value='<%=Newtonsoft.Json.JsonConvert.SerializeObject(SimpleTrackWrapper.GetSimpleTrackers())%>' />
 	<div ng-app="mpsapplication" ng-controller="mpscontroller" ng-cloak>
+		<uc:usrlist runat="server" />
 		<button ng-show="false" type="submit">for autocomplete</button>
 		<div class="row">
 			<div class="col-lg-2 text-center">
@@ -519,33 +521,42 @@
 			<div class="col-lg-2">
 				<div class="toast" data-autohide="false">
 					<div class="toast-header">
-						<uc:usr size="20" runat="server" userid="defect.CREATEDBY" style="float: left"/>
+						<uc:usr size="20" runat="server" userid="defect.CREATEDBY" style="float: left" />
 						<strong class="mr-auto">&nbsp;Creator</strong>
 						<button data-toggle="tooltip" title="Invite person to see this task." type="button" class="btn btn-light btn-sm float-right" ng-click="invite(defect.CREATEDBY)"><i class="fas fa-bell"></i></button>
 					</div>
 					<div class="toast-body text-center">
-						<h4>{{defect.CREATEDBY | getUserById:this}}</h4>
-						<a data-toggle="tooltip" title="Click to see full plan for the person" target="_blank" href="editplan.aspx?userid={{defect.CREATEDBY | getUserTRIDById:this}}"></a>
+						<h5>{{defect.CREATEDBY | getUserById:this}}</h5>
+					</div>
+				</div>
+				<div class="toast" data-autohide="false" ng-style="defect.DISPO | getDispoColorById:this">
+					<div class="toast-header">
+						<strong class="mr-auto">Disposition</strong>
+					</div>
+					<div class="toast-body text-center">
+						<select class="form-control form-control-sm" id="dispo" ng-disabled="!canChangeDefect()" ng-model="defect.DISPO">
+							<option ng-repeat="d in dispos | orderBy:'FORDER'" value="{{d.ID}}" style="background-color: {{d.COLOR}}">{{d.DESCR}}</option>
+						</select>
 					</div>
 				</div>
 				<div class="toast" data-autohide="false">
 					<div class="toast-header">
-						<uc:usr size="20" runat="server" userid="defect.ESTIMBY" style="float: left"/>
-						<strong class="mr-auto">&nbsp;Estimated by {{defect.ESTIMBY | getUserById:this}}</strong>
+						<uc:usr size="20" runat="server" userid="defect.ESTIMBY" style="float: left" />
+						<strong class="mr-auto">&nbsp;Estimated</strong>
 						<button data-toggle="tooltip" title="Invite person to see this task." type="button" class="btn btn-light btn-sm float-right" ng-click="invite(defect.ESTIMBY)"><i class="fas fa-bell"></i></button>
 					</div>
 					<div class="toast-body text-center">
-						<h4 class="float-center">{{defect.ESTIM}} hours</h4>
+						<button ng-disabled="!canChangeDefect()" ng-click="estimateTask()" type="button" class="btn btn-outline-secondary btn-sm">{{defect.ESTIM}} hours</button>
 					</div>
 				</div>
 				<div class="toast" data-autohide="false">
 					<div class="toast-header">
-						<uc:usr size="20" runat="server" userid="defect.AUSER" style="float: left"/>
-						<strong class="mr-auto">&nbsp;{{defect.AUSER | getUserById:this}} worked on</strong>
+						<uc:usr size="20" runat="server" userid="defect.AUSER" style="float: left" />
+						<strong class="mr-auto">&nbsp;Worked for</strong>
 						<button data-toggle="tooltip" title="Invite person to see this task." type="button" class="btn btn-light btn-sm float-right" ng-click="invite(defect.AUSER)"><i class="fas fa-bell"></i></button>
 					</div>
 					<div class="toast-body text-center">
-						<h4 class="float-center">{{defect.SPENT}} hours</h4>
+						<h5 class="float-center">{{defect.SPENT}} hours</h5>
 					</div>
 				</div>
 				<div class="toast" data-autohide="false">
