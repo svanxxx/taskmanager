@@ -551,6 +551,21 @@
 				</div>
 				<div class="toast" data-autohide="false">
 					<div class="toast-header">
+						<strong class="mr-auto">Order</strong>
+					</div>
+					<div class="toast-body text-center">
+						<div class="input-group mb-3 input-group-sm">
+							<input type="number" min="0" id="order" class="form-control" onkeydown="allowPosNumbers(event)" ng-disabled="!canChangeDefect()" ng-model="defect.ORDER">
+							<div class="input-group-append">
+								<button ng-disabled="!canChangeDefect()" type="button" class="bnt btn-outline-default" ng-click="chgOrder(false)"><i class="fas fa-arrow-up"></i></button>
+								<button ng-disabled="!canChangeDefect()" type="button" class="bnt btn-outline-default" ng-click="chgOrder(true)"><i class="fas fa-arrow-down"></i></button>
+								<button ng-disabled="!canChangeDefect()" type="button" class="bnt btn-outline-default" ng-click="chgOrder(undefined)"><i class="fas fa-times"></i></button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="toast" data-autohide="false">
+					<div class="toast-header">
 						<uc:usr size="20" runat="server" userid="defect.AUSER" style="float: left" />
 						<strong class="mr-auto">&nbsp;Worked for</strong>
 						<button data-toggle="tooltip" title="Invite person to see this task." type="button" class="btn btn-light btn-sm float-right" ng-click="invite(defect.AUSER)"><i class="fas fa-bell"></i></button>
