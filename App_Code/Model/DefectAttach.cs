@@ -57,6 +57,10 @@ public class DefectAttach : IdBasedObject
 		: base(_Tabl, _allCols, id.ToString(), _ID)
 	{
 	}
+	public static bool Exists(int id)
+	{
+		return Convert.ToInt32(DBHelper.GetValue($"SELECT COUNT(*) FROM {_Tabl} WHERE {_ID} = {id}")) > 0;
+	}
 	public static List<DefectAttach> GetAttachsByTask(int ttid)
 	{
 		List<DefectAttach> res = new List<DefectAttach>();

@@ -29,15 +29,26 @@ public class getTaskAttachment : IHttpHandler, System.Web.SessionState.IRequires
 
 	public void ProcessRequest(HttpContext context)
 	{
-		if (CurrentContext.Valid && CurrentContext.User.RETIRED)
-		{
-			throw new Exception("Please login.");
-		}
 		HttpRequest Request = context.Request;
 		HttpResponse Response = context.Response;
-		int id = Convert.ToInt32(Request.QueryString["idrecord"]);
-		if (id < 1)
+
+		if (!CurrentContext.Validate(Response))
 		{
+			return;
+		}
+
+		string sid = Request.QueryString["idrecord"];
+		int id;
+		if (!int.TryParse(sid, out id) || id < 1)
+		{
+			Response.ContentType = "text/plain";
+			Response.Write($"Invalid attachemment id format: '{sid}'");
+			return;
+		}
+		if (!DefectAttach.Exists(id))
+		{
+			Response.ContentType = "text/plain";
+			Response.Write($"Requested attachemment was not found. ID: '{sid}'");
 			return;
 		}
 		DefectAttach d = new DefectAttach(id);

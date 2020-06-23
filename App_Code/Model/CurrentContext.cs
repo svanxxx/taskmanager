@@ -7,12 +7,20 @@ public static class CurrentContext
 	public static string retiredURL = "retired";
 	static string _id = "userid";
 	static string _us = "currentuser";
-	public static void Validate()
+	static string _authErr = "Unauthorized access.";
+	public static bool Validate(HttpResponse Response = null)
 	{
 		if (!Valid)
 		{
-			throw new Exception("Unauthorized access.");
+			if (Response != null)
+			{
+				Response.ContentType = "text/plain";
+				Response.Write(_authErr);
+				return false;
+			}
+			throw new Exception(_authErr);
 		}
+		return true;
 	}
 	public static void ValidateAdmin()
 	{
