@@ -1,6 +1,6 @@
 ﻿<%@ WebHandler Language="C#" Class="getinstall" %>
 
-using System;
+using System.Net;
 using System.Collections.Generic;
 using System.Web;
 using System.Text.RegularExpressions;
@@ -9,13 +9,24 @@ public class getinstall : IHttpHandler
 {
 	public void ProcessRequest(HttpContext context)
 	{
-		string t = context.Request.QueryString["type"].ToString();
-		string v = context.Request.QueryString["version"].ToString();
+		HttpRequest Request = context.Request;
+		HttpResponse Response = context.Response;
+		object ot = Request.QueryString["type"];
+		object ov = Request.QueryString["version"];
+		if (ot == null || ov == null)
+		{
+			Response.StatusCode = (int)HttpStatusCode.BadRequest;
+			Response.StatusDescription = "Query parameters are invalid";
+			Response.End();
+		}
+
+		string t = ot.ToString();
+		string v = ov.ToString();
 		if (string.IsNullOrEmpty(v) || string.IsNullOrEmpty(t))
 		{
-			context.Response.ContentType = "text/plain";
-			context.Response.Write(string.Format("invalid parameters:{0} {1}", t.ToString(), v.ToString()));
-			return;
+			Response.StatusCode = (int)HttpStatusCode.BadRequest;
+			Response.StatusDescription = "Query parameters should not be empty";
+			Response.End();
 		}
 		string lett = Regex.Replace(v, @"[\d-]", string.Empty).Replace(".", string.Empty);
 		string folder = string.Format(@"{0}FIELDPRO_V8{1}\", Settings.CurrentSettings.INSTALLSFOLDER, lett);
@@ -33,6 +44,13 @@ public class getinstall : IHttpHandler
 				verfolder += num.ToString() + "."; //replace 01 to 1
 			}
 		}
+		if (numbers.Length != 3)
+		{
+			Response.StatusCode = (int)HttpStatusCode.NotFound;
+			Response.StatusDescription = "Requested installation file was not found";
+			Response.End();
+		}
+
 		verfolder = verfolder.Remove(verfolder.Length - 1);
 
 		folder += verfolder + "\\";
@@ -81,21 +99,19 @@ public class getinstall : IHttpHandler
 
 			if (!System.IO.File.Exists(download))
 			{
-				context.Response.ContentType = "text/plain";
-				context.Response.Write("File not found:" + download);
-				return;
+				Response.StatusCode = (int)HttpStatusCode.NotFound;
+				Response.StatusDescription = $"Requested installation file was not found: {download}";
+				Response.End();
 			}
-			context.Response.ContentType = "application/octet-stream";
-			context.Response.AddHeader("Content-Length", (new System.IO.FileInfo(download)).Length.ToString());
-			context.Response.AddHeader("Content-Disposition", "filename=" + '"' + System.IO.Path.GetFileName(download) + '"');
-			context.Response.BinaryWrite(System.IO.File.ReadAllBytes(download));
-			context.Response.Flush();
-			context.Response.Close();
-			context.Response.End();
+			Response.ContentType = "application/octet-stream";
+			Response.AddHeader("Content-Length", (new System.IO.FileInfo(download)).Length.ToString());
+			Response.AddHeader("Content-Disposition", "filename=" + '"' + System.IO.Path.GetFileName(download) + '"');
+			Response.TransmitFile(download);
 			return;
 		}
-		context.Response.ContentType = "text/plain";
-		context.Response.Write("Unsupported file type.");
+		Response.StatusCode = (int)HttpStatusCode.BadRequest;
+		Response.StatusDescription = "Unsupported file type requested";
+		Response.End();
 	}
 	public bool IsReusable
 	{
