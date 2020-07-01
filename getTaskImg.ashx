@@ -81,9 +81,6 @@ public class getTaskImg : IHttpHandler, System.Web.SessionState.IRequiresSession
 			}
 		}
 		context.Response.AddHeader("Content-Length", (new FileInfo(filename)).Length.ToString());
-		context.Response.WriteFile(filename);
-		context.Response.Flush();
-		context.Response.Close();
-		context.Response.End();
+		context.Response.TransmitFile(filename);
 	}
 }

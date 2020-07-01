@@ -62,7 +62,7 @@ public class getTaskAttachment : IHttpHandler, System.Web.SessionState.IRequires
 
 		if (d.IsFileOnDisk)
 		{
-			Response.WriteFile(d.FileOnDisk);
+			Response.TransmitFile(d.FileOnDisk);
 			return;
 		}
 		else

@@ -145,9 +145,6 @@ public class getUserImg : IHttpHandler
 			}
 		}
 		context.Response.AddHeader("Content-Length", (new FileInfo(newfilename)).Length.ToString());
-		context.Response.WriteFile(newfilename);
-		context.Response.Flush();
-		context.Response.Close();
-		context.Response.End();
+		context.Response.TransmitFile(newfilename);
 	}
 }
