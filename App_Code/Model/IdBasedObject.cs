@@ -59,12 +59,19 @@ public class IdBasedObject
 	{
 		return Convert.ToInt32(this[_fldid]);
 	}
+	protected virtual void OnSetColFromCopy(string col, string val, string newval)
+	{
+		return;
+	}
 	public void FromAnotherObject(IdBasedObject obj)
 	{
 		foreach (var c in _columns)
 		{
-			if (obj._columns.Contains(c) && obj[c].ToString() != this[c].ToString())
+			string newval = obj[c].ToString();
+			string oldval = this[c].ToString();
+			if (obj._columns.Contains(c) && oldval != newval)
 			{
+				OnSetColFromCopy(c, oldval, newval);
 				this[c] = obj[c];
 			}
 		}

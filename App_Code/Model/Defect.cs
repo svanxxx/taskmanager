@@ -450,8 +450,34 @@ public partial class DefectBase : IdBasedObject
 
 		return base.IsColumnComplex(col);
 	}
+	string _reassignedFrom = "";
+	protected override void OnSetColFromCopy(string col, string val, string newval)
+	{
+		if (col == _AsUser)
+		{
+			_reassignedFrom = val;
+		}
+		base.OnSetColFromCopy(col, val, newval);
+	}
 	protected override void PostStore()
 	{
+		if (IsModifiedCol(_AsUser))
+		{
+			if (!string.IsNullOrEmpty(_reassignedFrom))
+			{
+				NotifyHub.NotifyPlanChange((new DefectUser(int.Parse(_reassignedFrom)).TRID));
+			}
+
+			//when task is reassinged order in new list should be changed.
+			DefectBase d = new DefectBase(ID);
+			if (d.ORDER != ORDER)
+			{
+				d.ORDER = ORDER;
+				d.Store();
+				return;
+			}
+		} 
+
 		if (!string.IsNullOrEmpty(AUSER))
 		{
 			NotifyHub.NotifyPlanChange((new DefectUser(int.Parse(AUSER)).TRID));
@@ -682,6 +708,7 @@ public partial class Defect : DefectBase
 	string _HistoryChanges = "";
 	protected override void PreStore()
 	{
+		base.PreStore();
 		if (IsModified())
 		{
 			MODIFIEDBY = GetUpdater().TTUSERID;
