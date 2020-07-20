@@ -14,7 +14,7 @@
 	//Change email addresses to mailto:: links
 	var replacePattern4 = /TT\d+/gim;
 	replacedText = replacedText.replace(replacePattern4, function (match, $1, $2, offset, original) {
-		return "<a href='showtask.aspx?ttid=" + match.substring(2) + ">" + match.toUpperCase() + "</a>";
+		return "<a href='showtask.aspx?ttid=" + match.substring(2) + "'>" + match.toUpperCase() + "</a>";
 	});
 
 	return replacedText;
