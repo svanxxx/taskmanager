@@ -74,11 +74,11 @@ public class StoredDefectsFilter : IdBasedObject
 	{
 		SQLExecute(string.Format("DELETE FROM {0} WHERE {1} = {2}", _Tabl, _pid, id));
 	}
-    static public string GetName(int id)
-    {
-        return GetValue($"SELECT {_Nam} FROM {_Tabl} WHERE {_pid} = {id}").ToString();
-    }
-    static public List<StoredDefectsFilter> Enum(int user)
+	static public string GetName(int id)
+	{
+		return GetValue($"SELECT {_Nam} FROM {_Tabl} WHERE {_pid} = {id}").ToString();
+	}
+	static public List<StoredDefectsFilter> Enum(int user)
 	{
 		List<StoredDefectsFilter> res = new List<StoredDefectsFilter>();
 		foreach (DataRow r in (new StoredDefectsFilter()).GetRecords($"WHERE {_Share} = 1 OR {_Usr} = {user} ORDER BY {_Share}, {_Nam} asc"))
@@ -226,10 +226,12 @@ public partial class DefectBase : IdBasedObject
 		}
 		if (!string.IsNullOrEmpty(f.text))
 		{
-			string[] words = null;
+			string[] words;
+			bool phrase = false; 
 			if (f.text.StartsWith("\"") && f.text.EndsWith("\""))
 			{
 				words = new string[] { f.text.Trim('"') };
+				phrase = true;
 			}
 			else
 			{
@@ -240,9 +242,15 @@ public partial class DefectBase : IdBasedObject
 			foreach (var w in words)
 			{
 				s1 += (s1 == "") ? "(" : " AND ";
-				s1 += string.Format(" CONTAINS({0}, '\"{1}\"')", _Summ, w);
+				s1 += $" CONTAINS({_Summ}, '\"{w}\"')";
+				if (phrase)
+				{
+					s1 += $" OR {_Summ} like '%{w}%' ";
+				}
 
-				s2 += (s2 == "") ? string.Format("{0} IN (SELECT idDefRec FROM {1} WHERE CONTAINS (({2}, {3}), '", _idRec, Defect._RepTable, Defect._DescInt, Defect._Specs) : " AND ";
+				s2 += (s2 == "") ?
+					$"{_idRec} IN (SELECT idDefRec FROM {Defect._RepTable} WHERE CONTAINS (({Defect._DescInt}, {Defect._Specs}), '"
+					: " AND ";
 				s2 += string.Format("\"{0}\"", w);
 			}
 			s1 += " )";
