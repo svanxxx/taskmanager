@@ -1,5 +1,8 @@
 ﻿$(function () {
 	var app = angular.module('mpsapplication', []);
+	app.filter('encodeURIComponent', function () {
+		return window.encodeURIComponent;
+	});
 	app.controller('mpscontroller', ["$scope", "$http", function ($scope, $http) {
 		window.addEventListener("popstate", function (event) {
 			if (event.state) {

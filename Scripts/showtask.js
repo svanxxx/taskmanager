@@ -20,6 +20,9 @@
 	app.filter('getUserTRIDById', getUserTRIDById);
 	app.filter('getDispoColorById', getDispoColorById);
 	app.filter('rawHtml', ['$sce', rawHtml]);
+	app.filter('encodeURIComponent', function () {
+		return window.encodeURIComponent;
+	});
 
 	app.controller('mpscontroller', ["$scope", "$http", "$interval", "$window", function ($scope, $http, $interval, $window) {
 		$window.onbeforeunload = function () {

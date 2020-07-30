@@ -20,7 +20,7 @@
 					<div>
 						<div class="d-flex">
 							<div ng-show="b.TTID < 0">
-								<a href="commits.aspx?branch={{b.NAME}}"><i class="fas fa-tag"></i><span class="badge badge-light">{{b.NAME}}</span></a>
+								<a href="commits.aspx?branch={{b.NAME |  encodeURIComponent}}"><i class="fas fa-tag"></i><span class="badge badge-light">{{b.NAME}}</span></a>
 							</div>
 							<div ng-show="b.TTID > 0">
 								<a href="showtask.aspx?ttid={{b.TTID}}" target="_blank"><span class="badge badge-pill badge-secondary ng-binding">{{b.TTID}}</span></a>{{b.NAME.replace('TT' + b.TTID, '')}}
