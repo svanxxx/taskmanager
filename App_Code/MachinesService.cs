@@ -86,6 +86,7 @@ public class MachinesService : WebService
 			string scope = string.Format("\\\\{0}\\root\\CIMV2", ma.PCNAME);
 			ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, "SELECT * FROM Win32_NetworkAdapterConfiguration");
 			string newmac = "";
+			string sIPAddress = "";
 			foreach (ManagementObject queryObj in searcher.Get())
 			{
 				object o = queryObj["MACAddress"];
@@ -97,7 +98,18 @@ public class MachinesService : WebService
 					newmac = o.ToString().Replace(":", "");
 				else
 					newmac += " " + o.ToString().Replace(":", "");
+
+				string[] arrIPAddress = (string[])(queryObj["IPAddress"]);
+				if (arrIPAddress != null)
+				{
+					sIPAddress = arrIPAddress.FirstOrDefault(s => s.Contains('.'));
+					if (!string.IsNullOrEmpty(sIPAddress))
+					{
+						ma.IP = sIPAddress;
+					}
+				}
 			}
+
 			var cpu = new ManagementObjectSearcher(scope, "select * from Win32_Processor").Get().Cast<ManagementObject>().First();
 			var wmi = new ManagementObjectSearcher(scope, "select * from Win32_OperatingSystem").Get().Cast<ManagementObject>().First();
 			if (!string.IsNullOrEmpty(newmac))
