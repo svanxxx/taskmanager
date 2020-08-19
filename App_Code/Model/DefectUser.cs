@@ -9,16 +9,16 @@ public class DisplayUser
 }
 public class DefectUser : IdBasedObject
 {
-	static string _ID = "idRecord";
+	public static string _ID = "idRecord";
 	static string _Firn = "FirstName";
 	static string _Lasn = "LastName";
-	static string _Emai = "EMailAddr";
+	public static string _Emai = "EMailAddr";
 	static string _Atci = "Active";
 	static string _trID = "TRID";
 	static string _cust = "IsCustomer";
 
 	static string[] _Allcols = new string[] { _ID, _Firn, _Lasn, _Emai, _Atci, _trID, _cust };
-	static string _Tabl = "[TT_RES].[DBO].[USERS]";
+	public static string _Tabl = "[TT_RES].[DBO].[USERS]";
 
 	public int ID
 	{

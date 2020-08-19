@@ -220,9 +220,9 @@
 					</div>
 					<div class="toast-body">
 						<div class="d-flex flex-wrap">
-							<a style="margin-bottom: 1px; margin-right: 1px;" href="editplan.aspx?userid={{u.ID}}" class="btn {{u.STATUS == 1 ? 'btn-light' : 'btn-danger'}}  flex-fill" role="button" target="_blank" ng-repeat="u in mpsusers">
-								<uc:usr size="20" runat="server" userid="u.TTUSERID" style="float: left" />
-								<span class="d-none d-md-inline">{{u.LOGIN}}</span>
+							<a style="margin-bottom: 1px; margin-right: 1px;" href="editplan.aspx?userid={{u.ID}}" class="btn {{roomUserClass(u.STATUS)}}  flex-fill" role="button" target="_blank" ng-repeat="u in roomUsers">
+								<uc:usr size="20" runat="server" userid="u.TTID" style="float: left" />
+								<span class="d-none d-md-inline">{{u.ID | getMPSUserLoginById:this}}</span>
 							</a>
 						</div>
 					</div>

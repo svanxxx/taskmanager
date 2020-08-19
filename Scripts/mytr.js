@@ -17,6 +17,7 @@ $(function () {
 
 	var app = angular.module("mpsapplication", []);
 	app.filter("getDispoById", getDispoById);
+	app.filter("getMPSUserLoginById", getMPSUserLoginById);
 	app.filter("getDispoColorById", getDispoColorById);
 	app.filter("rawHtml", ["$sce", rawHtml]);
 	app.filter("sumFormat", ["$sce", sumFormat]);
@@ -419,13 +420,20 @@ $(function () {
 				$scope.$apply();
 			}
 		};
+		$scope.roomUserClass = function (status) {
+			if (status === 2) {
+				return "btn-danger";
+			} else if (status === 3) {
+				return "btn-success";
+			} else if (status === 4) {
+				return "btn-primary";
+			}
+			return "'btn-light";
+		};
+		$scope.roomUsers = [];
 		notifyHub.client.onRoomChanged = function (users) {
-			for (var i = 0; i < users.length; i++) {
-				for (var j = 0; j < $scope.mpsusers.length; j++) {
-					if ($scope.mpsusers[j].ID == users[i].ID) {
-						$scope.mpsusers[j].STATUS = users[i].STATUS;
-					}
-				}
+			if (angular.toJson($scope.roomUsers) != JSON.stringify(users)) {
+				$scope.roomUsers = users;
 			}
 			$scope.$apply();
 		};

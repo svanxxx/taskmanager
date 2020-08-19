@@ -343,12 +343,16 @@ public class TRService : WebService
 	[WebMethod(EnableSession = true)]
 	public void settrrec(TRRec rec)
 	{
-		TRRec store = new TRRec(rec.ID);
-		store.FromAnotherObject(rec);
-		if (store.IsModified())
+		CurrentContext.Validate();
+		try
 		{
-			store.Store();
-		}
+			TRRec store = new TRRec(rec.ID);
+			store.FromAnotherObject(rec);
+			if (store.IsModified())
+			{
+				store.Store();
+			}
+		} catch { }
 	}
 	[WebMethod(EnableSession = true)]
 	public void deltrrec(int id)
@@ -471,7 +475,7 @@ public class TRService : WebService
 	[WebMethod(EnableSession = true)]
 	public List<DefectBase> enumCloseVacations(string start, int days)
 	{
-		return DefectBase.EnumCloseVacations(start, days);
+		return Vacations.EnumCloseVacations(start, days);
 	}
 	[WebMethod(EnableSession = true)]
 	public List<DefectBase> enumUnusedVacations()

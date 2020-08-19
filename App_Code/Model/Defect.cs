@@ -588,15 +588,6 @@ public partial class DefectBase : IdBasedObject
 	{
 		return (new DefectBase()).EnumCount(UnusedVacations());
 	}
-	public static List<DefectBase> EnumCloseVacations(string startdate, int days = 31)
-	{
-		DefectsFilter f = new DefectsFilter();
-		f.components = new List<int>(DefectComp.GetVacationRec());
-		f.dispositions = DefectDispo.EnumCanStartIDs();
-		f.startDateEnter = startdate;
-		f.endDateEnter = DateTime.ParseExact(startdate, defDateFormat, CultureInfo.InvariantCulture).AddDays(days).ToString(defDateFormat);//two weeks adnvance
-		return (new DefectBase()).Enum(f, 2000);
-	}
 	public static List<DefectBase> EnumScheduled(string date, string email)
 	{
 		DefectsFilter f = new DefectsFilter();

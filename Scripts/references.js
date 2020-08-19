@@ -131,6 +131,18 @@ function getUserTRIDById() {
 		return "";
 	};
 }
+function getMPSUserLoginById() {
+	return function (id, $scope) {
+		if (!$scope.mpsusers) {
+			return "";
+		}
+		var r = $scope.mpsusers.filter(function (x) { return x.ID == id; });
+		if (r.length > 0) {
+			return r[0].LOGIN;
+		}
+		return "";
+	};
+}
 
 function getTypes($scope, member, $http) {
 	loadReference($scope, member, $http, "types", "gettasktypes");

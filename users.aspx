@@ -30,15 +30,16 @@
 						<th>WORKFLOW</th>
 						<th>RETIRED</th>
 						<th>CLIENT</th>
+						<th>OFFICE</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr ng-repeat="u in users" class="{{(u.changed?'data-changed':'')+(u.RETIRED ? 'table-secondary':'')}}">
 						<td>
 							<button ng-click="changeImg(u.ID)" type="button" class="btn btn-info p-0">
-								<uc:usr size="30" runat="server" userid="u.TTUSERID" style="float: left"/>
-						<td>
-							<input class="form-control form-control-sm border-0" ng-disabled="readonly" class="intable-data-input" type="text" ng-model="u.PERSON_NAME" ng-change="itemchanged(u)"></td>
+								<uc:usr size="30" runat="server" userid="u.TTUSERID" style="float: left" />
+							<td>
+								<input class="form-control form-control-sm border-0" ng-disabled="readonly" class="intable-data-input" type="text" ng-model="u.PERSON_NAME" ng-change="itemchanged(u)"></td>
 						<td align="center">
 							<input class="form-control form-control-sm border-0" ng-disabled="readonly" type="date" ng-model="u.BIRTHDAY" ng-change="itemchanged(u)"></td>
 						<td>
@@ -52,13 +53,20 @@
 						<td>
 							<input class="form-control form-control-sm border-0" ng-disabled="readonly" class="intable-data-input" type="text" ng-model="u.PHONE" ng-change="itemchanged(u)"></td>
 						<td align="center">
-							<input class="form-check-input" ng-disabled="readonly" type="checkbox" ng-model="u.ISADMIN" ng-change="itemchanged(u)"></td>
+							<input class="form-check-input" ng-disabled="readonly" type="checkbox" ng-model="u.ISADMIN" ng-change="itemchanged(u)">
+						</td>
 						<td align="center">
-							<input class="form-check-input" ng-disabled="readonly" type="checkbox" ng-model="u.INWORK" ng-change="itemchanged(u)"></td>
+							<input class="form-check-input" ng-disabled="readonly" type="checkbox" ng-model="u.INWORK" ng-change="itemchanged(u)">
+						</td>
 						<td align="center">
-							<input class="form-check-input" ng-disabled="readonly" type="checkbox" ng-model="u.RETIRED" ng-change="itemchanged(u)"></td>
+							<input class="form-check-input" ng-disabled="readonly" type="checkbox" ng-model="u.RETIRED" ng-change="itemchanged(u)">
+						</td>
 						<td align="center">
-							<input class="form-check-input" ng-disabled="readonly" type="checkbox" ng-model="u.ISCLIENT" ng-change="itemchanged(u)"></td>
+							<input class="form-check-input" ng-disabled="readonly" type="checkbox" ng-model="u.ISCLIENT" ng-change="itemchanged(u)">
+						</td>
+						<td align="center">
+							<input class="form-check-input" ng-disabled="readonly" type="checkbox" ng-model="u.ISOFFICE" ng-change="itemchanged(u)">
+						</td>
 					</tr>
 				</tbody>
 			</table>

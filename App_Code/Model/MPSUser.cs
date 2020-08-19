@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
 using System.DirectoryServices.AccountManagement;
+using System.Globalization;
 using System.Linq;
 
 public class MPSUser : IdBasedObject
@@ -26,8 +27,9 @@ public class MPSUser : IdBasedObject
 	const string _schat = "SUPPCHATID";
 	const string _sclientchat = "SUPPCLIENTCHATID";
 	const string _cli = "CLIENT";
+	public const string _off = "OFFICE";
 
-	static string[] _allcols = new string[] { _pid, _pname, _email, _ttuser, _addr, _login, _pass, _isAdm, _phone, _work, _ret, _imgTransfer, _birth, _lvl, _chat, _schat, _sclientchat, _cli };
+	static string[] _allcols = new string[] { _pid, _pname, _email, _ttuser, _addr, _login, _pass, _isAdm, _phone, _work, _ret, _imgTransfer, _birth, _lvl, _chat, _schat, _sclientchat, _cli, _off };
 	public static string _Tabl = "[PERSONS]";
 
 	public string CHATID
@@ -54,6 +56,11 @@ public class MPSUser : IdBasedObject
 	{
 		get { return GetAsBool(_cli, false); }
 		set { this[_cli] = value; }
+	}
+	public bool ISOFFICE
+	{
+		get { return GetAsBool(_off, false); }
+		set { this[_off] = value; }
 	}
 	public bool ISADMIN
 	{
@@ -320,25 +327,33 @@ public class Roommate
 	{
 		ID = Convert.ToInt32(r[0]);
 		STATUS = r[1] == DBNull.Value ? (int)userstatus.offline : (int)userstatus.online;
+		TTID = Convert.ToInt32(r[2]);
 	}
 	public int ID { get; set; }
+	public int TTID { get; set; }
 	public int STATUS { get; set; }
-	static string _sql = string.Format(@"
+	static string _sql = $@"
 			SELECT
-			P.{0}
-			,R.{4}
+			P.{MPSUser._pid}
+			,R.{TRRecSignal._dat}
+			,(select {DefectUser._ID} from {DefectUser._Tabl} where {DefectUser._Emai} = P.{MPSUser._email})
 			FROM
-			{2} P
-			LEFT JOIN (SELECT RIN.{5}, RIN.{4} FROM {3} RIN WHERE RIN.{4} = CAST(GETDATE() AS DATE)) R ON R.{0} = P.{0}
+			{MPSUser._Tabl} P
+			LEFT JOIN (SELECT RIN.{TRRecSignal._perid}, RIN.{TRRecSignal._dat} FROM {TRRecSignal._Tabl} RIN WHERE RIN.{TRRecSignal._dat} = CAST(GETDATE() AS DATE)) R ON R.{MPSUser._pid} = P.{MPSUser._pid}
 			WHERE
-			P.{1} = 1
-		", MPSUser._pid, MPSUser._work, MPSUser._Tabl, TRRecSignal._Tabl, TRRecSignal._dat, TRRecSignal._perid);
+			P.{MPSUser._work} = 1 AND P.{MPSUser._off} = 1";
 	public static List<Roommate> Enum()
 	{
+		var Vacs = Vacations.TodayVacations();
 		List<Roommate> ls = new List<Roommate>();
 		foreach (DataRow r in DBHelper.GetRows(_sql))
 		{
 			Roommate d = new Roommate(r);
+			Vacation v = Vacs.Find(x => x.UserId == d.ID);
+			if (v != null)
+			{
+				d.STATUS = v.Sick ? (int)userstatus.sick : (int)userstatus.vacation;
+			}
 			ls.Add(d);
 		}
 		return ls;
