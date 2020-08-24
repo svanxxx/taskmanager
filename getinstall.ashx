@@ -44,7 +44,7 @@ public class getinstall : IHttpHandler
 				verfolder += num.ToString() + "."; //replace 01 to 1
 			}
 		}
-		if (numbers.Length != 3)
+		if (numbers.Length != 3 && !(t == "devmx" || t == "devfip"))
 		{
 			Response.StatusCode = (int)HttpStatusCode.NotFound;
 			Response.StatusDescription = "Requested installation file was not found";
