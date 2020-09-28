@@ -67,12 +67,15 @@ public class IdBasedObject
 	{
 		foreach (var c in _columns)
 		{
-			string newval = obj[c].ToString();
-			string oldval = this[c].ToString();
-			if (obj._columns.Contains(c) && oldval != newval)
+			if (obj._columns.Contains(c))
 			{
-				OnSetColFromCopy(c, oldval, newval);
-				this[c] = obj[c];
+				string newval = obj[c].ToString();
+				string oldval = this[c].ToString();
+				if (oldval != newval)
+				{
+					OnSetColFromCopy(c, oldval, newval);
+					this[c] = obj[c];
+				}
 			}
 		}
 	}
