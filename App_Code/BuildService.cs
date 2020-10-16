@@ -84,14 +84,23 @@ public class BuildService : WebService
 	[WebMethod]
 	public string scheduledBuild()
 	{
-		return "OK";
+		if (HttpContext.Current.Request.Url.Host.ToUpper() != "LOCALHOST")
+		{
+			return "Rejected: Schedule can be run only locally.";
+		}
+		MPSUser u = MPSUser.FindUserbyPhone(Settings.CurrentSettings.AUTOBOTPHONE);
+		if (u == null || !u.ISADMIN)
+		{
+			return "No auto bot users found with admin rights.";
+		}
+		CurrentContext.User = u;
 		VersionBuilder.PrepareGit();
 		VersionBuilder.VersionIncrement();
 		VersionBuilder.PushRelease();
-		VersionBuilder.SendVersionAlarm();
-
+		//VersionBuilder.SendVersionAlarm();
+		return "OK";
 	}
-	static string _tname = "TaskManagerBuilder";	static WeeklyTrigger getDefTrigger()
+	static string _tname = "TaskManagerBuilder"; static WeeklyTrigger getDefTrigger()
 	{
 		WeeklyTrigger wt = new WeeklyTrigger();
 		wt.StartBoundary = DateTime.Today.Date;
@@ -163,6 +172,7 @@ public class BuildService : WebService
 				this.DAYS.Add(new Day() { DAY = DaysOfTheWeek.Friday, USE = (wt.DaysOfWeek & DaysOfTheWeek.Friday) == DaysOfTheWeek.Friday });
 				this.DAYS.Add(new Day() { DAY = DaysOfTheWeek.Saturday, USE = (wt.DaysOfWeek & DaysOfTheWeek.Saturday) == DaysOfTheWeek.Saturday });
 				this.DAYS.Add(new Day() { DAY = DaysOfTheWeek.Sunday, USE = (wt.DaysOfWeek & DaysOfTheWeek.Sunday) == DaysOfTheWeek.Sunday });
+				TIME = wt.StartBoundary.Hour * 60 * 60 * 1000 + wt.StartBoundary.Minute * 60 * 1000;
 			}
 		}
 		public void Store()
@@ -172,6 +182,8 @@ public class BuildService : WebService
 				ts.RootFolder.DeleteTask(_tname);
 			}
 			WeeklyTrigger wt = getDefTrigger();
+			TimeSpan t = TimeSpan.FromMilliseconds(this.TIME);
+			wt.StartBoundary = DateTime.Today + t;
 			foreach (var d in DAYS)
 			{
 				if (d.USE)
@@ -186,6 +198,7 @@ public class BuildService : WebService
 			CreateNewTask(wt, this.ENABLED).Dispose();
 		}
 		public bool ENABLED { get; set; }
+		public int TIME { get; set; }
 		public List<Day> DAYS;
 	}
 	[WebMethod(EnableSession = true)]

@@ -53,17 +53,25 @@
 		};
 		$scope.applySchedule = function () {
 			var prg = StartProgress("Applying schedule...");
-			$http.post("BuildService.asmx/setSchedule", JSON.stringify({ sb: $scope.scheduledBuild }))
+			var sb = JSON.parse(JSON.stringify($scope.scheduledBuild));
+			var dt = (new Date(sb.TIME));
+			sb.TIME = dt.getHours() * 60 * 60 * 1000 + dt.getMinutes() * 60 * 1000;
+			$http.post("BuildService.asmx/setSchedule", JSON.stringify({ sb: sb }))
 				.then(function (result) {
-					$scope.scheduledBuild = result.data.d;
+					$scope.setSchedule(result.data.d);
 					EndProgress(prg);
 				});
 		};
+		$scope.setSchedule = function (ret) {
+			$scope.scheduledBuild = ret;
+			var d = new Date(0, 0, 0, 0, 0, 0, $scope.scheduledBuild.TIME);
+			$scope.scheduledBuild.TIME = d;
+			$('.toast').toast('show');
+		}
 		$scope.scheduledBuild = [];
 		$http.post("BuildService.asmx/getSchedule", JSON.stringify({}))
 			.then(function (result) {
-				$scope.scheduledBuild = result.data.d;
-				$('.toast').toast('show');
+				$scope.setSchedule(result.data.d);
 			});
 	}]);
 });

@@ -89,6 +89,11 @@ public class RawSettings
 		get { return GetVal("MD2HTML"); }
 		set { values["MD2HTML"] = value; }
 	}
+	public string AUTOBOTPHONE
+	{
+		get { return GetVal("AUTOBOTPHONE"); }
+		set { values["AUTOBOTPHONE"] = value; }
+	}
 	public string DEFECTATTACHDIR
 	{
 		get { return GetVal("DEFECTATTACHDIR"); }

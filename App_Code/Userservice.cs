@@ -15,6 +15,10 @@ public class Userservice : WebService
 	[WebMethod(EnableSession = true)]
 	public DisplayUser getUser(int id)
 	{
+		if (id < 1)
+		{
+			return new DisplayUser();
+		}
 		CurrentContext.Validate();
 		DefectUser u = new DefectUser(id);
 		return new DisplayUser() { FULLNAME = u.FULLNAME, TRID = u.TRID };

@@ -41,6 +41,7 @@
 							<input type="checkbox" class="custom-control-input" id="sched" ng-model="scheduledBuild.ENABLED">
 							<label class="custom-control-label" for="sched">Scheduled Build Enabled</label>
 						</div>
+						<input type="time" id="stime" name="scheduletime" ng-model="scheduledBuild.TIME" class="form-control" ng-disabled="!scheduledBuild.ENABLED">
 						<span>Recur on:</span>
 						<ul class="list-group">
 							<li class="list-group-item list-group-item-light" ng-repeat="d in scheduledBuild.DAYS">
