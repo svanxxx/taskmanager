@@ -596,6 +596,12 @@ public class TRService : WebService
 			DefectBuild b = new DefectBuild(id) { STATUS = DefectBuild.BuildStatus.finishedok.ToString(), TESTGUID = requestguid };
 			b.Store();
 
+			if (Settings.CurrentSettings.RELEASETTID == b.TTID.ToString() && b.TYPE == (int)DefectBuild.BuildType.releasebuild)
+			{
+				//release builder sends its own notifications
+				return;
+			}
+
 			Defect d = new Defect(b.TTID);
 			DefectUser u = new DefectUser(b.TTUSERID);
 			d.SetUpdater(new MPSUser(u.TRID));

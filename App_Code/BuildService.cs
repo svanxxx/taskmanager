@@ -9,6 +9,7 @@ using System.Web.Services;
 [System.Web.Script.Services.ScriptService]
 public class BuildService : WebService
 {
+	static string btboth = "both";
 	public BuildService() { }
 	[WebMethod(EnableSession = true)]
 	public string getUpdateWorkGit()
@@ -97,7 +98,8 @@ public class BuildService : WebService
 		VersionBuilder.PrepareGit();
 		VersionBuilder.VersionIncrement();
 		VersionBuilder.PushRelease();
-		//VersionBuilder.SendVersionAlarm();
+		VersionBuilder.SendVersionAlarm();
+		addBuildByTask(Settings.CurrentSettings.RELEASETTID, "Automated Build", btboth);
 		return "OK";
 	}
 	static string _tname = "TaskManagerBuilder"; static WeeklyTrigger getDefTrigger()
@@ -221,11 +223,11 @@ public class BuildService : WebService
 	{
 		if (string.IsNullOrEmpty(ttid))
 			return;
-		if (btype == "both" || btype == "test")
+		if (btype == btboth || btype == "test")
 		{
 			DefectBuild.AddRequestByTask(Convert.ToInt32(ttid), notes == null ? "" : notes, DefectBuild.BuildType.testbuild);
 		}
-		if (btype == "both" || btype == "inst")
+		if (btype == btboth || btype == "inst")
 		{
 			DefectBuild.AddRequestByTask(Convert.ToInt32(ttid), "Public Release", DefectBuild.BuildType.releasebuild);
 		}

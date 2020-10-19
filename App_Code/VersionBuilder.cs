@@ -115,7 +115,7 @@ public class VersionBuilder
 			}
 			if (ps.HadErrors)
 			{
-				foreach(var e in ps.Streams.Error)
+				foreach (var e in ps.Streams.Error)
 				{
 					res.Add(e.ToString());
 				}
@@ -188,18 +188,22 @@ public class VersionBuilder
 						{
 							if (line.StartsWith("TT"))
 							{
+								if (line.EndsWith("@nolog", StringComparison.OrdinalIgnoreCase))
+								{
+									continue;
+								}
 								Match m = Regex.Match(line, "TT[0-9]+");
 								if (m.Success)
 								{
 									string ttid = m.Value.Replace("TT", "");
 									line = string.Format("<a href='{0}{1}{2}'>{3}</a>", Settings.CurrentSettings.GLOBALSITEURL, StaticSettings.DefectUrl, ttid, line.Substring(0, Math.Min(line.Length, 120)));
-                                    int id;
-                                    if (Defect.GetIDbyTT(int.Parse(ttid), out id))
-                                    {
-                                        DefectEvent.AddEventByTask(id, DefectEvent.Eventtype.versionIncluded, CurrentContext.TTUSERID, version, -1, -1, null);
-                                    }
-                                }
-                            }
+									int id;
+									if (Defect.GetIDbyTT(int.Parse(ttid), out id))
+									{
+										DefectEvent.AddEventByTask(id, DefectEvent.Eventtype.versionIncluded, CurrentContext.TTUSERID, version, -1, -1, null);
+									}
+								}
+							}
 							details += line + Environment.NewLine;
 						}
 					}
