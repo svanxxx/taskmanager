@@ -102,7 +102,8 @@ public class BuildService : WebService
 		addBuildByTask(Settings.CurrentSettings.RELEASETTID, "Automated Build", btboth);
 		return "OK";
 	}
-	static string _tname = "TaskManagerBuilder"; static WeeklyTrigger getDefTrigger()
+	static string _tname = "TaskManagerBuilder"; 
+	static WeeklyTrigger getDefTrigger()
 	{
 		WeeklyTrigger wt = new WeeklyTrigger();
 		wt.StartBoundary = DateTime.Today.Date;

@@ -4,6 +4,8 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 public class LockInfo
 {
@@ -75,11 +77,12 @@ public partial class DefectBase : IdBasedObject
 	protected static string _branchBST = "branchBST";
 	protected static string _buildP = "iBuildPriority";
 	protected static string _vers = "Version";
+	protected static string _edd = "EDD";
 
 	public static string _Tabl = "[TT_RES].[DBO].[DEFECTS]";
 
-	protected static string[] _allBaseCols = new string[] { _ID, _Summ, _idRec, _Disp, _Est, _Spent, _EstId, _Order, _AsUser, _Seve, _sMod, _BackOrder, _Comp, _Date, _Created, _DateT, _CreaBy, _Type, _Prod, _Ref, _Prio, _OrderDate, _ModDate, _ModBy, _sModTRID, _branch, _branchBST, _buildP, _vers };
-	protected static string[] _allBaseColsNames = new string[] { _ID, "Summary", _idRec, "Disposition", "Estimation", "", "Estimated by", "Schedule Order", "Assigned User", "Severity", "", "Schedule Order", "Component", "Date Entered", "Date Created", "Alarm", "Created By", "Type", "Product", "Reference", "Priority", "Schedule Date", "", "", "", "Branch", "BST Branch", "Test Priority", "Version" };
+	protected static string[] _allBaseCols = new string[] { _ID, _Summ, _idRec, _Disp, _Est, _Spent, _EstId, _Order, _AsUser, _Seve, _sMod, _BackOrder, _Comp, _Date, _Created, _DateT, _CreaBy, _Type, _Prod, _Ref, _Prio, _OrderDate, _ModDate, _ModBy, _sModTRID, _branch, _branchBST, _buildP, _vers, _edd };
+	protected static string[] _allBaseColsNames = new string[] { _ID, "Summary", _idRec, "Disposition", "Estimation", "", "Estimated by", "Schedule Order", "Assigned User", "Severity", "", "Schedule Order", "Component", "Date Entered", "Date Created", "Alarm", "Created By", "Type", "Product", "Reference", "Priority", "Schedule Date", "", "", "", "Branch", "BST Branch", "Test Priority", "Version", "" };
 
 	MPSUser _updater;
 	public MPSUser GetUpdater()
@@ -305,6 +308,28 @@ public partial class DefectBase : IdBasedObject
 		get { return this[_Prod].ToString(); }
 		set { this[_Prod] = Convert.ToInt32(value); }
 	}
+	public string EDD
+	{
+		get
+		{
+			if (this[_edd] == DBNull.Value)
+			{
+				return "";
+			}
+			return Convert.ToDateTime(this[_edd]).ToShortDateString();
+		}
+	}
+	public void SetEDD(DateTime dt)
+	{
+		object o = this[_edd];
+		if (o != DBNull.Value && Convert.ToDateTime(o).Date == dt.Date)
+		{
+			return;
+		}
+		//direct sql - no history records should be stored, no notifications as mass update of database
+		SQLExecute($"UPDATE {_Tabl} SET {_edd} = '{dt.ToString(DBHelper.SQLDateFormat)}' WHERE {_idRec} = {IDREC}");
+		return;
+	}
 	public decimal ESTIMBY
 	{
 		get
@@ -459,8 +484,31 @@ public partial class DefectBase : IdBasedObject
 		}
 		base.OnSetColFromCopy(col, val, newval);
 	}
+	private static readonly object _lockLGM = new object();
+	private static DateTime _LGMDate = DateTime.Now.AddDays(-1);
+	public static DateTime LastGlobalModifier
+	{
+		set
+		{
+			lock (_lockLGM)
+			{
+				_LGMDate = value;
+			}
+		}
+		get
+		{
+			lock (_lockLGM)
+			{
+				return _LGMDate;
+			}
+		}
+	}
 	protected override void PostStore()
 	{
+		if (this.IsModified())
+		{
+			LastGlobalModifier = DateTime.Now;
+		}
 		if (IsModifiedCol(_AsUser))
 		{
 			if (!string.IsNullOrEmpty(_reassignedFrom))
@@ -468,7 +516,7 @@ public partial class DefectBase : IdBasedObject
 				NotifyHub.NotifyPlanChange((new DefectUser(int.Parse(_reassignedFrom)).TRID));
 			}
 
-			//when task is reassinged order in new list should be changed.
+			//when task is reassigned order in new list should be changed.
 			DefectBase d = new DefectBase(ID);
 			if (d.ORDER != ORDER)
 			{
@@ -476,7 +524,7 @@ public partial class DefectBase : IdBasedObject
 				d.Store();
 				return;
 			}
-		} 
+		}
 
 		if (!string.IsNullOrEmpty(AUSER))
 		{
@@ -525,6 +573,7 @@ public partial class DefectBase : IdBasedObject
 		{
 			DefectBase d = new DefectBase();
 			d.Load(r);
+			d._id = r[_ID].ToString();
 			ls.Add(d);
 		}
 		return ls;
@@ -539,6 +588,7 @@ public partial class DefectBase : IdBasedObject
 		{
 			DefectBase d = new DefectBase();
 			d.Load(r);
+			d._id = r[_ID].ToString();
 			ls.Add(d);
 		}
 		return ls;
@@ -1014,6 +1064,7 @@ public class DefectPlan
 		this.VERSION = db.VERSION;
 		this.AUSER = db.AUSER;
 		this.ORDER = db.ORDER;
+		this.EDD = db.EDD;
 	}
 	public bool FIRE { get; set; }
 	public int ESTIM { get; set; }
@@ -1027,6 +1078,7 @@ public class DefectPlan
 	public string SUMMARY { get; set; }
 	public string VERSION { get; set; }
 	public int ORDER { get; set; }
+	public string EDD { get; set; }
 	static public List<DefectPlan> Convert2Plan(List<DefectBase> ls)
 	{
 		List<DefectPlan> lsout = new List<DefectPlan>();
@@ -1035,5 +1087,77 @@ public class DefectPlan
 			lsout.Add(new DefectPlan(def));
 		}
 		return lsout;
+	}
+	private static readonly CancellationTokenSource _cancelEDD = new CancellationTokenSource();
+	public static void StopUpdaterEDD()
+	{
+		_cancelEDD.Cancel();
+	}
+	public static void SatrtUpdaterEDD()
+	{
+		Task.Run(async () =>
+		{
+			while (true)
+			{
+				await Task.Delay(TimeSpan.FromMinutes(1), _cancelEDD.Token);
+				UpdateEDD();
+			}
+		}, _cancelEDD.Token);
+	}
+	private static readonly object _lockEDD = new object();
+	private static DateTime _EDDDate = DateTime.Now;
+	public static void UpdateEDD()
+	{
+		//one mass update per time
+		lock (_lockEDD)
+		{
+			if (DateTime.Compare(_EDDDate, DefectBase.LastGlobalModifier) > 0)
+			{
+				return;
+			}
+
+			//cache all vacations
+			List<DefectBase> vacs = Vacations.EnumCloseVacations(DateTime.Today, 365);
+
+			DefectBase d = new DefectBase();
+			foreach (var u in DefectUser.Enum())
+			{
+				if (!u.ACTIVE)
+				{
+					continue;
+				}
+				string sid = u.ID.ToString();
+				List<DateTime> vacDates = new List<DateTime>();
+				foreach (var v in vacs)
+				{
+					if (v.AUSER == sid)
+					{
+						vacDates.Add(DateTime.ParseExact(v.DATE, IdBasedObject.defDateFormat, CultureInfo.InvariantCulture));
+					}
+				}
+
+				DateTime dat = DateTime.Today.AddDays(1);
+
+				foreach (var task in d.EnumPlan(u.ID))
+				{
+					while (dat.DayOfWeek == DayOfWeek.Saturday || dat.DayOfWeek == DayOfWeek.Sunday)
+					{
+						dat = dat.AddDays(1);
+					}
+					while (vacDates.Exists(x => dat.Date.CompareTo(x) == 0))
+					{
+						dat = dat.AddDays(1);
+					}
+					int hours = Math.Max(task.ESTIM - task.SPENT, 0) + dat.Hour;
+					dat = dat.AddHours(-dat.Hour);
+					int days = hours / 8;
+					hours = hours % 8;
+					dat = dat.AddDays(days);
+					dat = dat.AddHours(hours);
+					task.SetEDD(dat.Date);
+				}
+			}
+			_EDDDate = DateTime.Now;
+		}
 	}
 }

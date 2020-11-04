@@ -29,9 +29,11 @@
 		}
 		TasksBot.StartConnection();
 		//SupportBot.StartConnection();
+		DefectPlan.SatrtUpdaterEDD();
 	}
 	void Application_End(object sender, EventArgs e)
 	{
+		DefectPlan.StopUpdaterEDD();
 	}
 	void Session_Start(object sender, EventArgs e)
 	{

@@ -88,7 +88,7 @@
 						<button title="Copy task label to clipboard" data-toggle="tooltip" class="btn btn-secondary btn-sm pr-1" type="button" ng-click="cliplabl()">TT{{defect.ID}}</button>
 					</div>
 					<input title="Task summary" data-toggle="tooltip" type="text" class="form-control" ng-disabled="!canChangeDefect()" ng-change="updateDefSum()" ng-model="defectsumm">
-					<input list="tasksourcelist" type="text" name="tasksource" id="tasksource" autocomplete="on" title="Task source: e.g. email subject" data-toggle="tooltip" class="form-control" ng-disabled="!canChangeDefect()" ng-change="updateDefEml()" ng-model="defecteml">
+					<input list="tasksourcelist" type="text" name="tasksource" id="tasksource" autocomplete="on" title="Task source: e.g. email subject<br/>Type 'nolog' to avoid adding to public change logs" data-toggle="tooltip" class="form-control" ng-disabled="!canChangeDefect()" ng-change="updateDefEml()" ng-model="defecteml">
 					<datalist id="tasksourcelist">
 						<option ng-repeat="ts in tasksources">{{ts}}</option>
 					</datalist>

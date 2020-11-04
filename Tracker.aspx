@@ -4,6 +4,7 @@
 <%@ Register Src="~/controls/DefectNumControl.ascx" TagName="defNum" TagPrefix="uc" %>
 <%@ Register Src="~/controls/DefectEstControl.ascx" TagName="defEst" TagPrefix="uc" %>
 <%@ Register Src="~/controls/DefectVerControl.ascx" TagName="defVer" TagPrefix="uc" %>
+<%@ Register Src="~/controls/DefectEddControl.ascx" TagName="defEdd" TagPrefix="uc" %>
 <%@ Register Src="~/controls/DefectUsrControl.ascx" TagName="defUsr" TagPrefix="uc" %>
 <%@ Register Src="~/controls/DefectOrdControl.ascx" TagName="defOrd" TagPrefix="uc" %>
 <%@ Register Src="~/controls/SelectUser.ascx" TagName="usrlist" TagPrefix="uc" %>
@@ -51,6 +52,7 @@
 						<uc:defOrd runat="server" class="float-right" ng-show="isadmin" />
 						<uc:defUsr onchange="console.log('ddd')" ng-show="isadmin" runat="server" class="float-right" />
 						<uc:defVer runat="server" />
+						<uc:defEdd runat="server" />
 					</div>
 				</div>
 			</div>

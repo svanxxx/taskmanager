@@ -3,38 +3,8 @@
   Visual Studio global web project settings.
 -->
 <VisualWebDeveloper>
-
   <iisExpressSettings sslPort="44387" windowsAuthentication="disabled" anonymousAuthentication="enabled" useClassicPipelineMode="false"/>
-
   <StartupServices>
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
     <Service ID="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}"/>
   </StartupServices>
 </VisualWebDeveloper>

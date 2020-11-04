@@ -31,6 +31,10 @@ public static class Vacations
 			return new List<Vacation>(_TodayVacs);
 		}
 	}
+	public static List<DefectBase> EnumCloseVacations(DateTime startdate, int days = 31)
+	{
+		return EnumCloseVacations(startdate.ToString(IdBasedObject.defDateFormat, CultureInfo.InvariantCulture), days);
+	}
 	public static List<DefectBase> EnumCloseVacations(string startdate, int days = 31)
 	{
 		DefectsFilter f = new DefectsFilter();

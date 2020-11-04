@@ -1,0 +1,2 @@
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="DefectControl" %>
+<span data-toggle="tooltip" title="Estimated Delivery Date" class="badge badge-pill badge-light float-right">{{<%= this.Member() %>.VERSION == "" ? <%= this.Member() %>.EDD : ""}}</span>
