@@ -35,6 +35,20 @@
 					<a ng-repeat="t in trackers" href="?id={{t.ID}}" class="dropdown-item">{{t.NAME}}</a>
 				</div>
 			</div>
+			<div>
+				<div class="dropleft">
+					<button id="sortbtn" type="button" class="btn {{sort == 0 ? 'btn-outline-secondary' : 'btn-primary'}} dropdown-toggle" data-toggle="dropdown" data-toggle-second="tooltip" title="Click to see sort options">
+						<i class="fas fa-sliders-h"></i>
+					</button>
+					<div class="dropdown-menu border-0">
+						<div class="btn-group-vertical">
+							<button type="button" class="btn {{sort == 0 ? 'btn-primary' : 'btn-outline-secondary'}}" ng-click="sort=0">Unsorted</button>
+							<button type="button" class="btn {{sort == 1 ? 'btn-primary' : 'btn-outline-secondary'}}" ng-click="sort=1">Sort By Date</button>
+							<button type="button" class="btn {{sort == 2 ? 'btn-primary' : 'btn-outline-secondary'}}" ng-click="sort=2">Sort By Version</button>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 		<div class="row">
 			<div class="col-md-3">
@@ -45,7 +59,7 @@
 			<div class="col-md-6 mb-2">
 				<input ng-model="newtask" type="text" class="form-control form-control-sm" onkeydown="return event.key != 'Enter';" ng-keyup="messageKey($event)" ng-show="isadmin && simpleTracker">
 				<div class="list-group shadow">
-					<div ng-right-click="taskActions()" ng-repeat="d in defects" class="list-group-item p-1" ng-style="{{d.DISPO | getDispoColorById:this}}">
+					<div ng-repeat="d in defects | defectsTrackFilter:sort" class="list-group-item p-1" ng-style="{{d.DISPO | getDispoColorById:this}}">
 						<uc:defNum runat="server" />
 						<uc:defEst runat="server" />
 						<span class="taskrect" data-toggle="tooltip" title="{{d.SUMMARY}}" ng-bind-html="d.SUMMARY | sumFormat | limitTo:135"></span>

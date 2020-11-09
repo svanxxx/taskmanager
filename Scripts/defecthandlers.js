@@ -115,27 +115,32 @@ function tooltipImg(e) {
 	element.style.padding = 10;
 	element.style.backgroundColor = "black";
 
-
 	var a = document.createElement("a");
 	a.href = "editplan.aspx";
 	a.title = "Click to see the plan";
-	a.innerHTML = "Loading...";
+	if (id === "") {
+		a.innerHTML = "Unspecified";
+	} else {
+		a.innerHTML = "Loading...";
+	}
 
-	fetch("UsersService.asmx/getUser", {
-		method: "post",
-		headers: {
-			'Accept': 'application/json',
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify({
-			id: id
-		})
-	}).then(function (response) {
-		return response.json();
-	}).then(function (json) {
-		a.innerHTML = json.d.FULLNAME;
-		a.href = "editplan.aspx?userid=" + json.d.TRID;
-	});
+	if (id !== "") {
+		fetch("UsersService.asmx/getUser", {
+			method: "post",
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				id: id
+			})
+		}).then(function (response) {
+			return response.json();
+		}).then(function (json) {
+			a.innerHTML = json.d.FULLNAME;
+			a.href = "editplan.aspx?userid=" + json.d.TRID;
+		});
+	}
 
 	element.appendChild(a);
 

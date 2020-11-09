@@ -1,2 +1,2 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="DefectControl" %>
-<span class="badge badge-pill badge-light float-right">{{<%= this.Member() %>.VERSION}}</span>
+<span data-toggle="tooltip" title="Version First Delivered In" class="badge badge-pill badge-light float-right">{{<%= this.Member() %>.VERSION}}</span>

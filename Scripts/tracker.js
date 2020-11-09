@@ -62,6 +62,48 @@ $(function () {
 	app.filter('getDispoColorById', getDispoColorById);
 	app.filter('getUserById', getUserById);
 	app.filter("sumFormat", ["$sce", sumFormat]);
+	app.filter("defectsTrackFilter", function () {
+		return function (defects, sort) {
+			if (sort === 0) {
+				return defects;
+			}
+
+			if (defects) {
+				var defectsRet = [];
+				for (var i = 0; i < defects.length; i++) {
+					let d = defects[i];
+					if (sort === 1 && d.EDD && d.VERSION == "") {
+						defectsRet.push(d);
+					} else if (sort === 2 && d.VERSION != "") {
+						defectsRet.push(d);
+					}
+				}
+				if (sort === 1) {
+					defectsRet.sort(function (a, b) {
+						return a.EDD.getTime() - b.EDD.getTime();
+					});
+				} else if (sort === 2) {
+					defectsRet.sort(function (a, b) {
+						let av = a.VERSION.split(".");
+						let bv = b.VERSION.split(".");
+						if (av.length === 3 && bv.length === 3) {
+							if (av[0] !== bv[0]) {
+								return av[0] > bv[0] ? -1 : 1;
+							}
+							let v1 = parseInt(av[2]);
+							let v2 = parseInt(bv[2]);
+							if (v1 === v2) {
+								return 0;
+							}
+							return v1 > v2 ? -1 : 1;
+						}
+						return true;
+					});
+				}
+				return defectsRet;
+			}
+		};
+	});
 
 	app.controller('mpscontroller', ["$scope", "$http", "$interval", function ($scope, $http, $interval) {
 		$scope.isadmin = IsAdmin();
@@ -70,6 +112,7 @@ $(function () {
 		$scope.filters = [];
 		$scope.defects = [];
 		$scope.id = getParameterByName("id");
+		$scope.sort = 0;
 		if ($scope.id != "") {
 			$.cookie("trackerid", $scope.id, { expires: 365 });
 		}
@@ -182,6 +225,16 @@ $(function () {
 				$http.post("TrackerService.asmx/getItems", JSON.stringify({ "trackerid": tr.ID }))
 					.then(function (res) {
 						$scope.defects = res.data.d.ITEMS;
+						$scope.defects.forEach(function (val) {
+							if (val.EDD !== "" && typeof val.EDD !== "undefined") {
+								let prts = val.EDD.split("/");
+								if (prts.length === 3) {
+									val.EDD = new Date(prts[2], prts[1], prts[0]);
+								}
+							} else {
+								val.EDD = undefined;
+							}
+						});
 						tr.Completes = res.data.d.TRACKER.Completes;
 						EndProgress(prgfltr);
 						DrawChart($scope);
@@ -280,7 +333,9 @@ $(function () {
 				$scope.loadData();
 			}, 300000);
 		}
-		$('.toast').toast('show');
+		setTimeout(function () { $("#sortbtn").tooltip('show'); }, 2000);
+		setTimeout(function () { $("#sortbtn").tooltip('hide'); }, 5000);
+		//$('.toast').toast('show');
 	}]);
 	app.directive('ngRightClick', function ($parse) {
 		return function (scope, element, attrs) {
