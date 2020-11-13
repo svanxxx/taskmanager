@@ -1097,10 +1097,15 @@ public class DefectPlan
 	{
 		Task.Run(async () =>
 		{
+			await Task.Delay(TimeSpan.FromMinutes(1), _cancelEDD.Token);
 			while (true)
 			{
-				await Task.Delay(TimeSpan.FromMinutes(1), _cancelEDD.Token);
-				UpdateEDD();
+				try
+				{
+					UpdateEDD();
+				}
+				catch (Exception e) { Logger.Log(e); };
+				await Task.Delay(TimeSpan.FromMinutes(20), _cancelEDD.Token);
 			}
 		}, _cancelEDD.Token);
 	}

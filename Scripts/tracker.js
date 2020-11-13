@@ -229,7 +229,7 @@ $(function () {
 							if (val.EDD !== "" && typeof val.EDD !== "undefined") {
 								let prts = val.EDD.split("/");
 								if (prts.length === 3) {
-									val.EDD = new Date(prts[2], prts[1], prts[0]);
+									val.EDD = new Date(prts[2], prts[0] - 1, prts[1]);
 								}
 							} else {
 								val.EDD = undefined;
