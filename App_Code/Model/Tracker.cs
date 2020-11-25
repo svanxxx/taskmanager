@@ -18,7 +18,7 @@ public class SimpleTrackWrapper
 	static List<SimpleTrackWrapper> Enum()
 	{
 		List<SimpleTrackWrapper> res = new List<SimpleTrackWrapper>();
-		using (var db = new tt_resEntities())
+		using (var db = new Database())
 		{
 			foreach (var t in db.DefectTrackers.Where(tracker => tracker.idFilter == -1))
 			{

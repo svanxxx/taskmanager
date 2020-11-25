@@ -11,7 +11,7 @@ public class Vacation
 }
 public static class Vacations
 {
-	static object _lock = new object();
+	static readonly object _lock = new object();
 	static DateTime _loadDT = DateTime.Now.AddMinutes(-6);
 	static List<Vacation> _TodayVacs;
 	public static List<Vacation> TodayVacations()

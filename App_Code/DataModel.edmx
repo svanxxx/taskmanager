@@ -5,6 +5,15 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="DataModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="DefectAlarm">
+          <Key>
+            <PropertyRef Name="idRecord" />
+          </Key>
+          <Property Name="idRecord" Type="numeric" Precision="10" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ParentID" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="UserID" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="AlarmType" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="DefectTracker">
           <Key>
             <PropertyRef Name="idRecord" />
@@ -28,6 +37,7 @@
           <Property Name="CATEGORY" Type="nvarchar(max)" />
         </EntityType>
         <EntityContainer Name="DataModelStoreContainer">
+          <EntitySet Name="DefectAlarm" EntityType="Self.DefectAlarm" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DefectTracker" EntityType="Self.DefectTracker" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Machines" EntityType="Self.Machines" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
@@ -50,6 +60,7 @@
         <EntityContainer Name="tt_resEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="DefectTrackers" EntityType="Self.DefectTracker" />
           <EntitySet Name="Machines" EntityType="DataModel.Machine" />
+          <EntitySet Name="DefectAlarms" EntityType="DataModel.DefectAlarm" />
         </EntityContainer>
         <EntityType Name="Machine">
           <Key>
@@ -60,6 +71,15 @@
           <Property Name="MAC" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="DETAILS" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CATEGORY" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="DefectAlarm">
+          <Key>
+            <PropertyRef Name="idRecord" />
+          </Key>
+          <Property Name="idRecord" Type="Decimal" Nullable="false" Precision="10" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ParentID" Type="Decimal" Nullable="false" Precision="10" Scale="0" />
+          <Property Name="UserID" Type="Decimal" Nullable="false" Precision="10" Scale="0" />
+          <Property Name="AlarmType" Type="Int32" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -88,6 +108,16 @@
                 <ScalarProperty Name="MAC" ColumnName="MAC" />
                 <ScalarProperty Name="IP" ColumnName="IP" />
                 <ScalarProperty Name="PCNAME" ColumnName="PCNAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DefectAlarms">
+            <EntityTypeMapping TypeName="DataModel.DefectAlarm">
+              <MappingFragment StoreEntitySet="DefectAlarm">
+                <ScalarProperty Name="AlarmType" ColumnName="AlarmType" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+                <ScalarProperty Name="idRecord" ColumnName="idRecord" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

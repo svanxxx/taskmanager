@@ -5,7 +5,7 @@ public class MachineFactory
 {
 	public static void Delete(string name)
 	{
-		using (var db = new tt_resEntities())
+		using (var db = new Database())
 		{
 			var m = db.Machines.First(machine => machine.PCNAME == name);
 			if (m != null)
@@ -18,14 +18,14 @@ public class MachineFactory
 	public static List<Machine> Enum()
 	{
 		List<Machine> ls = new List<Machine>();
-		using (var db = new tt_resEntities())
+		using (var db = new Database())
 		{
 			return db.Machines.ToList();
 		}
 	}
 	public static Machine FindOrCreate(string name)
 	{
-		using (var db = new tt_resEntities())
+		using (var db = new Database())
 		{
 			var m = db.Machines.Find(name);
 			if (m == null)
@@ -40,14 +40,14 @@ public class MachineFactory
 	}
 	public static Machine Find(string name)
 	{
-		using (var db = new tt_resEntities())
+		using (var db = new Database())
 		{
 			return db.Machines.Find(name);
 		}
 	}
 	public static void Update(Machine m)
 	{
-		using (var db = new tt_resEntities())
+		using (var db = new Database())
 		{
 			db.Machines.Attach(m);
 			db.Entry(m).State = System.Data.Entity.EntityState.Modified;

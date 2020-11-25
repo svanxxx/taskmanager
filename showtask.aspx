@@ -10,7 +10,7 @@
 	<%=System.Web.Optimization.Scripts.Render("~/bundles/buildshelper_js")%>
 	<%=System.Web.Optimization.Scripts.Render("~/bundles/showtask_js")%>
 	<script src="<%=Settings.CurrentSettings.ANGULARCDN.ToString()%>angular.min.js"></script>
-	<script src="scripts/jquery.signalR-2.3.0.min.js"></script>
+	<script src="scripts/jquery.signalR-2.4.1.min.js"></script>
 	<script src="signalr/hubs"></script>
 	<script src="Scripts/taskmessage.js"></script>
 	<link rel="stylesheet" href="<%=Settings.CurrentSettings.MD2HTML.ToString()%>css/editormd.preview.css" />
@@ -508,6 +508,18 @@
 									<button type="button" class="btn btn-sm btn-outline-secondary" ng-disabled="!canChangeDefect()" ng-click="defect.TIMER = null"><i class="fas fa-times"></i></button>
 								</div>
 							</div>
+							<hr />
+							<h5>Release Alarm List:</h5>
+							<ul class="list-group">
+								<li class="list-group-item d-flex" ng-repeat="u in users | filter:{ ACTIVE: true }| orderBy:'FULLNAME'">
+									<img async class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=30&ttid=' + u.ID}}" alt="Smile" height="30" width="30">
+									<span class="ml-2">{{u.FULLNAME}}</span>
+									<div class="custom-control custom-switch ml-auto">
+										<input ng-click="alarmFor(u.ID)" ng-checked="isAlarmFor(u.ID)" type="checkbox" class="custom-control-input" id="alarm{{u.ID}}">
+										<label class="custom-control-label" for="alarm{{u.ID}}">Alarm</label>
+									</div>
+								</li>
+							</ul>
 							<hr />
 							<h3>Email will alarm all the persons indicated below</h3>
 							<h4 class="{{changed ? 'blink_me' : ''}}">Please save the task indicating your questions in the top of details section</h4>

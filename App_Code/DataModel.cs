@@ -10,6 +10,14 @@
 using System;
 using System.Collections.Generic;
 
+public partial class DefectAlarm
+{
+    public decimal idRecord { get; set; }
+    public decimal ParentID { get; set; }
+    public decimal UserID { get; set; }
+    public int AlarmType { get; set; }
+}
+
 public partial class DefectTracker
 {
     public int idRecord { get; set; }

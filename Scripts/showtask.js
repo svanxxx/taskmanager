@@ -708,6 +708,21 @@
 			$scope.defect.SUMMARY = $scope.defectsumm + "@" + $scope.defecteml;
 			$scope.changed = true;
 		};
+		$scope.alarmFor = function (id) {
+			let i = $scope.defect.RELEASEALARMS.indexOf(id.toString());
+			if (i === -1) {
+				$scope.defect.RELEASEALARMS.push(id.toString());
+			} else {
+				$scope.defect.RELEASEALARMS.splice(i, 1);
+			}
+			$scope.changed = true;
+		};
+		$scope.isAlarmFor = function (id) {
+			if (typeof $scope.defect === "undefined") {
+				return false;
+			}
+			return $scope.defect.RELEASEALARMS.indexOf(id.toString()) !== -1;
+		};
 		//start
 		$scope.defectDefaults = JSON.parse(document.getElementById("defectdefaults").value);
 		$scope.currentlock = guid();

@@ -9,7 +9,7 @@
 	<%=System.Web.Optimization.Styles.Render("~/bundles/mytr_css")%>
 	<%=System.Web.Optimization.Scripts.Render("~/bundles/mytr_js")%>
 	<script src="<%=Settings.CurrentSettings.ANGULARCDN.ToString()%>angular.min.js"></script>
-	<script src="scripts/jquery.signalR-2.3.0.min.js"></script>
+	<script src="scripts/jquery.signalR-2.4.1.min.js"></script>
 	<script src="signalr/hubs"></script>
 </asp:Content>
 

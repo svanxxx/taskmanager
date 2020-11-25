@@ -476,7 +476,7 @@ public partial class DefectBase : IdBasedObject
 				d.Store();
 				return;
 			}
-		} 
+		}
 
 		if (!string.IsNullOrEmpty(AUSER))
 		{
@@ -634,9 +634,10 @@ public partial class Defect : DefectBase
 	static protected string _Desc = "DESCR";
 	static public string _Specs = "ReproSteps";
 	static protected string _workar = "Workaround";
+	static protected string _alarms = "ReleaseAlarms";
 
-	static string[] _allcols = _allBaseCols.Concat(new string[] { _Specs, _Desc, _workar }).ToArray();
-	static string[] _allcolsNames = _allBaseColsNames.Concat(new string[] { "Specification", "Details", "BST steps" }).ToArray();
+	static string[] _allcols = _allBaseCols.Concat(new string[] { _Specs, _Desc, _workar, _alarms }).ToArray();
+	static string[] _allcolsNames = _allBaseColsNames.Concat(new string[] { "Specification", "Details", "BST steps", "Release Alarms" }).ToArray();
 	public static string _RepTable = "[TT_RES].[DBO].[REPORTBY]";
 
 	public static void UnLocktask(string ttid, string lockid)
@@ -777,6 +778,19 @@ public partial class Defect : DefectBase
 			}
 			return;
 		}
+		else if (col == _alarms)
+		{
+			using (var db = new Database())
+			{
+				db.DefectAlarms.RemoveRange(db.DefectAlarms.Where(x => x.ParentID == this.ID && x.AlarmType == (int)DefectAlarmType.release).ToList());
+				foreach (var a in RELEASEALARMS)
+				{
+					DefectAlarm df = new DefectAlarm() { ParentID = ID, AlarmType = (int)DefectAlarmType.release, UserID = Convert.ToDecimal(a) };
+					db.DefectAlarms.Add(df);
+				}
+				db.SaveChanges();
+			}
+		}
 		else
 		{
 			base.OnProcessComplexColumn(col, val);
@@ -791,6 +805,10 @@ public partial class Defect : DefectBase
 		else if (col == _Specs)
 		{
 			return string.Format("(SELECT R.REPROSTEPS FROM {2} R WHERE R.IDDEFREC = (SELECT IDRECORD FROM {3} D WHERE D.DEFECTNUM = {0})) {1}", _id, _Specs, _RepTable, _Tabl);
+		}
+		else if (col == _alarms)
+		{
+			return $"(SELECT STUFF((SELECT ','+ cast(da.UserID as varchar(16)) FROM [TT_RES].[DBO].[DefectAlarm] da where da.ParentID = {_id} FOR XML PATH('')), 1, 1, '')) {_alarms}";
 		}
 		return base.OnTransformCol(col);
 	}
@@ -863,6 +881,24 @@ public partial class Defect : DefectBase
 				vals.Add(value.Trim());
 			}
 			this[_workar] = string.Join(_bstsep, vals.ToArray());
+		}
+	}
+	public List<string> RELEASEALARMS
+	{
+		get
+		{
+			return (new List<string>(this[_alarms].ToString().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))).Distinct().ToList();
+		}
+		set
+		{
+			if (value == null)
+			{
+				this[_alarms] = "";
+			}
+			else
+			{
+				this[_alarms] = string.Join(",", value.ToArray());
+			}
 		}
 	}
 	public void AddMessage(string mess, int userid)
