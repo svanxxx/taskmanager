@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Vacations" Language="C#" MasterPageFile="~/Master.Master" AutoEventWireup="true" CodeFile="vacations.aspx.cs" Inherits="Vacations" %>
+﻿<%@ Page Title="Vacations" Language="C#" MasterPageFile="~/Master.Master" AutoEventWireup="true" CodeFile="vacations.aspx.cs" Inherits="VacationsPage" %>
 
 <asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
 	<%=System.Web.Optimization.Styles.Render("~/bundles/vacations_css")%>
@@ -35,7 +35,7 @@
 						</tr>
 					</thead>
 				</table>
-				<table id="datatable" class="table table-bordered table-datadata">
+				<table id="datatable" class="table table-bordered table-datadata small">
 					<colgroup>
 						<col style="width: {{50/(users.length + 1)}}%">
 						<col style="width: {{50/(users.length + 1)}}%">
@@ -46,7 +46,7 @@
 							<td style="vertical-align: middle; display: {{d.getDate() == 1 ? 'table-cell' : 'none'}}" rowspan="{{d.getDate() == 1 ? d.monthDays() : 1}}">
 								<div class="rotate">{{monthNames[d.getMonth()]}}</div>
 							</td>
-							<td week="{{d.getDay()}}" style="background-color: {{getColor(null, d)}}">{{d.getDate()}}</td>
+							<td week="{{d.getDay()}}" style="cursor:pointer; background-color: {{getColor(null, d)}}" ng-click="massDayOff(d)">{{d.getDate()}}</td>
 							<td style="background-color: {{getColor(u, d)}}" ng-repeat="u in users | orderBy : 'PERSON_NAME'">
 								<div ng-show="hasVacation(u, d) > 0">
 									<a ng-repeat="vac in getVacation(u, d)" href="showtask.aspx?ttid={{vac}}" target="_blank" class="vac">

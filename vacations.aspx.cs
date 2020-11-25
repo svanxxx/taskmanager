@@ -1,3 +1,3 @@
-﻿public partial class Vacations : SecurityPage
+﻿public partial class VacationsPage : SecurityPage
 {
 }
