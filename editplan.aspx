@@ -3,6 +3,7 @@
 <%@ Register Src="~/controls/DefectNumControl.ascx" TagName="defNum" TagPrefix="uc" %>
 <%@ Register Src="~/controls/DefectEstControl.ascx" TagName="defEst" TagPrefix="uc" %>
 <%@ Register Src="~/controls/UsrControl.ascx" TagName="usr" TagPrefix="uc" %>
+<%@ Register Src="~/controls/DefectEddControl.ascx" TagName="defEdd" TagPrefix="uc" %>
 
 <asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
 	<%=System.Web.Optimization.Styles.Render("~/bundles/editplan_css")%>
@@ -20,7 +21,7 @@
 		</div>
 		<div class="d-flex flex-wrap">
 			<button type="button" class="flex-fill btn btn-sm {{currentuserid===u.ID?'btn-secondary':'btn-outline-secondary'}}" ng-click="changeuser(u, true)" ng-repeat="u in filtered = (users | filter:{ INWORK: true })" data-toggle="tooltip" title="{{u.PERSON_NAME}}">
-				<uc:usr size="20" runat="server" userid="u.TTUSERID" style="float: left"/>
+				<uc:usr size="20" runat="server" userid="u.TTUSERID" style="float: left" />
 				{{u.LOGIN}}
 			</button>
 		</div>
@@ -58,9 +59,16 @@
 						<div id="plan" class="tab-pane active">
 							<table style="width: 100%">
 								<tr class="task alert {{d.orderchanged?'data-changed':''}}" ng-repeat="d in defects" ng-style="{{d.DISPO | getDispoColorById:this}}">
-									<td><uc:defNum runat="server" /></td>
-									<td style="white-space: nowrap;"><uc:defEst runat="server" /></td>
+									<td>
+										<uc:defNum runat="server" />
+									</td>
+									<td style="white-space: nowrap;">
+										<uc:defEst runat="server" />
+									</td>
 									<td><span data-toggle="tooltip" title="{{d.SUMMARY}}" ng-bind-html="d.SUMMARY | sumFormat | limitTo:135"></span></td>
+									<td>
+										<uc:defEdd runat="server" />
+									</td>
 									<td>
 										<input class="taskselector" type="radio" name="optradio" ng-keydown="taskMove(d, $event)"></td>
 									<td>
@@ -77,8 +85,12 @@
 						<div id="unscheduled" class="tab-pane fade">
 							<table style="width: 100%">
 								<tr class="task alert {{d.orderchanged?'data-changed':''}}" ng-repeat="d in unscheduled" ng-style="{{d.DISPO | getDispoColorById:this}}">
-									<td><uc:defNum runat="server" /></td>
-									<td><uc:defEst runat="server" /></td>
+									<td>
+										<uc:defNum runat="server" />
+									</td>
+									<td>
+										<uc:defEst runat="server" />
+									</td>
 									<td><span data-toggle="tooltip" title="{{d.SUMMARY}}" ng-bind-html="d.SUMMARY | sumFormat | limitTo:135"></span></td>
 									<td>
 										<button ng-click="scheduletask(d)" data-toggle="tooltip" title="Add to schedule list" type="button" class="btn btn-xs taskselector"><i class="fas fa-arrow-left"></i></button>

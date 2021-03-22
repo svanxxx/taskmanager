@@ -170,6 +170,16 @@ $(function () {
             $http.post("PlanService.asmx/getplanned", JSON.stringify({ "userid": $scope.currentuser.TTUSERID }))
 				.then(function (result) {
 					$scope.defects = result.data.d;
+					$scope.defects.forEach(function (val) {
+						if (val.EDD !== "" && typeof val.EDD !== "undefined") {
+							let prts = val.EDD.split("/");
+							if (prts.length === 3) {
+								val.EDD = new Date(prts[2], prts[0] - 1, prts[1]);
+							}
+						} else {
+							val.EDD = undefined;
+						}
+					});
 					if (prgtasks) {
 						EndProgress(prgtasks);
 					}
