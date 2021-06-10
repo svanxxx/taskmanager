@@ -386,6 +386,17 @@ public class IdBasedObject
 	{
 		return this[column] == DBNull.Value ? defDate : Convert.ToDateTime(this[column]).ToString(defDateTimeFormat, CultureInfo.InvariantCulture);
 	}
+	protected DateTime? ToDateTime(string column)
+	{
+		if (this[column] == DBNull.Value)
+		{
+			return null;
+		}
+		else
+		{
+			return Convert.ToDateTime(this[column]);
+		}
+	}
 	protected int GetAsInt(string column, int defVal = -1)
 	{
 		return this[column] == DBNull.Value ? defVal : Convert.ToInt32(this[column]);

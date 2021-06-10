@@ -51,6 +51,7 @@ public partial class DefectBase : IdBasedObject
 	protected static string _StatI = "InitStatus";
 	public static string _Disp = "idDisposit";
 	protected static string _Est = "Estim";
+	protected static string _PrimaryHours = "PrimaryHours";
 	protected static string _Spent = "Spent";
 	protected static string _EstId = "idEstim";
 	protected static string _Order = "iOrder";
@@ -81,8 +82,8 @@ public partial class DefectBase : IdBasedObject
 
 	public static string _Tabl = "[TT_RES].[DBO].[DEFECTS]";
 
-	protected static string[] _allBaseCols = new string[] { _ID, _Summ, _idRec, _Disp, _Est, _Spent, _EstId, _Order, _AsUser, _Seve, _sMod, _BackOrder, _Comp, _Date, _Created, _DateT, _CreaBy, _Type, _Prod, _Ref, _Prio, _OrderDate, _ModDate, _ModBy, _sModTRID, _branch, _branchBST, _buildP, _vers, _edd };
-	protected static string[] _allBaseColsNames = new string[] { _ID, "Summary", _idRec, "Disposition", "Estimation", "", "Estimated by", "Schedule Order", "Assigned User", "Severity", "", "Schedule Order", "Component", "Date Entered", "Date Created", "Alarm", "Created By", "Type", "Product", "Reference", "Priority", "Schedule Date", "", "", "", "Branch", "BST Branch", "Test Priority", "Version", "" };
+	protected static string[] _allBaseCols = new string[] { _ID, _Summ, _idRec, _Disp, _Est, _Spent, _EstId, _Order, _AsUser, _Seve, _sMod, _BackOrder, _Comp, _Date, _Created, _DateT, _CreaBy, _Type, _Prod, _Ref, _Prio, _OrderDate, _ModDate, _ModBy, _sModTRID, _branch, _branchBST, _buildP, _vers, _edd, _PrimaryHours };
+	protected static string[] _allBaseColsNames = new string[] { _ID, "Summary", _idRec, "Disposition", "Estimation", "", "Estimated by", "Schedule Order", "Assigned User", "Severity", "", "Schedule Order", "Component", "Date Entered", "Date Created", "Alarm", "Created By", "Type", "Product", "Reference", "Priority", "Schedule Date", "", "", "", "Branch", "BST Branch", "Test Priority", "Version", "", "Primary Hours" };
 
 	MPSUser _updater;
 	public MPSUser GetUpdater()
@@ -135,6 +136,29 @@ public partial class DefectBase : IdBasedObject
 			if (value != DISPO)
 			{
 				this[_Disp] = Convert.ToInt32(value);
+			}
+		}
+	}
+	public int? PRIMARYHOURS
+	{
+		get 
+		{
+			var val = this[_PrimaryHours];
+			if (val == DBNull.Value)
+			{
+				return null;
+			}
+			return Convert.ToInt32(val); 
+		}
+		set
+		{
+			if (value == null)
+			{
+				this[_PrimaryHours] = DBNull.Value;
+			}
+			else
+			{
+				this[_PrimaryHours] = value;
 			}
 		}
 	}
@@ -386,6 +410,18 @@ public partial class DefectBase : IdBasedObject
 	{
 		get { return GetAsInt(_buildP, 4).ToString(); }
 		set { this[_buildP] = int.Parse(value); }
+	}
+	public DateTime? GetCreated()
+	{
+		return ToDateTime(_Created);
+	}
+	public DateTime? GetEDD()
+	{
+		return ToDateTime(_edd);
+	}
+	public int GetDispo()
+	{
+		return GetAsInt(_Disp);
 	}
 	protected override void OnProcessComplexColumn(string col, object val)
 	{

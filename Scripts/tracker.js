@@ -111,6 +111,7 @@ $(function () {
 		getUsers($scope, "users", $http);
 		$scope.filters = [];
 		$scope.defects = [];
+		$scope.STATS = {};
 		$scope.id = getParameterByName("id");
 		$scope.sort = 0;
 		if ($scope.id != "") {
@@ -225,6 +226,10 @@ $(function () {
 				$http.post("TrackerService.asmx/getItems", JSON.stringify({ "trackerid": tr.ID }))
 					.then(function (res) {
 						$scope.defects = res.data.d.ITEMS;
+						$scope.STATS = res.data.d.STATS;
+						if ($scope.STATS.EDD != "") {
+							$scope.STATS.EDD = DateToString(StringToDate($scope.STATS.EDD));
+						}
 						$scope.defects.forEach(function (val) {
 							if (val.EDD !== "" && typeof val.EDD !== "undefined") {
 								let prts = val.EDD.split("/");
@@ -305,7 +310,6 @@ $(function () {
 			$http.post("TrackerService.asmx/getTrackerModified", JSON.stringify({ "id": $scope.id }))
 				.then(function (res) {
 					$scope.lastloaded = res.data.d;
-					console.log("fist loaded " + $scope.lastloaded);
 				});
 
 			$interval(function () {
@@ -314,7 +318,6 @@ $(function () {
 				}
 				$http.post("TrackerService.asmx/getTrackerModified", JSON.stringify({ "id": $scope.id }))
 					.then(function (res) {
-						console.log(res.data.d);
 						if ($scope.lastloaded === "") {
 							$scope.lastloaded = "" + res.data.d;
 							return;

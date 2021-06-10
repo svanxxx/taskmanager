@@ -611,7 +611,9 @@ public class TRService : WebService
 				string currentlock = Guid.NewGuid().ToString();
 				LockInfo li = Defect.Locktask(b.TTID.ToString(), currentlock, u.TRID.ToString(), true);
 				d.DISPO = dsps[0].ID.ToString();
+				d.PRIMARYHOURS = d.SPENT;
 				d.Store();
+				DefectEvent.AddEventByTask(id, DefectEvent.Eventtype.QualityAssurance, b.TTUSERID, "Sent for QA Automation");
 				Defect.UnLocktask(u.TRID.ToString(), currentlock);
 			}
 

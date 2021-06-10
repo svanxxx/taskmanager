@@ -5,6 +5,74 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="DataModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="DEFECTEVTS">
+          <Key>
+            <PropertyRef Name="ProjectID" />
+            <PropertyRef Name="idRecord" />
+          </Key>
+          <Property Name="ProjectID" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="idRecord" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="EvtDefID" Type="numeric" Precision="10" Scale="0" />
+          <Property Name="OrderNum" Type="numeric" Precision="5" Scale="0" />
+          <Property Name="ParentID" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="EvtMUParnt" Type="numeric" Precision="10" Scale="0" />
+          <Property Name="idUser" Type="numeric" Precision="10" Scale="0" />
+          <Property Name="dateEvent" Type="datetime" />
+          <Property Name="Notes" Type="ntext" />
+          <Property Name="TimeSpent" Type="numeric" Precision="20" Scale="2" />
+          <Property Name="RsltState" Type="numeric" Precision="10" Scale="0" />
+          <Property Name="RelVersion" Type="nvarchar" MaxLength="255" />
+          <Property Name="AsgndUsers" Type="varchar" MaxLength="4000" />
+          <Property Name="GenByType" Type="numeric" Precision="2" Scale="0" />
+          <Property Name="CreatorID" Type="numeric" Precision="10" Scale="0" />
+          <Property Name="DefAsgEff" Type="numeric" Precision="2" Scale="0" />
+          <Property Name="OvrWF" Type="numeric" Precision="1" Scale="0" />
+          <Property Name="OvrWFUsrID" Type="numeric" Precision="10" Scale="0" />
+        </EntityType>
+        <EntityType Name="DEFECTS">
+          <Key>
+            <PropertyRef Name="ProjectID" />
+            <PropertyRef Name="idRecord" />
+          </Key>
+          <Property Name="ProjectID" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="idRecord" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="dateCreate" Type="datetime" />
+          <Property Name="idCreateBy" Type="numeric" Precision="10" Scale="0" />
+          <Property Name="dateModify" Type="datetime" />
+          <Property Name="idModifyBy" Type="numeric" Precision="10" Scale="0" />
+          <Property Name="DefectNum" Type="numeric" Precision="10" Scale="0" />
+          <Property Name="Summary" Type="nvarchar" MaxLength="255" />
+          <Property Name="Status" Type="numeric" Precision="10" Scale="0" />
+          <Property Name="InitStatus" Type="numeric" Precision="10" Scale="0" />
+          <Property Name="idType" Type="numeric" Precision="10" Scale="0" />
+          <Property Name="idProduct" Type="numeric" Precision="10" Scale="0" />
+          <Property Name="Reference" Type="nvarchar" MaxLength="255" />
+          <Property Name="idEnterBy" Type="numeric" Precision="10" Scale="0" />
+          <Property Name="idDisposit" Type="numeric" Precision="10" Scale="0" />
+          <Property Name="idPriority" Type="numeric" Precision="10" Scale="0" />
+          <Property Name="idCompon" Type="numeric" Precision="10" Scale="0" />
+          <Property Name="idSeverity" Type="numeric" Precision="10" Scale="0" />
+          <Property Name="dateEnter" Type="datetime" />
+          <Property Name="AddLocat" Type="numeric" Precision="5" Scale="0" />
+          <Property Name="Workaround" Type="ntext" />
+          <Property Name="idTicket" Type="numeric" Precision="10" Scale="0" />
+          <Property Name="Notify" Type="varchar" MaxLength="4000" />
+          <Property Name="iOrder" Type="int" />
+          <Property Name="sModifier" Type="nchar" MaxLength="50" />
+          <Property Name="Estim" Type="real" />
+          <Property Name="Spent" Type="real" />
+          <Property Name="Usr" Type="nchar" MaxLength="50" />
+          <Property Name="IOrderDate" Type="datetime" />
+          <Property Name="idUsr" Type="int" />
+          <Property Name="branch" Type="nchar" MaxLength="256" />
+          <Property Name="iBuildPriority" Type="int" />
+          <Property Name="branchBST" Type="nchar" MaxLength="256" />
+          <Property Name="idEstim" Type="int" />
+          <Property Name="dateTimer" Type="datetime" />
+          <Property Name="attachs" Type="int" />
+          <Property Name="Version" Type="nchar" MaxLength="128" />
+          <Property Name="EDD" Type="datetime" />
+        </EntityType>
         <EntityType Name="DefectTracker">
           <Key>
             <PropertyRef Name="idRecord" />
@@ -28,6 +96,8 @@
           <Property Name="CATEGORY" Type="nvarchar(max)" />
         </EntityType>
         <EntityContainer Name="DataModelStoreContainer">
+          <EntitySet Name="DEFECTEVTS" EntityType="Self.DEFECTEVTS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DEFECTS" EntityType="Self.DEFECTS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DefectTracker" EntityType="Self.DefectTracker" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Machines" EntityType="Self.Machines" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
@@ -50,6 +120,8 @@
         <EntityContainer Name="tt_resEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="DefectTrackers" EntityType="Self.DefectTracker" />
           <EntitySet Name="Machines" EntityType="DataModel.Machine" />
+          <EntitySet Name="DEFECTEVTS" EntityType="DataModel.DEFECTEVT" />
+          <EntitySet Name="DEFECTS" EntityType="DataModel.DEFECT" />
         </EntityContainer>
         <EntityType Name="Machine">
           <Key>
@@ -60,6 +132,74 @@
           <Property Name="MAC" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="DETAILS" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CATEGORY" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="DEFECTEVT">
+          <Key>
+            <PropertyRef Name="ProjectID" />
+            <PropertyRef Name="idRecord" />
+          </Key>
+          <Property Name="ProjectID" Type="Decimal" Nullable="false" Precision="10" Scale="0" />
+          <Property Name="idRecord" Type="Decimal" Nullable="false" Precision="10" Scale="0" />
+          <Property Name="EvtDefID" Type="Decimal" Precision="10" Scale="0" />
+          <Property Name="OrderNum" Type="Decimal" Precision="5" Scale="0" />
+          <Property Name="ParentID" Type="Decimal" Nullable="false" Precision="10" Scale="0" />
+          <Property Name="EvtMUParnt" Type="Decimal" Precision="10" Scale="0" />
+          <Property Name="idUser" Type="Decimal" Precision="10" Scale="0" />
+          <Property Name="dateEvent" Type="DateTime" Precision="3" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TimeSpent" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="RsltState" Type="Decimal" Precision="10" Scale="0" />
+          <Property Name="RelVersion" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="AsgndUsers" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="GenByType" Type="Decimal" Precision="2" Scale="0" />
+          <Property Name="CreatorID" Type="Decimal" Precision="10" Scale="0" />
+          <Property Name="DefAsgEff" Type="Decimal" Precision="2" Scale="0" />
+          <Property Name="OvrWF" Type="Decimal" Precision="1" Scale="0" />
+          <Property Name="OvrWFUsrID" Type="Decimal" Precision="10" Scale="0" />
+        </EntityType>
+        <EntityType Name="DEFECT">
+          <Key>
+            <PropertyRef Name="ProjectID" />
+            <PropertyRef Name="idRecord" />
+          </Key>
+          <Property Name="ProjectID" Type="Decimal" Nullable="false" Precision="10" Scale="0" />
+          <Property Name="idRecord" Type="Decimal" Nullable="false" Precision="10" Scale="0" />
+          <Property Name="dateCreate" Type="DateTime" Precision="3" />
+          <Property Name="idCreateBy" Type="Decimal" Precision="10" Scale="0" />
+          <Property Name="dateModify" Type="DateTime" Precision="3" />
+          <Property Name="idModifyBy" Type="Decimal" Precision="10" Scale="0" />
+          <Property Name="DefectNum" Type="Decimal" Precision="10" Scale="0" />
+          <Property Name="Summary" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="Decimal" Precision="10" Scale="0" />
+          <Property Name="InitStatus" Type="Decimal" Precision="10" Scale="0" />
+          <Property Name="idType" Type="Decimal" Precision="10" Scale="0" />
+          <Property Name="idProduct" Type="Decimal" Precision="10" Scale="0" />
+          <Property Name="Reference" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="idEnterBy" Type="Decimal" Precision="10" Scale="0" />
+          <Property Name="idDisposit" Type="Decimal" Precision="10" Scale="0" />
+          <Property Name="idPriority" Type="Decimal" Precision="10" Scale="0" />
+          <Property Name="idCompon" Type="Decimal" Precision="10" Scale="0" />
+          <Property Name="idSeverity" Type="Decimal" Precision="10" Scale="0" />
+          <Property Name="dateEnter" Type="DateTime" Precision="3" />
+          <Property Name="AddLocat" Type="Decimal" Precision="5" Scale="0" />
+          <Property Name="Workaround" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="idTicket" Type="Decimal" Precision="10" Scale="0" />
+          <Property Name="Notify" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="iOrder" Type="Int32" />
+          <Property Name="sModifier" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Estim" Type="Single" />
+          <Property Name="Spent" Type="Single" />
+          <Property Name="Usr" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="IOrderDate" Type="DateTime" Precision="3" />
+          <Property Name="idUsr" Type="Int32" />
+          <Property Name="branch" Type="String" MaxLength="256" FixedLength="true" Unicode="true" />
+          <Property Name="iBuildPriority" Type="Int32" />
+          <Property Name="branchBST" Type="String" MaxLength="256" FixedLength="true" Unicode="true" />
+          <Property Name="idEstim" Type="Int32" />
+          <Property Name="dateTimer" Type="DateTime" Precision="3" />
+          <Property Name="attachs" Type="Int32" />
+          <Property Name="Version" Type="String" MaxLength="128" FixedLength="true" Unicode="true" />
+          <Property Name="EDD" Type="DateTime" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -88,6 +228,74 @@
                 <ScalarProperty Name="MAC" ColumnName="MAC" />
                 <ScalarProperty Name="IP" ColumnName="IP" />
                 <ScalarProperty Name="PCNAME" ColumnName="PCNAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DEFECTEVTS">
+            <EntityTypeMapping TypeName="DataModel.DEFECTEVT">
+              <MappingFragment StoreEntitySet="DEFECTEVTS">
+                <ScalarProperty Name="OvrWFUsrID" ColumnName="OvrWFUsrID" />
+                <ScalarProperty Name="OvrWF" ColumnName="OvrWF" />
+                <ScalarProperty Name="DefAsgEff" ColumnName="DefAsgEff" />
+                <ScalarProperty Name="CreatorID" ColumnName="CreatorID" />
+                <ScalarProperty Name="GenByType" ColumnName="GenByType" />
+                <ScalarProperty Name="AsgndUsers" ColumnName="AsgndUsers" />
+                <ScalarProperty Name="RelVersion" ColumnName="RelVersion" />
+                <ScalarProperty Name="RsltState" ColumnName="RsltState" />
+                <ScalarProperty Name="TimeSpent" ColumnName="TimeSpent" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="dateEvent" ColumnName="dateEvent" />
+                <ScalarProperty Name="idUser" ColumnName="idUser" />
+                <ScalarProperty Name="EvtMUParnt" ColumnName="EvtMUParnt" />
+                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+                <ScalarProperty Name="OrderNum" ColumnName="OrderNum" />
+                <ScalarProperty Name="EvtDefID" ColumnName="EvtDefID" />
+                <ScalarProperty Name="idRecord" ColumnName="idRecord" />
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DEFECTS">
+            <EntityTypeMapping TypeName="DataModel.DEFECT">
+              <MappingFragment StoreEntitySet="DEFECTS">
+                <ScalarProperty Name="EDD" ColumnName="EDD" />
+                <ScalarProperty Name="Version" ColumnName="Version" />
+                <ScalarProperty Name="attachs" ColumnName="attachs" />
+                <ScalarProperty Name="dateTimer" ColumnName="dateTimer" />
+                <ScalarProperty Name="idEstim" ColumnName="idEstim" />
+                <ScalarProperty Name="branchBST" ColumnName="branchBST" />
+                <ScalarProperty Name="iBuildPriority" ColumnName="iBuildPriority" />
+                <ScalarProperty Name="branch" ColumnName="branch" />
+                <ScalarProperty Name="idUsr" ColumnName="idUsr" />
+                <ScalarProperty Name="IOrderDate" ColumnName="IOrderDate" />
+                <ScalarProperty Name="Usr" ColumnName="Usr" />
+                <ScalarProperty Name="Spent" ColumnName="Spent" />
+                <ScalarProperty Name="Estim" ColumnName="Estim" />
+                <ScalarProperty Name="sModifier" ColumnName="sModifier" />
+                <ScalarProperty Name="iOrder" ColumnName="iOrder" />
+                <ScalarProperty Name="Notify" ColumnName="Notify" />
+                <ScalarProperty Name="idTicket" ColumnName="idTicket" />
+                <ScalarProperty Name="Workaround" ColumnName="Workaround" />
+                <ScalarProperty Name="AddLocat" ColumnName="AddLocat" />
+                <ScalarProperty Name="dateEnter" ColumnName="dateEnter" />
+                <ScalarProperty Name="idSeverity" ColumnName="idSeverity" />
+                <ScalarProperty Name="idCompon" ColumnName="idCompon" />
+                <ScalarProperty Name="idPriority" ColumnName="idPriority" />
+                <ScalarProperty Name="idDisposit" ColumnName="idDisposit" />
+                <ScalarProperty Name="idEnterBy" ColumnName="idEnterBy" />
+                <ScalarProperty Name="Reference" ColumnName="Reference" />
+                <ScalarProperty Name="idProduct" ColumnName="idProduct" />
+                <ScalarProperty Name="idType" ColumnName="idType" />
+                <ScalarProperty Name="InitStatus" ColumnName="InitStatus" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Summary" ColumnName="Summary" />
+                <ScalarProperty Name="DefectNum" ColumnName="DefectNum" />
+                <ScalarProperty Name="idModifyBy" ColumnName="idModifyBy" />
+                <ScalarProperty Name="dateModify" ColumnName="dateModify" />
+                <ScalarProperty Name="idCreateBy" ColumnName="idCreateBy" />
+                <ScalarProperty Name="dateCreate" ColumnName="dateCreate" />
+                <ScalarProperty Name="idRecord" ColumnName="idRecord" />
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

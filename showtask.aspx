@@ -400,10 +400,12 @@
 								{{h.EVENT}}:
 								<img ng-show="h.ASSIGNUSERID > 0" class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=20&ttid=' + h.ASSIGNUSERID}}" alt="Smile" height="20" width="20" />
 								{{h.ASSIGNUSERID | getUserById:this}} <span class="badge {{h.EVENT == 'worked' ? 'badge-warning' : 'badge-danger'}}">{{h.TIME}}</span>
-								<a ng-show="h.EVENT == 'versionIncluded'" href="versionchanges.aspx?version={{h.NOTES}}">
+								<a ng-show="h.EVENT == '<%=DefectEvent.Eventtype.versionIncluded.ToString()%>'" href="versionchanges.aspx?version={{h.NOTES}}">
 									<span class="badge badge-light">{{h.NOTES}}</span>
 								</a>
-								<span ng-show="h.EVENT != 'versionIncluded'">{{h.NOTES}}</span>
+								<span ng-show="h.EVENT != '<%=DefectEvent.Eventtype.versionIncluded.ToString()%>'">{{h.NOTES}}</span>
+								<i ng-show="h.EVENT == '<%=DefectEvent.Eventtype.QualityAssurance.ToString()%>'" class="fa fa-link"></i>
+								<span ng-show="h.EVENT != '<%=DefectEvent.Eventtype.QualityAssurance.ToString()%>'">{{h.NOTES}}</span>
 								&nbsp;
 							</div>
 						</div>
@@ -571,7 +573,7 @@
 						<button data-toggle="tooltip" title="Invite person to see this task." type="button" class="btn btn-light btn-sm float-right" ng-click="invite(defect.AUSER)"><i class="fas fa-bell"></i></button>
 					</div>
 					<div class="toast-body text-center">
-						<h5 class="float-center">{{defect.SPENT}} hours</h5>
+						<h5 class="float-center">{{defect.SPENT}} hours{{defect.PRIMARYHOURS ? ' (Primary: ' + defect.PRIMARYHOURS + ')' : ''}}</h5>
 					</div>
 				</div>
 				<div class="toast" data-autohide="false">

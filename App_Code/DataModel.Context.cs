@@ -25,4 +25,6 @@ public partial class tt_resEntities : DbContext
 
     public virtual DbSet<DefectTracker> DefectTrackers { get; set; }
     public virtual DbSet<Machine> Machines { get; set; }
+    public virtual DbSet<DEFECTEVT> DEFECTEVTS { get; set; }
+    public virtual DbSet<DEFECT> DEFECTS { get; set; }
 }

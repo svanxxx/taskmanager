@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class DefectEvent : IdBasedObject
 {
@@ -90,7 +91,8 @@ public class DefectEvent : IdBasedObject
 		assigned = 1,
 		estimated = 2,
 		worked = 11,
-        versionIncluded = 12,
+		versionIncluded = 12,
+		QualityAssurance = 13,
 	}
 	public int ASSIGNUSERID
 	{
@@ -183,5 +185,25 @@ public class DefectEvent : IdBasedObject
 	public static void Delete(int id)
 	{
 		SQLExecute($"DELETE FROM {_Tabl} WHERE {_ID} = {id}");
+	}
+	public static int Spent(List<decimal> TaskIDs, DateTime from, DateTime to)
+	{
+		using (var db = new tt_resEntities())
+		{
+			var res = db.DEFECTEVTS.Where(x => x.EvtDefID == (int)Eventtype.worked && x.dateEvent >= from && x.dateEvent <= to && x.TimeSpent > 0)
+						.Join(db.DEFECTS.Where(x => TaskIDs.Contains(x.idRecord)), x => x.ParentID, x => x.idRecord, (x, y) => new { x.TimeSpent })
+						.Select(x => x.TimeSpent).Sum();
+			return (int)res.GetValueOrDefault(0);
+		}
+	}
+	public static int Included(List<decimal> TaskIDs, DateTime from, DateTime to)
+	{
+		var work = DefectDispo.EnumWorkableIDs().Select(x => (decimal?)x);
+		using (var db = new tt_resEntities())
+		{
+			return db.DEFECTEVTS.Where(x => x.EvtDefID == (int)Eventtype.versionIncluded && x.dateEvent >= from && x.dateEvent <= to)
+				.Join(db.DEFECTS.Where(x => !work.Contains(x.idDisposit) && TaskIDs.Contains(x.idRecord)), x => x.ParentID, x => x.idRecord, (x, y) => new { y.idRecord })
+				.Distinct().Count();
+		}
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Web.Services;
 
 [WebService(Namespace = "http://tempuri.org/")]
@@ -43,11 +44,21 @@ public class TrackerService : WebService
 		CurrentContext.Validate();
 		Tracker.Delete(id);
 	}
+	public class TrackerStats
+	{
+		public TrackerStats() { }
+		public int CREATED = 0;
+		public int CREATEDHOURS = 0;
+		public int FINISHED = 0;
+		public int SPENTHOURS = 0;
+		public string EDD = "";
+	}
 	public class TrackerResults
 	{
-		public TrackerResults() { }
+		public TrackerResults() { STATS = new TrackerStats(); }
 		public List<DefectPlan> ITEMS;
 		public Tracker TRACKER;
+		public TrackerStats STATS;
 	}
 	[WebMethod(EnableSession = true)]
 	public TrackerResults getItems(int trackerid)
@@ -56,6 +67,42 @@ public class TrackerService : WebService
 		TrackerResults res = new TrackerResults();
 		res.TRACKER = new Tracker(trackerid);
 		List<DefectBase> defs = (new DefectBase()).Enum(res.TRACKER.GetFilter());
+
+		DateTime now = DateTime.Now;
+		DateTime start = now - new TimeSpan((int)now.DayOfWeek -1, now.Hour, now.Minute, now.Second);
+		DateTime end = start + new TimeSpan(6, 23, 59, 59);
+		DateTime? edd = null;
+		var work = DefectDispo.EnumWorkableIDs();
+
+		foreach (var def in defs)
+		{
+			var d = def.GetCreated().GetValueOrDefault();
+			if (d >= start && d <= end)
+			{
+				res.STATS.CREATED++;
+				res.STATS.CREATEDHOURS += def.ESTIM;
+			}
+			var e = def.GetEDD();
+			if (work.Contains(def.GetDispo()) && e != null)
+			{
+				if (edd == null)
+				{
+					edd = e;
+				}
+				else if (e > edd)
+				{
+					edd = e;
+				}
+			}
+		}
+		if (edd != null)
+		{
+			res.STATS.EDD = edd.GetValueOrDefault().ToString(IdBasedObject.defDateFormat, CultureInfo.InvariantCulture);
+		}
+		var ids = defs.Select(x => (decimal)x.IDREC).ToList();
+		res.STATS.SPENTHOURS = DefectEvent.Spent(ids, start, end);
+		res.STATS.FINISHED = DefectEvent.Included(ids, start, end);
+
 		string COLORDEFS = "";
 		foreach (var disp in DefectDispo.Enum())
 		{

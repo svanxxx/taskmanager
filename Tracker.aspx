@@ -55,6 +55,38 @@
 				<div class="shadow mb-2 mt-2">
 					<canvas id="chartpie" width="1400" height="1400"></canvas>
 				</div>
+				<div class="shadow mt-4">
+					<table class="table table-sm">
+						<thead class="thead-light">
+							<tr>
+								<th>Weekly Activity</th>
+								<th>Value</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Tasks Finished</td>
+								<td>{{STATS.FINISHED}}</td>
+							</tr>
+							<tr>
+								<td>Hours Consumed</td>
+								<td>{{STATS.SPENTHOURS}}</td>
+							</tr>
+							<tr>
+								<td>New Tasks Created</td>
+								<td>{{STATS.CREATED}}</td>
+							</tr>
+							<tr>
+								<td>New Tasks Estimated Hours</td>
+								<td>{{STATS.CREATEDHOURS}}</td>
+							</tr>
+							<tr>
+								<td>Projected End Date</td>
+								<td>{{STATS.EDD}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 			<div class="col-md-6 mb-2">
 				<input ng-model="newtask" type="text" class="form-control form-control-sm" onkeydown="return event.key != 'Enter';" ng-keyup="messageKey($event)" ng-show="isadmin && simpleTracker">
