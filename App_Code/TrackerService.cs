@@ -52,6 +52,9 @@ public class TrackerService : WebService
 		public int FINISHED = 0;
 		public int SPENTHOURS = 0;
 		public string EDD = "";
+		public int TOTAL = 0;
+		public int TOTALHOURS = 0;
+		public int REMAINHOURS = 0;
 	}
 	public class TrackerResults
 	{
@@ -76,6 +79,8 @@ public class TrackerService : WebService
 
 		foreach (var def in defs)
 		{
+			res.STATS.TOTAL++;
+			res.STATS.TOTALHOURS += def.ESTIM;
 			var d = def.GetCreated().GetValueOrDefault();
 			if (d >= start && d <= end)
 			{
@@ -93,6 +98,7 @@ public class TrackerService : WebService
 				{
 					edd = e;
 				}
+				res.STATS.REMAINHOURS += def.ESTIM - def.SPENT;
 			}
 		}
 		if (edd != null)

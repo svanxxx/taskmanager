@@ -65,24 +65,36 @@
 						</thead>
 						<tbody>
 							<tr>
-								<td>Tasks Finished</td>
+								<td>Delivered (Count)</td>
 								<td>{{STATS.FINISHED}}</td>
 							</tr>
 							<tr>
-								<td>Hours Consumed</td>
+								<td>Worked (hrs)</td>
 								<td>{{STATS.SPENTHOURS}}</td>
 							</tr>
 							<tr>
-								<td>New Tasks Created</td>
+								<td>Added (count)</td>
 								<td>{{STATS.CREATED}}</td>
 							</tr>
 							<tr>
-								<td>New Tasks Estimated Hours</td>
+								<td>Added (hrs)</td>
 								<td>{{STATS.CREATEDHOURS}}</td>
 							</tr>
 							<tr>
 								<td>Projected End Date</td>
 								<td>{{STATS.EDD}}</td>
+							</tr>
+							<tr>
+								<td>Total Tasks (Count)</td>
+								<td>{{STATS.TOTAL}}</td>
+							</tr>
+							<tr>
+								<td>Total Tasks (hrs)</td>
+								<td>{{STATS.TOTALHOURS}}</td>
+							</tr>
+							<tr>
+								<td>Remaining Total Tasks (hrs)</td>
+								<td>{{STATS.REMAINHOURS}}</td>
 							</tr>
 						</tbody>
 					</table>
