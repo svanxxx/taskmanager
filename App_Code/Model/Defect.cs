@@ -832,6 +832,13 @@ public partial class Defect : DefectBase
 					PRIMARYESTIM = ESTIM;
 				}
 			}
+			if (IsModifiedCol(_Est))
+			{
+				if (PRIMARYESTIM.HasValue && PRIMARYESTIM.Value > 0 && ESTIM > 0 && ESTIM / PRIMARYESTIM.Value >= 2.0)
+				{
+					TasksBot.EstimationAlarm(this.ID, PRIMARYESTIM.Value, ESTIM);
+				}
+			}
 		}
 		_HistoryChanges = "";
 	}

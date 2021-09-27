@@ -28,8 +28,9 @@ public class MPSUser : IdBasedObject
 	const string _sclientchat = "SUPPCLIENTCHATID";
 	const string _cli = "CLIENT";
 	public const string _off = "OFFICE";
+	const string _estAlarm = "ESTIMALARM";
 
-	static string[] _allcols = new string[] { _pid, _pname, _email, _ttuser, _addr, _login, _pass, _isAdm, _phone, _work, _ret, _imgTransfer, _birth, _lvl, _chat, _schat, _sclientchat, _cli, _off };
+	static string[] _allcols = new string[] { _pid, _pname, _email, _ttuser, _addr, _login, _pass, _isAdm, _phone, _work, _ret, _imgTransfer, _birth, _lvl, _chat, _schat, _sclientchat, _cli, _off, _estAlarm };
 	public static string _Tabl = "[PERSONS]";
 
 	public string CHATID
@@ -61,6 +62,11 @@ public class MPSUser : IdBasedObject
 	{
 		get { return GetAsBool(_off, false); }
 		set { this[_off] = value; }
+	}
+	public bool ESTIMALARM
+	{
+		get { return GetAsBool(_estAlarm, false); }
+		set { this[_estAlarm] = value; }
 	}
 	public bool ISADMIN
 	{

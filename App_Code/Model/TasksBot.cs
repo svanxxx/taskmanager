@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using Telegram.Bot;
@@ -26,6 +27,13 @@ public class TasksBot
 		catch (Exception e)
 		{
 			Logger.Log(e);
+		}
+	}
+	public static void EstimationAlarm(int ID, int prim, int estim)
+	{
+		foreach(var user in MPSUser.EnumAllUsers(true).Where(x => x.ESTIMALARM))
+		{
+			SendMessage(user.CHATID, $"Estimation alarm (from primary {prim} hours to {estim} hours): {Settings.CurrentSettings.GetTTAnchor(ID, "bell.png")}");
 		}
 	}
 	public static void StartConnection()

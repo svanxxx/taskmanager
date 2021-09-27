@@ -31,6 +31,7 @@
 						<th>RETIRED</th>
 						<th>CLIENT</th>
 						<th>OFFICE</th>
+						<th>ESTIMATION ALARM</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -66,6 +67,9 @@
 						</td>
 						<td align="center">
 							<input class="form-check-input" ng-disabled="readonly" type="checkbox" ng-model="u.ISOFFICE" ng-change="itemchanged(u)">
+						</td>
+						<td align="center">
+							<input class="form-check-input" ng-disabled="readonly" type="checkbox" ng-model="u.ESTIMALARM" ng-change="itemchanged(u)">
 						</td>
 					</tr>
 				</tbody>
