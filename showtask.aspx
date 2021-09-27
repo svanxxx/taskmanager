@@ -548,7 +548,10 @@
 						<button data-toggle="tooltip" title="Invite person to see this task." type="button" class="btn btn-light btn-sm float-right" ng-click="invite(defect.ESTIMBY)"><i class="fas fa-bell"></i></button>
 					</div>
 					<div class="toast-body text-center">
-						<button ng-disabled="!canChangeDefect()" ng-click="estimateTask()" type="button" class="btn btn-outline-secondary btn-sm">{{defect.ESTIM}} hours</button>
+						<button ng-disabled="!canChangeDefect()" ng-click="estimateTask()" type="button" class="btn btn-outline-secondary btn-sm">
+							{{defect.ESTIM}} hours
+							<span class="badge bg-danger text-dark">{{defect.PRIMARYESTIM ? 'Primary: ' + defect.PRIMARYESTIM : ''}}</span>
+						</button>
 					</div>
 				</div>
 				<div class="toast" data-autohide="false">

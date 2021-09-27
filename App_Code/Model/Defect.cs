@@ -52,6 +52,7 @@ public partial class DefectBase : IdBasedObject
 	public static string _Disp = "idDisposit";
 	protected static string _Est = "Estim";
 	protected static string _PrimaryHours = "PrimaryHours";
+	protected static string _PrimaryEstim = "PrimaryEstim";
 	protected static string _Spent = "Spent";
 	protected static string _EstId = "idEstim";
 	protected static string _Order = "iOrder";
@@ -82,8 +83,8 @@ public partial class DefectBase : IdBasedObject
 
 	public static string _Tabl = "[TT_RES].[DBO].[DEFECTS]";
 
-	protected static string[] _allBaseCols = new string[] { _ID, _Summ, _idRec, _Disp, _Est, _Spent, _EstId, _Order, _AsUser, _Seve, _sMod, _BackOrder, _Comp, _Date, _Created, _DateT, _CreaBy, _Type, _Prod, _Ref, _Prio, _OrderDate, _ModDate, _ModBy, _sModTRID, _branch, _branchBST, _buildP, _vers, _edd, _PrimaryHours };
-	protected static string[] _allBaseColsNames = new string[] { _ID, "Summary", _idRec, "Disposition", "Estimation", "", "Estimated by", "Schedule Order", "Assigned User", "Severity", "", "Schedule Order", "Component", "Date Entered", "Date Created", "Alarm", "Created By", "Type", "Product", "Reference", "Priority", "Schedule Date", "", "", "", "Branch", "BST Branch", "Test Priority", "Version", "", "Primary Hours" };
+	protected static string[] _allBaseCols = new string[] { _ID, _Summ, _idRec, _Disp, _Est, _Spent, _EstId, _Order, _AsUser, _Seve, _sMod, _BackOrder, _Comp, _Date, _Created, _DateT, _CreaBy, _Type, _Prod, _Ref, _Prio, _OrderDate, _ModDate, _ModBy, _sModTRID, _branch, _branchBST, _buildP, _vers, _edd, _PrimaryHours, _PrimaryEstim };
+	protected static string[] _allBaseColsNames = new string[] { _ID, "Summary", _idRec, "Disposition", "Estimation", "", "Estimated by", "Schedule Order", "Assigned User", "Severity", "", "Schedule Order", "Component", "Date Entered", "Date Created", "Alarm", "Created By", "Type", "Product", "Reference", "Priority", "Schedule Date", "", "", "", "Branch", "BST Branch", "Test Priority", "Version", "", "Primary Hours", "PrimaryEstim" };
 
 	MPSUser _updater;
 	public MPSUser GetUpdater()
@@ -135,7 +136,8 @@ public partial class DefectBase : IdBasedObject
 		{
 			if (value != DISPO)
 			{
-				this[_Disp] = Convert.ToInt32(value);
+				int ival = Convert.ToInt32(value);
+				this[_Disp] = ival;
 			}
 		}
 	}
@@ -159,6 +161,29 @@ public partial class DefectBase : IdBasedObject
 			else
 			{
 				this[_PrimaryHours] = value;
+			}
+		}
+	}
+	public int? PRIMARYESTIM
+	{
+		get
+		{
+			var val = this[_PrimaryEstim];
+			if (val == DBNull.Value)
+			{
+				return null;
+			}
+			return Convert.ToInt32(val);
+		}
+		set
+		{
+			if (value == null)
+			{
+				this[_PrimaryEstim] = DBNull.Value;
+			}
+			else
+			{
+				this[_PrimaryEstim] = value;
 			}
 		}
 	}
@@ -797,6 +822,14 @@ public partial class Defect : DefectBase
 				if (i == -1)//change date enter all except vacations.
 				{
 					DATE = DateTime.Today.ToString(defDateFormat, CultureInfo.InvariantCulture);
+				}
+			}
+			if (IsModifiedCol(_Disp))
+			{
+				int ival = int.Parse(DISPO);
+				if (!PRIMARYESTIM.HasValue && DefectDispo.EnumWorkNow().Select(x => x.ID == ival).Count() > 0)
+				{
+					PRIMARYESTIM = ESTIM;
 				}
 			}
 		}

@@ -63,3 +63,45 @@
 		background-color: red;
 	}
 }
+
+.text-alarm {
+	-webkit-animation-name: animation;
+	-webkit-animation-duration: 5s;
+	-webkit-animation-timing-function: ease-in-out;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-play-state: running;
+	animation-name: text-alarm-animation;
+	animation-duration: 1s;
+	animation-timing-function: ease-in-out;
+	animation-iteration-count: infinite;
+	animation-play-state: running;
+	background-color: #f00;
+}
+
+@-webkit-keyframes text-alarm-animation {
+	0% {
+		color: white;
+	}
+
+	50.0% {
+		color: yellow;
+	}
+
+	100.0% {
+		color: black;
+	}
+}
+
+@keyframes text-alarm-animation {
+	0% {
+		color: white;
+	}
+
+	50.0% {
+		color: yellow;
+	}
+
+	100.0% {
+		color: black;
+	}
+}
