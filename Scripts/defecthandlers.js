@@ -2,8 +2,9 @@
 	if (!IsAdmin()) {
 		return;
 	}
-	var estim = prompt("Please enter new estimation:", element.innerHTML);
-	if (!estim || estim === element.innerHTML) {
+	let estimOrig = element.getAttribute("estim");
+	var estim = prompt("Please enter new estimation:", estimOrig);
+	if (!estim || estim === estimOrig || isNaN(parseInt(estim))) {
 		return;
 	}
 	waitForProcess();
