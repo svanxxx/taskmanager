@@ -1141,6 +1141,7 @@ public class DefectPlan
 		this.AUSER = db.AUSER;
 		this.ORDER = db.ORDER;
 		this.EDD = db.EDD;
+		this.PRIMARYESTIM = db.PRIMARYESTIM;
 	}
 	public bool FIRE { get; set; }
 	public int ESTIM { get; set; }
@@ -1155,6 +1156,7 @@ public class DefectPlan
 	public string VERSION { get; set; }
 	public int ORDER { get; set; }
 	public string EDD { get; set; }
+	public int? PRIMARYESTIM { get; set; }
 	static public List<DefectPlan> Convert2Plan(List<DefectBase> ls)
 	{
 		List<DefectPlan> lsout = new List<DefectPlan>();
