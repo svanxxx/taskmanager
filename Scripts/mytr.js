@@ -323,6 +323,10 @@ $(function () {
 			killTooltips();
 		};
 		$scope.workTask = function (d) {
+			if (d.SPENT >= d.ESTIM) {
+				alert("This task is running out of time. You must give new correct estimation in order to continue!!!");
+				return;
+			}
 			if ($scope.loaded()) {
 				for (var i = 0; i < $scope.dispos.length; i++) {
 					if ($scope.dispos[i].WORKING == 1) {
