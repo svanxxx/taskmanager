@@ -695,6 +695,9 @@
 			});
 		};
 		$scope.duplicate = function () {
+			if (!confirm("Are you sure you want duplicate task?")) {
+				return;
+			}
 			$http.post("trservice.asmx/copyTask", JSON.stringify({ "ttid": ttid }))
 				.then(function (response) {
 					openTask(response.data.d);
