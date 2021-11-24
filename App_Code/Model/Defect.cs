@@ -827,7 +827,7 @@ public partial class Defect : DefectBase
 			if (IsModifiedCol(_Disp))
 			{
 				int ival = int.Parse(DISPO);
-				if (!PRIMARYESTIM.HasValue && DefectDispo.EnumWorkNow().Select(x => x.ID == ival).Count() > 0)
+				if (!PRIMARYESTIM.HasValue && DefectDispo.EnumWorkNow().Where(x => x.ID == ival).FirstOrDefault() != null)
 				{
 					PRIMARYESTIM = ESTIM;
 				}
