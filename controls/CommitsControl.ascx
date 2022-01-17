@@ -26,8 +26,8 @@
 							<a href="showtask.aspx?ttid={{c.TTID}}" target="_blank"><span class="badge badge-pill badge-secondary ng-binding">{{c.TTID}}</span></a>{{c.NOTES.replace('TT' + c.TTID, '') | limitTo: 100}}
 						</div>
 						<div class="d-flex">
-							<small>{{c.DATE}}</small>
-							<button data-toggle="tooltip" title="Click to see changes..." type="button" class="btn btn-outline-light text-dark btn-sm p-0" ng-click="loadCommit(c, '<%= this.DatasetName() %>')"><i class="fas fa-ellipsis-h"></i></button>
+							<small>Commit: {{c.DATE}}</small><small>&nbsp;&nbsp;&nbsp;Author: {{c.AUTHOR_DATE}}</small>
+							<button data-toggle="tooltip" title="Click to see changes..." type="button" class="btn btn-outline-light text-dark btn-sm p-0" ng-click="loadCommit(c, '<%= this.DatasetName() %>')">&nbsp;&nbsp;<i class="fas fa-ellipsis-h"></i></button>
 						</div>
 					</div>
 					<div>
