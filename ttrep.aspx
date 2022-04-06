@@ -2,6 +2,7 @@
 
 <%@ Register Src="~/controls/DefectNumControl.ascx" TagName="defNum" TagPrefix="uc" %>
 <%@ Register Src="~/controls/DefectEstControl.ascx" TagName="defEst" TagPrefix="uc" %>
+<%@ Register Src="~/controls/DefectDBControl.ascx" TagName="defDB" TagPrefix="uc" %>
 
 <asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
 	<%=System.Web.Optimization.Styles.Render("~/bundles/ttrep_css")%>
@@ -406,6 +407,7 @@
 					</td>
 					<td>
 						<uc:defEst runat="server" />
+						<uc:defDB runat="server" />
 					</td>
 					<td><a target="_blank" href="{{'editplan.aspx?userid='}}{{d.AUSER | getUserTRIDById:this}}">{{d.AUSER | getUserById:this}}</a></td>
 					<td>{{d.REFERENCE}}</td>

@@ -3,6 +3,7 @@
 <%@ Register Src="~/controls/DefectSpentControl.ascx" TagName="defSpent" TagPrefix="uc" %>
 <%@ Register Src="~/controls/DefectNumControl.ascx" TagName="defNum" TagPrefix="uc" %>
 <%@ Register Src="~/controls/DefectEstControl.ascx" TagName="defEst" TagPrefix="uc" %>
+<%@ Register Src="~/controls/DefectDBControl.ascx" TagName="defDB" TagPrefix="uc" %>
 
 <asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
 	<%=System.Web.Optimization.Styles.Render("~/bundles/dailyreport_css")%>
@@ -73,6 +74,7 @@
 										<uc:defSpent member="e" runat="server" />
 										<uc:defNum member="e.DEFECT" runat="server" />
 										<uc:defEst member="e.DEFECT" runat="server" />
+										<uc:defDB member="e.DEFECT" runat="server" />
 										<span data-toggle="tooltip" title="{{e.DEFECT.SUMMARY}}" ng-bind-html="e.DEFECT.SUMMARY | sumFormat | limitTo:135"></span>
 									</div>
 								</div>
@@ -102,6 +104,7 @@
 										<uc:defSpent member="e" runat="server" />
 										<uc:defNum member="e.DEFECT" runat="server" />
 										<uc:defEst member="e.DEFECT" runat="server" />
+										<uc:defDB member="e.DEFECT" runat="server" />
 										<span data-toggle="tooltip" title="{{e.DEFECT.SUMMARY}}" ng-bind-html="e.DEFECT.SUMMARY | sumFormat | limitTo:135"></span>
 									</div>
 								</div>
@@ -132,6 +135,7 @@
 								<div ng-repeat="d in u.PLAN track by $index" ng-style="{{d.DISPO | getDispoColorById:this}}" class="task {{$index < 10 ? 'task-first' : 'task-last'}}">
 									<uc:defNum runat="server" />
 									<uc:defEst runat="server" />
+									<uc:defDB runat="server" />
 									<span ng-bind-html="d.SUMMARY | sumFormat"></span>
 								</div>
 								<button data-toggle="tooltip" title="Click to see additional 10 items. Number of items is limited by 20. For more items click plan button near" onclick="moretasks(this)" type="button" class="btn btn-default btn-xs">...</button>

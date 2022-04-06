@@ -1,0 +1,2 @@
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="DefectControl" %>
+<img data-toggle="tooltip" title="Require DB changes" style="width:1em" src="images/db.png" ng-show="<%=this.Member()%>.TYPE==7">

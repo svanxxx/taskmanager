@@ -3,6 +3,7 @@
 <%@ Register Src="~/controls/DefectSpentControl.ascx" TagName="defSpent" TagPrefix="uc" %>
 <%@ Register Src="~/controls/DefectNumControl.ascx" TagName="defNum" TagPrefix="uc" %>
 <%@ Register Src="~/controls/DefectEstControl.ascx" TagName="defEst" TagPrefix="uc" %>
+<%@ Register Src="~/controls/DefectDBControl.ascx" TagName="defDB" TagPrefix="uc" %>
 <%@ Register Src="~/controls/DefectVerControl.ascx" TagName="defVer" TagPrefix="uc" %>
 <%@ Register Src="~/controls/DefectEddControl.ascx" TagName="defEdd" TagPrefix="uc" %>
 <%@ Register Src="~/controls/DefectUsrControl.ascx" TagName="defUsr" TagPrefix="uc" %>
@@ -106,6 +107,7 @@
 					<div ng-repeat="d in defects | defectsTrackFilter:sort" class="list-group-item p-1" ng-style="{{d.DISPO | getDispoColorById:this}}">
 						<uc:defNum runat="server" />
 						<uc:defEst runat="server" />
+						<uc:defDB runat="server" />
 						<span class="taskrect" data-toggle="tooltip" title="{{d.SUMMARY}}" ng-bind-html="d.SUMMARY | sumFormat | limitTo:135"></span>
 						<uc:defOrd runat="server" class="float-right" ng-show="isadmin" />
 						<uc:defUsr onchange="console.log('ddd')" ng-show="isadmin" runat="server" class="float-right" />

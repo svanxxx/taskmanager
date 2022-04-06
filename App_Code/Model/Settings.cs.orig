@@ -274,6 +274,9 @@ public class RawSettings
         get { return GetVal("TELEGRAMSUPPORTGROUP"); }
         set { values["TELEGRAMSUPPORTGROUP"] = value; }
     }
+<<<<<<< Updated upstream
+    public string TESTSGIT
+=======
 	public string BUILDMICROSEVICE
 	{
 		get { return GetVal("BUILDMICROSEVICE"); }
@@ -284,7 +287,8 @@ public class RawSettings
 		get { return GetVal("BUILDMICROSEVICEKEY"); }
 		set { values["BUILDMICROSEVICEKEY"] = value; }
 	}
-    public string TESTSGIT
+	public string TESTSGIT
+>>>>>>> Stashed changes
 	{
 		get { return GetVal("TESTSGIT"); }
 		set { values["TESTSGIT"] = value; }

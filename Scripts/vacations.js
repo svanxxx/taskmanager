@@ -72,15 +72,15 @@ $(function () {
 		};
 
 		$scope.scheduleVacation = function (u, d) {
-			if (u.unscheduled.length < 1) {
+			let count = u.unscheduled.length;
+			if (count < 1) {
 				alert("User has no free vacations!");
 				return;
 			}
-
-			var toSchedule = u.unscheduled[0];
+			var toSchedule = u.unscheduled[count - 1];
 			$http.post("trservice.asmx/scheduletask", JSON.stringify({ "ttid": toSchedule.ID, "date": DateToString(d) }))
 				.then(function (result) {
-					u.unscheduled.splice(0, 1);
+					u.unscheduled.splice(count - 1, 1);
 					u.scheduled.push(result.data.d);
 				});
 		};

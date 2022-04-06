@@ -3,6 +3,7 @@
 <%@ Register Src="~/controls/DefectSpentControl.ascx" TagName="defSpent" TagPrefix="uc" %>
 <%@ Register Src="~/controls/DefectNumControl.ascx" TagName="defNum" TagPrefix="uc" %>
 <%@ Register Src="~/controls/DefectEstControl.ascx" TagName="defEst" TagPrefix="uc" %>
+<%@ Register Src="~/controls/DefectDBControl.ascx" TagName="defDB" TagPrefix="uc" %>
 <%@ Register Src="~/controls/UsrControl.ascx" TagName="usr" TagPrefix="uc" %>
 
 <asp:Content ID="HeadContentData" ContentPlaceHolderID="HeaddContent" runat="server">
@@ -137,6 +138,7 @@
 							</div>
 							<uc:defNum member="e.DEFECT" runat="server" />
 							<uc:defEst member="e.DEFECT" runat="server" />
+							<uc:defDB member="e.DEFECT" runat="server" />
 							<span data-toggle="tooltip" title="{{e.DEFECT.SUMMARY}}" ng-bind-html="e.DEFECT.SUMMARY | sumFormat | limitTo:135"></span>
 						</div>
 					</div>
@@ -170,6 +172,7 @@
 								</td>
 								<td style="white-space: nowrap;">
 									<uc:defEst runat="server" />
+									<uc:defDB runat="server" />
 								</td>
 								<td><span data-toggle="tooltip" title="{{d.SUMMARY}}" ng-bind-html="d.SUMMARY | sumFormat | limitTo:135"></span></td>
 								<td>
@@ -196,6 +199,7 @@
 								</td>
 								<td>
 									<uc:defEst runat="server" />
+									<uc:defDB runat="server" />
 								</td>
 								<td><span data-toggle="tooltip" title="{{d.SUMMARY}}" ng-bind-html="d.SUMMARY | sumFormat | limitTo:135"></span></td>
 								<td>
