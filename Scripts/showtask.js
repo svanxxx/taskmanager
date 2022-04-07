@@ -194,6 +194,15 @@
 			}
 			alert("Threre are no waiting for build requests!");
 		};
+		$scope.nameBranch = function () {
+			let forbiden = [" ", "..", "~", "^", ":", "?", "*", "[", "]", "/", "@{", "}", "\\", "-"];
+			let name = $scope.defect.SUMMARY;
+			forbiden.forEach(function (c) {
+				name = name.replaceAll(c, "_");
+			});
+			$scope.defect.BRANCH = "TT" + $scope.defect.ID + "_" + name;
+			copyurl($scope.defect.BRANCH);
+		};
 		$scope.deleteBranch = function () {
 			if (confirm("Are you sure you want to delete branch related to this task? The operation cannot be undone.")) {
 				var delprg = StartProgress("Deleting branch...");

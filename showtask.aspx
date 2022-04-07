@@ -465,6 +465,7 @@
 										<div class="input-group-append">
 											<button type="button" ng-show="!isrelease()" class="btn btn-success" ng-click="loadCommits()">Scan Branch</button>
 											<button type="button" ng-show="!isrelease()" class="btn btn-danger" ng-disabled="!gitbranchhash" ng-click="deleteBranch()">Delete Branch</button>
+											<button type="button" ng-show="!isrelease() && (!commits || commits.length < 1)" class="btn btn-warning" ng-click="nameBranch()">Name</button>
 											<a href="merger.aspx?branch={{defect.BRANCH | encodeURIComponent}}&ttid={{defect.ID}}" ng-show="!isrelease()" class="btn btn-sm btn-outline-dark" ng-disabled="!gitbranchhash"><i class="fas fa-file-export"></i><i class="fab fa-joomla"></i></a>
 											<a href="builder.aspx" ng-show="isrelease()" class="btn btn-secondary" role="button">Release Marker</a>
 										</div>
