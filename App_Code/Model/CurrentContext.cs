@@ -52,6 +52,13 @@ public static class CurrentContext
 			return User != null && User.ISCLIENT;
 		}
 	}
+	public static string TestFilter
+	{
+		get
+		{
+			return User == null ? "" : User.TESTFILTER;
+		}
+	}
 	public static int UserID
 	{
 		get

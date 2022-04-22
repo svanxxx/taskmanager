@@ -72,6 +72,8 @@
           <Property Name="attachs" Type="int" />
           <Property Name="Version" Type="nchar" MaxLength="128" />
           <Property Name="EDD" Type="datetime" />
+          <Property Name="PrimaryHours" Type="int" />
+          <Property Name="PrimaryEstim" Type="int" />
         </EntityType>
         <EntityType Name="DefectTracker">
           <Key>
@@ -200,6 +202,8 @@
           <Property Name="attachs" Type="Int32" />
           <Property Name="Version" Type="String" MaxLength="128" FixedLength="true" Unicode="true" />
           <Property Name="EDD" Type="DateTime" Precision="3" />
+          <Property Name="PrimaryHours" Type="Int32" />
+          <Property Name="PrimaryEstim" Type="Int32" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -258,6 +262,8 @@
           <EntitySetMapping Name="DEFECTS">
             <EntityTypeMapping TypeName="DataModel.DEFECT">
               <MappingFragment StoreEntitySet="DEFECTS">
+                <ScalarProperty Name="PrimaryEstim" ColumnName="PrimaryEstim" />
+                <ScalarProperty Name="PrimaryHours" ColumnName="PrimaryHours" />
                 <ScalarProperty Name="EDD" ColumnName="EDD" />
                 <ScalarProperty Name="Version" ColumnName="Version" />
                 <ScalarProperty Name="attachs" ColumnName="attachs" />

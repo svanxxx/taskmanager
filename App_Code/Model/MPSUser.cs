@@ -29,8 +29,9 @@ public class MPSUser : IdBasedObject
 	const string _cli = "CLIENT";
 	public const string _off = "OFFICE";
 	const string _estAlarm = "ESTIMALARM";
+	const string _testFilter = "TESTFILTER";
 
-	static string[] _allcols = new string[] { _pid, _pname, _email, _ttuser, _addr, _login, _pass, _isAdm, _phone, _work, _ret, _imgTransfer, _birth, _lvl, _chat, _schat, _sclientchat, _cli, _off, _estAlarm };
+	static string[] _allcols = new string[] { _pid, _pname, _email, _ttuser, _addr, _login, _pass, _isAdm, _phone, _work, _ret, _imgTransfer, _birth, _lvl, _chat, _schat, _sclientchat, _cli, _off, _estAlarm, _testFilter };
 	public static string _Tabl = "[PERSONS]";
 
 	public string CHATID
@@ -67,6 +68,11 @@ public class MPSUser : IdBasedObject
 	{
 		get { return GetAsBool(_estAlarm, false); }
 		set { this[_estAlarm] = value; }
+	}
+	public string TESTFILTER
+	{
+		get { return this[_testFilter].ToString(); }
+		set { this[_testFilter] = value; }
 	}
 	public bool ISADMIN
 	{

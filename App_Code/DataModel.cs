@@ -50,6 +50,8 @@ public partial class DEFECT
     public Nullable<int> attachs { get; set; }
     public string Version { get; set; }
     public Nullable<System.DateTime> EDD { get; set; }
+    public Nullable<int> PrimaryHours { get; set; }
+    public Nullable<int> PrimaryEstim { get; set; }
 }
 
 public partial class DEFECTEVT

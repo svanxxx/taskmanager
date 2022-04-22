@@ -7,6 +7,7 @@
 </asp:Content>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
+	<input type="hidden" id="TESTAPIURL" value="<%=Settings.CurrentSettings.TESTAPIURL.ToString()%>" />
 	<div ng-app="mpsapplication" ng-controller="mpscontroller">
 		<div class="row">
 			<div class="col-sm-12">
@@ -53,6 +54,7 @@
 								<button <%=CurrentContext.Client ? "disabled" : ""%> ng-click="GetFile(v, 'cx')" type="button" class="btn bg-light"><i class="fas fa-cloud-download-alt"></i>&nbsp;Models</button>
 								<button <%=CurrentContext.Client ? "disabled" : ""%> ng-click="GetFile(v, 'onsite')" type="button" class="btn bg-light"><i class="fas fa-cloud-download-alt"></i>&nbsp;Onsite</button>
 								<button <%=CurrentContext.Client ? "disabled" : ""%> ng-click="GetFile(v, 'demo')" type="button" class="btn bg-light"><i class="fas fa-cloud-download-alt"></i>&nbsp;Demo</button>
+								<button ng-click="selectTestVersion(v.testVersion)" data-toggle="modal" data-target="#testsleModal" type="button" class="btn bg-light"><i class="fas fa-bug"></i></button>
 							</div>
 						</div>
 						<div class="card-body">
@@ -68,5 +70,65 @@
 			</div>
 			<div class="col-lg-2"></div>
 		</div>
+		<!-- Modal -->
+		<style>
+			td, th {
+				padding: 0px !important;
+			}
+		</style>
+		<div class="modal fade" id="testsleModal" tabindex="-1" role="dialog" aria-labelledby="testsleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="testsleModalLabel">Test version: {{testVersion}}</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<table class="table table-sm table-bordered">
+							<thead>
+								<tr class="text-center">
+									<th scope="col">#</th>
+									<th scope="col">Test</th>
+									<th scope="col">ex</th>
+									<th scope="col">db</th>
+									<th scope="col">ou</th>
+									<th scope="col">er</th>
+									<th scope="col">wr</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="t in tests" ng-style="{'background-color':t.color}">
+									<th class="text-center" scope="row">{{t.row}}</th>
+									<td>{{t.testcase}}</td>
+									<td class="text-center">{{t.ex}}</td>
+									<td class="text-center">{{t.db}}</td>
+									<td class="text-center">{{t.ou}}</td>
+									<td class="text-center">{{t.er}}</td>
+									<td class="text-center">{{t.wr}}</td>
+								</tr>
+							</tbody>
+						</table>
+						<div ng-show="!tests" class="text-center">
+							<img style="width: 1em" src="images/process.gif" />
+							Loading data...
+						</div>
+					</div>
+					<div class="modal-footer">
+						<div class="dropdown mr-auto">
+							<button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								Test filter: <strong>{{testFilter}}</strong>
+							</button>
+							<div class="dropdown-menu" aria-labelledby="dropdownMenuButton" ng-show="!isClient">
+								<div style="cursor: pointer" class="dropdown-item" ng-repeat="f in filters" ng-click="selectTestFilter(f.name)">{{f.name}}</div>
+							</div>
+						</div>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		s
 	</div>
 </asp:Content>

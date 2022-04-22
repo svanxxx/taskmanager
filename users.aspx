@@ -32,6 +32,7 @@
 						<th>CLIENT</th>
 						<th>OFFICE</th>
 						<th>ESTIMATION ALARM</th>
+						<th>TEST FILTER</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -70,6 +71,9 @@
 						</td>
 						<td align="center">
 							<input class="form-check-input" ng-disabled="readonly" type="checkbox" ng-model="u.ESTIMALARM" ng-change="itemchanged(u)">
+						</td>
+						<td align="center">
+							<input class="form-control form-control-sm border-0" ng-disabled="readonly" class="intable-data-input" type="text" ng-model="u.TESTFILTER" ng-change="itemchanged(u)"></td>
 						</td>
 					</tr>
 				</tbody>

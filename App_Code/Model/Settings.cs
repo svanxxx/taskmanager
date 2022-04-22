@@ -304,6 +304,11 @@ public class RawSettings
 		get { return GetVal("GLOBALSITEURL"); }
 		set { values["GLOBALSITEURL"] = value; }
 	}
+	public string TESTAPIURL
+	{
+		get { return GetVal("TESTAPIURL"); }
+		set { values["TESTAPIURL"] = value; }
+	}
 	Dictionary<string, string> values = new Dictionary<string, string>();
 	void LoadData()
 	{
