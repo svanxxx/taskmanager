@@ -25,6 +25,22 @@
 			$scope.testFilter = filter;
 			$scope.loadTests();
 		};
+		$scope.showTestDesc = function (test) {
+			let url = new URL(document.getElementById("TESTAPIURL").value);
+			url = new URL(url.toString() + "v1/testCaseDesc");
+			url.searchParams.set("name", test.testcase);
+			$http.get(url.toString())
+				.then(function (result) {
+					alert(
+						"Test : " + test.testcase + "\n" +
+						(test.ex > 0 ? "Failed with exception\n" : "") +
+						(test.db > 0 ? "Failed database error\n" : "") +
+						(test.ou > 0 ? "Contains verification errors\n" : "") +
+						"Test details: \n" +
+						result.data
+					);
+				});
+		};
 		$scope.selectTestVersion = function (version) {
 			$scope.tests = undefined;
 			$scope.testVersion = version;
@@ -51,7 +67,10 @@
 			url.searchParams.set("version", $scope.testVersion);
 			$http.get(url.toString())
 				.then(function (result) {
-					$scope.tests = result.data.data;
+					console.log(result.data.data);
+					console.log(result.data.unused);
+					$scope.tests = result.data.data.concat(result.data.unused);
+					console.log($scope.tests);
 				});
 		};
 		var taskprg = StartProgress("Loading data..."); $scope["loaders"]++;

@@ -87,7 +87,7 @@
 					</div>
 					<div class="modal-body">
 						<table class="table table-sm table-bordered">
-							<thead>
+							<thead class="table-dark">
 								<tr class="text-center">
 									<th scope="col">#</th>
 									<th scope="col">Test</th>
@@ -101,7 +101,10 @@
 							<tbody>
 								<tr ng-repeat="t in tests" ng-style="{'background-color':t.color}">
 									<th class="text-center" scope="row">{{t.row}}</th>
-									<td>{{t.testcase}}</td>
+									<td class="d-flex">
+										<span>{{t.testcase}}</span>
+										<i ng-click="showTestDesc(t)" class="ml-auto fas fa-question-circle" style="cursor: pointer"></i>
+									</td>
 									<td class="text-center">{{t.ex}}</td>
 									<td class="text-center">{{t.db}}</td>
 									<td class="text-center">{{t.ou}}</td>
