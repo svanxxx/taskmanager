@@ -70,14 +70,13 @@
 			</div>
 			<div class="col-lg-2"></div>
 		</div>
-		<!-- Modal -->
 		<style>
 			td, th {
 				padding: 0px !important;
 			}
 		</style>
 		<div class="modal fade" id="testsleModal" tabindex="-1" role="dialog" aria-labelledby="testsleModalLabel" aria-hidden="true">
-			<div class="modal-dialog" role="document">
+			<div class="modal-dialog modal-dialog-centered" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" id="testsleModalLabel">Test version: {{testVersion}}</h5>
@@ -103,7 +102,7 @@
 									<th class="text-center" scope="row">{{t.row}}</th>
 									<td class="d-flex">
 										<span>{{t.testcase}}</span>
-										<i ng-click="showTestDesc(t)" class="ml-auto fas fa-question-circle" style="cursor: pointer"></i>
+										<i ng-click="showTestDesc(t)" data-toggle="modal" data-target="#descModalLong" class="ml-auto fas fa-question-circle" style="cursor: pointer"></i>
 									</td>
 									<td class="text-center">{{t.ex}}</td>
 									<td class="text-center">{{t.db}}</td>
@@ -132,6 +131,23 @@
 				</div>
 			</div>
 		</div>
-		s
+		<div class="modal fade" id="descModalLong" tabindex="-1" role="dialog" aria-labelledby="descModalLongTitle" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="descModalLongTitle">Test Description</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<textarea ng-disabled="true" ng-model="testDesc" class="form-control" id="exampleFormControlTextarea1" rows="30" style="font-size:1em"></textarea>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </asp:Content>
