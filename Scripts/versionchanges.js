@@ -25,12 +25,14 @@
 			$scope.testFilter = filter;
 			$scope.loadTests();
 		};
+		$scope.testApiUrl = document.getElementById("TESTAPIURL").value;
+		$scope.testApiHeaders = { headers: { "Authorization": "ApiKey " + document.getElementById("TESTAPIKEY").value } };
 		$scope.showTestDesc = function (test) {
 			$scope.testDesc = "Loading...";
-			let url = new URL(document.getElementById("TESTAPIURL").value);
+			let url = new URL($scope.testApiUrl);
 			url = new URL(url.toString() + "v1/testCaseDesc");
 			url.searchParams.set("name", test.testcase);
-			$http.get(url.toString())
+			$http.get(url.toString(), $scope.testApiHeaders)
 				.then(function (result) {
 					$scope.testDesc =
 						"Test : " + test.testcase + "\n" +
@@ -48,9 +50,9 @@
 		};
 		$scope.loadFilters = function () {
 			if (!$scope.filters) {
-				url = new URL(document.getElementById("TESTAPIURL").value);
+				url = new URL($scope.testApiUrl);
 				url = new URL(url.toString() + "v1/filters");
-				$http.get(url.toString())
+				$http.get(url.toString(), $scope.testApiHeaders)
 					.then(function (result) {
 						$scope.filters = result.data.data;
 						if (!$scope.isClient && !$scope.testFilter && $scope.filters.length > 0) {
@@ -61,11 +63,11 @@
 		};
 		$scope.loadFilters();
 		$scope.loadTests = function () {
-			let url = new URL(document.getElementById("TESTAPIURL").value);
+			let url = new URL($scope.testApiUrl);
 			url = new URL(url.toString() + "v1/runs");
 			url.searchParams.set("filter", $scope.testFilter);
 			url.searchParams.set("version", $scope.testVersion);
-			$http.get(url.toString())
+			$http.get(url.toString(), $scope.testApiHeaders)
 				.then(function (result) {
 					$scope.tests = result.data.data.concat(result.data.unused);
 					$scope.tests = $scope.tests.sort(function (a, b) {

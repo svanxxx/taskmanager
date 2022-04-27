@@ -309,6 +309,11 @@ public class RawSettings
 		get { return GetVal("TESTAPIURL"); }
 		set { values["TESTAPIURL"] = value; }
 	}
+	public string TESTAPIKEY
+	{
+		get { return GetVal("TESTAPIKEY"); }
+		set { values["TESTAPIKEY"] = value; }
+	}
 	Dictionary<string, string> values = new Dictionary<string, string>();
 	void LoadData()
 	{

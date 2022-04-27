@@ -8,6 +8,7 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
 	<input type="hidden" id="TESTAPIURL" value="<%=Settings.CurrentSettings.TESTAPIURL.ToString()%>" />
+	<input type="hidden" id="TESTAPIKEY" value="<%=Settings.CurrentSettings.TESTAPIKEY.ToString()%>" />
 	<div ng-app="mpsapplication" ng-controller="mpscontroller">
 		<div class="row">
 			<div class="col-sm-12">
