@@ -314,6 +314,11 @@ public class RawSettings
 		get { return GetVal("TESTAPIKEY"); }
 		set { values["TESTAPIKEY"] = value; }
 	}
+	public string DATABASEPATTERN
+	{
+		get { return GetVal("DATABASEPATTERN"); }
+		set { values["DATABASEPATTERN"] = value; }
+	}
 	Dictionary<string, string> values = new Dictionary<string, string>();
 	void LoadData()
 	{

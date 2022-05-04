@@ -11,7 +11,7 @@ public class DefectType : Reference
 	{
 	}
 	public DefectType(int id)
-		: base(	_Tabl, _allBaseCols, id.ToString(), _ID)
+		: base(_Tabl, _allBaseCols, id.ToString(), _ID)
 	{
 	}
 	public static List<DefectType> Enum()
@@ -22,5 +22,19 @@ public class DefectType : Reference
 			res.Add(new DefectType(i));
 		}
 		return res;
+	}
+	static object _lock = new object();
+	static int? _dbStatus = null;
+	public static int DbType()
+	{
+		lock (_lock)
+		{
+			if (!_dbStatus.HasValue)
+			{
+				var rec = Enum().OrderBy(x => x.FORDER).FirstOrDefault();
+				_dbStatus = rec == null ? -1 : rec.ID;
+			}
+			return _dbStatus.Value;
+		}
 	}
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GitHelper;
+using System;
 using System.Collections.Generic;
 using System.Data;
 
@@ -14,6 +15,7 @@ public class BuildRequest
 
 public class DefectBuild : IdBasedObject
 {
+	private const string FailImage = "taskfail.png";
 	protected static string _pid = "idRecord";
 	protected static string _par = "ParentID";
 	protected static string _stat = "Status";
@@ -324,11 +326,36 @@ public class DefectBuild : IdBasedObject
 			DefectBase db = new DefectBase(TTID);
 			string ttimg = "";
 			var st = GetBuildStatus();
-			if (st == BuildStatus.failed || st == BuildStatus.cancelled)
+			var success = !(st == BuildStatus.failed || st == BuildStatus.cancelled);
+			if (!success)
 			{
-				ttimg = "taskfail.png";
+				ttimg = FailImage;
 			}
 			NotifyHub.NotifyBuildStatusChange(ID, TTID, int.Parse(db.AUSER), STATUSTXT, ttimg);
+			if (success && db.TYPE != DefectType.DbType().ToString())
+			{
+				var branch = db.BRANCH.ToUpper();
+				var settings = Settings.CurrentSettings;
+				if (branch != "MASTER" && branch != "RELEASE" && !string.IsNullOrEmpty(settings.DATABASEPATTERN))
+				{
+					var pattern = settings.DATABASEPATTERN.ToUpper();
+					var git = new Git(settings.WORKGITLOCATION);
+					var gitBranch = git.GetBranch(branch);
+					var commits = gitBranch.EnumCommits(1, 100);
+					foreach(var commit in commits)
+					{
+						var files = commit.EnumFiles();
+						foreach(var file in files)
+						{
+							if (file.Name.ToUpper().Contains(pattern))
+							{
+								NotifyHub.NotifyBuildStatusChange(ID, TTID, int.Parse(db.AUSER), "Build System has detected database changes in task commit. But the task is not marked as requiring database changes. Please update the task! This is a warning message and you do not need to start the build again - only check the task!", FailImage);
+								return;
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 }
