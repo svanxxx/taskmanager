@@ -7,6 +7,12 @@ using System.Text.RegularExpressions;
 
 public class getinstall : IHttpHandler
 {
+	const string _devZip = "devfip";
+	const string _devMSI = "devfipMSI";
+	const string _mxZip = "devmx";
+	const string _mxMSI = "devmxMSI";
+	static List<string> _devItems = new List<string>(new string[] { _devZip, _mxZip, _devMSI, _mxMSI });
+
 	public void ProcessRequest(HttpContext context)
 	{
 		HttpRequest Request = context.Request;
@@ -44,7 +50,7 @@ public class getinstall : IHttpHandler
 				verfolder += num.ToString() + "."; //replace 01 to 1
 			}
 		}
-		if (numbers.Length != 3 && !(t == "devmx" || t == "devfip"))
+		if (numbers.Length != 3 && !_devItems.Contains(t))
 		{
 			Response.StatusCode = (int)HttpStatusCode.NotFound;
 			Response.StatusDescription = "Requested installation file was not found";
@@ -54,7 +60,7 @@ public class getinstall : IHttpHandler
 		verfolder = verfolder.Remove(verfolder.Length - 1);
 
 		folder += verfolder + "\\";
-		if (t == "efip" || t == "cx" || t == "onsite" || t == "demo" || t == "client" || t == "flex" || t == "devmx" || t == "devfip")
+		if (t == "efip" || t == "cx" || t == "onsite" || t == "demo" || t == "client" || t == "flex" || _devItems.Contains(t))
 		{
 			string download = "";
 			if (t == "client")
@@ -65,13 +71,21 @@ public class getinstall : IHttpHandler
 			{
 				download = Settings.CurrentSettings.INSTALLSFOLDER + Settings.CurrentSettings.FLEXLMSERVER;
 			}
-			else if (t == "devfip")
+			else if (t == _devZip)
 			{
 				download = string.Format("{0}{1}\\Release.zip", Settings.CurrentSettings.DEVINSTALLSFOLDER, v);
 			}
-			else if (t == "devmx")
+			else if (t == _mxZip)
 			{
 				download = string.Format("{0}{1}\\Modules.zip", Settings.CurrentSettings.DEVINSTALLSFOLDER, v);
+			}
+			else if (t == _devMSI)
+			{
+				download = string.Format("{0}{1}\\FIELDPRO.msi", Settings.CurrentSettings.DEVINSTALLSFOLDER, v);
+			}
+			else if (t == _mxMSI)
+			{
+				download = string.Format("{0}{1}\\FIELDPRO_MODELS_ONSITE_REAL_TIME.msi", Settings.CurrentSettings.DEVINSTALLSFOLDER, v);
 			}
 			else
 			{

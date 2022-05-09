@@ -375,8 +375,10 @@
 											<li class="list-group-item py-1" ng-repeat="b in builds">
 												<div class="btn-group d-flex py-0">
 													<a class="btn btn-outline-primary flex-fill" href ng-click="showTests(b.TESTGUID)">History for {{b.DATEUP}}</a>
-													<a class="btn btn-outline-primary flex-fill" href="getinstall.ashx?type=devfip&version={{b.TESTGUID}}"><i class="fas fa-cloud-download-alt"></i>Fieldpro</a>
-													<a class="btn btn-outline-primary flex-fill" href="getinstall.ashx?type=devmx&version={{b.TESTGUID}}"><i class="fas fa-cloud-download-alt"></i>Modules</a>
+													<a class="btn btn-outline-primary flex-fill" href="getinstall.ashx?type=devfipMSI&version={{b.TESTGUID}}"><i class="fas fa-cloud-download-alt"></i>Fieldpro MSI</a>
+													<a class="btn btn-outline-primary flex-fill" href="getinstall.ashx?type=devfip&version={{b.TESTGUID}}"><i class="fas fa-cloud-download-alt"></i>Fieldpro ZIP</a>
+													<a class="btn btn-outline-primary flex-fill" href="getinstall.ashx?type=devmxMSI&version={{b.TESTGUID}}"><i class="fas fa-cloud-download-alt"></i>Modules MSI</a>
+													<a class="btn btn-outline-primary flex-fill" href="getinstall.ashx?type=devmx&version={{b.TESTGUID}}"><i class="fas fa-cloud-download-alt"></i>Modules ZIP</a>
 												</div>
 											</li>
 										</ul>
