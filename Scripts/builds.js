@@ -2,12 +2,6 @@
 	var app = angular.module('mpsapplication', []);
 	app.controller('mpscontroller', ["$scope", "$http", "$interval", function ($scope, $http, $interval) {
 		InitBuildHelpers($scope, $interval, $http, undefined);
-		$scope.updatePercent = function () {
-			upadteBuildProgress($scope.builds, $scope.buildtime);
-		};
-		$interval(function () {
-			$scope.updatePercent();
-		}, 5000);
 		$scope.pushState = function () {
 			var url = replaceUrlParam(replaceUrlParam(location.href, "showby", $scope.buildsstate.showby), "page", $scope.buildsstate.page);
 			window.history.pushState({ showby: $scope.buildsstate.showby, page: $scope.buildsstate.page }, "page " + $scope.buildsstate.page + ", showby " + $scope.buildsstate.showby, url);

@@ -8,6 +8,11 @@
 			builds[i].PERCENT = Math.round(diffMins / buildtime * 100.0);
 			builds[i].PERCENT = Math.min(99.9, builds[i].PERCENT);
 			builds[i].DURATION = diffMins;
+		} else {
+			let start = new Date(builds[i].DATEBUILD);
+			let now = new Date(builds[i].DATEUP);
+			var diffMins = Math.ceil((now - start) / (1000 * 60));
+			builds[i].DURATION = diffMins;
 		}
 	}
 }
@@ -19,7 +24,9 @@ const BuildStatus = {
 	failed: 4,
 	notstarted: 5,
 }
+
 function InitBuildHelpers($scope, $interval, $http, ttid) {
+	$scope.BuildStatus = BuildStatus;
 	$scope.fromUTC = function (str) {
 		let d = new Date(str);
 		return new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes(), d.getSeconds()));
@@ -64,10 +71,10 @@ function InitBuildHelpers($scope, $interval, $http, ttid) {
 							ID: b.item.id,
 							NOTES: b.item.notes,
 							COLOR: b.item.color,
-							DATE: $scope.fromUTC(b.item.dateCreated).toLocaleString(),
 							DATEUP: $scope.fromUTC(b.item.dateModified).toLocaleString(),
-							DATEBUILD: b.item.status == BuildStatus.notstarted ? '' : $scope.fromUTC(b.item.dateBuild).toLocaleString(),
+							DATEBUILD: b.item.status == $scope.BuildStatus.notstarted ? '' : $scope.fromUTC(b.item.dateBuild).toLocaleString(),
 							EML: b.item.userEmail,
+							DATE: new Date(b.item.dateCreatedOffset).toLocaleString(),
 						}
 						return output;
 					});
@@ -77,7 +84,7 @@ function InitBuildHelpers($scope, $interval, $http, ttid) {
 			});
 	};
 	$scope.updatePercent = function () {
-		upadteBuildProgress($scope.builds, $scope.buildtime, BuildStatus.progress);
+		upadteBuildProgress($scope.builds, $scope.buildtime, $scope.BuildStatus.progress);
 	};
 	$scope.abortBuild = function () {
 		if (!confirm("Are you sure you want to abort builds for the task?")) {
@@ -85,7 +92,7 @@ function InitBuildHelpers($scope, $interval, $http, ttid) {
 		}
 
 		for (var i = 0; i < $scope.builds.length; i++) {
-			if ($scope.builds[i].STATUS == BuildStatus.notstarted || $scope.builds[i].STATUS == BuildStatus.progress) {
+			if ($scope.builds[i].STATUS == $scope.BuildStatus.notstarted || $scope.builds[i].STATUS == $scope.BuildStatus.progress) {
 				let url = new URL($scope.buildBrokerURL + "cancel");
 				url.searchParams.set("id", $scope.builds[i].ID);
 				$http.post(url.toString(), {}, $scope.buildBrokeHeaders)

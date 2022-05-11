@@ -26,14 +26,13 @@
 						<div class="d-flex">
 							<span><i class="fas fa-desktop"></i></span>
 							<small>{{b.MACHINE}}:&nbsp;&nbsp;&nbsp;<span class="badge badge-pill badge-primary">{{b.DURATION}} min</span>&nbsp;&nbsp;&nbsp;</small>
-							<div class="mr-auto">
+							<div class="mr-auto d-flex">
 								<div class="progress" ng-show="b.PERCENT != 100">
 									<div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 40%"></div>
 								</div>
 								<div class="progress">
-									<div class="progress-bar progress-bar-animated progress-bar-striped active" role="progressbar" style="width: {{ b.STATUS.includes('Building')==true ? b.PERCENT : '100'}}%">
-										{{b.STATUS.includes('Building')==true ? '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + b.PERCENT + '&nbsp;&nbsp;&nbsp;%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' : ''}}
-										100
+									<div class="progress-bar progress-bar-animated progress-bar-striped active" role="progressbar" style="width: {{ b.STATUS == BuildStatus.progress ? b.PERCENT : '100'}}%">
+										{{b.STATUS == BuildStatus.progress ? '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + b.PERCENT + '&nbsp;&nbsp;&nbsp;%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' : ''}}
 									</div>
 								</div>
 							</div>
@@ -41,7 +40,7 @@
 					</div>
 					<div class="d-flex">
 						<small>Sent: {{b.DATE}}</small>
-						<small class="ml-3" ng-show="b.STATUS != 5 && b.STATUS != 3">Started: {{b.DATEBUILD}}</small>
+						<small class="ml-auto" ng-show="b.STATUS != 5 && b.STATUS != 3">Started: {{b.DATEBUILD}}</small>
 					</div>
 				</div>
 				<img class="rounded-circle ml-auto" ng-src="{{'getUserImg.ashx?sz=40&eml=' + b.EML}}" alt="Smile" height="40" width="40">
