@@ -164,12 +164,12 @@ public class RawSettings
 		get { return GetVal("COMPANYNAME"); }
 		set { values["COMPANYNAME"] = value; }
 	}
-    public string COMPANYDOMAIN
-    {
-        get { return GetVal("COMPANYDOMAIN"); }
-        set { values["COMPANYDOMAIN"] = value; }
-    }
-    public string BUILDLOGSDIR
+	public string COMPANYDOMAIN
+	{
+		get { return GetVal("COMPANYDOMAIN"); }
+		set { values["COMPANYDOMAIN"] = value; }
+	}
+	public string BUILDLOGSDIR
 	{
 		get { return GetVal("BUILDLOGSDIR"); }
 		set { values["BUILDLOGSDIR"] = value; }
@@ -263,17 +263,17 @@ public class RawSettings
 	{
 		get { return GetVal("TELEGRAMTASKSURL"); }
 		set { values["TELEGRAMTASKSURL"] = value; }
-    }
-    public string TELEGRAMSUPPORTTOKEN
-    {
-        get { return GetVal("TELEGRAMSUPPORTTOKEN"); }
-        set { values["TELEGRAMSUPPORTTOKEN"] = value; }
-    }
-    public string TELEGRAMSUPPORTGROUP
-    {
-        get { return GetVal("TELEGRAMSUPPORTGROUP"); }
-        set { values["TELEGRAMSUPPORTGROUP"] = value; }
-    }
+	}
+	public string TELEGRAMSUPPORTTOKEN
+	{
+		get { return GetVal("TELEGRAMSUPPORTTOKEN"); }
+		set { values["TELEGRAMSUPPORTTOKEN"] = value; }
+	}
+	public string TELEGRAMSUPPORTGROUP
+	{
+		get { return GetVal("TELEGRAMSUPPORTGROUP"); }
+		set { values["TELEGRAMSUPPORTGROUP"] = value; }
+	}
 	public string BUILDMICROSEVICE
 	{
 		get { return GetVal("BUILDMICROSEVICE"); }
@@ -284,7 +284,7 @@ public class RawSettings
 		get { return GetVal("BUILDMICROSEVICEKEY"); }
 		set { values["BUILDMICROSEVICEKEY"] = value; }
 	}
-    public string TESTSGIT
+	public string TESTSGIT
 	{
 		get { return GetVal("TESTSGIT"); }
 		set { values["TESTSGIT"] = value; }

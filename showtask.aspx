@@ -26,6 +26,8 @@
 	<input type="hidden" id="releasettid" value="<%=Settings.CurrentSettings.RELEASETTID.ToString()%>" />
 	<input type="hidden" id="defectdefaults" value='<%=Newtonsoft.Json.JsonConvert.SerializeObject(DefectDefaults.CurrentDefaults)%>' />
 	<input type="hidden" id="trackers" value='<%=Newtonsoft.Json.JsonConvert.SerializeObject(SimpleTrackWrapper.GetSimpleTrackers())%>' />
+	<input type="hidden" id="buildbroker" value='<%=Settings.CurrentSettings.BUILDMICROSEVICE%>' />
+	<input type="hidden" id="buildbrokerapi" value='<%=Settings.CurrentSettings.BUILDMICROSEVICEKEY%>' />
 	<div ng-app="mpsapplication" ng-controller="mpscontroller" ng-cloak>
 		<uc:usrlist runat="server" />
 		<button ng-show="false" type="submit">for autocomplete</button>
@@ -489,10 +491,8 @@
 							<select class="form-control form-control-sm" ng-disabled="!canChangeDefect()" ng-model="defect.TESTPRIORITY">
 								<option value="{{t.ID}}" ng-repeat="t in buildpriorities">{{t.DESCR}}</option>
 							</select>
-							<button type="button" class="btn btn-sm btn-info btn-right-align" ng-disabled="!canBuild()" ng-click="buildVersion('both')" ng-show="isrelease()">Build Both</button>
-							<button type="button" class="btn btn-sm btn-warning btn-right-align" ng-disabled="!canBuild()" ng-click="buildVersion('inst')" ng-show="isrelease()">Build Installation</button>
-							<button type="button" class="btn btn-sm btn-success btn-right-align" ng-disabled="!canBuild()" ng-click="buildVersion('test')">Build Version</button>
-							<button type="button" class="btn btn-sm btn-danger btn-right-align" ng-disabled="!canBuild()" ng-click="abortTest()">Abort Building</button>
+							<button type="button" class="btn btn-sm btn-success btn-right-align" ng-disabled="!canBuild()" ng-click="buildVersion(isrelease())">Build Version</button>
+							<button type="button" class="btn btn-sm btn-danger btn-right-align" ng-disabled="!canBuild()" ng-click="abortBuild()">Abort Building</button>
 						</div>
 						<uc:builds runat="server" />
 						<div ng-show="!commits||commits.length<1" class="panel-footer"><strong>Info!</strong> Please commit your changes to git and push your branch named with TTxxxxxx where xxxxxx is the task number.</div>
