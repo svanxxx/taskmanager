@@ -1,17 +1,7 @@
 ﻿$(function () {
 	var app = angular.module('mpsapplication', []);
 	app.controller('mpscontroller', ["$scope", "$http", "$interval", function ($scope, $http, $interval) {
-		$scope.buildtime = parseInt(document.getElementById("buildtime").value);
-		$scope.builds = [];
-		$scope.loadData = function () {
-			var prg = StartProgress("Loading data...");
-			$http.post("BuildService.asmx/getBuildRequests", JSON.stringify({ from: $scope.buildsstate.showby * ($scope.buildsstate.page - 1) + 1, to: $scope.buildsstate.showby * $scope.buildsstate.page }))
-				.then(function (result) {
-					$scope.builds = result.data.d;
-					$scope.updatePercent();
-					EndProgress(prg);
-				});
-		};
+		InitBuildHelpers($scope, $interval, $http, undefined);
 		$scope.updatePercent = function () {
 			upadteBuildProgress($scope.builds, $scope.buildtime);
 		};
@@ -27,7 +17,7 @@
 				return;
 			}
 			$scope.buildsstate.page--;
-			$scope.loadData();
+			$scope.loadBuilds();
 			$scope.pushState();
 		};
 		$scope.incPage = function () {
@@ -35,11 +25,11 @@
 				return;
 			}
 			$scope.buildsstate.page++;
-			$scope.loadData();
+			$scope.loadBuilds();
 			$scope.pushState();
 		};
 		$scope.changeShowBy = function () {
-			$scope.loadData();
+			$scope.loadBuilds();
 			$scope.pushState();
 		};
 		var page = getParameterByName("page");
@@ -55,16 +45,7 @@
 			$scope.buildsstate.showby = "" + parseInt(showby);
 		}
 
-		$scope.loadData();
-
-		var notifyHub = $.connection.notifyHub;
-		notifyHub.client.OnBuildChanged = function () {
-			$scope.loadData();
-			$scope.$apply();
-		};
-		$.connection.hub.disconnected(function () {
-			setTimeout(function () { $.connection.hub.start(); }, 5000); // Restart connection after 5 seconds.
-		});
-		$.connection.hub.start();
+		$scope.loadBuilds();
+		$scope.conntectToBuildBroker(true);
 	}]);
 });

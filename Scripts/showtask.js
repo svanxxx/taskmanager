@@ -25,6 +25,7 @@
 	});
 
 	app.controller('mpscontroller', ["$scope", "$http", "$interval", "$window", function ($scope, $http, $interval, $window) {
+		InitBuildHelpers($scope, $interval, $http, ttid);
 		$window.onbeforeunload = function () {
 			$scope.notifyHub.server.unLockTask(ttid, $scope.currentlock);
 		};
@@ -41,9 +42,6 @@
 		};
 		$scope.getfileext = function (filename) {
 			return (/(?:\.([^.]+))?$/).exec(filename)[1];
-		};
-		$scope.updatePercent = function () {
-			upadteBuildProgress($scope.builds, $scope.buildtime);
 		};
 		$scope.loadMasterCommits = function () {
 			$scope.mastercommits = [];
@@ -67,22 +65,6 @@
 				.then(function (result) {
 					if (JSON.stringify($scope.commits) !== JSON.stringify(result.data.d)) {
 						$scope.commits = result.data.d;
-						reActivateTooltips();
-					}
-				});
-		};
-		$scope.loadBuilds = function () {
-			$interval(function () {
-				$scope.updatePercent();
-			}, 5000);
-			if (!Array.isArray($scope.builds)) {
-				$scope.builds = [];
-			}
-			$http.post("BuildService.asmx/getBuildsByTask", JSON.stringify({ from: $scope.buildsstate.showby * ($scope.buildsstate.page - 1) + 1, to: $scope.buildsstate.showby * $scope.buildsstate.page, "ttid": ttid }))
-				.then(function (result) {
-					if (JSON.stringify($scope.builds) !== JSON.stringify(result.data.d)) {
-						$scope.builds = result.data.d;
-						$scope.updatePercent();
 						reActivateTooltips();
 					}
 				});
@@ -156,7 +138,7 @@
 				$scope.defect.ESTIMBY = ttUserID();
 			}
 		};
-		$scope.buildVersion = function (type) {
+		$scope.buildVersion = function (release) {
 			if ($scope.changed) {
 				alert("Please save the task first!");
 				return;
@@ -166,7 +148,7 @@
 				return;
 			}
 			for (var i = 0; i < $scope.builds.length; i++) {
-				if ($scope.builds[i].STATUS.indexOf("wait") > -1) {
+				if ($scope.builds[i].STATUS == BuildStatus.notstarted) {
 					alert("Already waiting for build!");
 					return;
 				}
@@ -176,24 +158,24 @@
 			if (comments === null) {
 				return;
 			}
-			$http.post("BuildService.asmx/addBuildByTask", JSON.stringify({ "ttid": ttid, "notes": comments, btype: type }))
-				.then(function (result) {
-					$scope.loadBuilds();
-				});
+			let uID = userID();
+			let url = new URL($scope.buildBrokerURL + "addBuild");
+			url.searchParams.set("id", ttid);
+			url.searchParams.set("summary", $scope.defect.SUMMARY);
+			url.searchParams.set("mail", $scope.users.filter(function (x) { return x.TRID == uID; })[0].EMAIL);
+			url.searchParams.set("branch", $scope.defect.BRANCH);
+			url.searchParams.set("notes", comments);
+			url.searchParams.set("type", release ? 2 : 1);
+			url.searchParams.set("batches", $scope.defect.BSTBATCHES.split('\n').join(","));
+			url.searchParams.set("commands", $scope.defect.BSTCOMMANDS.split('\n').join(","));
+			url.searchParams.set("priority", $scope.defect.TESTPRIORITY);
+			url.searchParams.set("owner", $scope.users.filter(function (x) { return x.ID == $scope.defect.AUSER; })[0].EMAIL);
+
+			$http.post(url.toString(), {}, $scope.buildBrokeHeaders).then(function (result) {
+				$scope.loadBuilds();
+			});
 		};
 		$scope.loadCommit = function (c, member) { loadCommit(c, $scope, $http, member); };
-		$scope.abortTest = function () {
-			for (var i = 0; i < $scope.builds.length; i++) {
-				if ($scope.builds[i].STATUS.indexOf("wait") > -1 || $scope.builds[i].STATUS.indexOf("progress") > -1) {
-					$http.post("trservice.asmx/cancelBuildByTask", JSON.stringify({ "ttid": ttid }))
-						.then(function () {
-							$scope.loadBuilds();
-						});
-					return;
-				}
-			}
-			alert("Threre are no waiting for build requests!");
-		};
 		$scope.nameBranch = function () {
 			let forbiden = [" ", "..", "~", "^", ":", "?", "*", "[", "]", "/", "@{", "}", "\\", "-"];
 			let name = $scope.defect.SUMMARY;
@@ -420,8 +402,10 @@
 			}
 		};
 		$scope.changetab = function (event) {
+			$scope.conntectToBuildBroker(false);
 			var tab = event.target.tagName === "A" ? event.target.innerText : event.target.parentElement.innerText;
 			if (tab === $scope.tab_builds) {
+				$scope.conntectToBuildBroker(true);
 				if (!$scope.commits) {
 					$scope.loadCommits();
 				}
@@ -723,7 +707,6 @@
 		//start
 		$scope.defectDefaults = JSON.parse(document.getElementById("defectdefaults").value);
 		$scope.currentlock = guid();
-		$scope.buildtime = parseInt(document.getElementById("buildtime").value);
 		$scope.testlink = document.getElementById("testlink").value;
 		$scope.addresses = document.getElementById("deflist").value;
 		$scope.trackers = JSON.parse(document.getElementById("trackers").value);
@@ -811,6 +794,7 @@
 				$scope.loadMasterCommits();
 			} else {
 				$scope.loadBuilds();
+				$scope.conntectToBuildBroker(true);
 			}
 		};
 
@@ -835,6 +819,7 @@
 		$.connection.hub.disconnected(function () {
 			setTimeout(function () { $.connection.hub.start(); }, 5000); // Restart connection after 5 seconds.
 		});
+
 		$scope.notifyHub = $.connection.notifyHub;
 		$scope.notifyHub.client.onDefectChanged = function (defectid) {
 			if (!$scope.saving && ttid == defectid) {

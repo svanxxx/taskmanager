@@ -12,6 +12,8 @@
 </asp:Content>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
+	<input type="hidden" id="buildbroker" value='<%=Settings.CurrentSettings.BUILDMICROSEVICE%>' />
+	<input type="hidden" id="buildbrokerapi" value='<%=Settings.CurrentSettings.BUILDMICROSEVICEKEY%>' />
 	<input type="hidden" id="buildtime" value="<%=Settings.CurrentSettings.BUILDTIME.ToString()%>" />
 	<div ng-app="mpsapplication" ng-controller="mpscontroller">
 		<div class="container">
