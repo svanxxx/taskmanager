@@ -87,6 +87,23 @@
           <Property Name="dateCreated" Type="datetime" />
           <Property Name="COLORDEF" Type="nvarchar(max)" />
         </EntityType>
+        <EntityType Name="FLDDISPO">
+          <Key>
+            <PropertyRef Name="idRecord" />
+            <PropertyRef Name="ProjectID" />
+          </Key>
+          <Property Name="idRecord" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="ProjectID" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="FieldOrder" Type="numeric" Precision="10" Scale="0" />
+          <Property Name="Descriptor" Type="nvarchar" MaxLength="255" />
+          <Property Name="Color" Type="nvarchar" MaxLength="255" />
+          <Property Name="RequireWork" Type="int" Nullable="false" />
+          <Property Name="BeingWorked" Type="int" Nullable="false" />
+          <Property Name="CannotStart" Type="int" Nullable="false" />
+          <Property Name="TestsPassed" Type="int" Nullable="false" />
+          <Property Name="TestsRejected" Type="int" Nullable="false" />
+          <Property Name="TestsStarted" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Machines">
           <Key>
             <PropertyRef Name="PCNAME" />
@@ -101,6 +118,7 @@
           <EntitySet Name="DEFECTEVTS" EntityType="Self.DEFECTEVTS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DEFECTS" EntityType="Self.DEFECTS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DefectTracker" EntityType="Self.DefectTracker" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FLDDISPO" EntityType="Self.FLDDISPO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Machines" EntityType="Self.Machines" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -124,6 +142,7 @@
           <EntitySet Name="Machines" EntityType="DataModel.Machine" />
           <EntitySet Name="DEFECTEVTS" EntityType="DataModel.DEFECTEVT" />
           <EntitySet Name="DEFECTS" EntityType="DataModel.DEFECT" />
+          <EntitySet Name="FLDDISPOes" EntityType="DataModel.FLDDISPO" />
         </EntityContainer>
         <EntityType Name="Machine">
           <Key>
@@ -204,6 +223,23 @@
           <Property Name="EDD" Type="DateTime" Precision="3" />
           <Property Name="PrimaryHours" Type="Int32" />
           <Property Name="PrimaryEstim" Type="Int32" />
+        </EntityType>
+        <EntityType Name="FLDDISPO">
+          <Key>
+            <PropertyRef Name="idRecord" />
+            <PropertyRef Name="ProjectID" />
+          </Key>
+          <Property Name="idRecord" Type="Decimal" Nullable="false" Precision="10" Scale="0" />
+          <Property Name="ProjectID" Type="Decimal" Nullable="false" Precision="10" Scale="0" />
+          <Property Name="FieldOrder" Type="Decimal" Precision="10" Scale="0" />
+          <Property Name="Descriptor" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Color" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="RequireWork" Type="Int32" Nullable="false" />
+          <Property Name="BeingWorked" Type="Int32" Nullable="false" />
+          <Property Name="CannotStart" Type="Int32" Nullable="false" />
+          <Property Name="TestsPassed" Type="Int32" Nullable="false" />
+          <Property Name="TestsRejected" Type="Int32" Nullable="false" />
+          <Property Name="TestsStarted" Type="Int32" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -302,6 +338,23 @@
                 <ScalarProperty Name="dateCreate" ColumnName="dateCreate" />
                 <ScalarProperty Name="idRecord" ColumnName="idRecord" />
                 <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FLDDISPOes">
+            <EntityTypeMapping TypeName="DataModel.FLDDISPO">
+              <MappingFragment StoreEntitySet="FLDDISPO">
+                <ScalarProperty Name="TestsStarted" ColumnName="TestsStarted" />
+                <ScalarProperty Name="TestsRejected" ColumnName="TestsRejected" />
+                <ScalarProperty Name="TestsPassed" ColumnName="TestsPassed" />
+                <ScalarProperty Name="CannotStart" ColumnName="CannotStart" />
+                <ScalarProperty Name="BeingWorked" ColumnName="BeingWorked" />
+                <ScalarProperty Name="RequireWork" ColumnName="RequireWork" />
+                <ScalarProperty Name="Color" ColumnName="Color" />
+                <ScalarProperty Name="Descriptor" ColumnName="Descriptor" />
+                <ScalarProperty Name="FieldOrder" ColumnName="FieldOrder" />
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="idRecord" ColumnName="idRecord" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -27,4 +27,5 @@ public partial class tt_resEntities : DbContext
     public virtual DbSet<Machine> Machines { get; set; }
     public virtual DbSet<DEFECTEVT> DEFECTEVTS { get; set; }
     public virtual DbSet<DEFECT> DEFECTS { get; set; }
+    public virtual DbSet<FLDDISPO> FLDDISPOes { get; set; }
 }

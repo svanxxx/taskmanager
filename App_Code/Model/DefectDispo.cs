@@ -1,6 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
+
+public enum GlobalDispo
+{
+	[Display(Name = "", Description = "undefined")]
+	undefined = 0,
+	[Display(Name = "taskokay.png", Description = "Tests are passed!")]
+	testOK = 1,
+	[Display(Name = "taskfail.png", Description = "Tests are failed!")]
+	testFail = 2,
+	[Display(Name = "fist.png", Description = "Build is finished. Testing is starting!")]
+	testStarted = 3,
+	[Display(Name = "bin.png", Description = "The task is ignored by QA")]
+	testIgnored = 4,
+	[Display(Name = "taskfail.png", Description = "Build Failed!")]
+	buildFailed = 5,
+}
 
 public class DefectDispo : Reference
 {
@@ -179,5 +198,36 @@ public class DefectDispo : Reference
 			return _WorkingRec;
 		}
 		return 1;
+	}
+	public static async Task<FLDDISPO> GetDispoFromGlobal(GlobalDispo gd)
+	{
+		using (var db = new DataBase())
+		{
+			IQueryable<FLDDISPO> query;
+			switch (gd)
+			{
+				case GlobalDispo.testIgnored:
+					query = db.FLDDISPOes.Where(x => x.BeingWorked == 1);
+					break;
+				case GlobalDispo.testFail:
+					query = db.FLDDISPOes.Where(x => x.TestsRejected == 1);
+					break;
+				case GlobalDispo.testOK:
+					query = db.FLDDISPOes.Where(x => x.TestsPassed == 1);
+					break;
+				case GlobalDispo.testStarted:
+					query = db.FLDDISPOes.Where(x => x.TestsStarted == 1);
+					break;
+				default:
+					query = db.FLDDISPOes.Where(x => x.BeingWorked == 1);
+					break;
+			}
+			var item = await query.FirstOrDefaultAsync();
+			if (item == null)
+			{
+				item = await db.FLDDISPOes.FirstOrDefaultAsync();
+			}
+			return item;
+		}
 	}
 }

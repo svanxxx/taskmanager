@@ -319,6 +319,11 @@ public class RawSettings
 		get { return GetVal("DATABASEPATTERN"); }
 		set { values["DATABASEPATTERN"] = value; }
 	}
+	public string SERVERAPIKEY
+	{
+		get { return GetVal("SERVERAPIKEY"); }
+		set { values["SERVERAPIKEY"] = value; }
+	}
 	Dictionary<string, string> values = new Dictionary<string, string>();
 	void LoadData()
 	{

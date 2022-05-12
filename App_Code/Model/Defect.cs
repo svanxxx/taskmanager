@@ -143,14 +143,14 @@ public partial class DefectBase : IdBasedObject
 	}
 	public int? PRIMARYHOURS
 	{
-		get 
+		get
 		{
 			var val = this[_PrimaryHours];
 			if (val == DBNull.Value)
 			{
 				return null;
 			}
-			return Convert.ToInt32(val); 
+			return Convert.ToInt32(val);
 		}
 		set
 		{
@@ -738,7 +738,7 @@ public partial class DefectBase : IdBasedObject
 public partial class Defect : DefectBase
 {
 	static ConcurrentDictionary<string, LockEvent> locker = new ConcurrentDictionary<string, LockEvent>();
-	static Object thisLock = new Object();
+	static SemaphoreSlim _thisLock = new SemaphoreSlim(1, 1);
 
 	static protected string _bstsep = "====bst_data_separator====";
 	static public string _DescInt = "DESCRPTN";
@@ -752,15 +752,36 @@ public partial class Defect : DefectBase
 
 	public static void UnLocktask(string ttid, string lockid)
 	{
-		lock (thisLock)
+		_thisLock.Wait();
+		try
 		{
-			if (locker.Keys.Contains(ttid))
+			_UnLocktask(ttid, lockid);
+		}
+		finally
+		{
+			_thisLock.Release();
+		}
+	}
+	public static async Task UnLocktaskAsync(string ttid, string lockid)
+	{
+		await _thisLock.WaitAsync();
+		try
+		{
+			_UnLocktask(ttid, lockid);
+		}
+		finally
+		{
+			_thisLock.Release();
+		}
+	}
+	public static void _UnLocktask(string ttid, string lockid)
+	{
+		if (locker.Keys.Contains(ttid))
+		{
+			LockEvent ev = locker[ttid];
+			if (ev.lockid == lockid)
 			{
-				LockEvent ev = locker[ttid];
-				if (ev.lockid == lockid)
-				{
-					locker.TryRemove(ttid, out ev);
-				}
+				locker.TryRemove(ttid, out ev);
 			}
 		}
 	}
@@ -774,33 +795,54 @@ public partial class Defect : DefectBase
 	}
 	public static LockInfo Locktask(string ttid, string lockid, string userid, bool force = false)
 	{
-		lock (thisLock)
+		_thisLock.Wait();
+		try
 		{
-			if (locker.Keys.Contains(ttid))
+			return _Locktask(ttid, lockid, userid, force);
+		}
+		finally
+		{
+			_thisLock.Release();
+		}
+	}
+	public static async Task<LockInfo> LocktaskAsync(string ttid, string lockid, string userid, bool force = false)
+	{
+		await _thisLock.WaitAsync();
+		try
+		{
+			return _Locktask(ttid, lockid, userid, force);
+		}
+		finally
+		{
+			_thisLock.Release();
+		}
+	}
+	public static LockInfo _Locktask(string ttid, string lockid, string userid, bool force = false)
+	{
+		if (locker.Keys.Contains(ttid))
+		{
+			LockEvent ev = locker[ttid];
+			if (ev.Obsolete || force)
 			{
-				LockEvent ev = locker[ttid];
-				if (ev.Obsolete || force)
-				{
-					LockEvent newev = new LockEvent(lockid, userid);
-					locker[ttid] = newev;
-					return new LockInfo(newev.usr, newev.lockid);
-				}
-				else
-				{
-					if (ev.lockid == lockid)
-					{
-						ev.Prolongate();
-						locker[ttid] = ev;
-					}
-					return new LockInfo(ev.usr, ev.lockid);
-				}
+				LockEvent newev = new LockEvent(lockid, userid);
+				locker[ttid] = newev;
+				return new LockInfo(newev.usr, newev.lockid);
 			}
 			else
 			{
-				LockEvent ev = new LockEvent(lockid, userid);
-				locker[ttid] = ev;
+				if (ev.lockid == lockid)
+				{
+					ev.Prolongate();
+					locker[ttid] = ev;
+				}
 				return new LockInfo(ev.usr, ev.lockid);
 			}
+		}
+		else
+		{
+			LockEvent ev = new LockEvent(lockid, userid);
+			locker[ttid] = ev;
+			return new LockInfo(ev.usr, ev.lockid);
 		}
 	}
 	public static int GetRepRecByTTID(int id)

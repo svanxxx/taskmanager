@@ -87,6 +87,21 @@ public partial class DefectTracker
     public string COLORDEF { get; set; }
 }
 
+public partial class FLDDISPO
+{
+    public decimal idRecord { get; set; }
+    public decimal ProjectID { get; set; }
+    public Nullable<decimal> FieldOrder { get; set; }
+    public string Descriptor { get; set; }
+    public string Color { get; set; }
+    public int RequireWork { get; set; }
+    public int BeingWorked { get; set; }
+    public int CannotStart { get; set; }
+    public int TestsPassed { get; set; }
+    public int TestsRejected { get; set; }
+    public int TestsStarted { get; set; }
+}
+
 public partial class Machine
 {
     public string PCNAME { get; set; }
