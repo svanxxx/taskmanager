@@ -223,15 +223,10 @@ public class BuildService : WebService
 	public void addBuildByTask(string ttid, string notes, string btype)
 	{
 		if (string.IsNullOrEmpty(ttid))
+		{
 			return;
-		if (btype == btboth || btype == "test")
-		{
-			DefectBuild.AddRequestByTask(Convert.ToInt32(ttid), notes == null ? "" : notes, DefectBuild.BuildType.testbuild);
 		}
-		if (btype == btboth || btype == "inst")
-		{
-			DefectBuild.AddRequestByTask(Convert.ToInt32(ttid), "Public Release", DefectBuild.BuildType.releasebuild);
-		}
+		DefectBuild.AddRequestByTask(Convert.ToInt32(ttid), "Public Release", DefectBuild.BuildType.releasebuild);
 	}
 	[WebMethod]
 	public BuildRequest getInstallRequest(string machine)

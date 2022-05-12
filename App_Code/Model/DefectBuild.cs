@@ -1,7 +1,9 @@
 ﻿using GitHelper;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Threading.Tasks;
 
 public class BuildRequest
 {
@@ -281,7 +283,33 @@ public class DefectBuild : IdBasedObject
 	}
 	public static void AddRequestByTask(int ttid, string notes, BuildType type)
 	{
-		AddObject(_Tabl, new string[] { _par, _not, _User, _dateB, _type }, new object[] { Defect.GetIDbyTT(ttid), notes, CurrentContext.User.TTUSERID, DateTime.Now, (int)type }, _pid);
+		var defect = new Defect(ttid);
+		var settings = Settings.CurrentSettings;
+		var emial = MPSUser.FindUserbyPhone(settings.AUTOBOTPHONE).EMAIL;
+
+		var urlBase = new UriBuilder(settings.BUILDMICROSEVICE)
+		{
+			Scheme = Uri.UriSchemeHttps,
+			Port = -1,
+		};
+		var url = new Uri(urlBase.ToString().TrimEnd('/') +  "/addBuild");
+		var Client = new RestClient(url.ToString());
+		var request = new RestRequest(Method.POST);
+		request.AddHeader("Authorization", "ApiKey " + settings.BUILDMICROSEVICEKEY);
+
+		request.AddParameter("id", ttid, ParameterType.QueryString);
+		request.AddParameter("summary", defect.SUMMARY, ParameterType.QueryString);
+		request.AddParameter("mail", emial, ParameterType.QueryString);
+		request.AddParameter("branch", defect.BRANCH, ParameterType.QueryString);
+		request.AddParameter("notes", notes, ParameterType.QueryString);
+		request.AddParameter("type", (int)type, ParameterType.QueryString);
+		request.AddParameter("batches", string.Join(",", defect.BSTBATCHES.Split('\n')), ParameterType.QueryString);
+		request.AddParameter("commands", string.Join(",", defect.BSTCOMMANDS.Split('\n')), ParameterType.QueryString);
+		request.AddParameter("priority", defect.TESTPRIORITY, ParameterType.QueryString);
+		request.AddParameter("owner", emial, ParameterType.QueryString);
+
+		var response = Client.Execute(request);
+		//AddObject(_Tabl, new string[] { _par, _not, _User, _dateB, _type }, new object[] { Defect.GetIDbyTT(ttid), notes, CurrentContext.User.TTUSERID, DateTime.Now, (int)type }, _pid);
 	}
 	public static void CancelRequestByTask(int ttid)
 	{
