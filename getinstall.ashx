@@ -90,7 +90,7 @@ public class getinstall : IHttpHandler
 			else
 			{
 				string prefix = "";
-				string postfix = "ACT";
+				string postfix = "";
 				if (t == "efip")
 				{
 					prefix = "FIELDPRO_8";
@@ -106,9 +106,9 @@ public class getinstall : IHttpHandler
 				else if (t == "demo")
 				{
 					prefix = "FIELDPRO_DEMO_DB_MSSQL_8";
-					postfix = "BELACT";
+					postfix = "_BELACT";
 				}
-				download = string.Format("{0}{1}{2}_{3}_{4}_{5}_{6}.msi", folder, prefix, lett, nums[0], nums[1], nums[2], postfix);
+				download = string.Format("{0}{1}{2}_{3}_{4}_{5}{6}.msi", folder, prefix, lett, nums[0], nums[1], nums[2], postfix);
 			}
 
 			if (!System.IO.File.Exists(download))
