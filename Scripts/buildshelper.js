@@ -75,6 +75,7 @@ function InitBuildHelpers($scope, $interval, $http, ttid) {
 							DATEBUILD: b.item.status == $scope.BuildStatus.notstarted ? '' : $scope.fromUTC(b.item.dateBuild).toLocaleString(),
 							EML: b.item.userEmail,
 							DATE: new Date(b.item.dateCreatedOffset).toLocaleString(),
+							TESTGUID: b.item.uGuid,
 						}
 						return output;
 					});
