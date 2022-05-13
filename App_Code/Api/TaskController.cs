@@ -7,7 +7,7 @@ using System.Web.Http;
 public class TaskController : ApiController
 {
 	[HttpGet]
-	public async Task<bool> SetGloabalDispo(string ttid, GlobalDispo dispo, string email)
+	public async Task<bool> SetGloabalDispo(int ttid, GlobalDispo dispo, string email)
 	{
 		var dispRef = await DefectDispo.GetDispoFromGlobal(dispo);
 		string currentlock = Guid.NewGuid().ToString();
@@ -16,7 +16,7 @@ public class TaskController : ApiController
 		{
 			return false;
 		}
-		LockInfo li = await Defect.LocktaskAsync(ttid, currentlock, user.TRID.ToString(), true);
+		LockInfo li = await Defect.LocktaskAsync(ttid.ToString(), currentlock, user.TRID.ToString(), true);
 		Defect d = new Defect(ttid);
 		d.SetUpdater(new MPSUser(user.TRID));
 		d.DISPO = dispRef.idRecord.ToString();
@@ -45,7 +45,12 @@ public class TaskController : ApiController
 			DefectUser du = new DefectUser(d.AUSER);
 			MPSUser worker = new MPSUser(du.TRID);
 			var attr = dispo.GetAttributeOfType<DisplayAttribute>();
-			TasksBot.SendMessage(worker.CHATID, $"The task tests have been marked as {dispRef.Descriptor} by automation system. Comment: {attr.Description} {settings.GetTTAnchor(int.Parse(ttid), attr.Name)}");
+			TasksBot.SendMessage(worker.CHATID, $"{attr.Description}. The task tests have been marked as {dispRef.Descriptor} by automation system. {settings.GetTTAnchor(ttid, attr.Name)}");
+			if (dispo == GlobalDispo.testStarted)
+			{
+				string mess = $"New task from {user.FULLNAME} is ready for tests!{settings.GetTTAnchor(ttid, d.FIRE ? "taskfire.png" : "")}";
+				await TestChannel.SendMessageAsync(mess);
+			}
 		}
 		return true;
 	}
