@@ -98,7 +98,6 @@
 							testVersion += "." + items[0].replace(/\D/g, '');
 							testVersion += "." + items[1];
 							testVersion += "." + items[2];
-							testVersion += ".AUTOBOT";
 							$scope.versions.push({ version: txt, testVersion: testVersion, changes: [] });
 						}
 					} else if (txt.length > 0 && $scope.versions.length > 0) {
