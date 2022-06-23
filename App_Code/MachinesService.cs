@@ -90,7 +90,8 @@ public class MachinesService : WebService
 			foreach (ManagementObject queryObj in searcher.Get())
 			{
 				object o = queryObj["MACAddress"];
-				if (o == null)
+				object cap = queryObj["Caption"];
+				if (o == null || cap == null || cap.ToString().ToUpper().Contains("VIRTUALBOX"))
 				{
 					continue;
 				}
