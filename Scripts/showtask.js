@@ -177,7 +177,7 @@
 		};
 		$scope.loadCommit = function (c, member) { loadCommit(c, $scope, $http, member); };
 		$scope.nameBranch = function () {
-			let forbiden = [" ", "..", "~", "^", ":", "?", "*", "[", "]", "/", "@{", "}", "\\", "-", "\""];
+			let forbiden = [" ", "..", "~", "^", ":", "?", "*", "[", "]", "/", "@{", "}", "\\", "-", "\"", "'"];
 			let name = $scope.defect.SUMMARY;
 			forbiden.forEach(function (c) {
 				name = name.replaceAll(c, "_");
