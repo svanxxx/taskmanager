@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
 using System.DirectoryServices.AccountManagement;
-using System.Globalization;
 using System.Linq;
 
 public class MPSUser : IdBasedObject
@@ -250,6 +249,10 @@ public class MPSUser : IdBasedObject
 			ls.Add(new MPSUser(i));
 		}
 		return ls;
+	}
+	public static IEnumerable<MPSUser> AlarmedUsers()
+	{
+		return EnumRecords(_Tabl, _pid, new string[] { _ret, _estAlarm }, new object[] { 0, 1 }).Select(x => new MPSUser(x));
 	}
 	public static List<MPSUser> EnumAllSupporters()
 	{

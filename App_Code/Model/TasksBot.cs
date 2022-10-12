@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using Telegram.Bot;
@@ -31,7 +30,7 @@ public class TasksBot
 	}
 	public static void EstimationAlarm(int ID, int prim, int estim)
 	{
-		foreach(var user in MPSUser.EnumAllUsers(true).Where(x => x.ESTIMALARM))
+		foreach (var user in MPSUser.AlarmedUsers())
 		{
 			SendMessage(user.CHATID, $"Estimation alarm (from primary {prim} hours to {estim} hours): {Settings.CurrentSettings.GetTTAnchor(ID, "bell.png")}");
 		}
@@ -79,7 +78,7 @@ public class TasksBot
 		}
 		else if (text.StartsWith(_comSubs))
 		{
-			string num = Regex.Replace(text.Remove(0, "_comSubs".Length), "[^0-9]", "");			
+			string num = Regex.Replace(text.Remove(0, "_comSubs".Length), "[^0-9]", "");
 			await _client.SendTextMessageAsync(message.Chat.Id, $"Your number is: {num}");
 			MPSUser u = MPSUser.FindUserbyPhone(num);
 			if (u == null)
