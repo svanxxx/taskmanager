@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Web.Services;
-using System.Net.Mail;
-using System.Globalization;
-using System.Net;
-using System.Text.RegularExpressions;
 using System.Collections.Specialized;
-using System.Xml.Serialization;
+using System.Globalization;
 using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Text;
+using System.Text.RegularExpressions;
+using System.Web.Services;
+using System.Xml.Serialization;
 
 [WebService(Namespace = "http://tempuri.org/")]
 [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
@@ -175,10 +176,10 @@ public class TRService : WebService
 			return -1;
 		DefectBase d = new DefectBase(Defect.New(summary));
 		d.ESTIM = 1;
-		List<int> disp = DefectDispo.EnumCanStartIDs();
-		if (disp.Count > 0)
+		var disp = DefectDispo.EnumCannotStartIDs();
+		if (disp.Any())
 		{
-			d.DISPO = disp[0].ToString();
+			d.DISPO = disp.First().ToString();
 		}
 		d.Store();
 		return d.ID;
@@ -352,7 +353,8 @@ public class TRService : WebService
 			{
 				store.Store();
 			}
-		} catch { }
+		}
+		catch { }
 	}
 	[WebMethod(EnableSession = true)]
 	public void deltrrec(int id)
