@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Globalization;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -920,7 +920,11 @@ public partial class Defect : DefectBase
 	}
 	protected override void OnProcessComplexColumn(string col, object val)
 	{
-		if (col == _Desc)
+		if (col == _Spent)
+		{
+			return;//auto calculted in db
+		}
+		else if (col == _Desc)
 		{
 			string sql = string.Format("UPDATE {2} SET DESCRPTN = '{0}' WHERE IDDEFREC = (SELECT IDRECORD FROM {3} D WHERE D.DEFECTNUM = {1})", val.ToString().Replace("'", "''"), _id, _RepTable, _Tabl);
 			SQLExecute(sql);
@@ -964,7 +968,7 @@ public partial class Defect : DefectBase
 	}
 	protected override bool IsColumnComplex(string col)
 	{
-		if (col == _Est || col == _AsUser)
+		if (col == _Est || col == _AsUser || col == _Spent)
 			return true;
 
 		return base.IsColumnComplex(col);
