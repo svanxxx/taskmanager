@@ -81,7 +81,7 @@ public class getinstall : IHttpHandler
 			}
 			else if (t == _devMSI)
 			{
-				download = string.Format("{0}{1}\\FIELDPRO.msi", Settings.CurrentSettings.DEVINSTALLSFOLDER, v);
+				download = string.Format("{0}{1}\\FIELDPRO_SERVER.msi", Settings.CurrentSettings.DEVINSTALLSFOLDER, v);
 			}
 			else if (t == _mxMSI)
 			{

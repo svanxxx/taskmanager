@@ -36,7 +36,7 @@ function InitBuildHelpers($scope, $interval, $http, ttid) {
 	$scope.buildtime = parseInt(document.getElementById("buildtime").value);
 	$scope.buildBrokeHeaders = {
 		headers: {
-			"Authorization": "ApiKey " + $scope.buildBrokerAPI
+			"X-API-Key": $scope.buildBrokerAPI
 		}
 	};
 	if (!$scope.buildBrokerURL.endsWith("/")) {
@@ -115,7 +115,7 @@ function InitBuildHelpers($scope, $interval, $http, ttid) {
 			if (ttid) {
 				url.searchParams.set("parent", ttid);
 			}
-			url.searchParams.set("apikey", $scope.buildBrokerAPI);
+			url.searchParams.set("X-API-Key", $scope.buildBrokerAPI);
 			$scope.buildEvents = new EventSource(url.toString());
 			$scope.buildEvents.onmessage = function (event) {
 				$scope.loadBuilds();

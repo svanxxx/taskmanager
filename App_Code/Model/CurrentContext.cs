@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Linq;
 using System.Threading;
 using System.Web;
 public static class CurrentContext
@@ -30,6 +31,11 @@ public static class CurrentContext
 		{
 			throw new Exception("Insufficient Rights");
 		}
+	}
+	public static string ImagesUrl()
+	{
+		string Authority = HttpContext.Current.Request.Url.Authority;
+		return HttpContext.Current.Request.Url.Scheme + "://auth." + string.Join(".", Authority.Split('.').Reverse().Take(2).Reverse()) + "/api/img?u=";
 	}
 	public static bool Valid
 	{
@@ -120,7 +126,8 @@ public static class CurrentContext
 					{
 						HttpContext.Current.Session.Remove(_id);
 						HttpContext.Current.Session.Remove(_us);
-					} else
+					}
+					else
 					{
 						ThreadLogout();
 					}
@@ -130,7 +137,7 @@ public static class CurrentContext
 				{
 					HttpContext.Current.Session[_id] = value.ID;
 					HttpContext.Current.Session[_us] = value;
-				} 
+				}
 				else
 				{
 					ThreadLogin(value);

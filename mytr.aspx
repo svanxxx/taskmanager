@@ -59,7 +59,7 @@
 						<div class="row person-items">
 							<div class="col-lg-2 col-xs-6 col-centered">
 								<div class="card person-box h-100">
-									<img class="rounded-circle" <%= "src=getUserImg.ashx?sz=80&id=" + CurrentContext.UserID%> alt="smile" width="80" height="80" style="margin: auto;" />
+									<img class="rounded-circle" <%= "src='" + CurrentContext.ImagesUrl() + CurrentContext.UserLogin() + "'"%> alt="smile" width="80" height="80" style="margin: auto;" />
 									<div class="card-body p-0 m-0">
 										<label><% =CurrentContext.UserName() %></label>
 									</div>
@@ -238,6 +238,7 @@
 					<div class="toast-body">
 						<div ng-repeat="c in todayCommits">
 							<img class="rep-img rounded-circle" ng-src="getUserImg.ashx?sz=20&amp;eml={{c.AUTHOREML}}" alt="Smile" height="20" width="20" style="float: left">
+							<span>{{c.LOGIN}}</span>
 							<div style="float: left" ng-show="c.TTID > 0">
 								<uc:defNum member="c" runat="server" style="float: left" />
 							</div>

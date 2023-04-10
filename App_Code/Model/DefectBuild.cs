@@ -3,7 +3,6 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Threading.Tasks;
 
 public class BuildRequest
 {
@@ -292,10 +291,10 @@ public class DefectBuild : IdBasedObject
 			Scheme = Uri.UriSchemeHttps,
 			Port = -1,
 		};
-		var url = new Uri(urlBase.ToString().TrimEnd('/') +  "/addBuild");
+		var url = new Uri(urlBase.ToString().TrimEnd('/') + "/addBuild");
 		var Client = new RestClient(url.ToString());
 		var request = new RestRequest(Method.POST);
-		request.AddHeader("Authorization", "ApiKey " + settings.BUILDMICROSEVICEKEY);
+		request.AddHeader("X-API-Key", settings.BUILDMICROSEVICEKEY);
 
 		request.AddParameter("id", ttid, ParameterType.QueryString);
 		request.AddParameter("summary", defect.SUMMARY, ParameterType.QueryString);
@@ -370,10 +369,10 @@ public class DefectBuild : IdBasedObject
 					var git = new Git(settings.WORKGITLOCATION);
 					var gitBranch = git.GetBranch(branch);
 					var commits = gitBranch.EnumCommits(1, 100);
-					foreach(var commit in commits)
+					foreach (var commit in commits)
 					{
 						var files = commit.EnumFiles();
-						foreach(var file in files)
+						foreach (var file in files)
 						{
 							if (file.Name.ToUpper().Contains(pattern))
 							{
