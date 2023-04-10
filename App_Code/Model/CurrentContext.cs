@@ -32,10 +32,10 @@ public static class CurrentContext
 			throw new Exception("Insufficient Rights");
 		}
 	}
-	public static string ImagesUrl()
+	public static string ImagesUrl(string by = "u")
 	{
 		string Authority = HttpContext.Current.Request.Url.Authority;
-		return HttpContext.Current.Request.Url.Scheme + "://auth." + string.Join(".", Authority.Split('.').Reverse().Take(2).Reverse()) + "/api/img?u=";
+		return HttpContext.Current.Request.Url.Scheme + "://auth." + string.Join(".", Authority.Split('.').Reverse().Take(2).Reverse()) + "/api/img?" + by + "=";
 	}
 	public static bool Valid
 	{

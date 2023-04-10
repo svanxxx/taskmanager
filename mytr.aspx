@@ -237,7 +237,7 @@
 					</div>
 					<div class="toast-body">
 						<div ng-repeat="c in todayCommits">
-							<img class="rep-img rounded-circle" ng-src="getUserImg.ashx?sz=20&amp;eml={{c.AUTHOREML}}" alt="Smile" height="20" width="20" style="float: left">
+							<img class="rep-img rounded-circle" ng-src="<%=CurrentContext.ImagesUrl("e")%>{{c.AUTHOREML}}" alt="Smile" height="20" width="20" style="float: left">
 							<span>{{c.LOGIN}}</span>
 							<div style="float: left" ng-show="c.TTID > 0">
 								<uc:defNum member="c" runat="server" style="float: left" />
