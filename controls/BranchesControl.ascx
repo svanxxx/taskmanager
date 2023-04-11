@@ -35,7 +35,7 @@
 					</div>
 					<div class="ml-auto">
 						<a ng-click="filterby(b.AUTHOR)" href>{{b.AUTHOR}}</a>
-						<img class="rep-img rounded-circle" ng-src="{{'getUserImg.ashx?sz=40&eml=' + b.AUTHOREML}}" alt="Smile" height="40" width="40">
+						<img class="rep-img rounded-circle" ng-src="<%=CurrentContext.ImagesUrl("e")%>{{b.AUTHOREML}}" alt="Smile" height="40" width="40">
 					</div>
 				</div>
 			</div>

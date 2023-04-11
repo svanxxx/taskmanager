@@ -35,7 +35,7 @@
 						<br />
 						<span data-toggle="tooltip" title="{{c.COMMIT}}" class="badge badge-warning ng-binding">{{c.COMMIT | limitTo: 20}}</span>
 					</div>
-					<img class="rep-img rounded-circle" ng-src="{{'getUserImg.ashx?sz=40&eml=' + c.AUTHOREML}}" alt="Smile" height="40" width="40">
+					<img class="rep-img rounded-circle" ng-src="<%=CurrentContext.ImagesUrl("e")%>{{c.AUTHOREML}}" alt="Smile" height="40" width="40">
 				</div>
 				<div class="row">
 					<pre ng-show="c.DIFF"><code ng-bind-html="c.DIFF | rawHtml"></code></pre>

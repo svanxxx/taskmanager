@@ -43,7 +43,7 @@
 						<small class="ml-auto" ng-show="b.STATUS != 5 && b.STATUS != 3">Started: {{b.DATEBUILD}}</small>
 					</div>
 				</div>
-				<img class="rounded-circle ml-auto" ng-src="{{'getUserImg.ashx?sz=40&eml=' + b.EML}}" alt="Smile" height="40" width="40">
+				<img class="rounded-circle ml-auto" ng-src="<%=CurrentContext.ImagesUrl("e")%>{{b.EML}}" alt="Smile" height="40" width="40">
 			</div>
 		</div>
 	</div>
