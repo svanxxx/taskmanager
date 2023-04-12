@@ -36,7 +36,7 @@
 									</div>
 								</div>
 							</div>
-						<a href="<%=Settings.CurrentSettings.BUILDMICROSEVICE%>/../Home/Log/{{b.ID}}"><small data-toggle="tooltip" title="{{b.STATUSTXT}}">{{b.STATUSTXT | limitTo: 100}}</small></a>
+						<a href="<%=Settings.CurrentSettings.BUILDMICROSEVICE%>/../Home/Log?id={{b.ID}}"><small data-toggle="tooltip" title="{{b.STATUSTXT}}">{{b.STATUSTXT | limitTo: 100}}</small></a>
 					</div>
 					<div class="d-flex">
 						<small>Sent: {{b.DATE}}</small>
