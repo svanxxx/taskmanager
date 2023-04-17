@@ -72,7 +72,7 @@ public class TrackerService : WebService
 		List<DefectBase> defs = (new DefectBase()).Enum(res.TRACKER.GetFilter());
 
 		DateTime now = DateTime.Now;
-		DateTime start = now - new TimeSpan((int)now.DayOfWeek -1, now.Hour, now.Minute, now.Second);
+		DateTime start = now - new TimeSpan((int)now.DayOfWeek - 1, now.Hour, now.Minute, now.Second);
 		DateTime end = start + new TimeSpan(6, 23, 59, 59);
 		DateTime? edd = null;
 		var work = DefectDispo.EnumWorkableIDs();
@@ -171,7 +171,7 @@ public class TrackerService : WebService
 		Tracker t = new Tracker(trackerid);
 		summary += "@" + t.NAME;
 		Defect d = new Defect(Defect.New(summary));
-		d.AddMessage("tag:" + t.GetTag(), CurrentContext.UserID);
+		d.AddMessage("tag: " + t.GetTag(), CurrentContext.UserID);
 		d.ESTIM = 1;
 		d.Store();
 		return new DefectPlan(d);
