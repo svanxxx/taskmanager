@@ -190,31 +190,35 @@ $(function () {
 			}
 		};
 		$scope.applyfilter = function () {
-			var proccessed = $scope.getServiceFilter();
+			let proccessed = $scope.getServiceFilter();
 			localStorage.DefectsFilter = JSON.stringify(proccessed);
-			var o = Object.assign({}, proccessed);
-			var url = removeUrlParam(replaceUrlParam(location.href, "filter", localStorage.DefectsFilter), g_filrid);
+			let o = Object.assign({}, proccessed);
+			let url = removeUrlParam(replaceUrlParam(location.href, "filter", localStorage.DefectsFilter), g_filrid);
 			window.history.pushState(o, "filter:" + localStorage.DefectsFilter, url);
 			$scope.loadData();
 		};
+		$scope.updateFilter = function (filter) {
+			if (!confirm("Update existing '" + filter.NAME + "' filter? ")) {
+				return;
+			}
+			$http.post("trservice.asmx/udpateFilter", JSON.stringify({ "id": filter.ID, "filter": $scope.getServiceFilter() }))
+				.then(function (response) {
+					let f = response.data.d;
+					let i = $scope.filters.findIndex(function (item) { return item.ID === f.ID; });
+					if (i >= 0) {
+						$scope.filters[i] = response.data.d;
+					}
+					EndProgress(prg);
+				});
+		};
 		$scope.saveFilter = function (personal) {
 			msgBox("Please enter filter name", "New Filter", function (txt) {
-				var filter = $scope.filters.find(function (item) { return item.NAME === txt });
+				let filter = $scope.filters.find(function (item) { return item.NAME === txt });
 				if (filter != null) {
-					if (confirm("Update existing '" + filter.NAME + "' filter? ")) {
-						$http.post("trservice.asmx/udpateFilter", JSON.stringify({ "id": filter.ID, "filter": $scope.getServiceFilter() }))
-							.then(function (response) {
-								var f = response.data.d;
-								var i = $scope.filters.findIndex(function (item) { return item.ID === f.ID; });
-								if (i >= 0) {
-									$scope.filters[i] = response.data.d;
-								}
-								EndProgress(prg);
-							});
-					}
+					$scope.updateFilter(filter);
 					return;
 				}
-				var prg = StartProgress("Storing filter...");
+				let prg = StartProgress("Storing filter...");
 				$http.post("trservice.asmx/saveFilter", JSON.stringify({ "name": txt, "personal": personal, "filter": $scope.getServiceFilter() }))
 					.then(function (response) {
 						$scope.filters.push(response.data.d);

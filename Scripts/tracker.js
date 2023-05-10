@@ -109,6 +109,7 @@ $(function () {
 		$scope.isadmin = IsAdmin();
 		getDispos($scope, "dispos", $http);
 		getUsers($scope, "users", $http);
+		console.log($scope.users);
 		$scope.filters = [];
 		$scope.defects = [];
 		$scope.STATS = {};
@@ -155,6 +156,9 @@ $(function () {
 					$scope.filters = res.data.d;
 					EndProgress(prgfltr);
 				});
+		}
+		$scope.selectUser = function (x) {
+			$scope.selectedUser = x;
 		}
 		$scope.taskActions = function (ttid) {
 			if (!$scope.isadmin) {

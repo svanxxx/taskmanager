@@ -33,7 +33,9 @@
 					<h2><i class="fas fa-file-contract"></i>&nbsp;{{pageName}}</h2>
 				</button>
 				<div class="dropdown-menu">
-					<a ng-repeat="t in trackers" href="?id={{t.ID}}" class="dropdown-item">{{t.NAME}}</a>
+					<a ng-repeat="t in trackers" href="?id={{t.ID}}" class="dropdown-item">
+					{{t.NAME}}
+					</a>
 				</div>
 			</div>
 			<div>
@@ -123,9 +125,22 @@
 						<h4>{{trackUserID() | getUserById:this}}</h4>
 					</div>
 				</div>
+				<div>
+				</div>
+				<div ng-show="isadmin">
+					<div class="dropdown w-100 mb-2">
+						<button class="btn btn-outline-secondary btn-sm dropdown-toggle w-100" type="button" data-toggle="dropdown" aria-expanded="false">
+							{{selectedUser ? selectedUser.FULLNAME : 'All Users'}}
+						</button>
+						<div class="dropdown-menu">
+							<div style="cursor:pointer" class="dropdown-item" ng-click="selectedUser = null">All Users</div>
+							<div style="cursor:pointer" class="dropdown-item" ng-repeat="x in users | filter : {ACTIVE: true}" ng-click="selectUser(x)">{{x.FULLNAME}}</div>
+						</div>
+					</div>
+				</div>
 				<div class="shadow">
 					<div class="list-group mb-2">
-						<div ng-repeat="t in trackers" class="d-flex mb-2">
+						<div ng-repeat="t in trackers" class="d-flex mb-2" ng-show="selectedUser ? selectedUser.ID == t.IDCLIENT : true">
 							<svg width="10" height="3em">
 								<rect ng-repeat="c in t.Completes" ng-attr-y="{{c.Y+'%'}}" width="100%" ng-attr-height="{{c.PERCENT+'%'}}" style="fill: {{c.COLOR}}; stroke-width: 1; stroke: rgb(0,0,0)" />
 							</svg>

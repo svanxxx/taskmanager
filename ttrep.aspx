@@ -171,8 +171,9 @@
 								<i class="fas fa-save"></i>
 							</button>
 							<div class="dropdown-menu">
-								<button ng-click="saveFilter(true)" type="button" class="dropdown-item btn btn-outline-secondary"><i class="fas fa-user-check"></i>Personal</button>
-								<button ng-click="saveFilter(false)" type="button" class="dropdown-item btn btn-outline-secondary"><i class="fas fa-user-friends text-danger"></i>Shared</button>
+								<button ng-show="selectedFilter != null" ng-click="updateFilter(selectedFilter)" type="button" class="dropdown-item btn btn-outline-secondary"><i class="fas fa-save"></i>&nbsp;&nbsp;Update Filter</button>
+								<button ng-click="saveFilter(true)" type="button" class="dropdown-item btn btn-outline-secondary"><i class="fas fa-user-check"></i>&nbsp;&nbsp;Personal</button>
+								<button ng-click="saveFilter(false)" type="button" class="dropdown-item btn btn-outline-secondary"><i class="fas fa-user-friends text-danger"></i>&nbsp;&nbsp;Shared</button>
 							</div>
 						</div>
 						<button ng-click="resetFilter()" data-toggle="tooltip" title="Reset Filter" type="button" class="btn btn-outline-secondary"><i class="fas fa-home"></i></button>
