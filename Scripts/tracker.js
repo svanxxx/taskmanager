@@ -1,5 +1,5 @@
 ﻿function CreateChart() {
-	var config = {
+	let config = {
 		type: "pie",
 		data: {
 			datasets: [{
@@ -19,7 +19,7 @@
 			}
 		}
 	};
-	var chartctx = document.getElementById("chartpie").getContext("2d");
+	let chartctx = document.getElementById("chartpie").getContext("2d");
 	window.chartpie = new Chart(chartctx, config);
 }
 function DrawChart($scope) {
@@ -58,7 +58,7 @@ function DrawChart($scope) {
 
 $(function () {
 	CreateChart();
-	var app = angular.module('mpsapplication', []);
+	let app = angular.module('mpsapplication', []);
 	app.filter('getDispoColorById', getDispoColorById);
 	app.filter('getUserById', getUserById);
 	app.filter("sumFormat", ["$sce", sumFormat]);
@@ -109,7 +109,6 @@ $(function () {
 		$scope.isadmin = IsAdmin();
 		getDispos($scope, "dispos", $http);
 		getUsers($scope, "users", $http);
-		console.log($scope.users);
 		$scope.filters = [];
 		$scope.defects = [];
 		$scope.STATS = {};
@@ -118,7 +117,7 @@ $(function () {
 		if ($scope.id != "") {
 			$.cookie("trackerid", $scope.id, { expires: 365 });
 		}
-		var tmp = document.getElementById("trackers").value;
+		let tmp = document.getElementById("trackers").value;
 		if (tmp === "") {
 			$scope.trackers = [];
 		} else {
@@ -265,6 +264,14 @@ $(function () {
 				return "";
 			} else {
 				return $scope.trackers.find(function (item) { return item.ID == $scope.id }).IDCLIENT;
+			}
+		};
+		$scope.trackUserEmail = function () {
+			let id = $scope.trackUserID();
+			if (id < 0) {
+				return "";
+			} else {
+				return $scope.users.find(function (x) { return x.ID == id }).EMAIL;
 			}
 		};
 		$scope.messageKey = function (event) {

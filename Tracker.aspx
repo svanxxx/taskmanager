@@ -121,7 +121,7 @@
 			<div class="col-md-3">
 				<div class="card shadow mb-2">
 					<div class="card-body text-center">
-						<img class="rounded-circle" ng-src="{{'getUserImg.ashx?sz=150&ttid=' + trackUserID()}}" alt="Smile" height="150" width="150" />
+						<img class="rounded-circle" ng-src="{{'<%=CurrentContext.ImagesUrl("e")%>' + trackUserEmail()}}" alt="Smile" height="150" width="150" />
 						<h4>{{trackUserID() | getUserById:this}}</h4>
 					</div>
 				</div>
