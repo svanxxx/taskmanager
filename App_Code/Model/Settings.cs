@@ -199,6 +199,11 @@ public class RawSettings
 		get { return GetVal("BUILDTIME"); }
 		set { values["BUILDTIME"] = value; }
 	}
+	public string BUILDERS
+	{
+		get { return GetVal("BUILDERS"); }
+		set { values["BUILDERS"] = value; }
+	}
 	public string BUILDTIMEOUT
 	{
 		get { return GetVal("BUILDTIMEOUT"); }

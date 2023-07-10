@@ -174,6 +174,10 @@
 			$http.post(url.toString(), {}, $scope.buildBrokeHeaders).then(function (result) {
 				$scope.loadBuilds();
 			});
+			let day = new Date().getDay();
+			if (day > 0 && day < 6) {
+				$http.post("BuildService.asmx/wol", JSON.stringify({}));
+			}
 		};
 		$scope.loadCommit = function (c, member) { loadCommit(c, $scope, $http, member); };
 		$scope.nameBranch = function () {

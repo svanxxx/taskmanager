@@ -1,6 +1,9 @@
 ﻿using Microsoft.Win32.TaskScheduler;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Net;
+using System.Net.Sockets;
 using System.Web;
 using System.Web.Services;
 
@@ -102,7 +105,7 @@ public class BuildService : WebService
 		addBuildByTask(Settings.CurrentSettings.RELEASETTID, "Automated Build", btboth);
 		return "OK";
 	}
-	static string _tname = "TaskManagerBuilder"; 
+	static string _tname = "TaskManagerBuilder";
 	static WeeklyTrigger getDefTrigger()
 	{
 		WeeklyTrigger wt = new WeeklyTrigger();
@@ -227,6 +230,38 @@ public class BuildService : WebService
 			return;
 		}
 		DefectBuild.AddRequestByTask(Convert.ToInt32(ttid), "Public Release", DefectBuild.BuildType.releasebuild);
+	}
+	[WebMethod(EnableSession = true)]
+	public void wol()
+	{
+		CurrentContext.Validate();
+		var settings = Settings.CurrentSettings;
+		var machines = settings.BUILDERS;
+		if (string.IsNullOrEmpty(machines))
+		{
+			return;
+		}
+		var macs = machines.Split(';');
+
+		using (var client = new UdpClient() { EnableBroadcast = true })
+		{
+			client.Connect(IPAddress.Broadcast, 9);
+			foreach (var mac in macs)
+			{
+				var smac = ((mac.Replace(":", "")).Replace("-", "")).Replace(".", "");
+
+				int counter = 0;
+				byte[] bytes = new byte[102];
+				for (int x = 0; x < 6; x++)
+					bytes[counter++] = 0xFF;
+
+				for (int macPackets = 0; macPackets < 16; macPackets++)
+					for (int macBytes = 0; macBytes < 12; macBytes += 2)
+						bytes[counter++] = byte.Parse(smac.Substring(macBytes, 2), NumberStyles.HexNumber);
+
+				client.Send(bytes, bytes.Length);
+			}
+		}
 	}
 	[WebMethod]
 	public BuildRequest getInstallRequest(string machine)
