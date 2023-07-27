@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Web;
 
 public class RawSettings
 {
@@ -388,10 +387,10 @@ public class Settings : RawSettings
 	}
 	protected override string ProcessValue(string val)
 	{
-		if (val.ToUpper().StartsWith("HTTPS://") && !HttpContext.Current.Request.IsSecureConnection)
-		{
-			return "http" + val.Substring(5);
-		}
+		//if (val.ToUpper().StartsWith("HTTPS://") && !HttpContext.Current.Request.IsSecureConnection)
+		//{
+		//return "http" + val.Substring(5);
+		//}
 		return val;
 	}
 }
