@@ -128,6 +128,17 @@
 							<input type="text" class="form-control" ng-model="apply.summary.value1">
 							<input type="text" class="form-control" ng-model="apply.summary.value2">
 						</div>
+						<div class="input-group input-group-sm">
+							<div class="input-group-prepend">
+								<div class="input-group-text">
+									<input type="checkbox" ng-model="apply.details.use">
+								</div>
+							</div>
+							<div class="input-group-prepend" data-toggle="tooltip" title="Enter details message to add">
+								<span class="input-group-text">Details</span>
+							</div>
+							<input type="text" class="form-control" ng-model="apply.details.value">
+						</div>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-primary" ng-click="changeDefects()" id="createttbtn">Apply</button>

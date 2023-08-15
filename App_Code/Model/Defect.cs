@@ -87,6 +87,7 @@ public partial class DefectBase : IdBasedObject
 	protected static string[] _allBaseColsNames = new string[] { _ID, "Summary", _idRec, "Disposition", "Estimation", "", "Estimated by", "Schedule Order", "Assigned User", "Severity", "", "Schedule Order", "Component", "Date Entered", "Date Created", "Alarm", "Created By", "Type", "Product", "Reference", "Priority", "Schedule Date", "", "", "", "Branch", "BST Branch", "Test Priority", "Version", "", "Primary Hours", "PrimaryEstim" };
 
 	MPSUser _updater;
+	public string add_details { get; set; } //bulk updater. should not be used
 	public MPSUser GetUpdater()
 	{
 		return _updater == null ? CurrentContext.User : _updater;

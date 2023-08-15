@@ -252,10 +252,14 @@ public class TRService : WebService
 	[WebMethod(EnableSession = true)]
 	public void settaskBase(List<DefectBase> defects)
 	{
-		foreach (DefectBase d in defects)
+		foreach (var d in defects)
 		{
 			Defect dstore = new Defect(d.ID);
 			dstore.FromAnotherObject(d);
+			if (!string.IsNullOrEmpty(d.add_details))
+			{
+				dstore.DESCR += $"{Environment.NewLine}<task-message userid='{CurrentContext.UserID}' user='{CurrentContext.UserLogin()}' time='{DateTime.Now.ToString()}'>{d.add_details}</task-message>";
+			}
 			if (dstore.IsModified())
 			{
 				dstore.Store();

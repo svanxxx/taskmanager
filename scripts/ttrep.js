@@ -324,10 +324,15 @@ $(function () {
 					}
 					if ($scope.apply.summary.use) {
 						if ($scope.apply.summary.value1 !== "") {
-							var re = new RegExp($scope.apply.summary.value1, "gi");
+							let re = new RegExp($scope.apply.summary.value1, "gi");
 							copy.SUMMARY = copy.SUMMARY.replace(re, $scope.apply.summary.value2);
 						} else if ($scope.apply.summary.value2 !== "") {
 							copy.SUMMARY = $scope.apply.summary.value2;
+						}
+					}
+					if ($scope.apply.details.use) {
+						if ($scope.apply.details.value) {
+							copy.add_details = $scope.apply.details.value;
 						}
 					}
 					delete copy["checked"];
@@ -336,8 +341,10 @@ $(function () {
 			});
 			if (confirm("Are you sure you want to change " + updated.length + " defects ?")) {
 				StartProgress("Updating tasks...");
-				$http.post("trservice.asmx/settaskBase", JSON.stringify({ "defects": updated }));
-				window.location.reload();
+				$http.post("trservice.asmx/settaskBase", JSON.stringify({ "defects": updated })).then(function () {
+					window.location.reload();
+				});
+				
 			} else {
 				// Do nothing!
 			}
@@ -392,6 +399,7 @@ $(function () {
 		$scope.apply.priority = { "use": false, "value": -1 };
 		$scope.apply.date = { "use": false, "value": "" };
 		$scope.apply.summary = { "use": false, "value1": "", "value2": "" };
+		$scope.apply.details = { "use": false, "value": "" };
 		//loading:
 		getUsers($scope, "users", $http, function () {
 			$scope.updateUsersFilter();
