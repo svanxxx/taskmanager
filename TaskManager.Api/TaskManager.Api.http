@@ -1,0 +1,10 @@
+@host = http://localhost:5029
+@token = replace-with-a-jwt
+
+POST {{host}}/api/tasks
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "summary": "Example task description"
+}

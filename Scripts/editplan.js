@@ -193,7 +193,10 @@ $(function () {
 				});
 		};
 		$scope.changeuser = function (u, state) {
-			var prgtasks = StartProgress("Loading tasks...");
+			if (!u) {
+				u = $scope.users[0];
+			}
+			let prgtasks = StartProgress("Loading tasks...");
 			$scope.defects = [];
 			$scope.unscheduled = [];
 			$scope.currentuserid = u.ID;
